@@ -1,0 +1,2 @@
+option('dynamic-lib', type: 'boolean', value: false)
+option('build-demos', type: 'boolean', value: false)

@@ -56,18 +56,6 @@ public:
 
     void naked_log(const std::string& message);
 
-    template<class... Args>
-    void logf(const std::string& fmt, loglevel level, Args... args)
-    {
-        log(string_utils::format(fmt, args...), level);
-    }
-
-    template<class... Args>
-    void naked_logf(const std::string& fmt, Args... args)
-    {
-        naked_log(string_utils::format(fmt, args...));
-    }
-
     inline void set_loglevel(loglevel level) { level_ = level; }
 
     inline void set_show_timestamp(bool show) { show_timestamp_ = show; }
@@ -91,7 +79,19 @@ private:
 } // sun
 
 #define __sun_println(m) sun::logger::instance().naked_log(m)
-#define __sun_printf(m, ...) sun::logger::instance().naked_log(m, ##__VA_ARGS__)
+#define __sun_printf(m, ...) sun::logger::instance().naked_log( \
+    sun::string_utils::format(m, ##__VA_ARGS__))
 
 #define __sun_log(m) sun::logger::instance().log(m)
-#define __sun_logf(m, ...) sun::logger::instance().logf(m, ##__VA_ARGS__)
+#define __sun_log_d(m) sun::logger::instance().log(m, sun::loglevel::debug)
+#define __sun_log_w(m) sun::logger::instance().log(m, sun::loglevel::warn)
+#define __sun_log_e(m) sun::logger::instance().log(m, sun::loglevel::error)
+
+#define __sun_logf(m, ...) sun::logger::instance().log( \
+    sun::string_utils::format(m, ##__VA_ARGS__))
+#define __sun_logf_d(m, ...) sun::logger::instance().log( \
+    sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::debug)
+#define __sun_logf_w(m, ...) sun::logger::instance().log( \
+    sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::warn)
+#define __sun_logf_e(m, ...) sun::logger::instance().log( \
+    sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::error)

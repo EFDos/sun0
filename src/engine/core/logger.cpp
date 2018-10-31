@@ -41,24 +41,6 @@ void logger::log(const std::string& message, loglevel level)
         return;
     }
 
-    std::string level_str;
-
-    switch (level)
-    {
-        case loglevel::info:
-            level_str = "INFO";
-            break;
-        case loglevel::debug:
-            level_str = "DEBUG";
-            break;
-        case loglevel::warn:
-            level_str = "WARN";
-            break;
-        case loglevel::error:
-            level_str = "ERROR";
-            break;
-    }
-
     if (show_timestamp_)
     {
         std::printf("[%s ", get_timestamp_().c_str());
@@ -67,7 +49,21 @@ void logger::log(const std::string& message, loglevel level)
         std::printf("[");
     }
 
-    std::printf("\033[1;37m%s\033[0m] ", level_str.c_str());
+    switch (level)
+    {
+        case loglevel::info:
+            std::printf("\033[1;37mINFO\033[0m] ");
+            break;
+        case loglevel::debug:
+            std::printf("\033[1;34mDEBUG\033[0m] ");
+            break;
+        case loglevel::warn:
+            std::printf("\033[1;33mWARN\033[0m] ");
+            break;
+        case loglevel::error:
+            std::printf("\033[1;31mERROR\033[0m] ");
+            break;
+    }
 
     /*if (!caller_info_.namespace_s.empty()) {
         std::printf("%s::", caller_info_.namespace_s.c_str());

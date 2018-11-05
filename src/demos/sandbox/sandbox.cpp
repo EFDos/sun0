@@ -1,15 +1,17 @@
 #include <sun.hpp>
 
-int main() {
-    //sun::logger::instance().set_show_timestamp(false);
-    __sun_log("Hello from Sun!");
-    __sun_logf("version: %s, %s", sun::version::string, sun::version::codename);
+class Sandbox : public sun::application
+{
+public:
 
-    __sun_log_d("debug test");
+    Sandbox() {}
 
-    __sun_logf_w("warning about number %i", 849);
+    ~Sandbox() {}
 
-    __sun_log_e("wooow an error!");
+    int run() {
+        __sun_log("Hello Sun!");
+        return 0;
+    }
+};
 
-    return 0;
-}
+SUN_DEFINE_MAIN_APP(Sandbox)

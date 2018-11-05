@@ -6,13 +6,14 @@ config_data.set('minor',    version_str[2])
 config_data.set('rev',      version_str[4])
 
 configure_file(
-  input: 'sun.hpp.in',
-  output: 'sun.hpp',
+  input: 'version.hpp.in',
+  output: 'version.hpp',
   configuration: config_data
 )
 
 sun_lib_src = [
-  'core/logger.cpp'
+  'core/logger.cpp',
+  'core/application.cpp'
 ]
 
 if get_option('dynamic-lib')

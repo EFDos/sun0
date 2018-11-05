@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  core.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,16 +21,4 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-#include "common/types.hpp"
-#include "core/logger.hpp"
-
-namespace sun {
-    namespace version {
-        constexpr const char* codename  = "@codename@";
-        constexpr const char* string    = "@version@";
-        constexpr uint8 major           = @major@;
-        constexpr uint8 minor           = @minor@;
-        constexpr uint8 rev             = @rev@;
-    }
-}
+#include "common/config.hpp"

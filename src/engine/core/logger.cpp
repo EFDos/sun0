@@ -27,7 +27,7 @@
 
 namespace sun {
 
-logger::logger() : level_(loglevel::info), show_timestamp_(true) {}
+logger::logger() : level_(loglevel::all), show_timestamp_(true) {}
 
 logger& logger::instance()
 {
@@ -41,27 +41,38 @@ void logger::log(const std::string& message, loglevel level)
         return;
     }
 
+    auto output = (level == loglevel::error || level == loglevel::fatal) ?
+             stderr : stdout;
+
     if (show_timestamp_)
     {
-        std::printf("[%s ", get_timestamp_().c_str());
+        std::fprintf(output, "[%s ", get_timestamp_().c_str());
 
     } else {
-        std::printf("[");
+        std::fprintf(output, "[");
     }
 
     switch (level)
     {
-        case loglevel::info:
-            std::printf("\033[1;37mINFO\033[0m] ");
+        case loglevel::all:
+            return;
+        case loglevel::trace:
+            std::fprintf(output, "\033[1;37mTRACE\033[0m] ");
             break;
         case loglevel::debug:
-            std::printf("\033[1;34mDEBUG\033[0m] ");
+            std::fprintf(output, "\033[1;34mDEBUG\033[0m] ");
+            break;
+        case loglevel::info:
+            std::fprintf(output, "\033[1;37mINFO\033[0m] ");
             break;
         case loglevel::warn:
-            std::printf("\033[1;33mWARN\033[0m] ");
+            std::fprintf(output, "\033[1;33mWARN\033[0m] ");
             break;
         case loglevel::error:
-            std::printf("\033[1;31mERROR\033[0m] ");
+            std::fprintf(output, "\033[1;31mERROR\033[0m] ");
+            break;
+        case loglevel::fatal:
+            std::fprintf(output, "\033[1;31mFATAL\033[0m] ");
             break;
     }
 
@@ -77,7 +88,7 @@ void logger::log(const std::string& message, loglevel level)
         std::printf("%s(): ", caller_info_.function_s.c_str());
     }*/
 
-    std::printf("%s\n", message.c_str());
+    std::fprintf(output, "%s\n", message.c_str());
 }
 
 void logger::naked_log(const std::string& message)

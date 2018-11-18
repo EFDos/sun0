@@ -21,4 +21,15 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
+#pragma once
 #include "common/config.hpp"
+
+namespace sun {
+
+class SUN_API core {
+public:
+
+    core() {}
+};
+
+}

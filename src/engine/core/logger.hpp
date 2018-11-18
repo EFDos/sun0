@@ -42,17 +42,20 @@ std::string format(const std::string& format, Args... args)
 } // string_utils
 
 enum class loglevel {
-    info,
+    all,
+    trace,
     debug,
+    info,
     warn,
-    error
+    error,
+    fatal
 };
 
 class logger
 {
 public:
 
-    void log(const std::string& message, loglevel level = loglevel::info);
+    void log(const std::string& message, loglevel level = loglevel::trace);
 
     void naked_log(const std::string& message);
 
@@ -78,20 +81,26 @@ private:
 
 } // sun
 
-#define __sun_println(m) sun::logger::instance().naked_log(m)
-#define __sun_printf(m, ...) sun::logger::instance().naked_log( \
+#define sun_print(m) sun::logger::instance().naked_log(m)
+#define sun_printf(m, ...) sun::logger::instance().naked_log( \
     sun::string_utils::format(m, ##__VA_ARGS__))
 
-#define __sun_log(m) sun::logger::instance().log(m)
-#define __sun_log_d(m) sun::logger::instance().log(m, sun::loglevel::debug)
-#define __sun_log_w(m) sun::logger::instance().log(m, sun::loglevel::warn)
-#define __sun_log_e(m) sun::logger::instance().log(m, sun::loglevel::error)
+#define sun_log(m)   sun::logger::instance().log(m)
+#define sun_log_debug(m) sun::logger::instance().log(m, sun::loglevel::debug)
+#define sun_log_info(m) sun::logger::instance().log(m, sun::loglevel::info)
+#define sun_log_warn(m) sun::logger::instance().log(m, sun::loglevel::warn)
+#define sun_log_error(m) sun::logger::instance().log(m, sun::loglevel::error)
+#define sun_log_fatal(m) sun::logger::instance().log(m, sun::loglevel::fatal)
 
-#define __sun_logf(m, ...) sun::logger::instance().log( \
+#define sun_logf(m, ...) sun::logger::instance().log( \
     sun::string_utils::format(m, ##__VA_ARGS__))
-#define __sun_logf_d(m, ...) sun::logger::instance().log( \
+#define sun_logf_debug(m, ...) sun::logger::instance().log( \
     sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::debug)
-#define __sun_logf_w(m, ...) sun::logger::instance().log( \
+#define sun_logf_info(m, ...) sun::logger::instance().log( \
+    sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::info)
+#define sun_logf_warn(m, ...) sun::logger::instance().log( \
     sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::warn)
-#define __sun_logf_e(m, ...) sun::logger::instance().log( \
+#define sun_logf_error(m, ...) sun::logger::instance().log( \
     sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::error)
+#define sun_logf_fatal(m, ...) sun::logger::instance().log( \
+    sun::string_utils::format(m, ##__VA_ARGS__), sun::loglevel::fatal)

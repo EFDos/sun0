@@ -29,11 +29,11 @@ namespace sun {
 
 application::application()
 {
-    __sun_printf("******* Sun-0 Engine *******\n"
+    sun_printf("******* Sun-0 Engine *******\n"
                  "Build: %s, %s",
                  version::string,
                  version::codename);
-    __sun_println("****************************");
+    sun_print("****************************");
 }
 
 application::~application()
@@ -42,6 +42,9 @@ application::~application()
 
 int application::run()
 {
+    while(true) {
+        update();
+    }
     return 0;
 }
 

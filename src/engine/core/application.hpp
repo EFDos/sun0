@@ -25,20 +25,22 @@
 #include "core.hpp"
 #include "main.hpp"
 
+#include <string>
+
 namespace sun {
 
 class SUN_API application
 {
 public:
 
-    application();
+    explicit application();
 
     virtual ~application();
 
+    virtual void update() = 0;
+
     int run();
 };
-
-application* create_application();
 
 }
 
@@ -46,6 +48,7 @@ application* create_application();
 int run_application() \
 { \
     classname* application = new classname(); \
+    sun_print("Running application " #classname "\n"); \
     return application->run(); \
 } \
 SUN_DEFINE_MAIN(run_application());

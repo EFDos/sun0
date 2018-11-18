@@ -1,17 +1,16 @@
 #include <sun.hpp>
 
-class Sandbox : public sun::application
+class sandbox : public sun::application
 {
 public:
 
-    Sandbox() {}
+    sandbox() {}
 
-    ~Sandbox() {}
+    ~sandbox() {}
 
-    int run() {
-        __sun_log("Hello Sun!");
-        return 0;
+    void update() override {
+        sun_log("Hello Sun!");
     }
 };
 
-SUN_DEFINE_MAIN_APP(Sandbox)
+SUN_DEFINE_MAIN_APP(sandbox)

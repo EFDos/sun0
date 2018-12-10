@@ -23,7 +23,10 @@
 /*************************************************************************/
 #pragma once
 
+#include "common/config.hpp"
 #include "input/keyboard.hpp"
+#include "input/mouse.hpp"
+#include "input/joystick.hpp"
 
 namespace sun {
 
@@ -53,7 +56,7 @@ enum class event_type
     touch_ended
 };
 
-class event
+class SUN_API event
 {
 public:
 
@@ -142,4 +145,4 @@ public:
 
 };
 
-}
+} // sun

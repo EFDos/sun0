@@ -22,6 +22,9 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
+
+#include "common/config.hpp"
+
 #include <string>
 #include <memory>
 
@@ -51,7 +54,7 @@ enum class loglevel {
     fatal
 };
 
-class logger
+class SUN_API logger
 {
 public:
 

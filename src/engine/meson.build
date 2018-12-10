@@ -18,10 +18,12 @@ sun_lib_src = [
 
 if get_option('dynamic-lib')
   sun_lib = shared_library('sun-engine', sun_lib_src,
+    dependencies: sun_depends,
     include_directories: sun_includes
   )
 else
   sun_lib = static_library('sun-engine', sun_lib_src,
+    dependencies: sun_depends,
     include_directories: sun_includes
   )
 endif

@@ -29,6 +29,8 @@
 
 namespace sun {
 
+class event;
+
 class SUN_API application
 {
 public:
@@ -37,9 +39,14 @@ public:
 
     virtual ~application();
 
-    virtual void update() = 0;
+    virtual void on_update() = 0;
+
+    virtual void on_event(event& e);
 
     int run();
+private:
+
+    bool running_;
 };
 
 }

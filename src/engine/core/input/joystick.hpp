@@ -43,4 +43,4 @@ namespace joystick {
     };
 
 } // joystick
-} // nxt
+} // sun

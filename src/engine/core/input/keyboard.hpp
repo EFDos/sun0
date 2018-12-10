@@ -23,6 +23,7 @@
 /*************************************************************************/
 #pragma once
 
+#include "common/int.hpp"
 #include <SDL2/SDL_keycode.h>
 
 namespace sun {
@@ -136,3 +137,4 @@ enum class key
 };
 
 } // keyboard
+} // sun

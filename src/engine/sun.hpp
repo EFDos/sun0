@@ -30,6 +30,7 @@
 #include "common/types.hpp"
 #include "core/logger.hpp"
 #include "core/application.hpp"
+#include "core/event.hpp"
 
 /*********** ENTRY POINT ***********/
 #include "core/main.hpp"

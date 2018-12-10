@@ -10,6 +10,10 @@ version_str = meson.project_version()
 
 sun_includes = include_directories('./include', './src/engine')
 
+sun_depends = [
+	dependency('sdl2')
+]
+
 subdir('src/engine')
 if get_option('build-demos')
   subdir('src/demos')

@@ -44,5 +44,5 @@ enum class wheel : uint8
     horizontal
 };
 
-}
-}
+} // mouse
+} // sun

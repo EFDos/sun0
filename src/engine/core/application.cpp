@@ -24,10 +24,11 @@
 #include "application.hpp"
 #include "../version.hpp"
 #include "logger.hpp"
+#include "event.hpp"
 
 namespace sun {
 
-application::application()
+application::application()// : running_(false)
 {
     sun_printf("******* Sun-0 Engine *******\n"
                  "Build: %s, %s",
@@ -42,10 +43,20 @@ application::~application()
 
 int application::run()
 {
-    while(true) {
-        update();
+	running_ = true;
+    while(running_) {
+    	event e;
+    	on_event(e);
+        on_update();
     }
     return 0;
 }
 
+void application::on_event(event& e)
+{
+	if (e.type == event_type::closed) {
+		running_ = false;
+	}
 }
+
+} // sun

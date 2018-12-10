@@ -13,7 +13,8 @@ configure_file(
 
 sun_lib_src = [
   'core/logger.cpp',
-  'core/application.cpp'
+  'core/application.cpp',
+  'core/window.cpp'
 ]
 
 if get_option('dynamic-lib')

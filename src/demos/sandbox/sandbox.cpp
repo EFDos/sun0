@@ -5,19 +5,12 @@ class sandbox : public sun::application
 {
 public:
 
-	void on_event(sun::event& e) {
-        sun_print("Type \'close\' to exit");
-        char buf[24];
-        scanf("%23s", buf);
-        if (!strcmp(buf, "close")) {
-        	e.type = sun::event_type::closed;
-        }
-
+	void on_event(sun::event& e) override {
         sun::application::on_event(e);
 	}
 
     void on_update() override {
-        sun_log("Hello Sun!");
+        //sun_log("Hello Sun!");
     }
 };
 

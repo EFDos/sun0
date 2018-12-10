@@ -24,6 +24,7 @@
 #pragma once
 #include "core.hpp"
 #include "main.hpp"
+#include "window.hpp"
 
 #include <string>
 
@@ -46,7 +47,8 @@ public:
     int run();
 private:
 
-    bool running_;
+	window  window_;
+    bool    running_;
 };
 
 }

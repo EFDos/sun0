@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  application.hpp                                                      */
+/*  window.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,50 +21,47 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "application.hpp"
-#include "../version.hpp"
-#include "logger.hpp"
-#include "event.hpp"
+#pragma once
+
+#include "common/config.hpp"
+
+#include <string>
 
 namespace sun {
 
-application::application()
-:   window_("Sun0 Application", 800, 600),
-    running_(false)
-{
-    sun_printf("******* Sun-0 Engine *******\n"
-                 "Build: %s, %s",
-                 version::string,
-                 version::codename);
-    sun_print("****************************");
-}
+class event;
 
-application::~application()
+class SUN_API window
 {
-}
+public:
 
-int application::run()
-{
-	running_ = true;
-    while(running_) {
-    	event e;
-    	if (window_.is_open()) {
-            while (window_.poll_event(e)) {
-    	        on_event(e);
-            }
-        }
-        on_update();
-        window_.update();
-    }
-    window_.close();
-    return 0;
-}
+	window();
 
-void application::on_event(event& e)
-{
-	if (e.type == event_type::closed) {
-		running_ = false;
-	}
-}
+    window(const std::string& name,
+           int width, int height,
+           bool fullscreen = false);
 
-} // sun
+	window(const window&) = delete;
+
+	window& operator=(const window&) = delete;
+
+    ~window();
+
+	void update();
+
+    bool poll_event(event& e);
+
+    void create(const std::string& name,
+                int width, int height,
+                bool fullscreen = false);
+
+    void close();
+
+	inline bool is_open() const { return window_hndl_ != nullptr; }
+
+private:
+
+    void*   window_hndl_;
+};
+
+}

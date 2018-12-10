@@ -52,7 +52,7 @@ void window::update()
         sun_log_warn("call ignored: can't update unitiliazed window");
         return;
     }
-	//SDL_UpdateWindow(static_cast<SDL_Window*>(window_hndl_));
+	//SDL_UpdateWindow(window_hndl_);
 }
 
 bool window::poll_event(event& e)
@@ -91,7 +91,7 @@ void window::create(const std::string& name,
 void window::close()
 {
 	if (window_hndl_ != nullptr) {
-	    SDL_DestroyWindow(static_cast<SDL_Window*>(window_hndl_));
+	    SDL_DestroyWindow(window_hndl_);
 	    window_hndl_ = nullptr;
 	}
 }

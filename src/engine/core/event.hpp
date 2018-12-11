@@ -79,6 +79,8 @@ public:
     {
         int32   x;
         int32   y;
+        int32   x_rel;
+        int32   y_rel;
     };
 
     struct mouse_button_event

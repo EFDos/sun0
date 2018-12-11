@@ -26,6 +26,7 @@
 #include "logger.hpp"
 
 #include <SDL2/SDL.h>
+#include <cstring>
 
 namespace sun {
 
@@ -69,7 +70,69 @@ bool window::poll_event(event& e)
     	case SDL_QUIT:
     	    e.type = event_type::closed;
     	    return ret;
+    	case SDL_MOUSEWHEEL:
+    		e.type = event_type::mouse_wheel_scrolled;
+    		e.mouse_wheel_scroll.x = sdl_e.wheel.x;
+    		e.mouse_wheel_scroll.y = sdl_e.wheel.y;
+    		return ret;
+    	case SDL_MOUSEBUTTONDOWN:
+    		e.type = event_type::mouse_button_pressed;
+    		e.mouse_button.button = mouse::button(sdl_e.button.button);
+    		e.mouse_button.x = sdl_e.button.x;
+    		e.mouse_button.y = sdl_e.button.y;
+    		return ret;
+    	case SDL_MOUSEBUTTONUP:
+    		e.type = event_type::mouse_button_released;
+    		e.mouse_button.button = mouse::button(sdl_e.button.button);
+    		e.mouse_button.x = sdl_e.button.x;
+    		e.mouse_button.y = sdl_e.button.y;
+    		return ret;
+    	case SDL_MOUSEMOTION:
+    		e.type = event_type::mouse_moved;
+    		e.mouse_move.x = sdl_e.motion.x;
+    		e.mouse_move.y = sdl_e.motion.y;
+    		e.mouse_move.x_rel = sdl_e.motion.xrel;
+    		e.mouse_move.y_rel = sdl_e.motion.yrel;
+    		return ret;
+    	case SDL_KEYDOWN:
+    		e.type = event_type::key_pressed;
+    		e.key.code = keyboard::key(sdl_e.key.keysym.sym);
+    		if (sdl_e.key.keysym.mod & KMOD_NONE) {
+    			return ret;
+    		}
+    		if (sdl_e.key.keysym.mod & KMOD_ALT) {
+    			e.key.alt = true;
+    		}
+    		if (sdl_e.key.keysym.mod & KMOD_SHIFT) {
+    			e.key.shift = true;
+    		}
+    		if (sdl_e.key.keysym.mod & KMOD_CTRL) {
+    			e.key.control = true;
+    		}
+    		return ret;
+    	case SDL_KEYUP:
+    		e.type = event_type::key_released;
+    		e.key.code = keyboard::key(sdl_e.key.keysym.sym);
+    		if (sdl_e.key.keysym.mod & KMOD_NONE) {
+    			return ret;
+    		}
+    		if (sdl_e.key.keysym.mod & KMOD_ALT) {
+    			e.key.alt = false;
+    		}
+    		if (sdl_e.key.keysym.mod & KMOD_SHIFT) {
+    			e.key.shift = false;
+    		}
+    		if (sdl_e.key.keysym.mod & KMOD_CTRL) {
+    			e.key.control = false;
+    		}
+    		return ret;
+    	case SDL_TEXTINPUT:
+    		e.type = event_type::text_entered;
+    		std::memcpy(e.text_input.text, sdl_e.text.text, 32);
+    		e.text_input.text_size = std::strlen(sdl_e.text.text);
+    		return ret;
         default:
+        	e.type = event_type::undefined;
             return ret;
     }
 }

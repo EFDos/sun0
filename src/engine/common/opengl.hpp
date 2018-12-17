@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  application.hpp                                                      */
+/*  opengl.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,50 +21,57 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "application.hpp"
-#include "../version.hpp"
-#include "logger.hpp"
-#include "event.hpp"
+#pragma once
 
-namespace sun {
+#include "config.hpp"
 
-application::application() :
-    running_(false)
-{
-    sun_printf("******* Sun-0 Engine *******\n"
-                 "Build: %s, %s",
-                 version::string,
-                 version::codename);
-    sun_print("****************************");
-    window_.create("Sun Application", 800, 600);
-}
+#if defined(SUN_PLATFORM_WINDOWS)
 
-application::~application()
-{
-}
+    #define API_OPENGL_3
+    #include <GL/glew.h>
 
-int application::run()
-{
-	running_ = true;
-    while(running_) {
-    	event e;
-    	if (window_.is_open()) {
-            while (window_.poll_event(e)) {
-    	        on_event(e);
-            }
-        }
-        on_update();
-        window_.update();
-    }
-    window_.close();
-    return 0;
-}
+#elif defined(SUN_PLATFORM_OSX)
 
-void application::on_event(event& e)
-{
-	if (e.type == event_type::closed) {
-		running_ = false;
-	}
-}
+    #define API_OPENGL_3
+    #include <OpenGL/glew.h>
 
-} // sun
+#elif defined(SUN_PLATFORM_LINUX) || defined(SUN_PLATFORM_BSD) || \
+        defined(SUN_PLATFORM_BEOS)
+
+    #if defined(API_OPENGL_ES3)
+
+        #define API_OPENGL_ES
+
+        #pragma message("Building GLES3 Renderer")
+        #include <GLES3/gl3.h>
+        #include <GLES3/gl3ext.h>
+
+    #elif defined(API_OPENGL_ES2)
+
+        #define API_OPENGL_ES
+
+        #define API_OPENGL_ES2
+        #include <GLES2/gl2.h>
+        #include <GLES2/gl2ext.h>
+
+    #else
+
+        #define API_OPENGL_3
+        #include <GL/glew.h>
+
+    #endif
+
+#elif defined(SYS_ANDROID)
+
+    #define API_OPENGL_ES3
+    #include <GLES/gl.h>
+    #include <GLES/glext.h>
+
+#elif defined(SYS_IOS)
+
+    #define API_OPENGL_ES3
+    #include <OpenGLES/ES1/gl.h>
+    #include <OpenGLES/ES1/glext.h>
+
+#endif
+

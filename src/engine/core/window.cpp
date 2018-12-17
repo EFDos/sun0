@@ -21,6 +21,7 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
+#include "common/opengl.hpp"
 #include "window.hpp"
 #include "event.hpp"
 #include "logger.hpp"
@@ -30,7 +31,7 @@
 
 namespace sun {
 
-window::window() : window_hndl_(nullptr)
+window::window() : window_hndl_(nullptr), gl_context_(nullptr)
 {
     //SDL_Init(SDL_INIT_VIDEO);
 }
@@ -53,6 +54,9 @@ void window::update()
         sun_log_warn("call ignored: can't update unitiliazed window");
         return;
     }
+    glClearColor(0.2f, 0.2f, 0.3f, 0.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_GL_SwapWindow(static_cast<SDL_Window*>(window_hndl_));
 	//SDL_UpdateWindow(static_cast<SDL_Window*>(window_hndl_));
 }
 
@@ -142,21 +146,66 @@ void window::create(const std::string& name,
 {
 	window_hndl_ = SDL_CreateWindow(name.c_str(),
 	        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-	        width, height, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+	        width, height, fullscreen ? SDL_WINDOW_FULLSCREEN : 0
+	                | SDL_WINDOW_OPENGL);
 
 	if (window_hndl_ == nullptr) {
         sun_logf_error("could not create SDL Window: %s", SDL_GetError());
+        return;
     } else {
         sun_log_info("SDL Window created");
     }
+
+    gl_context_ = SDL_GL_CreateContext(static_cast<SDL_Window*>(window_hndl_));
+
+    if (gl_context_ == nullptr) {
+        sun_logf_error("could not create OpenGL Context: %s", SDL_GetError());
+        return;
+    } else {
+        sun_log_info("OpenGL Context created");
+    }
+
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    #if defined(API_OPENGL_ES3)
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+
+    #else
+
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+                        SDL_GL_CONTEXT_PROFILE_CORE);
+
+    #endif
+
+    SDL_GL_SetSwapInterval(true);
+
+    auto error = glewInit();
+
+    if (error != GLEW_NO_ERROR) {
+        sun_logf_error("GLEW Initialization error: %s",
+                glewGetErrorString(error));
+        return;
+    }
+
+    sun_log_info("OpenGL Initialized");
 }
 
 void window::close()
 {
-	if (window_hndl_ != nullptr) {
+    if (window_hndl_ != nullptr) {
 	    SDL_DestroyWindow(static_cast<SDL_Window*>(window_hndl_));
 	    window_hndl_ = nullptr;
-	}
+    }
 }
 
 }

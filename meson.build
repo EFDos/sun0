@@ -11,7 +11,8 @@ version_str = meson.project_version()
 sun_includes = include_directories('./include', './src/engine')
 
 sun_depends = [
-	dependency('sdl2')
+	dependency('sdl2'),
+	dependency('glew')
 ]
 
 subdir('src/engine')

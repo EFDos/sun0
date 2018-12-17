@@ -62,6 +62,7 @@ public:
 private:
 
     void*   window_hndl_;
+    void*   gl_context_;
 };
 
 }

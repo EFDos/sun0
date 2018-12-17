@@ -54,6 +54,10 @@
 
     #endif
 
+#elif defined(__HAIKU__)
+
+	#define SUN_PLATFORM_HAIKU
+
 #else
 
     #error This operating system is not supported.

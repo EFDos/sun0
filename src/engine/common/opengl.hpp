@@ -36,7 +36,7 @@
     #include <OpenGL/glew.h>
 
 #elif defined(SUN_PLATFORM_LINUX) || defined(SUN_PLATFORM_BSD) || \
-        defined(SUN_PLATFORM_BEOS)
+        defined(SUN_PLATFORM_HAIKU)
 
     #if defined(API_OPENGL_ES3)
 

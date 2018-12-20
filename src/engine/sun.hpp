@@ -28,6 +28,7 @@
 
 // CORE & CONFIG
 #include "common/types.hpp"
+#include "common/opengl.hpp"
 #include "core/logger.hpp"
 #include "core/application.hpp"
 #include "core/event.hpp"

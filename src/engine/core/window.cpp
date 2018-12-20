@@ -54,10 +54,7 @@ void window::update()
         sun_log_warn("call ignored: can't update unitiliazed window");
         return;
     }
-    glClearColor(0.2f, 0.2f, 0.3f, 0.f);
-    glClear(GL_COLOR_BUFFER_BIT);
     SDL_GL_SwapWindow(static_cast<SDL_Window*>(window_hndl_));
-	//SDL_UpdateWindow(static_cast<SDL_Window*>(window_hndl_));
 }
 
 bool window::poll_event(event& e)
@@ -144,6 +141,9 @@ bool window::poll_event(event& e)
 void window::create(const std::string& name,
                     int width, int height, bool fullscreen)
 {
+	// will close only if it is already created
+	close();
+
 	window_hndl_ = SDL_CreateWindow(name.c_str(),
 	        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 	        width, height, fullscreen ? SDL_WINDOW_FULLSCREEN : 0
@@ -202,6 +202,10 @@ void window::create(const std::string& name,
 
 void window::close()
 {
+    if (gl_context_ != nullptr) {
+    	SDL_GL_DeleteContext(static_cast<SDL_GLContext>(gl_context_));
+    	gl_context_ = nullptr;
+    }
     if (window_hndl_ != nullptr) {
 	    SDL_DestroyWindow(static_cast<SDL_Window*>(window_hndl_));
 	    window_hndl_ = nullptr;

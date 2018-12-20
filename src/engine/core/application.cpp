@@ -36,7 +36,6 @@ application::application() :
                  version::string,
                  version::codename);
     sun_print("****************************");
-    window_.create("Sun Application", 800, 600);
 }
 
 application::~application()

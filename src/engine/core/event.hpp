@@ -30,7 +30,7 @@
 
 namespace sun {
 
-enum class event_type
+enum class event_type : uint8
 {
     undefined,
     closed,

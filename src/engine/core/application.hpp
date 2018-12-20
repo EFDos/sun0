@@ -45,9 +45,13 @@ public:
     virtual void on_event(event& e);
 
     int run();
-private:
+
+protected:
 
 	window  window_;
+
+private:
+
     bool    running_;
 };
 

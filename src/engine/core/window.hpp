@@ -24,6 +24,7 @@
 #pragma once
 
 #include "common/config.hpp"
+#include "math/vector2.hpp"
 
 #include <string>
 
@@ -38,8 +39,8 @@ public:
 	window();
 
     window(const std::string& name,
-           int width, int height,
-           bool fullscreen = false);
+    		const vector2u& size,
+    		bool fullscreen = false);
 
 	window(const window&) = delete;
 
@@ -52,8 +53,8 @@ public:
     bool poll_event(event& e);
 
     void create(const std::string& name,
-                int width, int height,
-                bool fullscreen = false);
+    		const vector2u& size,
+    		bool fullscreen = false);
 
     void close();
 

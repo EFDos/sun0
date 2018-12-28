@@ -37,10 +37,11 @@ window::window() : window_hndl_(nullptr), gl_context_(nullptr)
 }
 
 window::window(const std::string& name,
-               int width, int height, bool fullscreen)
+		const vector2u& size,
+		bool fullscreen)
 :   window()
 {
-	create(name, width, height, fullscreen);
+	create(name, size, fullscreen);
 }
 
 window::~window()
@@ -139,14 +140,18 @@ bool window::poll_event(event& e)
 }
 
 void window::create(const std::string& name,
-                    int width, int height, bool fullscreen)
+                    const vector2u& size,
+                    bool fullscreen)
 {
 	// will close only if it is already created
 	close();
 
 	window_hndl_ = SDL_CreateWindow(name.c_str(),
-	        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-	        width, height, fullscreen ? SDL_WINDOW_FULLSCREEN : 0
+	        SDL_WINDOWPOS_CENTERED,
+	        SDL_WINDOWPOS_CENTERED,
+	        size.w,
+	        size.h,
+	        fullscreen ? SDL_WINDOW_FULLSCREEN : 0
 	                | SDL_WINDOW_OPENGL);
 
 	if (window_hndl_ == nullptr) {

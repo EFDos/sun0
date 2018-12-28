@@ -33,6 +33,9 @@
 #include "core/application.hpp"
 #include "core/event.hpp"
 
+// TYPES
+#include "common/types.hpp"
+
 /*********** ENTRY POINT ***********/
 #include "core/main.hpp"
 /***********************************/

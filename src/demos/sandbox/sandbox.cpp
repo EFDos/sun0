@@ -6,7 +6,7 @@ class sandbox : public sun::application
 public:
 
 	sandbox() : sun::application() {
-		window_.create("Sun On Haiku", 1280, 720);
+		window_.create("Sun On Haiku", {1280, 720});
 	}
 
 	void on_event(sun::event& e) override {

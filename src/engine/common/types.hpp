@@ -23,6 +23,7 @@
 /*************************************************************************/
 #pragma once
 #include "int.hpp"
+#include "math/vector2.hpp"
 
 namespace sun {
     using float32   = float;

@@ -12,6 +12,7 @@ configure_file(
 )
 
 sun_lib_src = [
+  'math/matrix4.cpp',
   'core/logger.cpp',
   'core/application.cpp',
   'core/window.cpp'

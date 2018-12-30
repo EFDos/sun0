@@ -33,11 +33,10 @@ namespace sun {
 
 window::window() : window_hndl_(nullptr), gl_context_(nullptr)
 {
-    //SDL_Init(SDL_INIT_VIDEO);
 }
 
 window::window(const std::string& name,
-		const vector2u& size,
+        const vector2u& size,
 		bool fullscreen)
 :   window()
 {
@@ -143,7 +142,6 @@ void window::create(const std::string& name,
                     const vector2u& size,
                     bool fullscreen)
 {
-	// will close only if it is already created
 	close();
 
 	window_hndl_ = SDL_CreateWindow(name.c_str(),

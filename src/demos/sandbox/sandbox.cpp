@@ -7,6 +7,7 @@ public:
 
 	sandbox() : sun::application() {
 		window_.create("Sun On Haiku", {1280, 720});
+		sun_printf("Reading file: %s", sun::filesys::read_file("example-file").c_str());
 	}
 
 	void on_event(sun::event& e) override {

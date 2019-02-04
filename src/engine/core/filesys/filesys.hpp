@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  filesys.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,20 +23,14 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include <string>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
+namespace filesys {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+std::string read_file(const std::string& path);
+
+}
+
+}

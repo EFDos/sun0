@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  source.cpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,22 +21,44 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
+#include "filesys.hpp"
 #include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
 
-// TYPES
-#include "common/types.hpp"
+#include <cstdio>
+#include <cstring>
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+
+namespace filesys {
+
+std::string read_file(const std::string& path)
+{
+	FILE* file = fopen(path.c_str(), "rt");
+
+	if (file != nullptr)
+	{
+		fseek(file, 0, SEEK_END);
+		size_t len = ftell(file);
+
+		char* buffer = new char[len + 1];
+		memset(buffer, 0, len + 1);
+
+		fseek(file, 0, SEEK_SET);
+		fread(buffer, 1, len, file);
+
+		std::string return_str(buffer);
+
+		delete [] buffer;
+
+		fclose(file);
+
+		return return_str;
+	} else {
+		sun_logf_error("filesys::read_file: Could not open file: %s", path.c_str());
+		return std::string();
+	}
+}
+
+}
+
+}

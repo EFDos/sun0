@@ -21,7 +21,6 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "common/opengl.hpp"
 #include "window.hpp"
 #include "event.hpp"
 #include "logger.hpp"
@@ -191,16 +190,6 @@ void window::create(const std::string& name,
     #endif
 
     SDL_GL_SetSwapInterval(true);
-
-    auto error = glewInit();
-
-    if (error != GLEW_NO_ERROR) {
-        sun_logf_error("GLEW Initialization error: %s",
-                glewGetErrorString(error));
-        return;
-    }
-
-    sun_log_info("OpenGL Initialized");
 }
 
 void window::close()

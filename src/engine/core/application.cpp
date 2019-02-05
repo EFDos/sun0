@@ -25,7 +25,7 @@
 #include "../version.hpp"
 
 #include "system/system.hpp"
-#include "graphics/renderer.hpp"
+#include "graphics/opengl/gl_renderer.hpp"
 
 #include "logger.hpp"
 #include "event.hpp"
@@ -41,7 +41,7 @@ application::application() :
                  version::codename);
     sun_print("****************************");
 
-    renderer_ = new renderer();
+    renderer_ = new gl_renderer();
     system::register_instance(renderer_);
 }
 

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  gl_renderer.cpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,23 +21,52 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
-#include "common/types.hpp"
+#include "gl_renderer.hpp"
 #include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
+
 #include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "graphics/renderer.hpp"
 
-// TYPES
-#include "common/types.hpp"
+namespace sun
+{
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+gl_renderer::gl_renderer() {}
+
+gl_renderer::~gl_renderer() {}
+
+void gl_renderer::init()
+{
+    renderer::init();
+
+    auto error = glewInit();
+
+    if (error != GLEW_NO_ERROR) {
+        sun_logf_error("GLEW Initialization error: %s",
+                glewGetErrorString(error));
+        return;
+    }
+
+    sun_log_info("OpenGL Initialized");
+}
+
+void gl_renderer::shutdown()
+{
+    renderer::shutdown();
+}
+
+void gl_renderer::clear(const color& col)
+{
+    auto colf = to_colorf(col);
+    glClearColor(colf.r, colf.g, colf.b, colf.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void gl_renderer::clear()
+{
+    glClearColor(clear_color_.r,
+                 clear_color_.g,
+                 clear_color_.b,
+                 clear_color_.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+}

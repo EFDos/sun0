@@ -24,6 +24,7 @@
 #pragma once
 
 #include "system/system.hpp"
+#include "common/color.hpp"
 
 namespace sun {
 
@@ -31,17 +32,44 @@ class SUN_API renderer : public system
 {
 public:
 
+    struct info
+    {
+        std::string name;
+        std::string version;
+        std::string vendor;
+        std::string device;
+    };
+
+    struct stats
+    {
+        int draw_calls;
+        int canvas_switches;
+        int shader_switches;
+        int canvases;
+    };
+
     renderer();
 
-    ~renderer();
+    virtual ~renderer();
 
-    void init() override;
+    // implements system
+    virtual void init() override;
 
-    void shutdown() override;
+    virtual void shutdown() override;
 
     const char* get_name() const override {
         return "GFX";
     }
+
+    virtual void clear(const color&) = 0;
+
+    virtual void clear() = 0;
+
+    virtual void set_color(const color&);
+
+protected:
+
+    colorf  clear_color_;
 };
 
 }

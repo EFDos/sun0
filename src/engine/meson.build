@@ -18,7 +18,8 @@ sun_lib_src = [
   'core/application.cpp',
   'core/window.cpp',
   'system/system.cpp',
-  'graphics/renderer.cpp'
+  'graphics/renderer.cpp',
+  'graphics/opengl/gl_renderer.cpp'
 ]
 
 if get_option('dynamic-lib')

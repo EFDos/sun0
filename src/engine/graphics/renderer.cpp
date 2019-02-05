@@ -44,4 +44,9 @@ void renderer::shutdown()
     sun_log_info("Graphics System shutdown.");
 }
 
+void renderer::set_color(const color& col)
+{
+    clear_color_ = to_colorf(col);
+}
+
 }

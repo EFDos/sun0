@@ -6,16 +6,11 @@ class sandbox : public sun::application
 public:
 
 	sandbox() : sun::application() {
-		window_.create("Sun On Haiku", {1280, 720});
-		sun_printf("Reading file: %s", sun::filesys::read_file("example-file").c_str());
+		window_.create("Sandbox - Sun0 Engine", {1280, 720});
 	}
 
 	void on_event(sun::event& e) override {
         sun::application::on_event(e);
-
-        if (e.type == sun::event_type::text_entered) {
-        	sun_printf("Mouse moved to %s", e.text_input.text);
-        }
 	}
 
     void on_update() override {
@@ -32,8 +27,6 @@ public:
 
 private:
 
-	GLuint vbo;
-	GLuint vao;
 };
 
 SUN_DEFINE_MAIN_APP(sandbox)

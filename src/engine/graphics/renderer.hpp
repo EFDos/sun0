@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  system.cpp                                                           */
+/*  renderer.hpp                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,49 +21,27 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "system.hpp"
-#include "core/logger.hpp"
+#pragma once
+
+#include "system/system.hpp"
 
 namespace sun {
 
-std::unordered_map<std::string, system*> system::systems_;
-
-system::system()
+class SUN_API renderer : public system
 {
-}
+public:
 
-system::~system()
-{
-    for (auto sys = systems_.begin() ; sys != systems_.end() ; ++sys)
-    {
-        if (sys->second == this) {
-            sys->second = nullptr;
-            systems_.erase(sys);
-        }
+    renderer();
+
+    ~renderer();
+
+    void init() override;
+
+    void shutdown() override;
+
+    const char* get_name() const override {
+        return "GFX";
     }
-}
-
-void system::clear_instances()
-{
-    for (auto sys : systems_) {
-        sys.second->shutdown();
-        delete sys.second;
-    }
-}
-
-void system::register_instance(system* instance)
-{
-    auto it = systems_.find(instance->get_name());
-
-    if (it == systems_.end()) {
-        instance->init();
-        systems_[instance->get_name()] = instance;
-    } else {
-        sun_logf_error("System with name %s is already registered.",
-            instance->get_name());
-
-        delete instance;
-    }
-}
+};
 
 }

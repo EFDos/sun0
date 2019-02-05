@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  system.cpp                                                           */
+/*  renderer.cpp                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,49 +21,27 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "system.hpp"
+#include "renderer.hpp"
 #include "core/logger.hpp"
 
 namespace sun {
 
-std::unordered_map<std::string, system*> system::systems_;
-
-system::system()
+renderer::renderer()
 {
 }
 
-system::~system()
+renderer::~renderer()
 {
-    for (auto sys = systems_.begin() ; sys != systems_.end() ; ++sys)
-    {
-        if (sys->second == this) {
-            sys->second = nullptr;
-            systems_.erase(sys);
-        }
-    }
 }
 
-void system::clear_instances()
+void renderer::init()
 {
-    for (auto sys : systems_) {
-        sys.second->shutdown();
-        delete sys.second;
-    }
+    sun_log_info("Graphics System initialized.");
 }
 
-void system::register_instance(system* instance)
+void renderer::shutdown()
 {
-    auto it = systems_.find(instance->get_name());
-
-    if (it == systems_.end()) {
-        instance->init();
-        systems_[instance->get_name()] = instance;
-    } else {
-        sun_logf_error("System with name %s is already registered.",
-            instance->get_name());
-
-        delete instance;
-    }
+    sun_log_info("Graphics System shutdown.");
 }
 
 }

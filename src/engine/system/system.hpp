@@ -23,12 +23,14 @@
 /*************************************************************************/
 #pragma once
 
+#include "common/config.hpp"
+
 #include <string>
 #include <unordered_map>
 
 namespace sun {
 
-class system
+class SUN_API system
 {
 public:
 
@@ -41,9 +43,15 @@ public:
 
     virtual ~system();
 
+    virtual void init() = 0;
+
+    virtual void shutdown() = 0;
+
     virtual const char* get_name() const = 0;
 
-    void register_instance(system* instance);
+    static void register_instance(system* instance);
+
+    static void clear_instances();
 
     template<typename T>
     static T* get(const std::string& name)

@@ -31,6 +31,7 @@
 namespace sun {
 
 class event;
+class renderer;
 
 class SUN_API application
 {
@@ -48,7 +49,8 @@ public:
 
 protected:
 
-	window  window_;
+	window      window_;
+	renderer*   renderer_;
 
 private:
 
@@ -60,8 +62,8 @@ private:
 #define SUN_DEFINE_MAIN_APP(classname) \
 int run_application() \
 { \
-    classname* application = new classname(); \
+    classname application; \
     sun_print("Running application " #classname "\n"); \
-    return application->run(); \
+    return application.run(); \
 } \
 SUN_DEFINE_MAIN(run_application());

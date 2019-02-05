@@ -23,6 +23,10 @@
 /*************************************************************************/
 #include "application.hpp"
 #include "../version.hpp"
+
+#include "system/system.hpp"
+#include "graphics/renderer.hpp"
+
 #include "logger.hpp"
 #include "event.hpp"
 
@@ -36,10 +40,14 @@ application::application() :
                  version::string,
                  version::codename);
     sun_print("****************************");
+
+    renderer_ = new renderer();
+    system::register_instance(renderer_);
 }
 
 application::~application()
 {
+    system::clear_instances();
 }
 
 int application::run()

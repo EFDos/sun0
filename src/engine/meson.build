@@ -16,7 +16,9 @@ sun_lib_src = [
   'core/filesys/filesys.cpp',
   'core/logger.cpp',
   'core/application.cpp',
-  'core/window.cpp'
+  'core/window.cpp',
+  'system/system.cpp',
+  'graphics/renderer.cpp'
 ]
 
 if get_option('dynamic-lib')

@@ -38,6 +38,7 @@ gl_shader_stage::gl_shader_stage(const std::string& source, type t)
     switch (t) {
         case type::vertex: gl_type = GL_VERTEX_SHADER; break;
         case type::fragment: gl_type = GL_FRAGMENT_SHADER; break;
+        case type::geometry: gl_type = GL_GEOMETRY_SHADER; break;
     }
 
     id_ = glCreateShader(gl_type);
@@ -48,7 +49,7 @@ gl_shader_stage::gl_shader_stage(const std::string& source, type t)
 gl_shader_stage::~gl_shader_stage()
 {
     if (id_ != 0) {
-        glDeleteShader(&shader_);
+        glDeleteShader(id_);
         id_ = 0;
     }
 }
@@ -60,8 +61,10 @@ void gl_shader_stage::compile()
     }
 
     const char* c_src = source_.c_str();
-    glShaderSource(id_, &c_src, nullptr);
+    glShaderSource(id_, 1, &c_src, nullptr);
     glCompileShader(id_);
+
+    compile_check_();
 }
 
 void gl_shader_stage::compile_check_() const

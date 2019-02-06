@@ -76,6 +76,8 @@ public:
 
     shader(const shader_stage& vertex, const shader_stage& fragment);
 
+    virtual ~shader();
+
     virtual void attach() = 0;
 
     virtual void build() = 0;

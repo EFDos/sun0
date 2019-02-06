@@ -129,6 +129,15 @@ struct base_color
         b /= v;
         a /= v;
     }
+
+    static base_color<uint8> red;
+    static base_color<uint8> blue;
+    static base_color<uint8> green;
+    static base_color<uint8> black;
+    static base_color<uint8> white;
+    static base_color<uint8> yellow;
+    static base_color<uint8> magenta;
+    static base_color<uint8> sun;
 };
 
 template<typename T>

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  application.hpp                                                      */
+/*  color.cpp                                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,59 +21,32 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "application.hpp"
-#include "../version.hpp"
-
-#include "system/system.hpp"
-#include "graphics/opengl/gl_renderer.hpp"
-
-#include "logger.hpp"
-#include "event.hpp"
+#include "color.hpp"
 
 namespace sun {
 
-application::application() :
-    running_(false)
-{
-    sun_printf("******* Sun-0 Engine *******\n"
-                 "Build: %s, %s",
-                 version::string,
-                 version::codename);
-    sun_print("****************************");
+template<>
+base_color<uint8> base_color<uint8>::red = base_color<uint8>(255);
 
-	window_.create("Sandbox - Sun0 Engine", {1280, 720});
+template<>
+base_color<uint8> base_color<uint8>::green = base_color<uint8>(0, 255);
 
-    renderer_ = new gl_renderer();
-    system::register_instance(renderer_);
+template<>
+base_color<uint8> base_color<uint8>::blue = base_color<uint8>(0, 0, 255);
+
+template<>
+base_color<uint8> base_color<uint8>::white = base_color<uint8>(255, 255, 255);
+
+template<>
+base_color<uint8> base_color<uint8>::black = base_color<uint8>();
+
+template<>
+base_color<uint8> base_color<uint8>::yellow = base_color<uint8>(255, 255, 0);
+
+template<>
+base_color<uint8> base_color<uint8>::magenta = base_color<uint8>(255, 0, 255);
+
+template<>
+base_color<uint8> base_color<uint8>::sun = base_color<uint8>(255, 255, 200);
+
 }
-
-application::~application()
-{
-    system::clear_instances();
-}
-
-int application::run()
-{
-	running_ = true;
-    while(running_) {
-    	event e;
-    	if (window_.is_open()) {
-            while (window_.poll_event(e)) {
-    	        on_event(e);
-            }
-        }
-        on_update();
-        window_.update();
-    }
-    window_.close();
-    return 0;
-}
-
-void application::on_event(event& e)
-{
-	if (e.type == event_type::closed) {
-		running_ = false;
-	}
-}
-
-} // sun

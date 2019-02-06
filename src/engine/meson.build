@@ -12,6 +12,7 @@ configure_file(
 )
 
 sun_lib_src = [
+  'common/color.cpp',
   'math/matrix4.cpp',
   'core/filesys/filesys.cpp',
   'core/logger.cpp',

@@ -23,12 +23,12 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/int.hpp"
 #include "graphics/shader.hpp"
+#include "common/int.hpp"
 
 namespace sun {
 
-class gl_shader_stage : public shader_stage
+class gl_shader_stage final : public shader_stage
 {
 public:
 
@@ -42,7 +42,7 @@ public:
 
 private:
 
-    void compile_check_() const override;
+    void compile_check_() override;
 
     uint    id_;
 };

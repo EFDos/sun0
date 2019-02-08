@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "gl_shader.hpp"
 #include "common/opengl.hpp"
+#include "core/logger.hpp"
 
 namespace sun {
 
@@ -36,9 +37,9 @@ gl_shader_stage::gl_shader_stage(const std::string& source, type t)
     GLenum gl_type;
 
     switch (t) {
-        case type::vertex: gl_type = GL_VERTEX_SHADER; break;
-        case type::fragment: gl_type = GL_FRAGMENT_SHADER; break;
-        case type::geometry: gl_type = GL_GEOMETRY_SHADER; break;
+        case type::vertex:      gl_type = GL_VERTEX_SHADER; break;
+        case type::fragment:    gl_type = GL_FRAGMENT_SHADER; break;
+        case type::geometry:    gl_type = GL_GEOMETRY_SHADER; break;
     }
 
     id_ = glCreateShader(gl_type);
@@ -67,9 +68,52 @@ void gl_shader_stage::compile()
     compile_check_();
 }
 
-void gl_shader_stage::compile_check_() const
+void gl_shader_stage::compile_check_()
 {
+    GLint result = -1;
+    glGetShaderiv(id_, GL_COMPILE_STATUS, &result);
 
+    if (!result) {
+        status_ = status::compile_fail;
+    } else {
+        status_ = status::compile_ok;
+    }
+}
+
+std::string gl_shader_stage::get_warnings() const
+{
+    GLint length = 0;
+
+    glGetShaderiv(id_, GL_INFO_LOG_LENGTH, &length);
+
+    if (length == 0) {
+        return std::string();
+    }
+
+    GLchar* info = nullptr;
+    std::string type_str;
+
+    switch(type_) {
+        case type::vertex:
+            type_str = "vertex";
+            break;
+        case type::fragment:
+            type_str = "fragment";
+            break;
+        case type::geometry:
+            type_str = "geometry";
+    }
+
+    info = new GLchar[length];
+
+    glGetShaderInfoLog(id_, length, &length, info);
+
+    std::string ret("Error compiling " + type_str + " shader:\n" + source_ +
+        "\n\nGLError: " + std::string(static_cast<const char*>(info)));
+
+    delete [] info;
+
+    return ret;
 }
 
 }

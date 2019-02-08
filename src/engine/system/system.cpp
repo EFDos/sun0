@@ -34,20 +34,23 @@ system::system()
 
 system::~system()
 {
-    for (auto sys = systems_.begin() ; sys != systems_.end() ; ++sys)
+    for (auto sys : systems_)
     {
-        if (sys->second == this) {
-            sys->second = nullptr;
-            systems_.erase(sys);
+        if (sys.second == this) {
+            sys.second = nullptr;
         }
     }
 }
 
 void system::clear_instances()
 {
-    for (auto sys : systems_) {
-        sys.second->shutdown();
-        delete sys.second;
+    for (auto it = systems_.begin() ; it != systems_.end() ;
+        it = systems_.erase(it))
+    {
+        if (it->second != nullptr) {
+            it->second->shutdown();
+            delete it->second;
+        }
     }
 }
 

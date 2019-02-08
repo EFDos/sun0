@@ -23,6 +23,8 @@
 /*************************************************************************/
 #include "shader.hpp"
 
+#include <sstream>
+
 namespace sun {
 
 shader_stage::shader_stage(const std::string& source, type t)
@@ -30,6 +32,42 @@ shader_stage::shader_stage(const std::string& source, type t)
     type_(t),
     status_(status::invalid)
 {
+}
+
+shader_stage::~shader_stage()
+{
+}
+
+shader_utils::source_pair shader_utils::parse_source_pair(
+    const std::string& source)
+{
+    std::string sources[2];
+
+    enum { undef_src = -1, vertex_src = 0, fragment_src = 1};
+
+    int type = undef_src;
+
+    std::stringstream iss(source);
+
+    for (std::string line ; std::getline(iss, line) ; )
+    {
+        if (line.find("#VERTEX") != std::string::npos) {
+            type = static_cast<int>(shader_stage::type::vertex);
+        } else if (line.find("#FRAGMENT") != std::string::npos) {
+            type = static_cast<int>(shader_stage::type::fragment);
+        }
+        else
+        {
+            if (type == -1) {
+                continue;
+            }
+
+            sources[type].append(line);
+            sources[type].append("\n");
+        }
+    }
+
+    return {sources[0], sources[1]};
 }
 
 }

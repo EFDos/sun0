@@ -43,7 +43,6 @@ public:
         invalid,
         compile_ready,
         compile_ok,
-        compile_warning,
         compile_fail
     };
 
@@ -63,18 +62,26 @@ public:
 
 protected:
 
-    virtual void compile_check_() const = 0;
+    virtual void compile_check_() = 0;
 
     std::string source_;
     type        type_;
     status      status_;
 };
 
+namespace shader_utils {
+
+using source_pair = std::pair<std::string, std::string>;
+
+source_pair parse_source_pair(const std::string& source);
+
+}
+
 class shader
 {
 public:
 
-    shader(const shader_stage& vertex, const shader_stage& fragment);
+    shader(const shader_stage* vertex, const shader_stage* fragment);
 
     virtual ~shader();
 

@@ -34,6 +34,8 @@
 #include "core/application.hpp"
 #include "core/event.hpp"
 #include "graphics/renderer.hpp"
+//temporary
+#include "graphics/opengl/gl_shader.hpp"
 
 // TYPES
 #include "common/types.hpp"

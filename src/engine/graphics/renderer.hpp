@@ -32,6 +32,8 @@ class SUN_API renderer : public system
 {
 public:
 
+    SUN_SYSTEM_TYPE(renderer);
+
     struct info
     {
         std::string name;
@@ -56,10 +58,6 @@ public:
     virtual void init() override;
 
     virtual void shutdown() override;
-
-    const char* get_name() const override {
-        return "GFX";
-    }
 
     virtual void clear(const color&) = 0;
 

@@ -70,4 +70,7 @@ private:
 
 };
 
+#define SUN_SYSTEM_TYPE(type) const char* get_name() const override\
+    { return #type; }
+
 }

@@ -22,12 +22,14 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
+#include "common/config.hpp"
 
 #include <string>
+#include <memory>
 
 namespace sun {
 
-class shader_stage
+class SUN_API shader_stage
 {
 public:
 
@@ -54,7 +56,7 @@ public:
 
     shader_stage& operator=(const shader_stage&) = delete;
 
-    virtual void compile() = 0;
+    virtual status compile() = 0;
 
     virtual std::string get_warnings() const = 0;
 
@@ -77,20 +79,39 @@ source_pair parse_source_pair(const std::string& source);
 
 }
 
-class shader
+class SUN_API shader
 {
 public:
 
-    shader(const shader_stage* vertex, const shader_stage* fragment);
+    enum class status {
+        ok,
+        invalid
+    };
+
+    shader(shader_stage* vertex, shader_stage* fragment);
 
     virtual ~shader();
 
+    shader(const shader&) = delete;
+
+    shader& operator=(const shader&) = delete;
+
     virtual void attach() = 0;
 
-    virtual void build() = 0;
+    virtual status build() = 0;
 
     virtual std::string get_warnings() const = 0;
 
+    inline status get_status() const { return status_; }
+
+protected:
+
+    virtual void linking_check_() = 0;
+
+    std::unique_ptr<shader_stage>   vertex_stage_;
+    std::unique_ptr<shader_stage>   fragment_stage_;
+
+    status status_;
 };
 
 }

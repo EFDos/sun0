@@ -24,10 +24,15 @@
 #include "gl_renderer.hpp"
 #include "common/opengl.hpp"
 
+#include "gl_shader.hpp"
+
 #include "core/logger.hpp"
+#include "core/filesys/filesys.hpp"
 
 namespace sun
 {
+
+gl_shader* ugly_global_shader;
 
 gl_renderer::gl_renderer() {}
 
@@ -43,6 +48,19 @@ void gl_renderer::init()
         sun_logf_error("GLEW Initialization error: %s",
                 glewGetErrorString(error));
         return;
+    }
+
+    auto [vertex_stage, frag_stage] = shader_utils::parse_source_pair(
+        filesys::read_file("res/flat.glsl"));
+
+    ugly_global_shader = new gl_shader(new gl_shader_stage(vertex_stage, shader_stage::type::vertex),
+                          new gl_shader_stage(frag_stage, shader_stage::type::fragment));
+
+    if (ugly_global_shader->build() != shader::status::ok) {
+        sun_logf_error("%s", ugly_global_shader->get_warnings().c_str());
+    } else {
+        sun_log("Activating Shader");
+        ugly_global_shader->attach();
     }
 
     sun_log_info("OpenGL Initialized");

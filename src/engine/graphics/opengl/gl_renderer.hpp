@@ -28,7 +28,7 @@
 namespace sun
 {
 
-class gl_renderer final : public renderer
+class SUN_API gl_renderer final : public renderer
 {
 public:
 

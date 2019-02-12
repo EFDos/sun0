@@ -22,6 +22,7 @@
 /*                                                                       */
 /*************************************************************************/
 #include "shader.hpp"
+#include "core/logger.hpp"
 
 #include <sstream>
 
@@ -68,6 +69,40 @@ shader_utils::source_pair shader_utils::parse_source_pair(
     }
 
     return {sources[0], sources[1]};
+}
+
+shader::shader(shader_stage* vertex, shader_stage* fragment)
+:   vertex_stage_(vertex),
+    fragment_stage_(fragment),
+    status_(status::invalid)
+{
+    if (vertex_stage_->get_status() == shader_stage::status::compile_ok &&
+        fragment_stage_->get_status() == shader_stage::status::compile_ok)
+    {
+        return;
+    }
+
+    if (vertex_stage_->get_status() == shader_stage::status::compile_ready) {
+        if (vertex_stage_->compile() != shader_stage::status::compile_ok) {
+            sun_logf_error("%s", vertex_stage_->get_warnings().c_str());
+            vertex_stage_ = nullptr;
+        }
+    } else {
+        vertex_stage_ = nullptr;
+    }
+
+    if (fragment_stage_->get_status() == shader_stage::status::compile_ready) {
+        if (fragment_stage_->compile() != shader_stage::status::compile_ok) {
+            sun_logf_error("%s", fragment_stage_->get_warnings().c_str());
+            fragment_stage_ = nullptr;
+        }
+    } else {
+        fragment_stage_ = nullptr;
+    }
+}
+
+shader::~shader()
+{
 }
 
 }

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  shader.hpp                                                           */
+/*  gpu_object.hpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,88 +23,23 @@
 /*************************************************************************/
 #pragma once
 
-#include "gpu_object.hpp"
-
-#include <string>
-#include <memory>
+#include "common/config.hpp"
 
 namespace sun {
 
-class SUN_API shader_stage : public gpu_object
+class SUN_API gpu_object
 {
 public:
 
-    enum class type
-    {
-        vertex,
-        fragment,
-        geometry
-    };
+    gpu_object() = default;
 
-    enum class status
-    {
-        invalid,
-        compile_ready,
-        compile_ok,
-        compile_fail
-    };
+    virtual ~gpu_object() = default;
 
-    shader_stage(const std::string& source, type t);
+    gpu_object(const gpu_object&) = delete;
 
-    virtual ~shader_stage();
+    gpu_object& operator=(const gpu_object&) = delete;
 
-    virtual status compile() = 0;
-
-    virtual std::string get_warnings() const = 0;
-
-    inline status get_status() const { return status_; }
-
-protected:
-
-    virtual void compile_check_() = 0;
-
-    std::string source_;
-    type        type_;
-    status      status_;
-};
-
-namespace shader_utils {
-
-using source_pair = std::pair<std::string, std::string>;
-
-source_pair parse_source_pair(const std::string& source);
-
-}
-
-class SUN_API shader : public gpu_object
-{
-public:
-
-    enum class status {
-        ok,
-        invalid
-    };
-
-    shader(shader_stage* vertex, shader_stage* fragment);
-
-    virtual ~shader();
-
-    virtual void attach() = 0;
-
-    virtual status build() = 0;
-
-    virtual std::string get_warnings() const = 0;
-
-    inline status get_status() const { return status_; }
-
-protected:
-
-    virtual void linking_check_() = 0;
-
-    std::unique_ptr<shader_stage>   vertex_stage_;
-    std::unique_ptr<shader_stage>   fragment_stage_;
-
-    status status_;
+    virtual void release() = 0;
 };
 
 }

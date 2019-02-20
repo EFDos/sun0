@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gl_shader.cpp                                                        */
+/*  opengl/shader.cpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,13 +21,14 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "gl_shader.hpp"
+#include "shader.hpp"
 #include "common/opengl.hpp"
 #include "core/logger.hpp"
 
 namespace sun {
+namespace opengl {
 
-// gl_shader_stage implementation
+// shader_stage implementation
 
 constexpr GLenum get_gl_type(shader_stage::type t)
 {
@@ -39,8 +40,8 @@ constexpr GLenum get_gl_type(shader_stage::type t)
     }
 }
 
-gl_shader_stage::gl_shader_stage(const std::string& source, type t)
-:   shader_stage(source, t), id_(0)
+shader_stage::shader_stage(const std::string& source, type t)
+:   sun::shader_stage(source, t), id_(0)
 {
     if (source.empty()) {
         return;
@@ -51,14 +52,12 @@ gl_shader_stage::gl_shader_stage(const std::string& source, type t)
     status_ = status::compile_ready;
 }
 
-gl_shader_stage::~gl_shader_stage()
+shader_stage::~shader_stage()
 {
-    if (id_ != 0) {
-        glDeleteShader(id_);
-    }
+    release();
 }
 
-shader_stage::status gl_shader_stage::compile()
+shader_stage::status shader_stage::compile()
 {
     if (id_ == 0 || status_ != status::compile_ready) {
         return status_;
@@ -73,7 +72,14 @@ shader_stage::status gl_shader_stage::compile()
     return status_;
 }
 
-void gl_shader_stage::compile_check_()
+void shader_stage::release()
+{
+    if (id_ != 0) {
+        glDeleteShader(id_);
+    }
+}
+
+void shader_stage::compile_check_()
 {
     GLint result = -1;
     glGetShaderiv(id_, GL_COMPILE_STATUS, &result);
@@ -85,7 +91,7 @@ void gl_shader_stage::compile_check_()
     }
 }
 
-std::string gl_shader_stage::get_warnings() const
+std::string shader_stage::get_warnings() const
 {
     GLint length = 0;
 
@@ -121,23 +127,21 @@ std::string gl_shader_stage::get_warnings() const
     return ret;
 }
 
-// gl_shader implementation
+// shader implementation
 
-gl_shader::gl_shader(gl_shader_stage* vertex, gl_shader_stage* fragment)
-:   shader(vertex, fragment),
+shader::shader(shader_stage* vertex, shader_stage* fragment)
+:   sun::shader(vertex, fragment),
     id_(0)
 {
     id_ = glCreateProgram();
 }
 
-gl_shader::~gl_shader()
+shader::~shader()
 {
-    if (id_ != 0) {
-        glDeleteProgram(id_);
-    }
+    release();
 }
 
-shader::status gl_shader::build()
+shader::status shader::build()
 {
     if (id_ == 0) {
         sun_log_error("Internal OpenGL Shader failed to be created.");
@@ -148,28 +152,35 @@ shader::status gl_shader::build()
         return status_ = status::invalid;
     }
 
-    auto gl_vert_stg = dynamic_cast<gl_shader_stage*>(vertex_stage_.get());
-    auto gl_frag_stg = dynamic_cast<gl_shader_stage*>(fragment_stage_.get());
+    auto vert_stg = dynamic_cast<shader_stage*>(vertex_stage_.get());
+    auto frag_stg = dynamic_cast<shader_stage*>(fragment_stage_.get());
 
-    glAttachShader(id_, gl_vert_stg->get_internal_id());
-    glAttachShader(id_, gl_frag_stg->get_internal_id());
+    glAttachShader(id_, vert_stg->get_internal_id());
+    glAttachShader(id_, frag_stg->get_internal_id());
 
     glLinkProgram(id_);
 
     linking_check_();
 
-    glDetachShader(id_, gl_vert_stg->get_internal_id());
-    glDetachShader(id_, gl_frag_stg->get_internal_id());
+    glDetachShader(id_, vert_stg->get_internal_id());
+    glDetachShader(id_, frag_stg->get_internal_id());
 
     return status_;
 }
 
-void gl_shader::attach()
+void shader::attach()
 {
     glUseProgram(id_);
 }
 
-void gl_shader::linking_check_()
+void shader::release()
+{
+    if (id_ != 0) {
+        glDeleteProgram(id_);
+    }
+}
+
+void shader::linking_check_()
 {
     GLint result = -1;
     glGetProgramiv(id_, GL_LINK_STATUS, &result);
@@ -181,7 +192,7 @@ void gl_shader::linking_check_()
     }
 }
 
-std::string gl_shader::get_warnings() const
+std::string shader::get_warnings() const
 {
     GLint length = 0;
 
@@ -205,4 +216,5 @@ std::string gl_shader::get_warnings() const
     return ret;
 }
 
-}
+} // opengl
+} // sun

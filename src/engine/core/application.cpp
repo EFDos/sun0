@@ -25,7 +25,7 @@
 #include "../version.hpp"
 
 #include "system/system.hpp"
-#include "graphics/opengl/gl_renderer.hpp"
+#include "graphics/opengl/renderer.hpp"
 
 #include "logger.hpp"
 #include "event.hpp"
@@ -43,7 +43,7 @@ application::application() :
 
 	window_.create("Sandbox - Sun0 Engine", {1280, 720});
 
-    renderer_ = new gl_renderer();
+    renderer_ = new opengl::renderer();
     system::register_instance(renderer_);
 }
 

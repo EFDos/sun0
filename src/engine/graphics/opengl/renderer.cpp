@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  shader.hpp                                                           */
+/*  opengl/renderer.cpp                                                  */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,90 +21,56 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "renderer.hpp"
+#include "common/opengl.hpp"
 
-#include "gpu_object.hpp"
+#include "shader.hpp"
 
-#include <string>
-#include <memory>
+#include "core/logger.hpp"
+#include "core/filesys/filesys.hpp"
 
 namespace sun {
+namespace opengl {
 
-class SUN_API shader_stage : public gpu_object
+renderer::renderer() {}
+
+renderer::~renderer() {}
+
+void renderer::init()
 {
-public:
+    sun::renderer::init();
 
-    enum class type
-    {
-        vertex,
-        fragment,
-        geometry
-    };
+    auto error = glewInit();
 
-    enum class status
-    {
-        invalid,
-        compile_ready,
-        compile_ok,
-        compile_fail
-    };
+    if (error != GLEW_NO_ERROR) {
+        sun_logf_error("GLEW Initialization error: %s",
+                glewGetErrorString(error));
+        return;
+    }
 
-    shader_stage(const std::string& source, type t);
-
-    virtual ~shader_stage();
-
-    virtual status compile() = 0;
-
-    virtual std::string get_warnings() const = 0;
-
-    inline status get_status() const { return status_; }
-
-protected:
-
-    virtual void compile_check_() = 0;
-
-    std::string source_;
-    type        type_;
-    status      status_;
-};
-
-namespace shader_utils {
-
-using source_pair = std::pair<std::string, std::string>;
-
-source_pair parse_source_pair(const std::string& source);
-
+    sun_log_info("OpenGL Initialized");
 }
 
-class SUN_API shader : public gpu_object
+void renderer::shutdown()
 {
-public:
-
-    enum class status {
-        ok,
-        invalid
-    };
-
-    shader(shader_stage* vertex, shader_stage* fragment);
-
-    virtual ~shader();
-
-    virtual void attach() = 0;
-
-    virtual status build() = 0;
-
-    virtual std::string get_warnings() const = 0;
-
-    inline status get_status() const { return status_; }
-
-protected:
-
-    virtual void linking_check_() = 0;
-
-    std::unique_ptr<shader_stage>   vertex_stage_;
-    std::unique_ptr<shader_stage>   fragment_stage_;
-
-    status status_;
-};
-
+    sun::renderer::shutdown();
 }
+
+void renderer::clear(const color& col)
+{
+    auto colf = to_colorf(col);
+    glClearColor(colf.r, colf.g, colf.b, colf.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void renderer::clear()
+{
+    glClearColor(clear_color_.r,
+                 clear_color_.g,
+                 clear_color_.b,
+                 clear_color_.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+} // opengl
+} // sun

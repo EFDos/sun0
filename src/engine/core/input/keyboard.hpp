@@ -133,7 +133,6 @@ enum class key
     F14,
     F15,
     PAUSE,
-    KEY_MAX
 };
 
 } // keyboard

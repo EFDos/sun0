@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gl_renderer.cpp                                                      */
+/*  opengl/shader.hpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,55 +21,67 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "gl_renderer.hpp"
-#include "common/opengl.hpp"
+#pragma once
 
-#include "gl_shader.hpp"
+#include "graphics/shader.hpp"
+#include "common/int.hpp"
 
-#include "core/logger.hpp"
-#include "core/filesys/filesys.hpp"
+namespace sun {
+namespace opengl {
 
-namespace sun
+class SUN_API shader_stage final : public sun::shader_stage
 {
+public:
 
-gl_renderer::gl_renderer() {}
+    shader_stage(const std::string& source, type t);
 
-gl_renderer::~gl_renderer() {}
+    ~shader_stage();
 
-void gl_renderer::init()
+    // implements sun::shader_stage
+
+    status compile() override;
+
+    std::string get_warnings() const override;
+
+    // implements sun::gpu_object
+
+    void release() override;
+
+    uint get_internal_id() const { return id_; }
+
+private:
+
+    void compile_check_() override;
+
+    uint    id_;
+};
+
+class SUN_API shader final : public sun::shader
 {
-    renderer::init();
+public:
 
-    auto error = glewInit();
+    shader(shader_stage* vertex, shader_stage* fragment);
 
-    if (error != GLEW_NO_ERROR) {
-        sun_logf_error("GLEW Initialization error: %s",
-                glewGetErrorString(error));
-        return;
-    }
+    ~shader();
 
-    sun_log_info("OpenGL Initialized");
-}
+    // implements sun::shader
 
-void gl_renderer::shutdown()
-{
-    renderer::shutdown();
-}
+    status build() override;
 
-void gl_renderer::clear(const color& col)
-{
-    auto colf = to_colorf(col);
-    glClearColor(colf.r, colf.g, colf.b, colf.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+    void attach() override;
 
-void gl_renderer::clear()
-{
-    glClearColor(clear_color_.r,
-                 clear_color_.g,
-                 clear_color_.b,
-                 clear_color_.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+    // implements sun::gpu_object
 
-}
+    void release() override;
+
+    std::string get_warnings() const override;
+
+private:
+
+    void linking_check_() override;
+
+    uint    id_;
+};
+
+} // opengl
+} // sun

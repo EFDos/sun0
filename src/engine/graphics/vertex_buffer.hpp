@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gl_renderer.hpp                                                      */
+/*  vertex_buffer.hpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,27 +23,22 @@
 /*************************************************************************/
 #pragma once
 
-#include "graphics/renderer.hpp"
+#include "common/int.hpp"
+#include "gpu_object.hpp"
 
-namespace sun
-{
+namespace sun {
 
-class SUN_API gl_renderer final : public renderer
+class vertex_buffer : public gpu_object
 {
 public:
 
-    gl_renderer();
+    vertex_buffer(uint8 vertex_size, size_t vertex_count);
 
-    ~gl_renderer();
+private:
 
-    void init() override;
-
-    void shutdown() override;
-
-    void clear(const color&) override;
-
-    void clear() override;
-
+    uint8  vertex_size_;
+    size_t  vertex_count_;
+    bool    dynamic_;
 };
 
 }

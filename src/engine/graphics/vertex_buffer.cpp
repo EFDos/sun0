@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gl_shader.hpp                                                        */
+/*  vertex_buffer.cpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,53 +21,4 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "graphics/shader.hpp"
-#include "common/int.hpp"
-
-namespace sun {
-
-class SUN_API gl_shader_stage final : public shader_stage
-{
-public:
-
-    gl_shader_stage(const std::string& source, type t);
-
-    ~gl_shader_stage();
-
-    status compile() override;
-
-    std::string get_warnings() const override;
-
-    uint get_internal_id() const { return id_; }
-
-private:
-
-    void compile_check_() override;
-
-    uint    id_;
-};
-
-class SUN_API gl_shader final : public shader
-{
-public:
-
-    gl_shader(gl_shader_stage* vertex, gl_shader_stage* fragment);
-
-    ~gl_shader();
-
-    status build() override;
-
-    void attach() override;
-
-    std::string get_warnings() const override;
-
-private:
-
-    void linking_check_() override;
-
-    uint    id_;
-};
-
-}
+#include "vertex_buffer.hpp"

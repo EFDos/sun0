@@ -34,4 +34,5 @@ namespace sun {
     using uint32    = uint32_t;
     using int64     = int64_t;
     using uint64    = uint64_t;
+    using size_t    = std::size_t;
 }

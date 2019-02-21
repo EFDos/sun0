@@ -25,11 +25,11 @@
 
 namespace sun {
 
-vertex_buffer::vertex_buffer(uint8 vertex_size, size_t capacity)
+vertex_buffer::vertex_buffer(uint8 vertex_size, size_t capacity, bool dynamic)
 :   vertex_size_(vertex_size),
     vertex_count_(0),
     capacity_(capacity),
-    dynamic_(false)
+    dynamic_(dynamic)
 {
 }
 

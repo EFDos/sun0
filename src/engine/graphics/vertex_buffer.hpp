@@ -32,7 +32,7 @@ class vertex_buffer : public gpu_object
 {
 public:
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
+    vertex_buffer(uint8 vertex_size, size_t capacity, bool dynamic = false);
 
     virtual ~vertex_buffer() = default;
 

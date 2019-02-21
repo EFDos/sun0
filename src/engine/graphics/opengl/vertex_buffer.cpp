@@ -98,14 +98,13 @@ void vertex_buffer::set_dynamic(bool dynamic)
         size_t data_size = capacity_ * vertex_size_;
         uint8* temp_data = new uint8[data_size];
 
-        glGetBufferSubData(GL_ARRAY_BUFFER, 0, capacity_ * vertex_size_,
-            temp_data);
+        glGetBufferSubData(GL_ARRAY_BUFFER, 0, data_size, temp_data);
 
         // resize will reset the buffer usage as required
         resize(capacity_);
 
         // get data back to buffer
-        fill_data(0, data_size / vertex_size_, temp_data);
+        fill_data(0, capacity_, temp_data);
 
         delete [] temp_data;
     }

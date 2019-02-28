@@ -48,9 +48,9 @@ public:
 
     void clear() override;
 
-    void bind() override;
+    void bind() const override;
 
-    void unbind() override;
+    void unbind() const override;
 
     void set_dynamic(bool) override;
 

@@ -42,9 +42,9 @@ public:
 
     virtual void clear() = 0;
 
-    virtual void bind() = 0;
+    virtual void bind() const = 0;
 
-    virtual void unbind() = 0;
+    virtual void unbind() const = 0;
 
     virtual void set_dynamic(bool dynamic) { dynamic_ = dynamic; }
 

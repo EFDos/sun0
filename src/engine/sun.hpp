@@ -33,10 +33,14 @@
 #include "core/logger.hpp"
 #include "core/application.hpp"
 #include "core/event.hpp"
-#include "graphics/renderer.hpp"
 
 // TYPES
 #include "common/types.hpp"
+
+// GRAPHICS
+#include "graphics/renderer.hpp"
+#include "graphics/vertex_buffer.hpp"
+#include "graphics/shader.hpp"
 
 /*********** ENTRY POINT ***********/
 #include "core/main.hpp"

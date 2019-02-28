@@ -89,7 +89,7 @@ public:
 
     virtual ~shader();
 
-    virtual void attach() = 0;
+    virtual void attach() const = 0;
 
     virtual status build() = 0;
 

@@ -68,7 +68,7 @@ public:
 
     status build() override;
 
-    void attach() override;
+    void attach() const override;
 
     // implements sun::gpu_object
 

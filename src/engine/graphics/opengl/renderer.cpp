@@ -25,6 +25,7 @@
 #include "common/opengl.hpp"
 
 #include "shader.hpp"
+#include "vertex_buffer.hpp"
 
 #include "core/logger.hpp"
 #include "core/filesys/filesys.hpp"
@@ -56,6 +57,31 @@ void renderer::shutdown()
     sun::renderer::shutdown();
 }
 
+sun::vertex_buffer* renderer::create_vertex_buffer(uint8 vertex_size,
+                                                   size_t capacity) const
+{
+    return dynamic_cast<sun::vertex_buffer*>(new
+        opengl::vertex_buffer(vertex_size, capacity));
+}
+
+sun::shader* renderer::create_shader(const std::string& path) const
+{
+    auto [vertex_src, fragment_src] = shader_utils::parse_source_pair(filesys::read_file(path));
+
+    auto gl_shader = new opengl::shader(
+                new opengl::shader_stage(vertex_src, shader_stage::type::vertex),
+                new opengl::shader_stage(fragment_src, shader_stage::type::fragment)
+            );
+
+    gl_shader->build();
+
+    if (gl_shader->get_status() != shader::status::ok) {
+        return nullptr;
+    } else {
+        return dynamic_cast<sun::shader*>(gl_shader);
+    }
+}
+
 void renderer::clear(const color& col)
 {
     auto colf = to_colorf(col);
@@ -70,6 +96,24 @@ void renderer::clear()
                  clear_color_.b,
                  clear_color_.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void renderer::draw(const sun::vertex_buffer& buffer,
+                    const sun::shader& p_shader) const
+{
+    p_shader.attach();
+    buffer.bind();
+
+    GLuint vao;
+
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
+
+    glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
 }
 
 } // opengl

@@ -32,7 +32,7 @@ namespace opengl {
 vertex_buffer::vertex_buffer(uint8 vertex_size, size_t capacity)
 :   sun::vertex_buffer(vertex_size, capacity)
 {
-    glGenBuffers(GL_ARRAY_BUFFER, &vbo_);
+    glGenBuffers(1, &vbo_);
     resize(capacity);
 }
 
@@ -81,12 +81,12 @@ void vertex_buffer::clear()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void vertex_buffer::bind()
+void vertex_buffer::bind() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 }
 
-void vertex_buffer::unbind()
+void vertex_buffer::unbind() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

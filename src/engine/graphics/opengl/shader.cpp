@@ -168,7 +168,7 @@ shader::status shader::build()
     return status_;
 }
 
-void shader::attach()
+void shader::attach() const
 {
     glUseProgram(id_);
 }

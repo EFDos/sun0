@@ -28,6 +28,9 @@
 
 namespace sun {
 
+class vertex_buffer;
+class shader;
+
 class SUN_API renderer : public system
 {
 public:
@@ -59,9 +62,15 @@ public:
 
     virtual void shutdown() override;
 
+    virtual vertex_buffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const = 0;
+
+    virtual shader* create_shader(const std::string& path) const = 0;
+
     virtual void clear(const color&) = 0;
 
     virtual void clear() = 0;
+
+    virtual void draw(const vertex_buffer& buffer, const shader& p_shader) const = 0;
 
     virtual void set_color(const color&);
 

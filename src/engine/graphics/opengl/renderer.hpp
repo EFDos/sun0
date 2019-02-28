@@ -40,9 +40,16 @@ public:
 
     void shutdown() override;
 
+    sun::vertex_buffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const override;
+
+    sun::shader* create_shader(const std::string& path) const override;
+
     void clear(const color&) override;
 
     void clear() override;
+
+    void draw(const sun::vertex_buffer& buffer,
+              const sun::shader& p_shader) const override;
 
 };
 

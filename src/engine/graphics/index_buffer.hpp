@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  index_buffer.hpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,26 +23,37 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/int.hpp"
+#include "gpu_object.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
+class index_buffer : public gpu_object
+{
+public:
 
-// GRAPHICS
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
+    index_buffer(size_t capacity);
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    virtual ~index_buffer() = default;
+
+    virtual void fill_data(size_t offset, size_t count, const uint* data) = 0;
+
+    virtual void resize(size_t count) = 0;
+
+    virtual void clear() = 0;
+
+    virtual void bind() const = 0;
+
+    virtual void unbind() const = 0;
+
+    size_t get_index_count() const { return index_count_; }
+
+    size_t get_capacity() const { return capacity_; }
+
+protected:
+
+    size_t  index_count_;
+    size_t  capacity_;
+};
+
+}

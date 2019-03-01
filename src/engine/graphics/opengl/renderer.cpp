@@ -26,6 +26,7 @@
 
 #include "shader.hpp"
 #include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
 #include "core/logger.hpp"
 #include "core/filesys/filesys.hpp"
@@ -33,7 +34,7 @@
 namespace sun {
 namespace opengl {
 
-renderer::renderer() {}
+renderer::renderer() : flat_vao_(0), default_flat_shader_(nullptr) {}
 
 renderer::~renderer() {}
 
@@ -50,10 +51,23 @@ void renderer::init()
     }
 
     sun_log_info("OpenGL Initialized");
+
+    default_flat_shader_ = create_shader("res/flat.glsl");
+
+    glGenVertexArrays(1, &flat_vao_);
+    glBindVertexArray(flat_vao_);
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
 }
 
 void renderer::shutdown()
 {
+    if (default_flat_shader_ != nullptr) {
+        delete default_flat_shader_;
+        glDeleteVertexArrays(1, &flat_vao_);
+    }
     sun::renderer::shutdown();
 }
 
@@ -62,6 +76,11 @@ sun::vertex_buffer* renderer::create_vertex_buffer(uint8 vertex_size,
 {
     return dynamic_cast<sun::vertex_buffer*>(new
         opengl::vertex_buffer(vertex_size, capacity));
+}
+
+sun::index_buffer* renderer::create_index_buffer(size_t capacity) const
+{
+    return dynamic_cast<sun::index_buffer*>(new opengl::index_buffer(capacity));
 }
 
 sun::shader* renderer::create_shader(const std::string& path) const
@@ -99,21 +118,42 @@ void renderer::clear()
 }
 
 void renderer::draw(const sun::vertex_buffer& buffer,
-                    const sun::shader& p_shader) const
+                    const sun::shader* p_shader) const
 {
-    p_shader.attach();
+    if (p_shader != nullptr) {
+        p_shader->attach();
+    } else {
+        default_flat_shader_->attach();
+    }
+    glBindVertexArray(flat_vao_);
     buffer.bind();
-
-    GLuint vao;
-
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
     glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
 
     glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
+}
+
+void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
+                            const sun::index_buffer& ibuffer,
+                            const sun::shader* p_shader) const
+{
+    if (p_shader != nullptr) {
+        p_shader->attach();
+    } else {
+        default_flat_shader_->attach();
+    }
+
+    glBindVertexArray(flat_vao_);
+    vbuffer.bind();
+    ibuffer.bind();
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
+
+    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, nullptr);
 }
 
 } // opengl

@@ -28,6 +28,8 @@
 namespace sun {
 namespace opengl {
 
+class shader;
+
 class SUN_API renderer final : public sun::renderer
 {
 public:
@@ -44,12 +46,23 @@ public:
 
     sun::shader* create_shader(const std::string& path) const override;
 
+    sun::index_buffer* create_index_buffer(size_t capacity) const override;
+
     void clear(const color&) override;
 
     void clear() override;
 
     void draw(const sun::vertex_buffer& buffer,
-              const sun::shader& p_shader) const override;
+              const sun::shader* p_shader = nullptr) const override;
+
+    void draw_indexed(const sun::vertex_buffer& vbuffer,
+                      const sun::index_buffer& ibuffer,
+                      const sun::shader* p_shader = nullptr) const override;
+
+private:
+
+    uint            flat_vao_;
+    sun::shader*    default_flat_shader_;
 
 };
 

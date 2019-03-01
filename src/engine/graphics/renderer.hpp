@@ -29,6 +29,7 @@
 namespace sun {
 
 class vertex_buffer;
+class index_buffer;
 class shader;
 
 class SUN_API renderer : public system
@@ -66,11 +67,15 @@ public:
 
     virtual shader* create_shader(const std::string& path) const = 0;
 
+    virtual index_buffer* create_index_buffer(size_t capacity) const = 0;
+
     virtual void clear(const color&) = 0;
 
     virtual void clear() = 0;
 
-    virtual void draw(const vertex_buffer& buffer, const shader& p_shader) const = 0;
+    virtual void draw(const vertex_buffer& buffer, const shader* p_shader = nullptr) const = 0;
+
+    virtual void draw_indexed(const vertex_buffer& vbuffer, const index_buffer& ibuffer, const shader* p_shader = nullptr) const = 0;
 
     virtual void set_color(const color&);
 

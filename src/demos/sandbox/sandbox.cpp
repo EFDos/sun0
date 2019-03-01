@@ -12,30 +12,33 @@ public:
     };
 
 	sandbox() : sun::application() {
-        renderer_->set_color(sun::color::sun);
-        triangle_ = renderer_->create_vertex_buffer(sizeof(vertex_def), 3);
-        base_shader_ = renderer_->create_shader("res/flat.glsl");
+        renderer_->set_color(sun::color::white);
+        quad_ = renderer_->create_vertex_buffer(sizeof(vertex_def), 4);
+        indices_ = renderer_->create_index_buffer(6);
 
-        if (base_shader_ == nullptr) {
-            sun_log_fatal("fodeu");
-        }
-
-        vertex_def triangle_verts[] = {
-            {-0.5f, 0.f, 0.f, 0.f, 0.f, 1.f},
-            {0.f, -0.5f, 0.f, 0.f, 0.f, 1.f},
-            {0.5f, 0.f, 0.f, 0.f, 0.f, 1.f},
+        vertex_def quad_verts[] = {
+            {-0.5f, -0.5f, 0.f, 0.f, 0.f, 1.f},
+            { 0.5f, -0.5f, 0.f, 0.f, 0.f, 1.f},
+            { 0.5f,  0.5f, 0.f, 0.f, 0.f, 1.f},
+            {-0.5f,  0.5f, 0.f, 0.f, 0.f, 1.f},
         };
 
-        triangle_->fill_data(0, 3, triangle_verts);
+        uint indices_data[] = {
+            0, 1, 3,
+            1, 2, 3
+        };
+
+        quad_->fill_data(0, 3, quad_verts);
+        indices_->fill_data(0, 6, indices_data);
 
     	renderer_->clear();
 
-    	renderer_->draw(*triangle_, *base_shader_);
+    	renderer_->draw_indexed(*quad_, *indices_, nullptr);
 	}
 
     ~sandbox() {
-        delete triangle_;
-        delete base_shader_;
+        delete quad_;
+        delete indices_;
     }
 
 	void on_event(sun::event& e) override {
@@ -47,8 +50,8 @@ public:
 
 private:
 
-    sun::vertex_buffer* triangle_;
-    sun::shader* base_shader_;
+    sun::vertex_buffer* quad_;
+    sun::index_buffer* indices_;
 };
 
 SUN_DEFINE_MAIN_APP(sandbox)

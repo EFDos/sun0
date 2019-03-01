@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl/index_buffer.hpp                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,26 +23,40 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-
-// TYPES
-#include "common/types.hpp"
-
-// GRAPHICS
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
 #include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+namespace opengl {
+
+class SUN_API index_buffer final : public sun::index_buffer
+{
+public:
+
+    index_buffer(size_t capacity);
+
+    ~index_buffer();
+
+    // implements gpu_object
+
+    void release() override;
+
+    // implements sun::index_buffer
+
+    void fill_data(size_t offset, size_t count, const uint* data) override;
+
+    void resize(size_t capacity) override;
+
+    void clear() override;
+
+    void bind() const override;
+
+    void unbind() const override;
+
+private:
+
+    uint    ibo_;
+
+};
+
+} // opengl
+} // sun

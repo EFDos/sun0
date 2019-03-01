@@ -22,9 +22,11 @@ sun_lib_src = [
   'graphics/renderer.cpp',
   'graphics/shader.cpp',
   'graphics/vertex_buffer.cpp',
+  'graphics/index_buffer.cpp',
   'graphics/opengl/renderer.cpp',
   'graphics/opengl/shader.cpp',
-  'graphics/opengl/vertex_buffer.cpp'
+  'graphics/opengl/vertex_buffer.cpp',
+  'graphics/opengl/index_buffer.cpp'
 ]
 
 if get_option('dynamic-lib')

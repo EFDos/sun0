@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  index_buffer.cpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,28 +21,14 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "index_buffer.hpp"
 
-// VERSION
-#include "version.hpp"
+namespace sun {
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
+index_buffer::index_buffer(size_t capacity)
+:   index_count_(0),
+    capacity_(capacity)
+{
+}
 
-// TYPES
-#include "common/types.hpp"
-
-// GRAPHICS
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
-
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl/index_buffer.cpp                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,28 +21,74 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "index_buffer.hpp"
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
-#include "common/types.hpp"
 #include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
 #include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
 
-// TYPES
-#include "common/types.hpp"
+namespace sun {
+namespace opengl {
 
-// GRAPHICS
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
+index_buffer::index_buffer(size_t capacity)
+:   sun::index_buffer(capacity)
+{
+    glGenBuffers(1, &ibo_);
+    resize(capacity);
+}
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+index_buffer::~index_buffer()
+{
+    release();
+}
+
+void index_buffer::release()
+{
+    if (ibo_ != 0) {
+        glDeleteBuffers(GL_ELEMENT_ARRAY_BUFFER, &ibo_);
+    }
+}
+
+void index_buffer::fill_data(size_t offset, size_t count, const uint* data)
+{
+    if (offset + count > capacity_) {
+        sun_log_error("Failed to fill index buffer data: over capacity");
+        return;
+    }
+
+    index_count_ += count;
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset * sizeof(uint),
+        count * sizeof(uint), data);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void index_buffer::resize(size_t capacity)
+{
+    capacity_ = capacity;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, capacity_ * sizeof(uint), nullptr,
+        GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void index_buffer::clear()
+{
+    index_count_ = 0;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void index_buffer::bind() const
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
+}
+
+void index_buffer::unbind() const
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+} // opengl
+} // sun

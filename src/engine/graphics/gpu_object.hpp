@@ -39,6 +39,10 @@ public:
 
     gpu_object& operator=(const gpu_object&) = delete;
 
+    virtual void bind() const = 0;
+
+    virtual void unbind() const = 0;
+
     virtual void release() = 0;
 };
 

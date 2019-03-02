@@ -121,9 +121,9 @@ void renderer::draw(const sun::vertex_buffer& buffer,
                     const sun::shader* p_shader) const
 {
     if (p_shader != nullptr) {
-        p_shader->attach();
+        p_shader->bind();
     } else {
-        default_flat_shader_->attach();
+        default_flat_shader_->bind();
     }
     glBindVertexArray(flat_vao_);
     buffer.bind();
@@ -140,9 +140,9 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
                             const sun::shader* p_shader) const
 {
     if (p_shader != nullptr) {
-        p_shader->attach();
+        p_shader->bind();
     } else {
-        default_flat_shader_->attach();
+        default_flat_shader_->bind();
     }
 
     glBindVertexArray(flat_vao_);

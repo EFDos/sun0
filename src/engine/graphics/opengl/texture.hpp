@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/vertex_buffer.hpp                                             */
+/*  opengl/texture.hpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,18 +23,18 @@
 /*************************************************************************/
 #pragma once
 
-#include "graphics/vertex_buffer.hpp"
+#include "graphics/texture.hpp"
 
 namespace sun {
 namespace opengl {
 
-class SUN_API vertex_buffer final : public sun::vertex_buffer
+class SUN_API texture final : public sun::texture
 {
 public:
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
+    texture();
 
-    ~vertex_buffer();
+    ~texture();
 
     // implements gpu_object
 
@@ -44,19 +44,15 @@ public:
 
     void unbind() const override;
 
-    // implements sun::vertex_buffer
+    // implements sun::texture
 
-    void fill_data(size_t offset, size_t count, const void* data) override;
+    void load(const image& img) override;
 
-    void resize(size_t capacity) override;
-
-    void clear() override;
-
-    void set_dynamic(bool) override;
+    void load(const ubyte* data) override;
 
 private:
 
-    uint    vbo_;
+    uint    id_;
 
 };
 

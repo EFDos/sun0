@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/vertex_buffer.hpp                                             */
+/*  opengl/texture.cpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,44 +21,49 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "texture.hpp"
 
-#include "graphics/vertex_buffer.hpp"
+#include "common/opengl.hpp"
 
 namespace sun {
 namespace opengl {
 
-class SUN_API vertex_buffer final : public sun::vertex_buffer
+texture::texture() : sun::texture(), id_(0)
 {
-public:
+    glGenTextures(1, &id_);
+}
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
+texture::~texture()
+{
+    release();
+}
 
-    ~vertex_buffer();
+void texture::release()
+{
+    if (id_ != 0) {
+        glDeleteTextures(1, &id_);
+    }
+}
 
-    // implements gpu_object
+void texture::bind() const
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, id_);
+}
 
-    void release() override;
+void texture::unbind() const
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
 
-    void bind() const override;
+void texture::load(const image& img)
+{
+}
 
-    void unbind() const override;
-
-    // implements sun::vertex_buffer
-
-    void fill_data(size_t offset, size_t count, const void* data) override;
-
-    void resize(size_t capacity) override;
-
-    void clear() override;
-
-    void set_dynamic(bool) override;
-
-private:
-
-    uint    vbo_;
-
-};
+void texture::load(const ubyte* data)
+{
+}
 
 } // opengl
 } // sun

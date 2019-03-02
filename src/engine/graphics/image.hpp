@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/vertex_buffer.hpp                                             */
+/*  image.hpp                                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,42 +23,47 @@
 /*************************************************************************/
 #pragma once
 
-#include "graphics/vertex_buffer.hpp"
+#include "common/config.hpp"
+#include "common/types.hpp"
+
+#include <string>
 
 namespace sun {
-namespace opengl {
 
-class SUN_API vertex_buffer final : public sun::vertex_buffer
+class SUN_API image
 {
 public:
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
+    image();
 
-    ~vertex_buffer();
+    image(const image&);
 
-    // implements gpu_object
+    image(image&&) = default;
 
-    void release() override;
+    ~image();
 
-    void bind() const override;
+    void load(const std::string&);
 
-    void unbind() const override;
+    void allocate(uint x, uint y);
 
-    // implements sun::vertex_buffer
+    void allocate(const vector2u& size);
 
-    void fill_data(size_t offset, size_t count, const void* data) override;
+    void set_data(const vector2u& size, const ubyte* data);
 
-    void resize(size_t capacity) override;
+    void clear();
 
-    void clear() override;
+    inline const uint8* get_data() const { return data_; }
 
-    void set_dynamic(bool) override;
+    inline const vector2u& get_size() const { return size_; }
+
+    image& operator=(const image&);
+
+    image& operator=(image&&) = default;
 
 private:
 
-    uint    vbo_;
-
+    uint8*      data_;
+    vector2u    size_;
 };
 
-} // opengl
-} // sun
+}

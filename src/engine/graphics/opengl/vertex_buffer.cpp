@@ -30,7 +30,7 @@ namespace sun {
 namespace opengl {
 
 vertex_buffer::vertex_buffer(uint8 vertex_size, size_t capacity)
-:   sun::vertex_buffer(vertex_size, capacity)
+:   sun::vertex_buffer(vertex_size, capacity), vbo_(0)
 {
     glGenBuffers(1, &vbo_);
     resize(capacity);

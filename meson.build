@@ -8,7 +8,7 @@ project('sun0', ['cpp', 'c'],
 version_codename = 'Sunny Alpha'
 version_str = meson.project_version()
 
-sun_includes = include_directories('./include', './src/engine')
+sun_includes = include_directories('./src/thirdparty', './src/engine')
 
 sun_depends = [
 	dependency('sdl2'),

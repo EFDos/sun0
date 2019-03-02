@@ -168,9 +168,14 @@ shader::status shader::build()
     return status_;
 }
 
-void shader::attach() const
+void shader::bind() const
 {
     glUseProgram(id_);
+}
+
+void shader::unbind() const
+{
+    glUseProgram(0);
 }
 
 void shader::release()

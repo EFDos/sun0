@@ -26,6 +26,8 @@
 
 namespace sun {
     using uint      = unsigned int;
+    using byte      = int8_t;
+    using ubyte     = uint8_t;
     using int8      = int8_t;
     using uint8     = uint8_t;
     using int16     = int16_t;

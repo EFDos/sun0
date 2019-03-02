@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/vertex_buffer.hpp                                             */
+/*  texture.cpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,44 +21,15 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "graphics/vertex_buffer.hpp"
+#include "texture.hpp"
 
 namespace sun {
-namespace opengl {
 
-class SUN_API vertex_buffer final : public sun::vertex_buffer
+texture::texture()
+:   filter_mode_(filter_mode::nearest),
+    address_mode_(address_mode::wrap),
+    usage_(usage::static_usage)
 {
-public:
+}
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
-
-    ~vertex_buffer();
-
-    // implements gpu_object
-
-    void release() override;
-
-    void bind() const override;
-
-    void unbind() const override;
-
-    // implements sun::vertex_buffer
-
-    void fill_data(size_t offset, size_t count, const void* data) override;
-
-    void resize(size_t capacity) override;
-
-    void clear() override;
-
-    void set_dynamic(bool) override;
-
-private:
-
-    uint    vbo_;
-
-};
-
-} // opengl
-} // sun
+}

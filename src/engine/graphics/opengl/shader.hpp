@@ -47,6 +47,12 @@ public:
 
     void release() override;
 
+    /* not used in this context*/
+        void bind() const override {}
+
+        void unbind() const override {}
+    /* not used in this context */
+
     uint get_internal_id() const { return id_; }
 
 private:
@@ -68,11 +74,13 @@ public:
 
     status build() override;
 
-    void attach() const override;
-
     // implements sun::gpu_object
 
     void release() override;
+
+    void bind() const override;
+
+    void unbind() const override;
 
     std::string get_warnings() const override;
 

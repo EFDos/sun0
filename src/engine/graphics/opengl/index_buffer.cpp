@@ -30,7 +30,7 @@ namespace sun {
 namespace opengl {
 
 index_buffer::index_buffer(size_t capacity)
-:   sun::index_buffer(capacity)
+:   sun::index_buffer(capacity), ibo_(0)
 {
     glGenBuffers(1, &ibo_);
     resize(capacity);

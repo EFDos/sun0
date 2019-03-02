@@ -89,8 +89,6 @@ public:
 
     virtual ~shader();
 
-    virtual void attach() const = 0;
-
     virtual status build() = 0;
 
     virtual std::string get_warnings() const = 0;

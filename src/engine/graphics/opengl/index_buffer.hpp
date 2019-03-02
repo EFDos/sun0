@@ -40,6 +40,10 @@ public:
 
     void release() override;
 
+    void bind() const override;
+
+    void unbind() const override;
+
     // implements sun::index_buffer
 
     void fill_data(size_t offset, size_t count, const uint* data) override;
@@ -47,10 +51,6 @@ public:
     void resize(size_t capacity) override;
 
     void clear() override;
-
-    void bind() const override;
-
-    void unbind() const override;
 
 private:
 

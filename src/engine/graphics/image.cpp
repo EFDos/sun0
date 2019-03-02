@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/vertex_buffer.hpp                                             */
+/*  image.cpp                                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,44 +21,72 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "image.hpp"
 
-#include "graphics/vertex_buffer.hpp"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+#include <cstring>
 
 namespace sun {
-namespace opengl {
 
-class SUN_API vertex_buffer final : public sun::vertex_buffer
+image::image() : data_(nullptr)
 {
-public:
+}
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
+image::image(const image& other)
+{
+    if (other.data_ != nullptr) {
+        set_data(other.size_, other.data_);
+    }
+}
 
-    ~vertex_buffer();
+image& image::operator=(const image& other)
+{
+    if (other.data_ != nullptr) {
+        set_data(other.size_, other.data_);
+    }
 
-    // implements gpu_object
+    return *this;
+}
 
-    void release() override;
+image::~image()
+{
+    clear();
+}
 
-    void bind() const override;
+void image::load(const std::string& path)
+{
+    int width, height, channels;
 
-    void unbind() const override;
+    ubyte* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
-    // implements sun::vertex_buffer
+    set_data({static_cast<uint>(width), static_cast<uint>(height)}, data);
 
-    void fill_data(size_t offset, size_t count, const void* data) override;
+    stbi_image_free(data);
+}
 
-    void resize(size_t capacity) override;
+void image::allocate(const vector2u& size)
+{
+    clear();
 
-    void clear() override;
+    data_ = new ubyte[size.w * size_.h * 4];
+    size_ = size;
+}
 
-    void set_dynamic(bool) override;
+void image::set_data(const vector2u& size, const ubyte* data)
+{
+    allocate(size);
+    std::memcpy(data_, data, size.w * size.h * 4);
+}
 
-private:
+void image::clear()
+{
+    if (data_ != nullptr) {
+        delete [] data_;
+        data_ = nullptr;
+        size_ = {0, 0};
+    }
+}
 
-    uint    vbo_;
-
-};
-
-} // opengl
-} // sun
+}

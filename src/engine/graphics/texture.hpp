@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/vertex_buffer.hpp                                             */
+/*  texture.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,42 +23,70 @@
 /*************************************************************************/
 #pragma once
 
-#include "graphics/vertex_buffer.hpp"
+#include "common/config.hpp"
+#include "common/int.hpp"
+#include "gpu_object.hpp"
 
 namespace sun {
-namespace opengl {
 
-class SUN_API vertex_buffer final : public sun::vertex_buffer
+class image;
+
+class SUN_API texture : public gpu_object
 {
 public:
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
+    enum class filter_mode
+    {
+        nearest = 0,
+        bilinear,
+        trilinear,
+        anisotropic,
+        nearest_anisotropic
+    };
 
-    ~vertex_buffer();
 
-    // implements gpu_object
+    enum class address_mode
+    {
+        wrap = 0,
+        mirror,
+        clamp,
+        border,
+    };
 
-    void release() override;
+    enum class usage
+    {
+        static_usage = 0,
+        dynamic,
+        render_target,
+        depth_stencil
+    };
 
-    void bind() const override;
+    texture();
 
-    void unbind() const override;
+    virtual ~texture() = default;
 
-    // implements sun::vertex_buffer
+    virtual void load(const image& img) = 0;
 
-    void fill_data(size_t offset, size_t count, const void* data) override;
+    virtual void load(const ubyte* data) = 0;
 
-    void resize(size_t capacity) override;
+    inline void set_filter_mode(filter_mode mode) { filter_mode_ = mode; }
 
-    void clear() override;
+    inline void set_address_mode(address_mode mode) { address_mode_ = mode; }
 
-    void set_dynamic(bool) override;
+    inline void set_usage(usage usg) { usage_ = usg; }
 
-private:
+    inline filter_mode get_filter_mode() const { return filter_mode_; }
 
-    uint    vbo_;
+    inline address_mode get_address_mode() const { return address_mode_; }
+
+    inline usage get_usage() const { return usage_; }
+
+protected:
+
+    filter_mode     filter_mode_;
+    address_mode    address_mode_;
+    usage           usage_;
 
 };
 
-} // opengl
-} // sun
+}

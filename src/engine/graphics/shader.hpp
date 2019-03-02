@@ -30,6 +30,8 @@
 
 namespace sun {
 
+class matrix4;
+
 class SUN_API shader_stage : public gpu_object
 {
 public:
@@ -92,6 +94,8 @@ public:
     virtual status build() = 0;
 
     virtual std::string get_warnings() const = 0;
+
+    virtual void set_uniform(const std::string& name, const matrix4& mat4) = 0;
 
     inline status get_status() const { return status_; }
 

@@ -45,6 +45,8 @@ void vertex_buffer::release()
 {
     if (vbo_ != 0) {
         glDeleteBuffers(GL_ARRAY_BUFFER, &vbo_);
+        vertex_count_ = 0;
+        capacity_ = 0;
     }
 }
 
@@ -65,6 +67,7 @@ void vertex_buffer::fill_data(size_t offset, size_t count, const void *data)
 
 void vertex_buffer::resize(size_t capacity)
 {
+    vertex_count_ = 0;
     capacity_ = capacity;
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     glBufferData(GL_ARRAY_BUFFER, capacity_ * vertex_size_, nullptr,
@@ -75,6 +78,7 @@ void vertex_buffer::resize(size_t capacity)
 void vertex_buffer::clear()
 {
     vertex_count_ = 0;
+    capacity_ = 0;
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     glBufferData(GL_ARRAY_BUFFER, 0, nullptr,
         dynamic_ ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);

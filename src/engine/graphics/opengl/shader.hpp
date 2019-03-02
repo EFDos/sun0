@@ -82,6 +82,8 @@ public:
 
     void unbind() const override;
 
+    void set_uniform(const std::string& name, const matrix4& mat4) override;
+
     std::string get_warnings() const override;
 
 private:

@@ -45,6 +45,8 @@ void index_buffer::release()
 {
     if (ibo_ != 0) {
         glDeleteBuffers(GL_ELEMENT_ARRAY_BUFFER, &ibo_);
+        index_count_ = 0;
+        capacity_ = 0;
     }
 }
 
@@ -65,6 +67,7 @@ void index_buffer::fill_data(size_t offset, size_t count, const uint* data)
 
 void index_buffer::resize(size_t capacity)
 {
+    index_count_ = 0;
     capacity_ = capacity;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, capacity_ * sizeof(uint), nullptr,
@@ -74,6 +77,7 @@ void index_buffer::resize(size_t capacity)
 
 void index_buffer::clear()
 {
+    capacity_ = 0;
     index_count_ = 0;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_STATIC_DRAW);

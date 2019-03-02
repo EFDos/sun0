@@ -28,6 +28,7 @@
 
 namespace sun {
 
+class matrix4;
 class vertex_buffer;
 class index_buffer;
 class shader;
@@ -76,6 +77,8 @@ public:
     virtual void draw(const vertex_buffer& buffer, const shader* p_shader = nullptr) const = 0;
 
     virtual void draw_indexed(const vertex_buffer& vbuffer, const index_buffer& ibuffer, const shader* p_shader = nullptr) const = 0;
+
+    virtual void set_projection(const matrix4& projection) = 0;
 
     virtual void set_color(const color&);
 

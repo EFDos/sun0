@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "shader.hpp"
 #include "common/opengl.hpp"
+#include "common/types.hpp"
 #include "core/logger.hpp"
 
 namespace sun {
@@ -195,6 +196,13 @@ void shader::linking_check_()
     } else {
         status_ = status::ok;
     }
+}
+
+void shader::set_uniform(const std::string& name, const matrix4& mat4)
+{
+    glUseProgram(id_);
+    glUniformMatrix4fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, mat4.get_data());
+    glUseProgram(0);
 }
 
 std::string shader::get_warnings() const

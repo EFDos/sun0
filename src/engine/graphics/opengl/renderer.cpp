@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "renderer.hpp"
 #include "common/opengl.hpp"
+#include "common/types.hpp"
 
 #include "shader.hpp"
 #include "vertex_buffer.hpp"
@@ -51,6 +52,10 @@ void renderer::init()
     }
 
     sun_log_info("OpenGL Initialized");
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_BLEND_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     default_flat_shader_ = create_shader("res/flat.glsl");
 
@@ -101,6 +106,12 @@ sun::shader* renderer::create_shader(const std::string& path) const
     }
 }
 
+void renderer::set_projection(const matrix4& projection)
+{
+    default_flat_shader_->set_uniform("projection", projection);
+    //glViewport(0, 0, 1280, 720);
+}
+
 void renderer::clear(const color& col)
 {
     auto colf = to_colorf(col);
@@ -145,15 +156,15 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
         default_flat_shader_->bind();
     }
 
+    ibuffer.bind();
     glBindVertexArray(flat_vao_);
     vbuffer.bind();
-    ibuffer.bind();
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
     glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
 
-    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
 }
 
 } // opengl

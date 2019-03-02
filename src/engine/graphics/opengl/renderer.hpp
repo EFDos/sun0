@@ -52,6 +52,8 @@ public:
 
     void clear() override;
 
+    void set_projection(const matrix4& projection) override;
+
     void draw(const sun::vertex_buffer& buffer,
               const sun::shader* p_shader = nullptr) const override;
 

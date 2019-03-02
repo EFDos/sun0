@@ -171,6 +171,11 @@ shader::status shader::build()
 
 void shader::bind() const
 {
+    if (id_ == 0) {
+        sun_log_error("Failed to bind shader: Shader in invalid state.");
+        return;
+    }
+
     glUseProgram(id_);
 }
 
@@ -188,6 +193,12 @@ void shader::release()
 
 void shader::linking_check_()
 {
+    if (id_ == 0) {
+        sun_log_error("Failed to check linking on shader:"
+                      " Shader in invalid state.");
+        return;
+    }
+
     GLint result = -1;
     glGetProgramiv(id_, GL_LINK_STATUS, &result);
 
@@ -200,6 +211,11 @@ void shader::linking_check_()
 
 void shader::set_uniform(const std::string& name, const matrix4& mat4)
 {
+    if (id_ == 0) {
+        sun_log_error("Failed to set shader uniform: Shader in invalid state.");
+        return;
+    }
+
     glUseProgram(id_);
     glUniformMatrix4fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, mat4.get_data());
     glUseProgram(0);
@@ -207,6 +223,12 @@ void shader::set_uniform(const std::string& name, const matrix4& mat4)
 
 std::string shader::get_warnings() const
 {
+    if (id_ == 0) {
+        sun_log_error("Failed to get shader warnings:"
+                      " Shader in invalid state.");
+        return "";
+    }
+
     GLint length = 0;
 
     glGetProgramiv(id_, GL_INFO_LOG_LENGTH, &length);

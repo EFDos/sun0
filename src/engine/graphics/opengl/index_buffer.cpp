@@ -52,6 +52,11 @@ void index_buffer::release()
 
 void index_buffer::fill_data(size_t offset, size_t count, const uint* data)
 {
+    if (ibo_ == 0) {
+        sun_log_error("Failed to fill index buffer: Buffer in invalid state.");
+        return;
+    }
+
     if (offset + count > capacity_) {
         sun_log_error("Failed to fill index buffer data: over capacity");
         return;
@@ -67,6 +72,12 @@ void index_buffer::fill_data(size_t offset, size_t count, const uint* data)
 
 void index_buffer::resize(size_t capacity)
 {
+    if (ibo_ == 0) {
+        sun_log_error("Failed to resize index buffer:"
+                      " Buffer in invalid state.");
+        return;
+    }
+
     index_count_ = 0;
     capacity_ = capacity;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
@@ -77,6 +88,11 @@ void index_buffer::resize(size_t capacity)
 
 void index_buffer::clear()
 {
+    if (ibo_ == 0) {
+        sun_log_error("Failed to clear index buffer: Buffer in invalid state.");
+        return;
+    }
+
     capacity_ = 0;
     index_count_ = 0;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
@@ -86,6 +102,11 @@ void index_buffer::clear()
 
 void index_buffer::bind() const
 {
+    if (ibo_ == 0) {
+        sun_log_error("Failed to bind index buffer: Buffer in invalid state.");
+        return;
+    }
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
 }
 

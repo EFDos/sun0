@@ -52,6 +52,11 @@ void vertex_buffer::release()
 
 void vertex_buffer::fill_data(size_t offset, size_t count, const void *data)
 {
+    if (vbo_ == 0) {
+        sun_log_error("Failed to fill vertex buffer: Buffer in invalid state.");
+        return;
+    }
+
     if (offset + count > capacity_) {
         sun_log_error("Failed to fill vertex buffer data: over capacity");
         return;
@@ -67,6 +72,12 @@ void vertex_buffer::fill_data(size_t offset, size_t count, const void *data)
 
 void vertex_buffer::resize(size_t capacity)
 {
+    if (vbo_ == 0) {
+        sun_log_error("Failed to resize vertex buffer:"
+                      " Buffer in invalid state.");
+        return;
+    }
+
     vertex_count_ = 0;
     capacity_ = capacity;
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
@@ -77,6 +88,12 @@ void vertex_buffer::resize(size_t capacity)
 
 void vertex_buffer::clear()
 {
+    if (vbo_ == 0) {
+        sun_log_error("Failed to clear vertex buffer:"
+                      " Buffer in invalid state.");
+        return;
+    }
+
     vertex_count_ = 0;
     capacity_ = 0;
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
@@ -87,6 +104,11 @@ void vertex_buffer::clear()
 
 void vertex_buffer::bind() const
 {
+    if (vbo_ == 0) {
+        sun_log_error("Failed to bind vertex buffer: Buffer in invalid state.");
+        return;
+    }
+
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 }
 
@@ -97,6 +119,12 @@ void vertex_buffer::unbind() const
 
 void vertex_buffer::set_dynamic(bool dynamic)
 {
+    if (vbo_ == 0) {
+        sun_log_error("Failed to set property on vertex buffer:"
+                      "Buffer in invalid state.");
+        return;
+    }
+
     if (dynamic_ != dynamic && vertex_count_ > 0) {
         // get existing data
         size_t data_size = capacity_ * vertex_size_;

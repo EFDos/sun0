@@ -23,6 +23,8 @@
 /*************************************************************************/
 #include "texture.hpp"
 
+#include "core/logger.hpp"
+
 #include "common/types.hpp"
 #include "common/opengl.hpp"
 
@@ -56,6 +58,11 @@ void texture::release()
 
 void texture::bind() const
 {
+    if (id_ == 0) {
+        sun_log_error("Error binding texture: Texture in invalid state.");
+        return;
+    }
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, id_);
 }
@@ -73,6 +80,15 @@ void texture::load(const image& img)
 
 void texture::load(const vector2u& size, const ubyte* data)
 {
+    if (id_ == 0) {
+        sun_log_error("Error loading texture: Texture in invalid state.");
+        return;
+    }
+
+    if (data == nullptr) {
+        sun_log_error("Error loading texture: data is null");
+    }
+
     size_ = size;
     glBindTexture(GL_TEXTURE_2D, id_);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

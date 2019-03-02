@@ -23,6 +23,8 @@
 /*************************************************************************/
 #include "image.hpp"
 
+#include "core/logger.hpp"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -60,6 +62,11 @@ void image::load(const std::string& path)
     int width, height, channels;
 
     ubyte* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+
+    if (data == nullptr) {
+        sun_logf_error("Error loading image: %s", path.c_str());
+        return;
+    }
 
     set_data({static_cast<uint>(width), static_cast<uint>(height)}, data);
 

@@ -48,7 +48,7 @@ public:
 
     void load(const image& img) override;
 
-    void load(const ubyte* data) override;
+    void load(const vector2u& size, const ubyte* data) override;
 
 private:
 

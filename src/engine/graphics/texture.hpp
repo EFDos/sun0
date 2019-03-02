@@ -24,7 +24,7 @@
 #pragma once
 
 #include "common/config.hpp"
-#include "common/int.hpp"
+#include "common/types.hpp"
 #include "gpu_object.hpp"
 
 namespace sun {
@@ -67,7 +67,7 @@ public:
 
     virtual void load(const image& img) = 0;
 
-    virtual void load(const ubyte* data) = 0;
+    virtual void load(const vector2u& size, const ubyte* data) = 0;
 
     inline void set_filter_mode(filter_mode mode) { filter_mode_ = mode; }
 
@@ -81,11 +81,15 @@ public:
 
     inline usage get_usage() const { return usage_; }
 
+    inline const vector2u& get_size() const { return size_; }
+
 protected:
 
     filter_mode     filter_mode_;
     address_mode    address_mode_;
     usage           usage_;
+
+    vector2u        size_;
 
 };
 

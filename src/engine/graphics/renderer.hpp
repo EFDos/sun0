@@ -32,6 +32,7 @@ class matrix4;
 class vertex_buffer;
 class index_buffer;
 class shader;
+class texture;
 
 class SUN_API renderer : public system
 {
@@ -69,6 +70,8 @@ public:
     virtual shader* create_shader(const std::string& path) const = 0;
 
     virtual index_buffer* create_index_buffer(size_t capacity) const = 0;
+
+    virtual texture* create_texture() const = 0;
 
     virtual void clear(const color&) = 0;
 

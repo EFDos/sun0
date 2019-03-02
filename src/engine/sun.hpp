@@ -38,10 +38,12 @@
 #include "common/types.hpp"
 
 // GRAPHICS
+#include "graphics/image.hpp"
 #include "graphics/renderer.hpp"
 #include "graphics/vertex_buffer.hpp"
 #include "graphics/index_buffer.hpp"
 #include "graphics/shader.hpp"
+#include "graphics/texture.hpp"
 
 /*********** ENTRY POINT ***********/
 #include "core/main.hpp"

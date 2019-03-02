@@ -44,7 +44,7 @@ public:
 
     void load(const std::string&);
 
-    void allocate(uint x, uint y);
+    void allocate(uint width, uint height);
 
     void allocate(const vector2u& size);
 

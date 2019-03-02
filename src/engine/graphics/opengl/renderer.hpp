@@ -48,6 +48,8 @@ public:
 
     sun::index_buffer* create_index_buffer(size_t capacity) const override;
 
+    sun::texture* create_texture() const override;
+
     void clear(const color&) override;
 
     void clear() override;

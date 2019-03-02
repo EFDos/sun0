@@ -16,6 +16,12 @@ public:
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
         quad_ = renderer_->create_vertex_buffer(sizeof(vertex_def), 4);
         indices_ = renderer_->create_index_buffer(6);
+        texture_ = renderer_->create_texture();
+
+        sun::image img;
+        img.load("res/bototem.png");
+
+        texture_->load(img);
 
         vertex_def quad_verts[] = {
             {0.f , 0.f, 1.f, 1.f, 1.f, 1.f},
@@ -34,6 +40,7 @@ public:
 
     	renderer_->clear();
 
+        texture_->bind();
     	renderer_->draw_indexed(*quad_, *indices_, nullptr);
 	}
 
@@ -53,6 +60,7 @@ private:
 
     sun::vertex_buffer* quad_;
     sun::index_buffer* indices_;
+    sun::texture* texture_;
 };
 
 SUN_DEFINE_MAIN_APP(sandbox)

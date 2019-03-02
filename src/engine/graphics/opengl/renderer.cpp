@@ -28,6 +28,7 @@
 #include "shader.hpp"
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"
+#include "texture.hpp"
 
 #include "core/logger.hpp"
 #include "core/filesys/filesys.hpp"
@@ -104,6 +105,11 @@ sun::shader* renderer::create_shader(const std::string& path) const
     } else {
         return dynamic_cast<sun::shader*>(gl_shader);
     }
+}
+
+sun::texture* renderer::create_texture() const
+{
+    return dynamic_cast<sun::texture*>(new opengl::texture());
 }
 
 void renderer::set_projection(const matrix4& projection)

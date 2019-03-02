@@ -66,6 +66,14 @@ void image::load(const std::string& path)
     stbi_image_free(data);
 }
 
+void image::allocate(uint width, uint height)
+{
+    clear();
+
+    data_ = new ubyte[width * height * 4];
+    size_ = {width, height};
+}
+
 void image::allocate(const vector2u& size)
 {
     clear();

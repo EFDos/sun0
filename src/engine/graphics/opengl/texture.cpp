@@ -69,7 +69,6 @@ void texture::bind() const
 
 void texture::unbind() const
 {
-    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -91,7 +90,6 @@ void texture::load(const vector2u& size, const ubyte* data)
 
     size_ = size;
     glBindTexture(GL_TEXTURE_2D, id_);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_.w, size.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
 }

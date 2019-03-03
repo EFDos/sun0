@@ -56,7 +56,7 @@ void renderer::init()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_BLEND_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     default_flat_shader_ = create_shader("res/flat.glsl");
     default_textured_shader_ = create_shader("res/textured.glsl");
@@ -171,9 +171,10 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     vbuffer.bind();
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
     glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
     glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 2));
-    glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 4));
+    glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 4));
 
     glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
 }

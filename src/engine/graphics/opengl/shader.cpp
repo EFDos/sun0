@@ -221,6 +221,18 @@ void shader::set_uniform(const std::string& name, const matrix4& mat4)
     glUseProgram(0);
 }
 
+void shader::set_uniform(const std::string& name, int v)
+{
+    if (id_ == 0) {
+        sun_log_error("Failed to set shader uniform: Shader in invalid state.");
+        return;
+    }
+
+    glUseProgram(id_);
+    glUniform1i(glGetUniformLocation(id_, name.c_str()), v);
+    glUseProgram(0);
+}
+
 std::string shader::get_warnings() const
 {
     if (id_ == 0) {

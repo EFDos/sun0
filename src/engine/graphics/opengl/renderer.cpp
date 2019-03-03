@@ -59,6 +59,9 @@ void renderer::init()
     glBlendFunc(GL_BLEND_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     default_flat_shader_ = create_shader("res/flat.glsl");
+    default_textured_shader_ = create_shader("res/textured.glsl");
+
+    default_textured_shader_->set_uniform("tex", 0);
 
     glGenVertexArrays(1, &flat_vao_);
     glBindVertexArray(flat_vao_);
@@ -115,6 +118,7 @@ sun::texture* renderer::create_texture() const
 void renderer::set_projection(const matrix4& projection)
 {
     default_flat_shader_->set_uniform("projection", projection);
+    default_textured_shader_->set_uniform("projection", projection);
     //glViewport(0, 0, 1280, 720);
 }
 
@@ -159,7 +163,32 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     if (p_shader != nullptr) {
         p_shader->bind();
     } else {
-        default_flat_shader_->bind();
+        default_textured_shader_->bind();
+    }
+
+    ibuffer.bind();
+    glBindVertexArray(flat_vao_);
+    vbuffer.bind();
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 2));
+    glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 4));
+
+    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
+}
+
+/*
+ * Old function that draws flat shapes
+ */
+/*void old_draw_indexed(const sun::vertex_buffer& vbuffer,
+                            const sun::index_buffer& ibuffer,
+                            const sun::shader* p_shader) const
+{
+    if (p_shader != nullptr) {
+        p_shader->bind();
+    } else {
+        default_textured_shader_->bind();
     }
 
     ibuffer.bind();
@@ -171,7 +200,7 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
 
     glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
-}
+}*/
 
 } // opengl
 } // sun

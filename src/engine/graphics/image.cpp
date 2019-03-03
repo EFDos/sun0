@@ -59,16 +59,26 @@ image::~image()
 
 void image::load(const std::string& path)
 {
+    clear();
+
     int width, height, channels;
 
-    ubyte* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+    ubyte* data = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+
+    #ifdef SUN_OUT_DEBUG
+        sun_logf_debug("STB image loaded\nwidth: %d\nheight: %d\nbpp: %d",
+            width, height, channels);
+    #endif
 
     if (data == nullptr) {
         sun_logf_error("Error loading image: %s", path.c_str());
         return;
     }
+    //TODO: DISCOVER FUCKING WHY THIS FUNCTION CALL KILLS EVERYTHING
+    //set_data({static_cast<uint>(width), static_cast<uint>(height)}, data);
 
-    set_data({static_cast<uint>(width), static_cast<uint>(height)}, data);
+    allocate(width, height);
+    std::memcpy(data_, data, width * height * 4);
 
     stbi_image_free(data);
 }

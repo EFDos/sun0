@@ -8,11 +8,12 @@ public:
     struct vertex_def
     {
         float x, y;
+        float u, v;
         float r, g, b, a;
     };
 
 	sandbox() : sun::application() {
-        renderer_->set_color(sun::color::black);
+        renderer_->set_color(sun::color::white);
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
         quad_ = renderer_->create_vertex_buffer(sizeof(vertex_def), 4);
         indices_ = renderer_->create_index_buffer(6);
@@ -24,10 +25,10 @@ public:
         texture_->load(img);
 
         vertex_def quad_verts[] = {
-            {0.f , 0.f, 1.f, 1.f, 1.f, 1.f},
-            {64.f, 0.f, 1.f, 1.f, 1.f, 1.f},
-            {64.f, 64.f, 1.f, 1.f, 1.f, 1.f},
-            {0.f , 64.f, 1.f, 1.f, 1.f, 1.f},
+            {0.f , 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f},
+            {128.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f},
+            {128.f, 64.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f},
+            {0.f , 64.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f},
         };
 
         uint indices_data[] = {

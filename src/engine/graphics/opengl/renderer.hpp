@@ -67,6 +67,7 @@ private:
 
     uint            flat_vao_;
     sun::shader*    default_flat_shader_;
+    sun::shader*    default_textured_shader_;
 
 };
 

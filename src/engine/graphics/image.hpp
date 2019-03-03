@@ -62,7 +62,7 @@ public:
 
 private:
 
-    uint8*      data_;
+    ubyte*      data_;
     vector2u    size_;
 };
 

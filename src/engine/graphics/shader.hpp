@@ -97,6 +97,8 @@ public:
 
     virtual void set_uniform(const std::string& name, const matrix4& mat4) = 0;
 
+    virtual void set_uniform(const std::string& name, int v) = 0;
+
     inline status get_status() const { return status_; }
 
 protected:

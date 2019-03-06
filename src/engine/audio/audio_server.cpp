@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  filesys.hpp                                                          */
+/*  audio_server.cpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,14 +21,16 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "input_stream.hpp"
+#include "audio_server.hpp"
 
 namespace sun {
-namespace filesys {
 
-std::string read_file(const std::string& path);
-
+void audio_server::init()
+{
 }
+
+void audio_server::shutdown()
+{
+}
+
 }

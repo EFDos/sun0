@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  filesys.hpp                                                          */
+/*  input_stream.cpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,14 +21,96 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
 #include "input_stream.hpp"
+
+#include "core/logger.hpp"
 
 namespace sun {
 namespace filesys {
 
-std::string read_file(const std::string& path);
+input_stream::input_stream() noexcept : file_(nullptr)
+{
+    // do nothing
+}
 
+input_stream::~input_stream()
+{
+    if (file_ != nullptr) {
+        std::fclose(file_);
+    }
 }
+
+bool input_stream::open(const std::string& path)
+{
+    if (file_ != nullptr) {
+        std::fclose(file_);
+    }
+
+    file_ = std::fopen(path.c_str(), "rb");
+
+    if (file_ == nullptr) {
+        sun_logf_error("Could not open input file %s for stream.",
+            path.c_str());
+
+        return false;
+    }
+
+    return true;
 }
+
+void input_stream::close()
+{
+    if (file_ != nullptr) {
+        std::fclose(file_);
+    }
+}
+
+int64 input_stream::read(void* buffer, int64 size) const
+{
+    if (file_ == nullptr) {
+        sun_log_error("Can't read from closed stream.");
+        return -1;
+    }
+
+    return std::fread(buffer, 1, static_cast<std::size_t>(size), file_);
+}
+
+int64 input_stream::seek(int64 position)
+{
+    if (file_ == nullptr) {
+        sun_log_error("Can't seek on closed stream.");
+        return -1;
+    }
+
+    std::fseek(file_, static_cast<size_t>(position), SEEK_SET);
+
+    return tell();
+}
+
+int64 input_stream::tell() const
+{
+    if (file_ == nullptr) {
+        sun_log_error("Can't tell from closed stream.");
+        return -1;
+    }
+
+    return std::ftell(file_);
+}
+
+int64 input_stream::get_size() const
+{
+    if (file_ == nullptr) {
+        sun_log_error("Can't get size from closed stream.");
+        return -1;
+    }
+
+    size_t pos = std::ftell(file_);
+    std::fseek(file_, 0, SEEK_END);
+    int64 size = std::ftell(file_);
+    std::fseek(file_, pos, SEEK_SET);
+
+    return size;
+}
+
+} // filesys
+} // sun

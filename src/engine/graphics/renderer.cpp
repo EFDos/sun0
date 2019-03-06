@@ -26,14 +26,6 @@
 
 namespace sun {
 
-renderer::renderer()
-{
-}
-
-renderer::~renderer()
-{
-}
-
 void renderer::init()
 {
     sun_log_info("Graphics System initialized.");

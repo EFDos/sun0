@@ -56,9 +56,9 @@ public:
         int canvases;
     };
 
-    renderer();
+    renderer() = default;
 
-    virtual ~renderer();
+    virtual ~renderer() = default;
 
     // implements system
     virtual void init() override;

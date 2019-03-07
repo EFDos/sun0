@@ -21,6 +21,7 @@ sun_lib_src = [
   'core/window.cpp',
   'system/system.cpp',
   'audio/audio_server.cpp',
+  'audio/openal/audio_server.cpp',
   'graphics/image.cpp',
   'graphics/renderer.cpp',
   'graphics/shader.cpp',

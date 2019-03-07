@@ -24,8 +24,9 @@
 #include "application.hpp"
 #include "../version.hpp"
 
-#include "system/system.hpp"
+//#include "system/system.hpp"
 #include "graphics/opengl/renderer.hpp"
+#include "audio/openal/audio_server.hpp"
 
 #include "logger.hpp"
 #include "event.hpp"
@@ -44,6 +45,7 @@ application::application() :
 	window_.create("Sandbox - Sun0 Engine", {1280, 720});
 
     renderer_ = new opengl::renderer();
+    system::register_instance(new openal::audio_server());
     system::register_instance(renderer_);
 }
 

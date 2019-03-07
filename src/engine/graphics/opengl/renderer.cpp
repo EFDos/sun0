@@ -40,16 +40,14 @@ renderer::renderer() : flat_vao_(0), default_flat_shader_(nullptr) {}
 
 renderer::~renderer() {}
 
-void renderer::init()
+bool renderer::init()
 {
-    sun::renderer::init();
-
     auto error = glewInit();
 
     if (error != GLEW_NO_ERROR) {
         sun_logf_error("GLEW Initialization error: %s",
                 glewGetErrorString(error));
-        return;
+        return false;
     }
 
     sun_log_info("OpenGL Initialized");
@@ -69,6 +67,8 @@ void renderer::init()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
     glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
+
+    return sun::renderer::init();
 }
 
 void renderer::shutdown()
@@ -77,6 +77,7 @@ void renderer::shutdown()
         delete default_flat_shader_;
         glDeleteVertexArrays(1, &flat_vao_);
     }
+
     sun::renderer::shutdown();
 }
 

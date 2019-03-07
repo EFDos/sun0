@@ -1,5 +1,5 @@
 project('sun0', ['cpp', 'c'],
-  version: '0.4.1',
+  version: '0.4.2',
   meson_version: '>= 0.43.0',
   license: 'GPL3',
   default_options: 'cpp_std=c++17'
@@ -12,7 +12,8 @@ sun_includes = include_directories('./src/thirdparty', './src/engine')
 
 sun_depends = [
 	dependency('sdl2'),
-	dependency('glew')
+	dependency('glew'),
+	dependency('openal')
 ]
 
 subdir('src/engine')

@@ -56,7 +56,7 @@ public:
 
     virtual ~audio_server() = default;
 
-    virtual void init() override;
+    virtual bool init() override;
 
     virtual void shutdown() override;
 

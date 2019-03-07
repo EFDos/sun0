@@ -38,7 +38,7 @@ public:
 
     ~renderer();
 
-    void init() override;
+    bool init() override;
 
     void shutdown() override;
 

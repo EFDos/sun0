@@ -43,7 +43,7 @@ public:
 
     virtual ~system();
 
-    virtual void init() = 0;
+    virtual bool init() = 0;
 
     virtual void shutdown() = 0;
 

@@ -48,6 +48,7 @@ void system::clear_instances()
         it = systems_.erase(it))
     {
         if (it->second != nullptr) {
+            sun_logf_info("*-- System Shutdown: %s --*", it->second->get_name());
             it->second->shutdown();
             delete it->second;
         }
@@ -59,6 +60,7 @@ void system::register_instance(system* instance)
     auto it = systems_.find(instance->get_name());
 
     if (it == systems_.end()) {
+        sun_logf_info("*-- System Init: %s --*", instance->get_name());
         instance->init();
         systems_[instance->get_name()] = instance;
     } else {

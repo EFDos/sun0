@@ -61,7 +61,7 @@ public:
     virtual ~renderer() = default;
 
     // implements system
-    virtual void init() override;
+    virtual bool init() override;
 
     virtual void shutdown() override;
 

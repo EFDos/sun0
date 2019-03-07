@@ -26,9 +26,10 @@
 
 namespace sun {
 
-void renderer::init()
+bool renderer::init()
 {
-    sun_log_info("Graphics System initialized.");
+    sun_log_info("Graphics System ready.");
+    return true;
 }
 
 void renderer::shutdown()

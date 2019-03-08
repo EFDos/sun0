@@ -52,8 +52,6 @@ public:
 
     SUN_SYSTEM_TYPE(audio_server);
 
-    audio_server() = default;
-
     virtual ~audio_server() = default;
 
     virtual bool init() override;
@@ -90,6 +88,8 @@ public:
     inline const audio_listener3D& get_listener() const { return listener_; }
 
 protected:
+
+    audio_server() = default;
 
     audio_listener3D    listener_;
     float               volume_;

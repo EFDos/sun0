@@ -56,8 +56,6 @@ public:
         int canvases;
     };
 
-    renderer() = default;
-
     virtual ~renderer() = default;
 
     // implements system
@@ -86,6 +84,8 @@ public:
     virtual void set_color(const color&);
 
 protected:
+
+    renderer() = default;
 
     colorf  clear_color_;
 };

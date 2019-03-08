@@ -38,8 +38,6 @@ public:
         playing
     };
 
-    sound_source();
-
     virtual ~sound_source();
 
     virtual void play();
@@ -86,9 +84,13 @@ public:
 
     float get_attenuation() const { return attenuation_; }
 
+    status get_status() const { return status_; }
+
     const vector3f& get_position() const { return position_; }
 
-private:
+protected:
+
+    sound_source();
 
     float       volume_;
     float       pitch_;

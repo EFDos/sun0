@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gpu_object.hpp                                                       */
+/*  openal/sound_stream.hpp                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,29 +23,69 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/config.hpp"
+#include "audio/sound_stream.hpp"
+
+#include <thread>
 
 namespace sun {
 
-class SUN_API gpu_object
+class sound_stream : public sound_source
 {
 public:
 
-    virtual ~gpu_object() = default;
+    struct chunk {
+        const int16*    samples;
+        std::size_t     sample_count;
+    };
 
-    gpu_object(const gpu_object&) = delete;
+    virtual ~sound_stream() {}
 
-    gpu_object& operator=(const gpu_object&) = delete;
+    void play() override;
 
-    virtual void bind() const = 0;
+    void pause() override;
 
-    virtual void unbind() const = 0;
+    void stop() override;
 
-    virtual void release() = 0;
+    void load(const filesys::input_stream& file);
+
+    inline void set_loop(bool loop) { loop_ = loop; }
+
+    //TODO: Add set/get for playing offset based on time
+    //void set_playing_offset(some_time_struct);
+    //some_time_struct get_playing_offset() const;
+
+    uint get_channel_count() const { return channel_count_; }
+
+    uint get_sample_rate() const { return sample_rate_; }
+
+    inline bool get_loop() const { return loop_; }
 
 protected:
 
-    gpu_object() = default;
+    sound_stream();
+
+    void initialize_(uint channel_count, uint sample_rate);
+
+    virtual bool on_get_data_(chunk& data) = 0;
+
+    //virtual void on_seek(
+
+    virtual void stream_data_() = 0;
+
+    virtual int64 on_loop_();
+
+    std::thread stream_thread_;
+    std::mutex  thread_mutex_;
+    status      thread_start_status_;
+
+    uint32  format_;
+    uint    buffers_[3];
+    uint    channel_count_;
+    uint    sample_rate_;
+    uint64  samples_processed_;
+    int64   buffer_seeks_[3];
+    bool    loop_;
+
 };
 
 }

@@ -32,8 +32,6 @@ class vertex_buffer : public gpu_object
 {
 public:
 
-    vertex_buffer(uint8 vertex_size, size_t capacity, bool dynamic = false);
-
     virtual ~vertex_buffer() = default;
 
     virtual void fill_data(size_t offset, size_t count, const void* data) = 0;
@@ -57,6 +55,8 @@ public:
     size_t get_capacity() const { return capacity_; }
 
 protected:
+
+    vertex_buffer(uint8 vertex_size, size_t capacity, bool dynamic = false);
 
     uint8   vertex_size_;
     size_t  vertex_count_;

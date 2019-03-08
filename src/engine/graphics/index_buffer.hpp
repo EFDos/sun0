@@ -32,8 +32,6 @@ class index_buffer : public gpu_object
 {
 public:
 
-    index_buffer(size_t capacity);
-
     virtual ~index_buffer() = default;
 
     virtual void fill_data(size_t offset, size_t count, const uint* data) = 0;
@@ -51,6 +49,8 @@ public:
     size_t get_capacity() const { return capacity_; }
 
 protected:
+
+    index_buffer(size_t capacity);
 
     size_t  index_count_;
     size_t  capacity_;

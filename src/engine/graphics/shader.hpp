@@ -51,8 +51,6 @@ public:
         compile_fail
     };
 
-    shader_stage(const std::string& source, type t);
-
     virtual ~shader_stage();
 
     virtual status compile() = 0;
@@ -62,6 +60,8 @@ public:
     inline status get_status() const { return status_; }
 
 protected:
+
+    shader_stage(const std::string& source, type t);
 
     virtual void compile_check_() = 0;
 
@@ -87,8 +87,6 @@ public:
         invalid
     };
 
-    shader(shader_stage* vertex, shader_stage* fragment);
-
     virtual ~shader();
 
     virtual status build() = 0;
@@ -102,6 +100,8 @@ public:
     inline status get_status() const { return status_; }
 
 protected:
+
+    shader(shader_stage* vertex, shader_stage* fragment);
 
     virtual void linking_check_() = 0;
 

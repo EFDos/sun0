@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gpu_object.hpp                                                       */
+/*  sound_stream.cpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,31 +21,12 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "common/config.hpp"
+#include "sound_stream.hpp"
 
 namespace sun {
 
-class SUN_API gpu_object
-{
-public:
-
-    virtual ~gpu_object() = default;
-
-    gpu_object(const gpu_object&) = delete;
-
-    gpu_object& operator=(const gpu_object&) = delete;
-
-    virtual void bind() const = 0;
-
-    virtual void unbind() const = 0;
-
-    virtual void release() = 0;
-
-protected:
-
-    gpu_object() = default;
-};
+sound_stream::sound_stream()
+:   stream_thread_(args)
+{}
 
 }

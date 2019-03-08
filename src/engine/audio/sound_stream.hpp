@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gpu_object.hpp                                                       */
+/*  sound_stream.hpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,29 +23,52 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/config.hpp"
+#include "common/int.hpp"
+#include "sound_source.hpp"
 
 namespace sun {
 
-class SUN_API gpu_object
+class sound_stream : public sound_source
 {
 public:
 
-    virtual ~gpu_object() = default;
+    struct chunk {
+        const int16*    samples;
+        std::size_t     sample_count;
+    };
 
-    gpu_object(const gpu_object&) = delete;
+    virtual ~sound_stream() {}
 
-    gpu_object& operator=(const gpu_object&) = delete;
+    void play() override;
 
-    virtual void bind() const = 0;
+    void pause() override;
 
-    virtual void unbind() const = 0;
+    void stop() override;
 
-    virtual void release() = 0;
+    void load(filesys::input_stream& file);
+
+    inline void set_loop(bool loop) { loop_ = loop; }
+
+    //TODO: Add set/get for playing offset based on time
+    //void set_playing_offset(some_time_struct);
+    //some_time_struct get_playing_offset() const;
+
+    uint get_channel_count() const { return channel_count_; }
+
+    uint get_sample_rate() const { return sample_rate_; }
+
+    inline bool get_loop() const { return loop_; }
 
 protected:
 
-    gpu_object() = default;
+    sound_stream();
+
+    uint    channel_count_;
+    uint    sample_rate_;
+    bool    loop_;
+
+    filesys::input_stream&  stream_;
+
 };
 
 }

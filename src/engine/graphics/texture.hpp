@@ -61,8 +61,6 @@ public:
         depth_stencil
     };
 
-    texture();
-
     virtual ~texture() = default;
 
     virtual void load(const image& img) = 0;
@@ -84,6 +82,8 @@ public:
     inline const vector2u& get_size() const { return size_; }
 
 protected:
+
+    texture();
 
     filter_mode     filter_mode_;
     address_mode    address_mode_;

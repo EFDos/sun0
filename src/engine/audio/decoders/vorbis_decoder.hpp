@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  input_stream.hpp                                                     */
+/*  vorbis_decoder.hpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,45 +23,44 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/config.hpp"
-#include "common/int.hpp"
-
-#include <fstream>
+#include "decoder.hpp"
+#include <vorbis/vorbisfile.h>
 
 namespace sun {
-namespace filesys {
 
-class SUN_API input_stream
+class SUN_API vorbis_decoder final : public decoder
 {
 public:
 
-    input_stream() noexcept;
+    vorbis_decoder();
 
-    ~input_stream();
+    ~vorbis_decoder();
 
-    input_stream(const input_stream&) = delete;
+    // Implements decoder
+    bool open(filesys::input_stream& stream, info& i) override;
 
-    input_stream& operator=(const input_stream&) = delete;
+    void seek(uint64 sample_offset) override;
 
-    bool open(const std::string& path);
+    uint64 read(int16* samples, uint64 max) override;
 
-    void close();
-
-    int64 read(void* buffer, int64 size) const;
-
-    int64 seek(int64 position);
-
-    int64 tell() const;
-
-    int64 get_size() const;
-
-    inline const std::string& get_filepath() const { return filepath_; }
+    static bool check(filesys::input_stream& stream);
 
 private:
 
-    std::FILE*   file_;
-    std::string  filepath_;
+    void close_();
+
+    OggVorbis_File  vorbis_;
+    uint            channel_count_;
+
+    // Vorbis callbacks
+    static size_t callback_read(void* ptr, size_t size, size_t nmemb, void* data);
+
+    static int callback_seek(void* data, ogg_int64_t offset, int whence);
+
+    static long callback_tell(void* data);
+
+    static ov_callbacks callbacks_;
+
 };
 
-} // filesys
-} // sun
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  input_stream.hpp                                                     */
+/*  sound_source.cpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,47 +21,33 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "common/config.hpp"
-#include "common/int.hpp"
-
-#include <fstream>
+#include "sound_source.hpp"
 
 namespace sun {
-namespace filesys {
 
-class SUN_API input_stream
+sound_source::sound_source()
+:   volume_(1.f),
+    pitch_(1.f),
+    min_distance_(0.f),
+    attenuation_(0.f),
+    relative_(true),
+    status_(status::stopped)
 {
-public:
+}
 
-    input_stream() noexcept;
+void sound_source::play()
+{
+    status_ = status::playing;
+}
 
-    ~input_stream();
+void sound_source::pause()
+{
+    status_ = status::paused;
+}
 
-    input_stream(const input_stream&) = delete;
+void sound_source::stop()
+{
+    status_ = status::stopped;
+}
 
-    input_stream& operator=(const input_stream&) = delete;
-
-    bool open(const std::string& path);
-
-    void close();
-
-    int64 read(void* buffer, int64 size) const;
-
-    int64 seek(int64 position);
-
-    int64 tell() const;
-
-    int64 get_size() const;
-
-    inline const std::string& get_filepath() const { return filepath_; }
-
-private:
-
-    std::FILE*   file_;
-    std::string  filepath_;
-};
-
-} // filesys
-} // sun
+}

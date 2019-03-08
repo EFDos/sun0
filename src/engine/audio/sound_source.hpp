@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  input_stream.hpp                                                     */
+/*  sound_source.hpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -24,44 +24,81 @@
 #pragma once
 
 #include "common/config.hpp"
-#include "common/int.hpp"
-
-#include <fstream>
+#include "math/vector3.hpp"
 
 namespace sun {
-namespace filesys {
 
-class SUN_API input_stream
+class SUN_API sound_source
 {
 public:
 
-    input_stream() noexcept;
+    enum class status {
+        stopped,
+        paused,
+        playing
+    };
 
-    ~input_stream();
+    sound_source();
 
-    input_stream(const input_stream&) = delete;
+    virtual ~sound_source();
 
-    input_stream& operator=(const input_stream&) = delete;
+    virtual void play();
 
-    bool open(const std::string& path);
+    virtual void pause();
 
-    void close();
+    virtual void stop();
 
-    int64 read(void* buffer, int64 size) const;
+    inline virtual void set_volume(float vol) {
+        volume_ = vol;
+    }
 
-    int64 seek(int64 position);
+    inline virtual void set_pitch(float pitch) {
+        pitch_ = pitch;
+    }
 
-    int64 tell() const;
+    inline virtual void set_relative(bool relative) {
+        relative_ = relative;
+    }
 
-    int64 get_size() const;
+    inline virtual void set_minmum_distance(float dist) {
+        min_distance_ = dist;
+    }
 
-    inline const std::string& get_filepath() const { return filepath_; }
+    inline virtual void set_attenuation(float atten) {
+        attenuation_ = atten;
+    }
+
+    inline virtual void set_position(float x, float y, float z) {
+        position_ = {x, y, z};
+    }
+
+    virtual void set_position(const vector3f& pos) {
+        position_ = pos;
+    }
+
+    float get_volume() const { return volume_; }
+
+    float get_pitch() const { return pitch_; }
+
+    bool is_relative() const { return relative_; }
+
+    float get_minimum_distance() const { return min_distance_; }
+
+    float get_attenuation() const { return attenuation_; }
+
+    const vector3f& get_position() const { return position_; }
 
 private:
 
-    std::FILE*   file_;
-    std::string  filepath_;
+    float       volume_;
+    float       pitch_;
+    float       min_distance_;
+    float       attenuation_;
+
+    vector3f    position_;
+
+    bool        relative_;
+    status      status_;
 };
 
-} // filesys
-} // sun
+}

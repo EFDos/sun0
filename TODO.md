@@ -8,7 +8,7 @@
 
 ###Sound
 
-* Add Sound System (OpenAL based)
+* Add Sound Streams and Sound Buffers
 
 ###Resource Management
 

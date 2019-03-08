@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  input_stream.hpp                                                     */
+/*  decoder.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -26,42 +26,30 @@
 #include "common/config.hpp"
 #include "common/int.hpp"
 
-#include <fstream>
-
 namespace sun {
-namespace filesys {
 
-class SUN_API input_stream
+namespace filesys {
+class input_stream;
+}
+
+class SUN_API decoder
 {
 public:
 
-    input_stream() noexcept;
+    struct info
+    {
+        uint64  sample_count;
+        uint    channel_count;
+        uint    sample_rate;
+    };
 
-    ~input_stream();
+    virtual ~decoder() {}
 
-    input_stream(const input_stream&) = delete;
+    virtual bool open(filesys::input_stream& stream, info& i) = 0;
 
-    input_stream& operator=(const input_stream&) = delete;
+    virtual void seek(uint64 sample_offset) = 0;
 
-    bool open(const std::string& path);
-
-    void close();
-
-    int64 read(void* buffer, int64 size) const;
-
-    int64 seek(int64 position);
-
-    int64 tell() const;
-
-    int64 get_size() const;
-
-    inline const std::string& get_filepath() const { return filepath_; }
-
-private:
-
-    std::FILE*   file_;
-    std::string  filepath_;
+    virtual uint64 read(int16* samples, uint64 max) = 0;
 };
 
-} // filesys
 } // sun

@@ -55,6 +55,7 @@ bool input_stream::open(const std::string& path)
         return false;
     }
 
+    filepath_ = path;
     return true;
 }
 

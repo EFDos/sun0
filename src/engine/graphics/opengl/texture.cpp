@@ -33,6 +33,19 @@
 namespace sun {
 namespace opengl {
 
+constexpr GLenum get_gl_type(sun::texture::format fmt)
+{
+    switch (fmt) {
+        case texture::format::rgba:     return GLenum(GL_RGBA8);
+        case texture::format::bgra:     return GLenum(GL_BGRA);
+        case texture::format::red:      return GLenum(GL_RED);
+        case texture::format::blue:     return GLenum(GL_BLUE);
+        case texture::format::green:    return GLenum(GL_GREEN);
+        case texture::format::alpha:    return GLenum(GL_ALPHA8);
+        default: return GLenum();
+    }
+}
+
 texture::texture() : sun::texture(), id_(0)
 {
     glGenTextures(1, &id_);
@@ -86,11 +99,59 @@ void texture::load(const vector2u& size, const ubyte* data)
 
     if (data == nullptr) {
         sun_log_error("Error loading texture: data is null");
+        return;
     }
 
     size_ = size;
     glBindTexture(GL_TEXTURE_2D, id_);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_.w, size.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, get_gl_type(format_), size.w, size.h, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void texture::resize(const vector2u& size)
+{
+    if (id_ == 0) {
+        sun_log_error("Failed to resize texture:"
+                      " Texture in invalid state.");
+        return;
+    }
+
+    size_ = size;
+    glBindTexture(GL_TEXTURE_2D, id_);
+    glTexImage2D(GL_TEXTURE_2D, 0, get_gl_type(format_), size.w, size.h, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void texture::fill(const vector2u& offset, const vector2u& size,
+                   const ubyte* data)
+{
+    if (id_ == 0) {
+        sun_log_error("Error filling texture: Texture in invalid state.");
+        return;
+    }
+
+    if (data == nullptr) {
+        sun_log_error("Error filling texture: data is null");
+    }
+
+    glBindTexture(GL_TEXTURE_2D, id_);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, size.w, size.h,
+                    GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void texture::clear()
+{
+    if (id_ == 0) {
+        sun_log_error("Error clearing texture: Texture in invalid state.");
+        return;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, id_);
+    glTexImage2D(GL_TEXTURE_2D, 0, get_gl_type(format_), 0, 0, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 

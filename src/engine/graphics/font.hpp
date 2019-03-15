@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  types.hpp                                                            */
+/*  font.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -22,13 +22,51 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
-#include "int.hpp"
-#include "color.hpp"
-#include "math/vector2.hpp"
-#include "math/matrix4.hpp"
-#include "math/rect.hpp"
 
-namespace sun {
-    using float32   = float;
-    using float64   = double;
-}
+#include "common/types.hpp"
+#include "texture.hpp"
+
+#include <unordered_map>
+
+namespace sun
+{
+
+class SUN_API font
+{
+public:
+
+    struct glyph
+    {
+        float       advance;
+        rectf       rect;
+
+        glyph() : advance(0) {}
+    };
+
+    font();
+
+    ~font();
+
+    void load(const std::string& filepath);
+
+    const glyph& get_glyph(uint8 code, uint char_size) const;
+
+    float get_kerning(uint32 first, uint32 second, uint size) const;
+
+    float get_line_spacing(uint size) const;
+
+private:
+
+    void cleanup_();
+
+    glyph load_glyph_(uint8 code_point, uint char_size) const;
+
+    bool set_current_size_(uint char_size) const;
+
+    void*                           library_;
+    void*                           face_;
+
+    mutable std::unordered_map<char, glyph> glyphes_;
+};
+
+} // sun

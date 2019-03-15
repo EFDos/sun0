@@ -73,4 +73,7 @@ struct rect
     rect& operator=(const rect&) noexcept = default;
 };
 
+using recti = rect<int>;
+using rectf = rect<float>;
+
 }

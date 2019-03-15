@@ -50,6 +50,12 @@ public:
 
     void load(const vector2u& size, const ubyte* data) override;
 
+    void resize(const vector2u& size) override;
+
+    void fill(const vector2u& offset, const vector2u& size, const ubyte* date) override;
+
+    void clear() override;
+
 private:
 
     uint    id_;

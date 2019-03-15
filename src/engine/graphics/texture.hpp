@@ -61,11 +61,30 @@ public:
         depth_stencil
     };
 
+    enum class format
+    {
+        rgba,
+        bgra,
+        red,
+        green,
+        blue,
+        alpha
+    };
+
     virtual ~texture() = default;
 
     virtual void load(const image& img) = 0;
 
     virtual void load(const vector2u& size, const ubyte* data) = 0;
+
+    virtual void resize(const vector2u& size) = 0;
+
+    virtual void fill(const vector2u& offset, const vector2u& size,
+                      const ubyte* data) = 0;
+
+    virtual void clear() = 0;
+
+    inline void set_format(format fmt) { format_ = fmt; }
 
     inline void set_filter_mode(filter_mode mode) { filter_mode_ = mode; }
 
@@ -79,6 +98,8 @@ public:
 
     inline usage get_usage() const { return usage_; }
 
+    inline format get_format() const { return format_; }
+
     inline const vector2u& get_size() const { return size_; }
 
 protected:
@@ -88,6 +109,7 @@ protected:
     filter_mode     filter_mode_;
     address_mode    address_mode_;
     usage           usage_;
+    format          format_;
 
     vector2u        size_;
 

@@ -54,6 +54,8 @@ public:
 
     void clear() override;
 
+    void set_model_transform(const matrix4& transform) override;
+
     void set_projection(const matrix4& projection) override;
 
     void draw(const sun::vertex_buffer& buffer,

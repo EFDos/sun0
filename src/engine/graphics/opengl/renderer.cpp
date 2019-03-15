@@ -116,6 +116,12 @@ sun::texture* renderer::create_texture() const
     return dynamic_cast<sun::texture*>(new opengl::texture());
 }
 
+void renderer::set_model_transform(const matrix4& transform)
+{
+    default_flat_shader_->set_uniform("model", transform);
+    default_textured_shader_->set_uniform("model", transform);
+}
+
 void renderer::set_projection(const matrix4& projection)
 {
     default_flat_shader_->set_uniform("projection", projection);

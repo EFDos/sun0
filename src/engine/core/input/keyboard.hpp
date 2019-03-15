@@ -99,7 +99,7 @@ enum class key
     HOME        = SDLK_HOME,
     INSERT,
     DELETE,
-    ADD,
+    ADD         = SDLK_PLUS,
     SUBTRACT,
     MULTIPLY,
     DIVIDE,

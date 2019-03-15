@@ -79,6 +79,8 @@ public:
 
     virtual void draw_indexed(const vertex_buffer& vbuffer, const index_buffer& ibuffer, const shader* p_shader = nullptr) const = 0;
 
+    virtual void set_model_transform(const matrix4& transform) = 0;
+
     virtual void set_projection(const matrix4& projection) = 0;
 
     virtual void set_color(const color&);

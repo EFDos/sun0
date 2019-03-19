@@ -25,6 +25,8 @@
 #include "common/opengl.hpp"
 #include "common/types.hpp"
 
+#include "graphics/drawable.hpp"
+
 #include "shader.hpp"
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"
@@ -145,6 +147,11 @@ void renderer::clear()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void renderer::draw(const drawable& d) const
+{
+    d.draw((sun::renderer*)this);
+}
+
 void renderer::draw(const sun::vertex_buffer& buffer,
                     const sun::shader* p_shader) const
 {
@@ -163,6 +170,29 @@ void renderer::draw(const sun::vertex_buffer& buffer,
     glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
 }
 
+void renderer::draw(const sun::vertex_buffer& buffer,
+                    const sun::texture* p_texture,
+                    const sun::shader* p_shader) const
+{
+    if (p_shader != nullptr) {
+        p_shader->bind();
+    } else {
+        default_textured_shader_->bind();
+    }
+    p_texture->bind();
+
+    glBindVertexArray(flat_vao_);
+    buffer.bind();
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 2));
+    glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 4));
+
+    glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
+}
+
 void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
                             const sun::index_buffer& ibuffer,
                             const sun::shader* p_shader) const
@@ -170,9 +200,31 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     if (p_shader != nullptr) {
         p_shader->bind();
     } else {
-        default_textured_shader_->bind();
+        default_flat_shader_->bind();
     }
 
+    ibuffer.bind();
+    glBindVertexArray(flat_vao_);
+    vbuffer.bind();
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
+
+    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
+}
+
+void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
+                            const sun::index_buffer& ibuffer,
+                            const sun::texture* p_texture,
+                            const sun::shader* p_shader) const
+{
+    if (p_shader != nullptr) {
+        p_shader->bind();
+    } else {
+        default_textured_shader_->bind();
+    }
+    p_texture->bind();
     ibuffer.bind();
     glBindVertexArray(flat_vao_);
     vbuffer.bind();
@@ -185,30 +237,6 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
 
     glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
 }
-
-/*
- * Old function that draws flat shapes
- */
-/*void old_draw_indexed(const sun::vertex_buffer& vbuffer,
-                            const sun::index_buffer& ibuffer,
-                            const sun::shader* p_shader) const
-{
-    if (p_shader != nullptr) {
-        p_shader->bind();
-    } else {
-        default_textured_shader_->bind();
-    }
-
-    ibuffer.bind();
-    glBindVertexArray(flat_vao_);
-    vbuffer.bind();
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
-    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
-
-    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
-}*/
 
 } // opengl
 } // sun

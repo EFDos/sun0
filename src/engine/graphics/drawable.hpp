@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  drawable.hpp                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,30 +23,20 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/config.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
+class renderer;
 
-// GRAPHICS
-#include "graphics/image.hpp"
-#include "graphics/font.hpp"
-#include "graphics/sprite.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/texture.hpp"
+class SUN_API drawable
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    virtual ~drawable() {}
+
+    virtual void draw(renderer*) const = 0;
+
+};
+
+}

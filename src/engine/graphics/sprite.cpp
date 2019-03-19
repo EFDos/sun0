@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  sprite.cpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,32 +21,62 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "sprite.hpp"
 
-// VERSION
-#include "version.hpp"
+#include "renderer.hpp"
+#include "texture.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
+sprite::sprite()
+:   vertices_(nullptr),
+    indices_(nullptr),
+    texture_(nullptr)
+{
+    auto r = system::get<renderer>("SYS_RENDERER");
+    vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4);
+    indices_ = r->create_index_buffer(6);
+}
 
-// GRAPHICS
-#include "graphics/image.hpp"
-#include "graphics/font.hpp"
-#include "graphics/sprite.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/texture.hpp"
+sprite::~sprite()
+{
+    delete vertices_;
+    delete indices_;
+}
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+void sprite::draw(renderer* r) const
+{
+    r->draw_indexed(*vertices_, *indices_, texture_, nullptr);
+}
+
+void sprite::set_texture(const texture* tex)
+{
+    if (tex == nullptr) {
+        return;
+    }
+
+    texture_ = tex;
+
+    struct vertex_def {
+        float x, y;
+        float u, v;
+        float r, g, b, a;
+    };
+
+    vertex_def quad_verts[] = {
+        {0.f , 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f},
+        {(float)tex->get_size().x, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f},
+        {(float)tex->get_size().x, (float)tex->get_size().y, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f},
+        {0.f , (float)tex->get_size().y, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f},
+    };
+
+    uint indices_data[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    vertices_->fill_data(0, 4, quad_verts);
+    indices_->fill_data(0, 6, indices_data);
+}
+
+}

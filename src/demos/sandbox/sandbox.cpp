@@ -7,16 +7,11 @@ public:
 
     struct vertex_def
     {
-        float x, y;
-        float u, v;
-        float r, g, b, a;
     };
 
 	sandbox() : sun::application(), font_size(16) {
         renderer_->set_color(sun::color::black);
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
-        quad_ = renderer_->create_vertex_buffer(sizeof(vertex_def), 4);
-        indices_ = renderer_->create_index_buffer(6);
         texture_ = renderer_->create_texture();
 
         sun::image img;
@@ -24,28 +19,10 @@ public:
         fnt_.load("res/mono.ttf");
 
         texture_->load(img);
-
-        vertex_def quad_verts[] = {
-            {0.f , 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f},
-            {512.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f},
-            {512.f, 512.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f},
-            {0.f , 512.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f},
-        };
-
-        uint indices_data[] = {
-            0, 1, 3,
-            1, 2, 3
-        };
-
-        quad_->fill_data(0, 4, quad_verts);
-        indices_->fill_data(0, 6, indices_data);
-
-        //texture_->bind();
+        sprt_.set_texture(texture_);
 	}
 
     ~sandbox() {
-        delete quad_;
-        delete indices_;
     }
 
 	void on_event(sun::event& e) override {
@@ -99,16 +76,16 @@ public:
             speed_.y += 0.2f;
         }
 
+        //sprt_.set_texture(fnt_.get_page_texture(font_size));
+
         transform_.translate(speed_);
         renderer_->set_model_transform(transform_);
-        fnt_.get_page_texture(font_size)->bind();
-    	renderer_->draw_indexed(*quad_, *indices_, nullptr);
+        renderer_->draw(sprt_);
     }
 
 private:
 
-    sun::vertex_buffer* quad_;
-    sun::index_buffer* indices_;
+    sun::sprite sprt_;
     sun::texture* texture_;
     sun::font fnt_;
     sun::matrix4 transform_;

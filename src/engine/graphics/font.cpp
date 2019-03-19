@@ -189,8 +189,6 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
 
     p.max_height = g.rect.h > p.max_height ? g.rect.h : p.max_height;
 
-    sun_printf("max height: %d", p.max_height);
-
     if (p.next_origin.x + g.rect.w > p.tex->get_size().x) {
         p.next_origin.x = 0;
         p.next_origin.y += p.max_height;

@@ -12,7 +12,7 @@ public:
         float r, g, b, a;
     };
 
-	sandbox() : sun::application() {
+	sandbox() : sun::application(), font_size(16) {
         renderer_->set_color(sun::color::black);
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
         quad_ = renderer_->create_vertex_buffer(sizeof(vertex_def), 4);
@@ -64,16 +64,26 @@ public:
             if (e.key.code == sun::keyboard::key::DOWN) {
                 speed_.y += 4.f;
             }
-            if (e.key.code == sun::keyboard::key::S) {
-                transform_.scale(1.04f, 1.04f);
+        }
+        if (e.type == sun::event_type::key_released) {
+            if (e.key.code == sun::keyboard::key::ADD) {
+                ++font_size;
+                on_font_size_change();
+            }
+            if (e.key.code == sun::keyboard::key::SUBTRACT) {
+                --font_size;
+                on_font_size_change();
             }
         }
         if (e.type == sun::event_type::text_entered) {
-            fnt_.get_glyph(e.text_input.text[0], 72);
+            fnt_.get_glyph(e.text_input.text[0], font_size);
             sun_printf("%s", e.text_input.text);
         }
 	}
 
+	void on_font_size_change() {
+	    sun_printf("font size: %d", font_size);
+	}
 
     void on_update() override {
         renderer_->clear();
@@ -91,7 +101,7 @@ public:
 
         transform_.translate(speed_);
         renderer_->set_model_transform(transform_);
-        fnt_.get_page_texture(72)->bind();
+        fnt_.get_page_texture(font_size)->bind();
     	renderer_->draw_indexed(*quad_, *indices_, nullptr);
     }
 
@@ -103,6 +113,8 @@ private:
     sun::font fnt_;
     sun::matrix4 transform_;
     sun::vector2f speed_;
+
+    int font_size;
 };
 
 SUN_DEFINE_MAIN_APP(sandbox)

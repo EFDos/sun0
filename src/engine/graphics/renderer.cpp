@@ -24,6 +24,8 @@
 #include "renderer.hpp"
 #include "core/logger.hpp"
 
+#include "font.hpp"
+
 namespace sun {
 
 bool renderer::init()

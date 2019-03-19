@@ -55,18 +55,34 @@ public:
 
     float get_line_spacing(uint size) const;
 
+    const texture* get_page_texture(uint size) const;
+
 private:
+
+    struct page {
+        //uint8       char_size;
+        texture*    tex;
+
+        vector2u    next_origin;
+        uint        max_height;
+
+        std::unordered_map<char, glyph> glyphes;
+
+        page() : tex(nullptr), max_height(0) {}
+    };
 
     void cleanup_();
 
     glyph load_glyph_(uint8 code_point, uint char_size) const;
+
+    page generate_page_(uint char_size) const;
 
     bool set_current_size_(uint char_size) const;
 
     void*                           library_;
     void*                           face_;
 
-    mutable std::unordered_map<char, glyph> glyphes_;
+    mutable std::unordered_map<uint, page> pages_;
 };
 
 } // sun

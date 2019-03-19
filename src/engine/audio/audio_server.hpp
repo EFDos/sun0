@@ -50,7 +50,7 @@ class SUN_API audio_server : public system
 {
 public:
 
-    SUN_SYSTEM_TYPE(audio_server);
+    SUN_SYSTEM_TYPE(SYS_AUDIO_SERVER);
 
     virtual ~audio_server() = default;
 

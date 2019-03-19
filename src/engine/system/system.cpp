@@ -26,7 +26,7 @@
 
 namespace sun {
 
-std::unordered_map<std::string, system*> system::systems_;
+std::unordered_map<size_t, system*> system::systems_;
 
 system::system()
 {
@@ -57,12 +57,12 @@ void system::clear_instances()
 
 void system::register_instance(system* instance)
 {
-    auto it = systems_.find(instance->get_name());
+    auto it = systems_.find(instance->get_name_hash());
 
     if (it == systems_.end()) {
         sun_logf_info("*-- System Init: %s --*", instance->get_name());
         instance->init();
-        systems_[instance->get_name()] = instance;
+        systems_[instance->get_name_hash()] = instance;
     } else {
         sun_logf_error("System with name %s is already registered.",
             instance->get_name());

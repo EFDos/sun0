@@ -23,6 +23,8 @@
 /*************************************************************************/
 #include "font.hpp"
 
+#include "renderer.hpp"
+
 #include "texture.hpp"
 #include "core/logger.hpp"
 
@@ -81,13 +83,21 @@ void font::load(const std::string& filepath)
 
 const font::glyph& font::get_glyph(uint8 code, uint char_size) const
 {
-    auto it = glyphes_.find(code);
+    auto page_it = pages_.find(char_size);
 
-    if (it == glyphes_.end()) {
-        glyphes_[code] = load_glyph_(code, 16);
+    if (page_it == pages_.end()) {
+        pages_[char_size] = generate_page_(char_size);
     }
 
-    return glyphes_[code];
+    auto& glyphes = pages_[char_size].glyphes;
+
+    auto it = glyphes.find(code);
+
+    if (it == glyphes.end()) {
+        glyphes[code] = load_glyph_(code, char_size);
+    }
+
+    return glyphes[code];
 }
 
 float font::get_kerning(uint32 first, uint32 second, uint char_size) const
@@ -130,6 +140,26 @@ float font::get_line_spacing(uint char_size) const
     }
 }
 
+const texture* font::get_page_texture(uint size) const
+{
+    auto it = pages_.find(size);
+
+    if (it == pages_.end()) {
+        pages_[size] = generate_page_(size);
+    }
+
+    return pages_[size].tex;
+}
+
+font::page font::generate_page_(uint char_size) const
+{
+    page p;
+    p.tex = system::get<renderer>("SYS_RENDERER")->create_texture();
+    p.tex->set_format(texture::format::red);
+    p.tex->resize({512, 512});
+    return p;
+}
+
 font::glyph font::load_glyph_(uint8 code, uint char_size) const
 {
     glyph g;
@@ -140,7 +170,7 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
     }
 
     FT_Face ft_face = static_cast<FT_Face>(face_);
-    if (FT_Load_Char(static_cast<FT_Face>(face_), code, FT_LOAD_RENDER) != 0)
+    if (FT_Load_Char(ft_face, code, FT_LOAD_RENDER) != 0)
     {
         sun_logf_error("Error loading character glyph \'%c\'", code);
         return g;
@@ -154,6 +184,25 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
     };
 
     g.advance = ft_face->glyph->advance.x;
+
+    page& p = pages_[char_size];
+
+    p.max_height = g.rect.h > p.max_height ? g.rect.h : p.max_height;
+
+    sun_printf("max height: %d", p.max_height);
+
+    if (p.next_origin.x + g.rect.w > p.tex->get_size().x) {
+        p.next_origin.x = 0;
+        p.next_origin.y += p.max_height;
+    }
+
+    p.tex->fill(p.next_origin, {
+                    static_cast<uint>(g.rect.w),
+                    static_cast<uint>(g.rect.h)
+                },
+                ft_face->glyph->bitmap.buffer);
+
+    p.next_origin.x += g.rect.w;
 
     return g;
 }

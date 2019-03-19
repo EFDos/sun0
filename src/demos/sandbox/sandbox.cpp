@@ -21,14 +21,15 @@ public:
 
         sun::image img;
         img.load("res/bototem.png");
+        fnt_.load("res/mono.ttf");
 
         texture_->load(img);
 
         vertex_def quad_verts[] = {
             {0.f , 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f},
-            {128.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f},
-            {128.f, 64.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f},
-            {0.f , 64.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f},
+            {512.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f},
+            {512.f, 512.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f},
+            {0.f , 512.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f},
         };
 
         uint indices_data[] = {
@@ -39,7 +40,7 @@ public:
         quad_->fill_data(0, 4, quad_verts);
         indices_->fill_data(0, 6, indices_data);
 
-        texture_->bind();
+        //texture_->bind();
 	}
 
     ~sandbox() {
@@ -67,7 +68,12 @@ public:
                 transform_.scale(1.04f, 1.04f);
             }
         }
+        if (e.type == sun::event_type::text_entered) {
+            fnt_.get_glyph(e.text_input.text[0], 72);
+            sun_printf("%s", e.text_input.text);
+        }
 	}
+
 
     void on_update() override {
         renderer_->clear();
@@ -85,6 +91,7 @@ public:
 
         transform_.translate(speed_);
         renderer_->set_model_transform(transform_);
+        fnt_.get_page_texture(72)->bind();
     	renderer_->draw_indexed(*quad_, *indices_, nullptr);
     }
 
@@ -93,6 +100,7 @@ private:
     sun::vertex_buffer* quad_;
     sun::index_buffer* indices_;
     sun::texture* texture_;
+    sun::font fnt_;
     sun::matrix4 transform_;
     sun::vector2f speed_;
 };

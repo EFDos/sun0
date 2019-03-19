@@ -33,12 +33,13 @@ class vertex_buffer;
 class index_buffer;
 class shader;
 class texture;
+class font;
 
 class SUN_API renderer : public system
 {
 public:
 
-    SUN_SYSTEM_TYPE(renderer);
+    SUN_SYSTEM_TYPE(SYS_RENDERER);
 
     struct info
     {

@@ -52,7 +52,8 @@ public:
 
     void resize(const vector2u& size) override;
 
-    void fill(const vector2u& offset, const vector2u& size, const ubyte* date) override;
+    void fill(const vector2u& offset, const vector2u& size,
+              const ubyte* date) override;
 
     void clear() override;
 

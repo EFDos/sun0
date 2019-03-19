@@ -34,11 +34,6 @@ class SUN_API system
 {
 public:
 
-    /*enum class type
-    {
-
-    };*/
-
     system();
 
     virtual ~system();
@@ -49,6 +44,8 @@ public:
 
     virtual const char* get_name() const = 0;
 
+    virtual size_t get_name_hash() const = 0;
+
     static void register_instance(system* instance);
 
     static void clear_instances();
@@ -56,9 +53,10 @@ public:
     template<typename T>
     static T* get(const std::string& name)
     {
-        auto it = systems_.find(name);
+        size_t hash = std::hash<std::string>{}(name);
+        auto it = systems_.find(hash);
         if (it != systems_.end()) {
-            return static_cast<T*>(systems_[name]);
+            return static_cast<T*>(systems_[hash]);
         } else {
             return nullptr;
         }
@@ -66,11 +64,13 @@ public:
 
 private:
 
-    static std::unordered_map<std::string, system*> systems_;
+    static std::unordered_map<size_t, system*> systems_;
 
 };
 
 #define SUN_SYSTEM_TYPE(type) const char* get_name() const override\
-    { return #type; }
+    { return #type; }\
+    size_t get_name_hash() const override\
+    { return std::hash<std::string>{}(#type); }\
 
 }

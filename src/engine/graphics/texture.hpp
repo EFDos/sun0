@@ -84,6 +84,10 @@ public:
 
     virtual void clear() = 0;
 
+    virtual void map() = 0;
+
+    virtual void unmap() = 0;
+
     inline void set_format(format fmt) { format_ = fmt; }
 
     inline void set_filter_mode(filter_mode mode) { filter_mode_ = mode; }
@@ -102,6 +106,8 @@ public:
 
     inline const vector2u& get_size() const { return size_; }
 
+    inline const uint8* get_data() const { return map_buffer_; }
+
 protected:
 
     texture();
@@ -113,6 +119,7 @@ protected:
 
     vector2u        size_;
 
+    uint8*          map_buffer_;
 };
 
 }

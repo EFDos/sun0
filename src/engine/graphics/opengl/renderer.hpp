@@ -78,6 +78,8 @@ public:
                       const sun::texture* p_texture = nullptr,
                       const sun::shader* p_shader = nullptr) const override;
 
+    uint get_texture_max_size() const override;
+
 private:
 
     uint            flat_vao_;

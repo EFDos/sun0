@@ -16,11 +16,13 @@ public:
 
         sun::image img;
         img.load("res/bototem.png");
-        fnt_.load("res/mono.ttf");
+        fnt_.load("res/Wattauchimma.ttf");
 
         texture_->load(img);
         sprt_.set_texture(texture_);
         txt_.set_font(&fnt_);
+        txt_.set_color(sun::color::sun);
+        txt_.set_character_size(72);
         txt_.set_text("Hello");
 	}
 
@@ -64,12 +66,10 @@ public:
             speed_.y += 0.2f;
         }
 
-        sprt_.set_texture(texture_);
-
         transform_.translate(speed_);
-        renderer_->draw(txt_);
         renderer_->set_model_transform(transform_);
         //renderer_->draw(sprt_);
+        renderer_->draw(txt_);
     }
 
 private:

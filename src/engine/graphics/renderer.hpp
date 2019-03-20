@@ -101,6 +101,8 @@ public:
 
     virtual void set_color(const color&);
 
+    virtual uint get_texture_max_size() const = 0;
+
 protected:
 
     renderer() = default;

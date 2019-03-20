@@ -31,7 +31,8 @@
 namespace sun {
 
 text::text()
-:   font_size_(16),
+:   color_(color::white),
+    font_size_(16),
     vertices_(nullptr),
     indices_(nullptr),
     font_(nullptr)
@@ -52,7 +53,7 @@ void text::set_text(const std::string& str)
 
     float hspace = (float)font_->get_glyph(' ', font_size_).advance;
     float vspace = (float)font_->get_line_spacing(font_size_);
-    float x = 0.f, y = 0.f;
+    float x = 0.f, y = font_size_;
     int offset = 0;
     int i_offset = 0;
     uint i_value_offset = 0;
@@ -84,34 +85,34 @@ void text::set_text(const std::string& str)
         auto tex_size = font_->get_page_texture(font_size_).get_size();
 
         float pos_x = x + g.rect.x;
-        float pos_y = y + (g.rect.y - g.rect.h);
+        float pos_y = y + g.rect.y;
         float pos_w = g.rect.w;
         float pos_h = g.rect.h;
-        float tex_x = (float)g.uv_coords.x / tex_size.x;
-        float tex_y = (float)g.uv_coords.y / tex_size.y;
-        float tex_w = (float)g.uv_coords.w / tex_size.x;
-        float tex_h = (float)g.uv_coords.h / tex_size.y;
+        float tex_x = (float)g.tex_coords.x / (float)tex_size.x;
+        float tex_y = (float)g.tex_coords.y / (float)tex_size.y;
+        float tex_w = (float)g.tex_coords.w / (float)tex_size.x;
+        float tex_h = (float)g.tex_coords.h / (float)tex_size.y;
 
-        colorf col = to_colorf(color::white);
+        colorf col = to_colorf(color_);
 
         x += g.advance;
 
         float vertices[] = {
             pos_x,          pos_y,
             tex_x,          tex_y,
-            col.r,          col.g,          col.b,   col.a,
+            col.r,          col.g,  col.b,   col.a,
 
             pos_x + pos_w,  pos_y,
             tex_x + tex_w,  tex_y,
-            col.r,          col.g,          col.b,   col.a,
+            col.r,          col.g,  col.b,   col.a,
 
             pos_x + pos_w,  pos_y + pos_h,
             tex_x + tex_w,  tex_y + tex_h,
-            col.r,          col.g,          col.b,   col.a,
+            col.r,          col.g,  col.b,   col.a,
 
             pos_x,          pos_y + pos_h,
             tex_x,          tex_y + tex_h,
-            col.r,          col.g,       col.b,     col.a
+            col.r,          col.g,  col.b,     col.a
         };
 
         uint32 quad_indices[] = {

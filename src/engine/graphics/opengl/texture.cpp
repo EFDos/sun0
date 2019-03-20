@@ -156,5 +156,26 @@ void texture::clear()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void texture::map()
+{
+    unmap();
+
+    map_buffer_ = new uint8[size_.x * size_.y * 4];
+
+    glBindTexture(GL_TEXTURE_2D, id_);
+    glGetTexImage(GL_TEXTURE_2D, 0, get_gl_type(format_), GL_UNSIGNED_BYTE,
+        map_buffer_);
+}
+
+void texture::unmap()
+{
+    if(map_buffer_ == nullptr){
+        return;
+    }
+
+    delete [] map_buffer_;
+    map_buffer_ = nullptr;
+}
+
 } // opengl
 } // sun

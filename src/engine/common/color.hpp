@@ -35,7 +35,7 @@ struct base_color
     T b;
     T a;
 
-    base_color(T p_r = 0, T p_g = 0, T p_b = 0, T p_a = 0) noexcept
+    base_color(T p_r = 0, T p_g = 0, T p_b = 0, T p_a = 255) noexcept
     : r(p_r), g(p_g), b(p_b), a(p_a) {}
 
     base_color(const base_color&) noexcept = default;

@@ -238,5 +238,17 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
 }
 
+uint renderer::get_texture_max_size() const
+{
+    static bool checked = false;
+    static int  size = 0;
+
+    if(!checked){
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size);
+    }
+
+    return size;
+}
+
 } // opengl
 } // sun

@@ -27,6 +27,7 @@
 #include "texture.hpp"
 
 #include <unordered_map>
+#include <vector>
 
 namespace sun
 {
@@ -38,8 +39,8 @@ public:
     struct glyph
     {
         float       advance;
-        recti       rect;
-        rectu       uv_coords;
+        rectf       rect;
+        recti       tex_coords;
 
         glyph() : advance(0) {}
     };
@@ -60,30 +61,44 @@ public:
 
 private:
 
-    struct page {
-        //uint8       char_size;
-        texture*    tex;
+    struct row
+    {
+        uint    width;
+        uint    height;
+        uint    top;
 
-        vector2u    next_origin;
-        int         max_height;
+        row(uint _top, uint _height) : width(0), height(_height), top(_top)
+        {
+            // nothing
+        }
+    };
 
-        std::unordered_map<char, glyph> glyphes;
+    typedef std::unordered_map<uint8, glyph> glyph_table;
 
-        page() : tex(nullptr), max_height(0) {}
+    struct page
+    {
+        glyph_table         glyphes;
+        texture*            page_texture;
+        uint                next_row;
+        std::vector<row>    rows;
+
+        page();
     };
 
     void cleanup_();
 
     glyph load_glyph_(uint8 code_point, uint char_size) const;
 
-    page generate_page_(uint char_size) const;
+    recti find_glyph_rect_(page&, uint width, uint height) const;
 
     bool set_current_size_(uint char_size) const;
+
+    mutable std::unordered_map<uint, page>  pages_;
+    mutable std::vector<uint8>              pixel_buffer_;
 
     void*                           library_;
     void*                           face_;
 
-    mutable std::unordered_map<uint, page> pages_;
 };
 
 } // sun

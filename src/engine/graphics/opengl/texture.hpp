@@ -57,6 +57,10 @@ public:
 
     void clear() override;
 
+    void map() override;
+
+    void unmap() override;
+
 private:
 
     uint    id_;

@@ -46,6 +46,10 @@ public:
 
     void set_text(const std::string&);
 
+    inline void set_color(const color& c) {
+        color_ = c;
+    }
+
     inline void set_font(font* f) {
         font_ = f;
     }
@@ -56,6 +60,7 @@ public:
 
 private:
 
+    color           color_;
     uint            font_size_;
     vertex_buffer*  vertices_;
     index_buffer*   indices_;

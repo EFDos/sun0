@@ -28,7 +28,8 @@ namespace sun {
 texture::texture()
 :   filter_mode_(filter_mode::nearest),
     address_mode_(address_mode::wrap),
-    usage_(usage::static_usage)
+    usage_(usage::static_usage),
+    map_buffer_(nullptr)
 {
 }
 

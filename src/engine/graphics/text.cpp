@@ -25,6 +25,7 @@
 
 #include "renderer.hpp"
 #include "font.hpp"
+#include "core/logger.hpp"
 
 #include "common/color.hpp"
 
@@ -48,11 +49,17 @@ void text::set_text(const std::string& str)
         return;
     }
 
+    for (auto c: str) {
+        font_->get_glyph(c, font_size_);
+    }
+
     vertices_->resize(str.length() * 4);
     indices_->resize(str.length() * 6);
 
     float hspace = (float)font_->get_glyph(' ', font_size_).advance;
     float vspace = (float)font_->get_line_spacing(font_size_);
+    //float lspace   = ( hspace / 3.f );
+    //hspace += lspace;
     float x = 0.f, y = font_size_;
     int offset = 0;
     int i_offset = 0;
@@ -67,17 +74,11 @@ void text::set_text(const std::string& str)
         {
             switch(c)
             {
-                case ' ':
-                    x += hspace;
-                    break;
-                case '\t':
-                    x += hspace * 4;
-                    break;
-                case '\n':
-                    y += vspace;
-                    x = 0;
-                    break;
+                case ' ': x += hspace; break;
+                case '\t': x += hspace * 4; break;
+                case '\n': y += vspace; x = 0.f; break;
             }
+            sun_log_info("Special case");
             continue;
         }
 
@@ -95,7 +96,7 @@ void text::set_text(const std::string& str)
 
         colorf col = to_colorf(color_);
 
-        x += g.advance;
+        x += g.advance + g.rect.w / 6.f;
 
         float vertices[] = {
             pos_x,          pos_y,

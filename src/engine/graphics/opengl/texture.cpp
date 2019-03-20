@@ -41,8 +41,21 @@ constexpr GLenum get_gl_type(sun::texture::format fmt)
         case texture::format::red:      return GLenum(GL_RED);
         case texture::format::blue:     return GLenum(GL_BLUE);
         case texture::format::green:    return GLenum(GL_GREEN);
-        case texture::format::alpha:    return GLenum(GL_ALPHA8);
+        case texture::format::alpha:    return GLenum(GL_ALPHA);
         default: return GLenum();
+    }
+}
+
+constexpr int get_pixel_size(sun::texture::format fmt)
+{
+    switch (fmt) {
+        case texture::format::rgba:     return 4;
+        case texture::format::bgra:     return 4;
+        case texture::format::red:      return 1;
+        case texture::format::blue:     return 1;
+        case texture::format::green:    return 1;
+        case texture::format::alpha:    return 1;
+        default: return 4;
     }
 }
 
@@ -160,7 +173,7 @@ void texture::map()
 {
     unmap();
 
-    map_buffer_ = new uint8[size_.x * size_.y * 4];
+    map_buffer_ = new uint8[size_.x * size_.y * get_pixel_size(format_)];
 
     glBindTexture(GL_TEXTURE_2D, id_);
     glGetTexImage(GL_TEXTURE_2D, 0, get_gl_type(format_), GL_UNSIGNED_BYTE,

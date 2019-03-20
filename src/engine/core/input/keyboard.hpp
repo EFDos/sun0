@@ -135,5 +135,7 @@ enum class key
     PAUSE,
 };
 
+bool is_key_pressed(key k);
+
 } // keyboard
 } // sun

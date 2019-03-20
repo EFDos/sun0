@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  font.hpp                                                             */
+/*  text.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,67 +23,44 @@
 /*************************************************************************/
 #pragma once
 
+#include "common/config.hpp"
 #include "common/types.hpp"
-#include "texture.hpp"
 
-#include <unordered_map>
+#include "drawable.hpp"
+#include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
-namespace sun
-{
+#include <string>
 
-class SUN_API font
+namespace sun {
+
+class font;
+
+class SUN_API text : public drawable
 {
 public:
 
-    struct glyph
-    {
-        float       advance;
-        recti       rect;
-        rectu       uv_coords;
+    text();
 
-        glyph() : advance(0) {}
-    };
+    void draw(renderer*) const override;
 
-    font();
+    void set_text(const std::string&);
 
-    ~font();
+    inline void set_font(font* f) {
+        font_ = f;
+    }
 
-    void load(const std::string& filepath);
-
-    const glyph& get_glyph(uint8 code, uint char_size) const;
-
-    float get_kerning(uint32 first, uint32 second, uint size) const;
-
-    float get_line_spacing(uint size) const;
-
-    const texture& get_page_texture(uint size) const;
+    inline void set_character_size(uint size) {
+        font_size_ = size;
+    }
 
 private:
 
-    struct page {
-        //uint8       char_size;
-        texture*    tex;
+    uint            font_size_;
+    vertex_buffer*  vertices_;
+    index_buffer*   indices_;
+    font*   font_;
 
-        vector2u    next_origin;
-        int         max_height;
-
-        std::unordered_map<char, glyph> glyphes;
-
-        page() : tex(nullptr), max_height(0) {}
-    };
-
-    void cleanup_();
-
-    glyph load_glyph_(uint8 code_point, uint char_size) const;
-
-    page generate_page_(uint char_size) const;
-
-    bool set_current_size_(uint char_size) const;
-
-    void*                           library_;
-    void*                           face_;
-
-    mutable std::unordered_map<uint, page> pages_;
 };
 
-} // sun
+}

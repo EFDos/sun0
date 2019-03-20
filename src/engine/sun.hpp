@@ -41,6 +41,7 @@
 #include "graphics/image.hpp"
 #include "graphics/font.hpp"
 #include "graphics/sprite.hpp"
+#include "graphics/text.hpp"
 #include "graphics/renderer.hpp"
 #include "graphics/vertex_buffer.hpp"
 #include "graphics/index_buffer.hpp"

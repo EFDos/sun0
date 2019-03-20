@@ -140,7 +140,7 @@ float font::get_line_spacing(uint char_size) const
     }
 }
 
-const texture* font::get_page_texture(uint size) const
+const texture& font::get_page_texture(uint size) const
 {
     auto it = pages_.find(size);
 
@@ -148,7 +148,7 @@ const texture* font::get_page_texture(uint size) const
         pages_[size] = generate_page_(size);
     }
 
-    return pages_[size].tex;
+    return *pages_[size].tex;
 }
 
 font::page font::generate_page_(uint char_size) const
@@ -177,13 +177,13 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
     }
 
     g.rect = {
-        static_cast<float>(ft_face->glyph->bitmap_left),
-        static_cast<float>(ft_face->glyph->bitmap_top),
-        static_cast<float>(ft_face->glyph->bitmap.width),
-        static_cast<float>(ft_face->glyph->bitmap.rows)
+        ft_face->glyph->bitmap_left,
+        ft_face->glyph->bitmap_top,
+        static_cast<int>(ft_face->glyph->bitmap.width),
+        static_cast<int>(ft_face->glyph->bitmap.rows)
     };
 
-    g.advance = ft_face->glyph->advance.x;
+    g.advance = ft_face->glyph->advance.x >> 6;
 
     page& p = pages_[char_size];
 
@@ -200,6 +200,12 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
                 },
                 ft_face->glyph->bitmap.buffer);
 
+    g.uv_coords = {
+        p.next_origin.x,
+        p.next_origin.y,
+        p.next_origin.x + g.rect.w,
+        p.next_origin.y + g.rect.h
+    };
     p.next_origin.x += g.rect.w;
 
     return g;

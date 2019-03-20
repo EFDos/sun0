@@ -134,7 +134,7 @@ void texture::fill(const vector2u& offset, const vector2u& size,
     }
 
     if (data == nullptr) {
-        sun_log_error("Error filling texture: data is null");
+        sun_log_warn("Filling texture: data is null");
     }
 
     glBindTexture(GL_TEXTURE_2D, id_);

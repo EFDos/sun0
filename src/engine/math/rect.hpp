@@ -74,6 +74,7 @@ struct rect
 };
 
 using recti = rect<int>;
+using rectu = rect<unsigned>;
 using rectf = rect<float>;
 
 }

@@ -20,6 +20,8 @@ public:
 
         texture_->load(img);
         sprt_.set_texture(texture_);
+        txt_.set_font(&fnt_);
+        txt_.set_text("Hello");
 	}
 
     ~sandbox() {
@@ -42,20 +44,6 @@ public:
                 speed_.y += 4.f;
             }
         }
-        if (e.type == sun::event_type::key_released) {
-            if (e.key.code == sun::keyboard::key::ADD) {
-                ++font_size;
-                on_font_size_change();
-            }
-            if (e.key.code == sun::keyboard::key::SUBTRACT) {
-                --font_size;
-                on_font_size_change();
-            }
-        }
-        if (e.type == sun::event_type::text_entered) {
-            fnt_.get_glyph(e.text_input.text[0], font_size);
-            sun_printf("%s", e.text_input.text);
-        }
 	}
 
 	void on_font_size_change() {
@@ -76,16 +64,18 @@ public:
             speed_.y += 0.2f;
         }
 
-        //sprt_.set_texture(fnt_.get_page_texture(font_size));
+        sprt_.set_texture(texture_);
 
         transform_.translate(speed_);
+        renderer_->draw(txt_);
         renderer_->set_model_transform(transform_);
-        renderer_->draw(sprt_);
+        //renderer_->draw(sprt_);
     }
 
 private:
 
     sun::sprite sprt_;
+    sun::text   txt_;
     sun::texture* texture_;
     sun::font fnt_;
     sun::matrix4 transform_;

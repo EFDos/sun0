@@ -24,6 +24,7 @@
 #pragma once
 
 #include "common/types.hpp"
+#include "common/object.hpp"
 #include "texture.hpp"
 
 #include <unordered_map>
@@ -32,7 +33,9 @@
 namespace sun
 {
 
-class SUN_API font
+class context;
+
+class SUN_API font : public object
 {
 public:
 
@@ -45,7 +48,7 @@ public:
         glyph() : advance(0) {}
     };
 
-    font();
+    font(context&);
 
     ~font();
 
@@ -57,7 +60,7 @@ public:
 
     float get_line_spacing(uint size) const;
 
-    const texture& get_page_texture(uint size) const;
+    const texture* get_page_texture(uint size) const;
 
 private:
 
@@ -77,12 +80,12 @@ private:
 
     struct page
     {
+        texture*    page_texture;
         glyph_table         glyphes;
-        texture*            page_texture;
         uint                next_row;
         std::vector<row>    rows;
 
-        page();
+        page() : page_texture(nullptr), next_row(3) {}
     };
 
     void cleanup_();
@@ -92,6 +95,8 @@ private:
     recti find_glyph_rect_(page&, uint width, uint height) const;
 
     bool set_current_size_(uint char_size) const;
+
+    texture* generate_page_texture_() const;
 
     mutable std::unordered_map<uint, page>  pages_;
     mutable std::vector<uint8>              pixel_buffer_;

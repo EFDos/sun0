@@ -27,6 +27,10 @@
 
 namespace sun {
 
+audio_server::audio_server(context& p_context) : system(p_context)
+{
+}
+
 bool audio_server::init()
 {
     sun_log_info("Audio System ready.");

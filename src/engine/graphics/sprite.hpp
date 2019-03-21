@@ -39,7 +39,7 @@ class SUN_API sprite : public drawable
 {
 public:
 
-    sprite();
+    sprite(context& p_context);
 
     ~sprite();
 

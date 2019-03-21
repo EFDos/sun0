@@ -23,15 +23,17 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/config.hpp"
+#include "common/object.hpp"
 
 namespace sun {
 
 class renderer;
 
-class SUN_API drawable
+class SUN_API drawable : public object
 {
 public:
+
+    drawable(context& p_context) : object(p_context) {}
 
     virtual ~drawable() {}
 

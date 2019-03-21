@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  renderer.cpp                                                         */
+/*  context.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,34 +21,57 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "renderer.hpp"
-#include "core/logger.hpp"
+#pragma once
 
-#include "font.hpp"
+#include "common/config.hpp"
+#include "system/system.hpp"
+
+#include <string>
+#include <unordered_map>
 
 namespace sun {
 
-renderer::renderer(context& c)
-:   system(c),
-    current_shader_(nullptr),
-    current_texture_(nullptr)
+class SUN_API context
 {
-}
+public:
 
-bool renderer::init()
-{
-    sun_log_info("Graphics System ready.");
-    return true;
-}
+    context();
 
-void renderer::shutdown()
-{
-    sun_log_info("Graphics System shutdown.");
-}
+    context(const context&) = delete;
 
-void renderer::set_color(const color& col)
-{
-    clear_color_ = to_colorf(col);
-}
+    context(context&&) = delete;
+
+    ~context();
+
+    void init_systems();
+
+    void shutdown_systems();
+
+    template<typename T>
+    T* register_system()
+    {
+        system* sys = register_system_(T::get_static_type_name());
+        return static_cast<T*>(sys);
+    }
+
+    template<typename T>
+    T* get_system()
+    {
+        auto* sys = get_system_(T::get_static_type_hash());
+        return static_cast<T*>(sys);
+    }
+
+    context& operator=(const context&) = delete;
+
+    context& operator=(context&&) = delete;
+
+private:
+
+    system* register_system_(const std::string& type);
+
+    system* get_system_(size_t);
+
+    std::unordered_map<size_t, system*> systems_;
+};
 
 }

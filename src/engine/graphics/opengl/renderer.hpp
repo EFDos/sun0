@@ -34,7 +34,7 @@ class SUN_API renderer final : public sun::renderer
 {
 public:
 
-    renderer();
+    renderer(context&);
 
     ~renderer();
 

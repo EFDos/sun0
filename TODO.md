@@ -2,9 +2,8 @@
 
 ###Graphics
 
-* Font Rendering
 * Canvas Layers (framebuffers)
-* Make renderer architecture more solid
+* Make renderer architecture more solid -- partially done
 
 ###Sound
 

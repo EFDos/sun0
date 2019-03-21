@@ -23,17 +23,19 @@
 /*************************************************************************/
 #include "sprite.hpp"
 
+#include "core/context.hpp"
 #include "renderer.hpp"
 #include "texture.hpp"
 
 namespace sun {
 
-sprite::sprite()
-:   vertices_(nullptr),
+sprite::sprite(context& p_context)
+:   drawable(p_context),
+    vertices_(nullptr),
     indices_(nullptr),
     texture_(nullptr)
 {
-    auto r = system::get<renderer>("SYS_RENDERER");
+    auto r = context_.get_system<renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4);
     indices_ = r->create_index_buffer(6);
 }

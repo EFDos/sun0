@@ -44,14 +44,15 @@ application::application() :
 
 	window_.create("Sandbox - Sun0 Engine", {1280, 720});
 
-    renderer_ = new opengl::renderer();
-    system::register_instance(new openal::audio_server());
-    system::register_instance(renderer_);
+    context_.register_system<sun::audio_server>();
+    renderer_ = context_.register_system<sun::renderer>();
+
+    context_.init_systems();
 }
 
 application::~application()
 {
-    system::clear_instances();
+    context_.shutdown_systems();
 }
 
 int application::run()

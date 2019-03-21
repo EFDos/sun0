@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  renderer.cpp                                                         */
+/*  object.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,34 +21,26 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "renderer.hpp"
-#include "core/logger.hpp"
+#pragma once
 
-#include "font.hpp"
+#include "config.hpp"
 
 namespace sun {
 
-renderer::renderer(context& c)
-:   system(c),
-    current_shader_(nullptr),
-    current_texture_(nullptr)
-{
-}
+class context;
 
-bool renderer::init()
+class SUN_API object
 {
-    sun_log_info("Graphics System ready.");
-    return true;
-}
 
-void renderer::shutdown()
-{
-    sun_log_info("Graphics System shutdown.");
-}
+public:
 
-void renderer::set_color(const color& col)
-{
-    clear_color_ = to_colorf(col);
-}
+    object(context& p_context) : context_(p_context) {}
+
+    virtual ~object() {}
+
+protected:
+
+    context&    context_;
+};
 
 }

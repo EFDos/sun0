@@ -38,7 +38,13 @@
 namespace sun {
 namespace opengl {
 
-renderer::renderer() : base_vao_(0), default_flat_shader_(nullptr) {}
+renderer::renderer(context& c)
+:   sun::renderer(c),
+    base_vao_(0),
+    default_flat_shader_(nullptr),
+    default_textured_shader_(nullptr)
+{
+}
 
 renderer::~renderer() {}
 
@@ -61,7 +67,9 @@ bool renderer::init()
     default_flat_shader_ = create_shader("res/flat.glsl");
     default_textured_shader_ = create_shader("res/textured.glsl");
 
-    default_textured_shader_->set_uniform("tex", 0);
+    if (default_textured_shader_ != nullptr) {
+        default_textured_shader_->set_uniform("tex", 0);
+    }
 
     glGenVertexArrays(1, &base_vao_);
     glBindVertexArray(base_vao_);
@@ -73,8 +81,13 @@ void renderer::shutdown()
 {
     if (default_flat_shader_ != nullptr) {
         delete default_flat_shader_;
-        glDeleteVertexArrays(1, &base_vao_);
     }
+
+    if (default_textured_shader_ != nullptr) {
+        delete default_textured_shader_;
+    }
+
+    glDeleteVertexArrays(1, &base_vao_);
 
     sun::renderer::shutdown();
 }
@@ -116,6 +129,9 @@ sun::texture* renderer::create_texture() const
 
 void renderer::set_model_transform(const matrix4& transform)
 {
+    if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
+        return;
+    }
     default_flat_shader_->set_uniform("model", transform);
     default_textured_shader_->set_uniform("model", transform);
 
@@ -127,6 +143,9 @@ void renderer::set_model_transform(const matrix4& transform)
 
 void renderer::set_projection(const matrix4& projection)
 {
+    if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
+        return;
+    }
     default_flat_shader_->set_uniform("projection", projection);
     default_textured_shader_->set_uniform("projection", projection);
     //glViewport(0, 0, 1280, 720);
@@ -136,9 +155,11 @@ void renderer::set_shader_(const sun::shader* p_shader) const
 {
     if (current_shader_ != p_shader) {
         current_shader_ = p_shader;
+        if (current_shader_ == nullptr) {
+            return;
+        }
         current_shader_->bind();
 
-        sun_log_info("We're setting shader and layout");
         if (current_shader_ == default_flat_shader_) {
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
@@ -162,8 +183,10 @@ void renderer::set_shader_(const sun::shader* p_shader) const
 void renderer::set_texture_(const sun::texture* p_texture) const
 {
     if (current_texture_ != p_texture) {
-        sun_log_info("We're setting and binding texture");
         current_texture_ = p_texture;
+        if (current_texture_ == nullptr){
+            return;
+        }
         current_texture_->bind();
     }
 }

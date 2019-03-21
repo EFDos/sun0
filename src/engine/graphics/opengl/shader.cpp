@@ -134,7 +134,9 @@ shader::shader(shader_stage* vertex, shader_stage* fragment)
 :   sun::shader(vertex, fragment),
     id_(0)
 {
-    id_ = glCreateProgram();
+    if (vertex_stage_ != nullptr && fragment_stage_ != nullptr) {
+        id_ = glCreateProgram();
+    }
 }
 
 shader::~shader()

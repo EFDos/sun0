@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  renderer.cpp                                                         */
+/*  context.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,34 +21,68 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "renderer.hpp"
-#include "core/logger.hpp"
+#include "context.hpp"
 
-#include "font.hpp"
+#include "system/system.hpp"
+#include "graphics/opengl/renderer.hpp"
+#include "audio/openal/audio_server.hpp"
+
+#include "logger.hpp"
 
 namespace sun {
 
-renderer::renderer(context& c)
-:   system(c),
-    current_shader_(nullptr),
-    current_texture_(nullptr)
+context::context()
 {
 }
 
-bool renderer::init()
+context::~context()
 {
-    sun_log_info("Graphics System ready.");
-    return true;
 }
 
-void renderer::shutdown()
+void context::init_systems()
 {
-    sun_log_info("Graphics System shutdown.");
+    for (auto sys : systems_) {
+        sys.second->init();
+    }
+}
+void context::shutdown_systems()
+{
+    for (auto sys : systems_) {
+        sys.second->shutdown();
+    }
 }
 
-void renderer::set_color(const color& col)
+system* context::register_system_(const std::string& type)
 {
-    clear_color_ = to_colorf(col);
+    system* sys = nullptr;
+    if (type == "SYS_RENDERER") {
+        sun_logf_debug("registering new opengl renderer as %s", type.c_str());
+        sys = new opengl::renderer(*this);
+    }
+    if (type == "SYS_AUDIO_SERVER") {
+        sun_logf_debug("registering new openal renderer as %s", type.c_str());
+        sys = new openal::audio_server(*this);
+    }
+
+    if (sys != nullptr) {
+        systems_[sys->get_type_hash()] = sys;
+    } else {
+        sun_logf_error("Could not register system %s", type.c_str());
+    }
+
+    return sys;
+}
+
+system* context::get_system_(size_t type_hash)
+{
+    auto it = systems_.find(type_hash);
+    if (it != systems_.end()) {
+        sun_logf_debug("returning system %s", it->second->get_type_name().c_str());
+        return it->second;
+    }
+
+    sun_log_debug("system not found");
+    return nullptr;
 }
 
 }

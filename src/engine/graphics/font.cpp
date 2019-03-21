@@ -24,8 +24,9 @@
 #include "font.hpp"
 
 #include "renderer.hpp"
-
 #include "texture.hpp"
+
+#include "core/context.hpp"
 #include "core/logger.hpp"
 
 #include "ft2build.h"
@@ -37,8 +38,9 @@
 namespace sun
 {
 
-font::font()
-:   library_(nullptr),
+font::font(context& p_context)
+:   object(p_context),
+    library_(nullptr),
     face_(nullptr)
 {
 }
@@ -72,11 +74,15 @@ void font::load(const std::string& filepath)
     FT_Library ft;
     if (FT_Init_FreeType(&ft) != 0) {
         sun_log_error("Could not init FreeType Library");
+        ft = nullptr;
+        return;
     }
 
     FT_Face face;
     if (FT_New_Face(ft, filepath.c_str(), 0, &face) != 0) {
         sun_logf_error("Could no load font %s", filepath.c_str());
+        face = nullptr;
+        return;
     }
 
     library_ = ft;
@@ -85,6 +91,10 @@ void font::load(const std::string& filepath)
 
 const font::glyph& font::get_glyph(uint8 code, uint char_size) const
 {
+    if (library_ == nullptr || face_ == nullptr) {
+        sun_log_warn("Retrieving glyph from unitialized font");
+    }
+
     glyph_table& glyphes = pages_[char_size].glyphes;
 
     auto it = glyphes.find(code);
@@ -138,9 +148,9 @@ float font::get_line_spacing(uint char_size) const
     }
 }
 
-const texture& font::get_page_texture(uint size) const
+const texture* font::get_page_texture(uint size) const
 {
-    return *pages_[size].page_texture;
+    return pages_[size].page_texture;
 }
 
 font::glyph font::load_glyph_(uint8 code, uint char_size) const
@@ -246,6 +256,10 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
 
 recti font::find_glyph_rect_(page& p, uint width, uint height) const
 {
+    if (p.page_texture == nullptr) {
+        p.page_texture = generate_page_texture_();
+    }
+
     row* r = nullptr;
     float best_ratio = 0.f;
     for (row& it_row : p.rows)
@@ -275,7 +289,7 @@ recti font::find_glyph_rect_(page& p, uint width, uint height) const
             uint texture_width  = p.page_texture->get_size().w;
             uint texture_height = p.page_texture->get_size().h;
 
-            uint tex_max_size = system::get<renderer>("SYS_RENDERER")->get_texture_max_size();
+            uint tex_max_size = context_.get_system<renderer>()->get_texture_max_size();
 
             if (texture_width * 2 <= tex_max_size &&
                 texture_height * 2 <= tex_max_size)
@@ -315,6 +329,10 @@ recti font::find_glyph_rect_(page& p, uint width, uint height) const
 
 bool font::set_current_size_(uint char_size) const
 {
+    if (face_ == nullptr) {
+        return false;
+    }
+
     FT_Face face = static_cast<FT_Face>(face_);
 
     FT_UShort current_size = face->size->metrics.x_ppem;
@@ -339,14 +357,13 @@ bool font::set_current_size_(uint char_size) const
     }
 }
 
-font::page::page()
-: next_row(3)
+texture* font::generate_page_texture_() const
 {
-    page_texture = system::get<renderer>("SYS_RENDERER")->create_texture();
+    texture* tex = context_.get_system<renderer>()->create_texture();
 
-    page_texture->set_format(texture::format::rgba);
-    page_texture->resize({128, 128});
-    //page_texture->fill({0, 0}, {128, 128}, buffer);
+    tex->set_format(texture::format::rgba);
+    tex->resize({128, 128});
+    return tex;
 }
 
 }

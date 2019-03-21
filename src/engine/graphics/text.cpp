@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "text.hpp"
 
+#include "core/context.hpp"
 #include "renderer.hpp"
 #include "font.hpp"
 #include "core/logger.hpp"
@@ -31,14 +32,15 @@
 
 namespace sun {
 
-text::text()
-:   color_(color::white),
+text::text(context& p_context)
+:   drawable(p_context),
+    color_(color::white),
     font_size_(16),
     vertices_(nullptr),
     indices_(nullptr),
     font_(nullptr)
 {
-    auto r = system::get<renderer>("SYS_RENDERER");
+    auto r = context_.get_system<renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 0);
     indices_ = r->create_index_buffer(0);
 }
@@ -51,6 +53,12 @@ void text::set_text(const std::string& str)
 
     for (auto c: str) {
         font_->get_glyph(c, font_size_);
+    }
+
+    auto page_texture = font_->get_page_texture(font_size_);
+
+    if (page_texture == nullptr) {
+        return;
     }
 
     vertices_->resize(str.length() * 4);
@@ -67,6 +75,7 @@ void text::set_text(const std::string& str)
     char prev_char = 0;
     for (auto c : str)
     {
+
         x += font_->get_kerning(prev_char, c, font_size_);
         prev_char = c;
 
@@ -82,7 +91,7 @@ void text::set_text(const std::string& str)
         }
 
         const font::glyph& g = font_->get_glyph(c, font_size_);
-        auto tex_size = font_->get_page_texture(font_size_).get_size();
+        auto tex_size = page_texture->get_size();
 
         float pos_x = x + g.rect.x;
         float pos_y = y + g.rect.y;
@@ -131,7 +140,7 @@ void text::set_text(const std::string& str)
 
 void text::draw(renderer* r) const
 {
-    r->draw_indexed(*vertices_, *indices_, &font_->get_page_texture(font_size_), nullptr);
+    r->draw_indexed(*vertices_, *indices_, font_->get_page_texture(font_size_), nullptr);
 }
 
 }

@@ -30,6 +30,8 @@
 
 namespace sun {
 
+class context;
+
 /*struct audio_listener2D
 {
     vector2f    position;
@@ -89,7 +91,7 @@ public:
 
 protected:
 
-    audio_server() = default;
+    explicit audio_server(context& c);
 
     audio_listener3D    listener_;
     float               volume_;

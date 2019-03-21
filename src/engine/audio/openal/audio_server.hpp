@@ -35,7 +35,7 @@ class SUN_API audio_server final : public sun::audio_server
 {
 public:
 
-    audio_server();
+    audio_server(context&);
 
     ~audio_server() = default;
 

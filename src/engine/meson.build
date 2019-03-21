@@ -17,6 +17,7 @@ sun_lib_src = [
   'core/filesys/filesys.cpp',
   'core/filesys/input_stream.cpp',
   'core/logger.cpp',
+  'core/context.cpp',
   'core/application.cpp',
   'core/window.cpp',
   'core/input/keyboard.cpp',

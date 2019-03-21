@@ -26,49 +26,22 @@
 
 namespace sun {
 
-std::unordered_map<size_t, system*> system::systems_;
-
-system::system()
+system::system(context& c) : context_(c), initialized_(false)
 {
 }
 
 system::~system()
 {
-    for (auto sys : systems_)
-    {
-        if (sys.second == this) {
-            sys.second = nullptr;
-        }
-    }
 }
 
-void system::clear_instances()
+bool system::init()
 {
-    for (auto it = systems_.begin() ; it != systems_.end() ;
-        it = systems_.erase(it))
-    {
-        if (it->second != nullptr) {
-            sun_logf_info("*-- System Shutdown: %s --*", it->second->get_name());
-            it->second->shutdown();
-            delete it->second;
-        }
-    }
+    return initialized_ = true;
 }
 
-void system::register_instance(system* instance)
+void system::shutdown()
 {
-    auto it = systems_.find(instance->get_name_hash());
-
-    if (it == systems_.end()) {
-        sun_logf_info("*-- System Init: %s --*", instance->get_name());
-        instance->init();
-        systems_[instance->get_name_hash()] = instance;
-    } else {
-        sun_logf_error("System with name %s is already registered.",
-            instance->get_name());
-
-        delete instance;
-    }
+    initialized_ = false;
 }
 
 }

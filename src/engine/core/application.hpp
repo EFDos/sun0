@@ -23,6 +23,7 @@
 /*************************************************************************/
 #pragma once
 #include "core.hpp"
+#include "context.hpp"
 #include "main.hpp"
 #include "window.hpp"
 
@@ -49,6 +50,7 @@ public:
 
 protected:
 
+    context     context_;
 	window      window_;
 	renderer*   renderer_;
 

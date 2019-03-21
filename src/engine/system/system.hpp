@@ -26,51 +26,43 @@
 #include "common/config.hpp"
 
 #include <string>
-#include <unordered_map>
 
 namespace sun {
+
+class context;
 
 class SUN_API system
 {
 public:
 
-    system();
+    explicit system(context&);
 
     virtual ~system();
 
-    virtual bool init() = 0;
+    virtual bool init();
 
-    virtual void shutdown() = 0;
+    virtual void shutdown();
 
-    virtual const char* get_name() const = 0;
+    virtual const std::string& get_type_name() const = 0;
 
-    virtual size_t get_name_hash() const = 0;
+    virtual size_t get_type_hash() const = 0;
 
-    static void register_instance(system* instance);
+protected:
 
-    static void clear_instances();
-
-    template<typename T>
-    static T* get(const std::string& name)
-    {
-        size_t hash = std::hash<std::string>{}(name);
-        auto it = systems_.find(hash);
-        if (it != systems_.end()) {
-            return static_cast<T*>(systems_[hash]);
-        } else {
-            return nullptr;
-        }
-    }
-
-private:
-
-    static std::unordered_map<size_t, system*> systems_;
+    context&    context_;
+    bool        initialized_;
 
 };
 
-#define SUN_SYSTEM_TYPE(type) const char* get_name() const override\
-    { return #type; }\
-    size_t get_name_hash() const override\
-    { return std::hash<std::string>{}(#type); }\
+#define SUN_SYSTEM_TYPE(type) const std::string& get_type_name() const override \
+    { return get_static_type_name(); } \
+    size_t get_type_hash() const override \
+    { return get_static_type_hash(); } \
+    static const std::string& get_static_type_name() { \
+        static std::string static_name(#type); \
+        return static_name; \
+    } \
+    static const size_t get_static_type_hash() \
+    { return std::hash<std::string>{}(#type); } \
 
 }

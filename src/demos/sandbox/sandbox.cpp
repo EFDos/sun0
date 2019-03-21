@@ -3,13 +3,9 @@
 
 class sandbox : public sun::application
 {
-public:
+public:;
 
-    struct vertex_def
-    {
-    };
-
-	sandbox() : sun::application(), font_size(16) {
+	sandbox() : sun::application(), txt_(context_), fnt_(context_), font_size(16) {
         renderer_->set_color(sun::color::dark_grey);
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
 

@@ -28,8 +28,9 @@
 namespace sun {
 namespace openal {
 
-audio_server::audio_server()
-:   device_(nullptr),
+audio_server::audio_server(context& p_context)
+:   sun::audio_server(p_context),
+    device_(nullptr),
     capture_device_(nullptr),
     context_(nullptr)
 {

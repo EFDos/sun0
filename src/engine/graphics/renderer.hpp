@@ -28,6 +28,8 @@
 
 namespace sun {
 
+class context;
+
 class drawable;
 class matrix4;
 class vertex_buffer;
@@ -105,7 +107,7 @@ public:
 
 protected:
 
-    renderer();
+    explicit renderer(context&);
 
     virtual void set_shader_(const shader*) const = 0;
 

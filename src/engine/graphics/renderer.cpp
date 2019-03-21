@@ -28,6 +28,10 @@
 
 namespace sun {
 
+renderer::renderer() : current_shader_(nullptr), current_texture_(nullptr)
+{
+}
+
 bool renderer::init()
 {
     sun_log_info("Graphics System ready.");

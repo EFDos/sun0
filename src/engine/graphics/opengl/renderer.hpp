@@ -82,7 +82,11 @@ public:
 
 private:
 
-    uint            flat_vao_;
+    void set_shader_(const sun::shader*) const override;
+
+    void set_texture_(const sun::texture*) const override;
+
+    uint            base_vao_;
     sun::shader*    default_flat_shader_;
     sun::shader*    default_textured_shader_;
 

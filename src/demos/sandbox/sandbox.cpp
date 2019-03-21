@@ -10,20 +10,15 @@ public:
     };
 
 	sandbox() : sun::application(), font_size(16) {
-        renderer_->set_color(sun::color::black);
+        renderer_->set_color(sun::color::dark_grey);
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
-        texture_ = renderer_->create_texture();
 
-        sun::image img;
-        img.load("res/bototem.png");
         fnt_.load("res/Wattauchimma.ttf");
 
-        texture_->load(img);
-        sprt_.set_texture(texture_);
         txt_.set_font(&fnt_);
         txt_.set_color(sun::color::sun);
         txt_.set_character_size(72);
-        txt_.set_text("H\ne\nl\nl\no\nWorld");
+        txt_.set_text("Hello\n   Sun!");
 	}
 
     ~sandbox() {
@@ -54,7 +49,7 @@ public:
 	        speed_.y += 0.7f;
 	    }
 
-        renderer_->clear();
+        //renderer_->clear();
 
         if (speed_.x > 0.f) {
             speed_.x -= 0.2f;
@@ -69,15 +64,13 @@ public:
 
         transform_.translate(speed_);
         renderer_->set_model_transform(transform_);
-        //renderer_->draw(sprt_);
+        renderer_->clear();
         renderer_->draw(txt_);
     }
 
 private:
 
-    sun::sprite sprt_;
     sun::text   txt_;
-    sun::texture* texture_;
     sun::font fnt_;
     sun::matrix4 transform_;
     sun::vector2f speed_;

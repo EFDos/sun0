@@ -49,4 +49,10 @@ base_color<uint8> base_color<uint8>::magenta = base_color<uint8>(255, 0, 255);
 template<>
 base_color<uint8> base_color<uint8>::sun = base_color<uint8>(255, 255, 200);
 
+template<>
+base_color<uint8> base_color<uint8>::light_grey = base_color<uint8>(100, 100, 100);
+
+template<>
+base_color<uint8> base_color<uint8>::dark_grey = base_color<uint8>(30, 30, 30);
+
 }

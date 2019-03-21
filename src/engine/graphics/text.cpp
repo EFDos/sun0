@@ -78,7 +78,6 @@ void text::set_text(const std::string& str)
                 case '\t': x += hspace * 4; break;
                 case '\n': y += vspace; x = 0.f; break;
             }
-            sun_log_info("Special case");
             continue;
         }
 

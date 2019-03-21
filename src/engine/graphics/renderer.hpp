@@ -105,9 +105,15 @@ public:
 
 protected:
 
-    renderer() = default;
+    renderer();
 
-    colorf  clear_color_;
+    virtual void set_shader_(const shader*) const = 0;
+
+    virtual void set_texture_(const texture*) const = 0;
+
+    colorf              clear_color_;
+    mutable const shader*       current_shader_;
+    mutable const texture*      current_texture_;
 };
 
 }

@@ -38,7 +38,7 @@
 namespace sun {
 namespace opengl {
 
-renderer::renderer() : flat_vao_(0), default_flat_shader_(nullptr) {}
+renderer::renderer() : base_vao_(0), default_flat_shader_(nullptr) {}
 
 renderer::~renderer() {}
 
@@ -63,12 +63,8 @@ bool renderer::init()
 
     default_textured_shader_->set_uniform("tex", 0);
 
-    glGenVertexArrays(1, &flat_vao_);
-    glBindVertexArray(flat_vao_);
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
-    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
+    glGenVertexArrays(1, &base_vao_);
+    glBindVertexArray(base_vao_);
 
     return sun::renderer::init();
 }
@@ -77,7 +73,7 @@ void renderer::shutdown()
 {
     if (default_flat_shader_ != nullptr) {
         delete default_flat_shader_;
-        glDeleteVertexArrays(1, &flat_vao_);
+        glDeleteVertexArrays(1, &base_vao_);
     }
 
     sun::renderer::shutdown();
@@ -122,6 +118,11 @@ void renderer::set_model_transform(const matrix4& transform)
 {
     default_flat_shader_->set_uniform("model", transform);
     default_textured_shader_->set_uniform("model", transform);
+
+    //TODO: Provisory fix
+    if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
+        current_shader_->bind();
+    }
 }
 
 void renderer::set_projection(const matrix4& projection)
@@ -129,6 +130,42 @@ void renderer::set_projection(const matrix4& projection)
     default_flat_shader_->set_uniform("projection", projection);
     default_textured_shader_->set_uniform("projection", projection);
     //glViewport(0, 0, 1280, 720);
+}
+
+void renderer::set_shader_(const sun::shader* p_shader) const
+{
+    if (current_shader_ != p_shader) {
+        current_shader_ = p_shader;
+        current_shader_->bind();
+
+        sun_log_info("We're setting shader and layout");
+        if (current_shader_ == default_flat_shader_) {
+            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
+            glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6,
+                (void*)(sizeof(float) * 2));
+        }
+        if (current_shader_ == default_textured_shader_) {
+            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(1);
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8,
+                (void*)(sizeof(float) * 2));
+            glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8,
+                (void*)(sizeof(float) * 4));
+        }
+    }
+}
+
+void renderer::set_texture_(const sun::texture* p_texture) const
+{
+    if (current_texture_ != p_texture) {
+        sun_log_info("We're setting and binding texture");
+        current_texture_ = p_texture;
+        current_texture_->bind();
+    }
 }
 
 void renderer::clear(const color& col)
@@ -155,17 +192,13 @@ void renderer::draw(const drawable& d) const
 void renderer::draw(const sun::vertex_buffer& buffer,
                     const sun::shader* p_shader) const
 {
+    buffer.bind();
+
     if (p_shader != nullptr) {
         p_shader->bind();
     } else {
         default_flat_shader_->bind();
     }
-    glBindVertexArray(flat_vao_);
-    buffer.bind();
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
-    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
 
     glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
 }
@@ -174,21 +207,16 @@ void renderer::draw(const sun::vertex_buffer& buffer,
                     const sun::texture* p_texture,
                     const sun::shader* p_shader) const
 {
-    if (p_shader != nullptr) {
-        p_shader->bind();
-    } else {
-        default_textured_shader_->bind();
-    }
-    p_texture->bind();
-
-    glBindVertexArray(flat_vao_);
     buffer.bind();
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 2));
-    glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 4));
+
+    if (p_shader != nullptr) {
+        set_shader_(p_shader);
+    } else {
+        set_shader_(default_textured_shader_);
+    }
+    if (p_texture != nullptr) {
+        set_texture_(p_texture);
+    }
 
     glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
 }
@@ -197,19 +225,14 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
                             const sun::index_buffer& ibuffer,
                             const sun::shader* p_shader) const
 {
+    ibuffer.bind();
+    vbuffer.bind();
+
     if (p_shader != nullptr) {
         p_shader->bind();
     } else {
         default_flat_shader_->bind();
     }
-
-    ibuffer.bind();
-    glBindVertexArray(flat_vao_);
-    vbuffer.bind();
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
-    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6, (void*)(sizeof(float) * 2));
 
     glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
 }
@@ -219,21 +242,17 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
                             const sun::texture* p_texture,
                             const sun::shader* p_shader) const
 {
-    if (p_shader != nullptr) {
-        p_shader->bind();
-    } else {
-        default_textured_shader_->bind();
-    }
-    p_texture->bind();
     ibuffer.bind();
-    glBindVertexArray(flat_vao_);
     vbuffer.bind();
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 2));
-    glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8, (void*)(sizeof(float) * 4));
+
+    if (p_shader != nullptr) {
+        set_shader_(p_shader);
+    } else {
+        set_shader_(default_textured_shader_);
+    }
+    if (p_texture != nullptr) {
+        set_texture_(p_texture);
+    }
 
     glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
 }

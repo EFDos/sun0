@@ -138,6 +138,8 @@ struct base_color
     static base_color<uint8> yellow;
     static base_color<uint8> magenta;
     static base_color<uint8> sun;
+    static base_color<uint8> light_grey;
+    static base_color<uint8> dark_grey;
 };
 
 template<typename T>

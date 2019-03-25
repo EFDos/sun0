@@ -48,6 +48,9 @@
 #include "graphics/shader.hpp"
 #include "graphics/texture.hpp"
 
+// AUDIO
+#include "audio/sound_stream.hpp"
+
 /*********** ENTRY POINT ***********/
 #include "core/main.hpp"
 /***********************************/

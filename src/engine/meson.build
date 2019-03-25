@@ -13,6 +13,7 @@ configure_file(
 
 sun_lib_src = [
   'common/color.cpp',
+  'common/time.cpp',
   'math/matrix4.cpp',
   'core/filesys/filesys.cpp',
   'core/filesys/input_stream.cpp',
@@ -25,7 +26,7 @@ sun_lib_src = [
   'audio/decoders/vorbis_decoder.cpp',
   'audio/audio_server.cpp',
   'audio/sound_source.cpp',
-  'audio/openal/audio_server.cpp',
+  'audio/sound_stream.cpp',
   'graphics/font.cpp',
   'graphics/image.cpp',
   'graphics/sprite.cpp',

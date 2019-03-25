@@ -26,7 +26,7 @@
 
 //#include "system/system.hpp"
 #include "graphics/opengl/renderer.hpp"
-#include "audio/openal/audio_server.hpp"
+#include "audio/audio_server.hpp"
 
 #include "logger.hpp"
 #include "event.hpp"

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  openal/audio_server.hpp                                              */
+/*  time.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,50 +21,7 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "time.hpp"
 
-#include "audio/audio_server.hpp"
-
-#include <AL/al.h>
-#include <AL/alc.h>
-
-namespace sun {
-namespace openal {
-
-class SUN_API audio_server final : public sun::audio_server
-{
-public:
-
-    audio_server(context&);
-
-    ~audio_server() = default;
-
-    bool init() override;
-
-    void shutdown() override;
-
-    void set_global_volume(float volume) override;
-
-    void set_listener(const audio_listener3D& listener) override;
-
-    void set_listener_position(vector3f pos) override;
-
-    void set_listener_velocity(vector3f vel) override;
-
-    void set_listener_orientation(vector3f ori, vector3f up_vec) override;
-
-private:
-
-    const char* get_al_error(ALenum error) const noexcept;
-    const char* get_alc_error(ALCenum error) const noexcept;
-
-    int format_from_channel_count(uint count) const;
-
-    ALCdevice*  device_;
-    ALCdevice*  capture_device_;
-    ALCcontext* context_;
-
-};
-
-} // openal
-} // sun
+// Most useful cpp file :)
+sun::time sun::time::zero(0);

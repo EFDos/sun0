@@ -23,21 +23,45 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/int.hpp"
+#include "common/time.hpp"
 #include "sound_source.hpp"
+#include "core/filesys/input_stream.hpp"
+
+#include <vector>
+#include <thread>
+#include <mutex>
 
 namespace sun {
 
-class sound_stream : public sound_source
+class context;
+class decoder;
+
+class SUN_API sound_stream final : public sound_source
 {
 public:
 
-    struct chunk {
-        const int16*    samples;
-        std::size_t     sample_count;
+    template<typename T>
+    struct span
+    {
+        T offset;
+        T length;
+
+        span() {}
+        span(T off, T len) : offset(off), length(len) {}
     };
 
-    virtual ~sound_stream() {}
+    typedef span<time> time_span;
+
+    struct chunk {
+        const int16*    samples;
+        size_t          sample_count;
+    };
+
+    sound_stream(context& p_context);
+
+    ~sound_stream();
+
+    bool load(const std::string&);
 
     void play() override;
 
@@ -45,30 +69,83 @@ public:
 
     void stop() override;
 
-    void load(filesys::input_stream& file);
+    void set_playing_offset(time);
 
-    inline void set_loop(bool loop) { loop_ = loop; }
+    void set_loop_points(time_span points);
 
-    //TODO: Add set/get for playing offset based on time
-    //void set_playing_offset(some_time_struct);
-    //some_time_struct get_playing_offset() const;
+    inline void set_loop(bool loop) {
+        loop_ = loop;
+    }
 
-    uint get_channel_count() const { return channel_count_; }
+    time get_playing_offset() const;
 
-    uint get_sample_rate() const { return sample_rate_; }
+    time get_duration() const;
 
-    inline bool get_loop() const { return loop_; }
+    time_span get_loop_points() const;
 
-protected:
+    state get_state() const override;
 
-    sound_stream();
+    inline bool get_loop() const {
+        return loop_;
+    }
 
-    uint    channel_count_;
-    uint    sample_rate_;
-    bool    loop_;
+    inline uint get_channel_count() const {
+        return channel_count_;
+    }
 
-    filesys::input_stream&  stream_;
+    inline uint get_sample_rate() const {
+        return sample_rate_;
+    }
 
+private:
+
+    enum {
+        no_loop = -1
+    };
+
+    void initialize_();
+
+    bool on_get_data_(chunk& data);
+
+    void on_seek_(time);
+
+    int64 on_loop_();
+
+    void stream_data_();
+
+    bool fill_and_push_buffer_(uint buffer_n, bool immediate_loop = false);
+
+    bool fill_queue_();
+
+    void clear_queue_();
+
+    uint64 time_to_samples_(time pos) const;
+
+    time samples_to_time(uint64 samples) const;
+
+    enum {
+        buffer_count = 3,
+        buffer_retries = 2
+    };
+
+    std::thread             thread_;
+    mutable std::mutex      thread_mutex_;
+
+    state           thread_start_state_;
+    uint            channel_count_;
+    uint            sample_rate_;
+    uint32          format_;
+    uint64          samples_processed_;
+    bool            is_streaming_;
+    bool            loop_;
+    uint            buffers_[buffer_count];
+    int64           buffer_seeks_[buffer_count];
+
+    filesys::input_stream   file_;
+    decoder*                decoder_;
+    std::vector<int16>      samples_;
+    std::mutex              file_mutex_;
+    span<uint64>            loop_span_;
 };
 
 }

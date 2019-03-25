@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  openal/sound_stream.hpp                                              */
+/*  time.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,69 +23,52 @@
 /*************************************************************************/
 #pragma once
 
-#include "audio/sound_stream.hpp"
-
-#include <thread>
+#include "int.hpp"
+#include "config.hpp"
 
 namespace sun {
 
-class sound_stream : public sound_source
+class SUN_API time
 {
 public:
 
-    struct chunk {
-        const int16*    samples;
-        std::size_t     sample_count;
-    };
+    time() : microseconds_(0) {}
 
-    virtual ~sound_stream() {}
+    time(int64 microseconds) : microseconds_(microseconds) {}
 
-    void play() override;
+    inline float as_seconds() const {
+        return microseconds_ / 1000000.f;
+    }
 
-    void pause() override;
+    inline int32 as_milliseconds() const {
+        return static_cast<int32>(microseconds_ / 1000);
+    }
 
-    void stop() override;
+    inline int64 as_microseconds() const {
+        return microseconds_;
+    }
 
-    void load(const filesys::input_stream& file);
+    inline static time seconds(float amount) {
+        return time(static_cast<int64>(amount * 1000000));
+    }
 
-    inline void set_loop(bool loop) { loop_ = loop; }
+    inline static time milliseconds(int32 amount) {
+        return time(static_cast<int64>(amount * 1000));
+    }
 
-    //TODO: Add set/get for playing offset based on time
-    //void set_playing_offset(some_time_struct);
-    //some_time_struct get_playing_offset() const;
+    inline static time microseconds(int64 amount) {
+        return time(amount);
+    }
 
-    uint get_channel_count() const { return channel_count_; }
+    static time zero;
 
-    uint get_sample_rate() const { return sample_rate_; }
+    bool operator!=(const time& other) {
+        return microseconds_ != other.microseconds_;
+    }
 
-    inline bool get_loop() const { return loop_; }
+private:
 
-protected:
-
-    sound_stream();
-
-    void initialize_(uint channel_count, uint sample_rate);
-
-    virtual bool on_get_data_(chunk& data) = 0;
-
-    //virtual void on_seek(
-
-    virtual void stream_data_() = 0;
-
-    virtual int64 on_loop_();
-
-    std::thread stream_thread_;
-    std::mutex  thread_mutex_;
-    status      thread_start_status_;
-
-    uint32  format_;
-    uint    buffers_[3];
-    uint    channel_count_;
-    uint    sample_rate_;
-    uint64  samples_processed_;
-    int64   buffer_seeks_[3];
-    bool    loop_;
-
+    int64   microseconds_;
 };
 
 }

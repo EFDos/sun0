@@ -25,7 +25,7 @@
 
 #include "system/system.hpp"
 #include "graphics/opengl/renderer.hpp"
-#include "audio/openal/audio_server.hpp"
+#include "audio/audio_server.hpp"
 
 #include "logger.hpp"
 
@@ -61,7 +61,7 @@ system* context::register_system_(const std::string& type)
     }
     if (type == "SYS_AUDIO_SERVER") {
         sun_logf_debug("registering new openal renderer as %s", type.c_str());
-        sys = new openal::audio_server(*this);
+        sys = new audio_server(*this);
     }
 
     if (sys != nullptr) {

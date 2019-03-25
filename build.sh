@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ ! -d "build/" ]; then
+    meson build/ -Dbuild-demos=true
+fi
+
 cd build/
 ninja
 cd ..

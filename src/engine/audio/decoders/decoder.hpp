@@ -24,12 +24,14 @@
 #pragma once
 
 #include "common/config.hpp"
-#include "common/int.hpp"
+#include "common/time.hpp"
 
 namespace sun {
 
 namespace filesys {
+
 class input_stream;
+
 }
 
 class SUN_API decoder
@@ -43,13 +45,44 @@ public:
         uint    sample_rate;
     };
 
+    decoder() : sample_offset_(0) {}
+
     virtual ~decoder() {}
 
-    virtual bool open(filesys::input_stream& stream, info& i) = 0;
+    virtual bool open(filesys::input_stream& stream) = 0;
 
     virtual void seek(uint64 sample_offset) = 0;
 
     virtual uint64 read(int16* samples, uint64 max) = 0;
+
+    inline time get_duration() const
+    {
+        if (info_.channel_count == 0 || info_.sample_rate == 0) {
+            return time::zero;
+        }
+
+        return time::seconds(static_cast<float>(info_.sample_count) /
+            info_.channel_count / info_.sample_rate);
+    }
+
+    inline time get_time_offset() const
+    {
+        if (info_.channel_count == 0 || info_.sample_rate == 0) {
+            return time::zero;
+        }
+
+        return time::seconds(static_cast<float>(sample_offset_) /
+            info_.channel_count / info_.sample_rate);
+    }
+
+    inline uint64 get_sample_offset() const { return sample_offset_; }
+
+    inline const info& get_info() const { return info_; }
+
+protected:
+
+    info    info_;
+    uint64  sample_offset_;
 };
 
 } // sun

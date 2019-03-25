@@ -37,7 +37,7 @@ public:
     ~vorbis_decoder();
 
     // Implements decoder
-    bool open(filesys::input_stream& stream, info& i) override;
+    bool open(filesys::input_stream& stream) override;
 
     void seek(uint64 sample_offset) override;
 
@@ -50,7 +50,6 @@ private:
     void close_();
 
     OggVorbis_File  vorbis_;
-    uint            channel_count_;
 
     // Vorbis callbacks
     static size_t callback_read(void* ptr, size_t size, size_t nmemb, void* data);

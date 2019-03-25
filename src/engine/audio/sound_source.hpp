@@ -23,16 +23,18 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/config.hpp"
+#include "common/object.hpp"
 #include "math/vector3.hpp"
 
 namespace sun {
 
-class SUN_API sound_source
+class context;
+
+class SUN_API sound_source : public object
 {
 public:
 
-    enum class status {
+    enum class state {
         stopped,
         paused,
         playing
@@ -40,67 +42,49 @@ public:
 
     virtual ~sound_source();
 
-    virtual void play();
+    virtual void play() = 0;
 
-    virtual void pause();
+    virtual void pause() = 0;
 
-    virtual void stop();
+    virtual void stop() = 0;
 
-    inline virtual void set_volume(float vol) {
-        volume_ = vol;
-    }
+    void set_volume(float vol);
 
-    inline virtual void set_pitch(float pitch) {
-        pitch_ = pitch;
-    }
+    void set_pitch(float pitch);
 
-    inline virtual void set_relative(bool relative) {
-        relative_ = relative;
-    }
+    void set_relative(bool relative);
 
-    inline virtual void set_minmum_distance(float dist) {
-        min_distance_ = dist;
-    }
+    void set_minmum_distance(float dist);
 
-    inline virtual void set_attenuation(float atten) {
-        attenuation_ = atten;
-    }
+    void set_attenuation(float atten);
 
-    inline virtual void set_position(float x, float y, float z) {
-        position_ = {x, y, z};
-    }
+    void set_position(float x, float y, float z);
 
-    virtual void set_position(const vector3f& pos) {
-        position_ = pos;
-    }
+    void set_position(const vector3f& pos);
 
-    float get_volume() const { return volume_; }
+    float get_volume() const;
 
-    float get_pitch() const { return pitch_; }
+    float get_pitch() const;
 
-    bool is_relative() const { return relative_; }
+    bool is_relative() const;
 
-    float get_minimum_distance() const { return min_distance_; }
+    float get_minimum_distance() const;
 
-    float get_attenuation() const { return attenuation_; }
+    float get_attenuation() const;
 
-    status get_status() const { return status_; }
+    virtual state get_state() const;
 
-    const vector3f& get_position() const { return position_; }
+    vector3f get_position() const;
 
 protected:
 
-    sound_source();
+    sound_source(context& p_context);
 
-    float       volume_;
-    float       pitch_;
-    float       min_distance_;
-    float       attenuation_;
+    sound_source(const sound_source&);
 
-    vector3f    position_;
+    sound_source(sound_source&&) = default;
 
-    bool        relative_;
-    status      status_;
+    uint source_;
 };
 
 }

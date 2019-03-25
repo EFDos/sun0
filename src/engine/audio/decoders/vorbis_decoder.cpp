@@ -32,17 +32,30 @@ namespace sun {
 
 size_t vorbis_decoder::callback_read(void* ptr, size_t size, size_t nmemb, void* data)
 {
-    return 0;
+    filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
+    return static_cast<std::size_t>(stream->read(ptr, size * nmemb));
 }
 
 int vorbis_decoder::callback_seek(void* data, ogg_int64_t offset, int whence)
 {
-    return 0;
+    filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
+    switch (whence)
+    {
+        case SEEK_SET:
+            break;
+        case SEEK_CUR:
+            offset += stream->tell();
+            break;
+        case SEEK_END:
+            offset = stream->get_size() - offset;
+    }
+    return static_cast<int>(stream->seek(offset));
 }
 
 long vorbis_decoder::callback_tell(void* data)
 {
-    return 0;
+    filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
+    return static_cast<long>(stream->tell());
 }
 
 ov_callbacks vorbis_decoder::callbacks_ = {
@@ -52,7 +65,7 @@ ov_callbacks vorbis_decoder::callbacks_ = {
     &vorbis_decoder::callback_tell
 };
 
-vorbis_decoder::vorbis_decoder() : channel_count_(0)
+vorbis_decoder::vorbis_decoder()
 {
     vorbis_.datasource = nullptr;
 }
@@ -62,7 +75,7 @@ vorbis_decoder::~vorbis_decoder()
     close_();
 }
 
-bool vorbis_decoder::open(filesys::input_stream& stream, info& i)
+bool vorbis_decoder::open(filesys::input_stream& stream)
 {
     int status = ov_open_callbacks(&stream, &vorbis_, nullptr, 0, callbacks_);
 
@@ -73,12 +86,10 @@ bool vorbis_decoder::open(filesys::input_stream& stream, info& i)
     }
 
     vorbis_info* v_info = ov_info(&vorbis_, -1);
-    i.channel_count = v_info->channels;
-    i.sample_rate = v_info->rate;
-    i.sample_count = static_cast<size_t>(ov_pcm_total(&vorbis_, -1) *
+    info_.channel_count = v_info->channels;
+    info_.sample_rate = v_info->rate;
+    info_.sample_count = static_cast<size_t>(ov_pcm_total(&vorbis_, -1) *
          v_info->channels);
-
-    channel_count_ = i.channel_count;
 
     return true;
 }
@@ -90,7 +101,8 @@ void vorbis_decoder::seek(uint64 sample_offset)
     }
     assert(vorbis_.datasource);
 
-    ov_pcm_seek(&vorbis_, sample_offset / channel_count_);
+    sample_offset_ = std::min(sample_offset, info_.sample_count);
+    ov_pcm_seek(&vorbis_, sample_offset_ / info_.channel_count);
 }
 
 uint64 vorbis_decoder::read(int16* samples, uint64 max)
@@ -112,6 +124,7 @@ uint64 vorbis_decoder::read(int16* samples, uint64 max)
             long samples_read = bytes_read / sizeof(int16);
             count += samples_read;
             samples += samples_read;
+            sample_offset_ += samples_read;
         } else {
             break;
         }
@@ -125,7 +138,7 @@ void vorbis_decoder::close_()
     if (vorbis_.datasource != nullptr) {
         ov_clear(&vorbis_);
         vorbis_.datasource = nullptr;
-        channel_count_ = 0;
+        info_.channel_count = 0;
     }
 }
 

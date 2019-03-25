@@ -25,8 +25,10 @@
 
 #include "system/system.hpp"
 
-//#include "math/vector2.hpp"
 #include "math/vector3.hpp"
+
+#include <AL/al.h>
+#include <AL/alc.h>
 
 namespace sun {
 
@@ -48,42 +50,31 @@ struct audio_listener3D
     vector3f    up_vector;
 };
 
-class SUN_API audio_server : public system
+class SUN_API audio_server final : public system
 {
 public:
 
     SUN_SYSTEM_TYPE(SYS_AUDIO_SERVER);
 
-    virtual ~audio_server() = default;
+    explicit audio_server(context&);
 
-    virtual bool init() override;
+    ~audio_server() = default;
 
-    virtual void shutdown() override;
+    bool init() override;
 
-    inline virtual void set_global_volume(float volume) { volume_ = volume; }
+    void shutdown() override;
 
-    inline virtual void set_listener(const audio_listener3D& listener)
-    {
-        listener_ = listener;
-    }
+    void set_global_volume(float volume);
 
-    inline virtual void set_listener_position(vector3f pos)
-    {
-        listener_.position = pos;
-    }
+    void set_listener(const audio_listener3D& listener);
 
-    inline virtual void set_listener_velocity(vector3f vel)
-    {
-        listener_.velocity = vel;
-    }
+    void set_listener_position(vector3f pos);
 
-    inline virtual void set_listener_orientation(vector3f ori, vector3f up_vec)
-    {
-        listener_.orientation = ori;
-        listener_.up_vector = up_vec;
-    }
+    void set_listener_velocity(vector3f vel);
 
-    //virtual int get_format_from_channel_count(uint channel_count) = 0;
+    void set_listener_orientation(vector3f ori, vector3f up_vec);
+
+    int get_format_from_channel_count(uint count) const;
 
     inline float get_global_volume() { return volume_; }
 
@@ -91,10 +82,15 @@ public:
 
 protected:
 
-    explicit audio_server(context& c);
-
     audio_listener3D    listener_;
     float               volume_;
+
+    const char* get_al_error(ALenum error) const noexcept;
+    const char* get_alc_error(ALCenum error) const noexcept;
+
+    ALCdevice*  alc_device_;
+    ALCdevice*  alc_capture_device_;
+    ALCcontext* alc_context_;
 };
 
 }

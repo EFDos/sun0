@@ -18,7 +18,8 @@ sun_depends = [
 	dependency('sdl2'),
 	dependency('glew'),
 	dependency('openal'),
-	dependency('vorbis'),
+	dependency('vorbisfile'),
+	dependency('threads'),
 	meson.get_compiler('cpp').find_library('freetype')
 ]
 

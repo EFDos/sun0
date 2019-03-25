@@ -7,7 +7,7 @@
 
 ###Sound
 
-* Add Sound Streams and Sound Buffers
+* Add Sound Buffers
 
 ###Resource Management
 

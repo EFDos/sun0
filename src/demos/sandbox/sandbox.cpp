@@ -9,12 +9,8 @@ public:;
 	:   sun::application(),
 	    txt_(context_),
 	    fnt_(context_),
-	    music_(context_),
-	    font_size(16)
+	    music_(context_)
 	{
-
-	    scale_ = {1.f, 1.f};
-
         renderer_->set_color(sun::color::dark_grey);
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
 
@@ -38,10 +34,6 @@ public:;
         sun::application::on_event(e);
 	}
 
-	void on_font_size_change() {
-	    sun_printf("font size: %d", font_size);
-	}
-
     void on_update() override {
         if (sun::keyboard::is_key_pressed(sun::keyboard::key::RIGHT)) {
 	        speed_.x += 0.7f;
@@ -59,8 +51,6 @@ public:;
 	        speed_.y += 0.7f;
 	    }
 
-        //renderer_->clear();
-
         if (speed_.x > 0.f) {
             speed_.x -= 0.2f;
         } else if (speed_.x < 0.f) {
@@ -72,13 +62,7 @@ public:;
             speed_.y += 0.2f;
         }
 
-        if (scale_.x < 10.f) {
-            scale_.x += 0.01f;
-            scale_.y += 0.01f;
-        }
-
         transform_.translate(speed_);
-        transform_.set_scale(scale_);
         renderer_->set_model_transform(transform_);
         renderer_->clear();
         renderer_->draw(txt_);
@@ -90,11 +74,8 @@ private:
     sun::font fnt_;
     sun::matrix4 transform_;
     sun::vector2f speed_;
-    sun::vector2f scale_;
 
     sun::sound_stream music_;
-
-    int font_size;
 };
 
 SUN_DEFINE_MAIN_APP(sandbox)

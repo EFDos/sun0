@@ -7,6 +7,7 @@ public:;
 
 	sandbox()
 	:   sun::application(),
+	    shape2D_(context_),
 	    txt_(context_),
 	    fnt_(context_),
 	    music_(context_)
@@ -20,6 +21,9 @@ public:;
         txt_.set_color(sun::color::sun);
         txt_.set_character_size(72);
         txt_.set_text("Hello\n   Sun!");
+
+        shape2D_.set_color(sun::color::sun);
+        shape2D_.set_shape(sun::shapes::circle(400.f, 240));
 
         music_.load("res/ontar2.ogg");
         music_.set_loop(true);
@@ -66,10 +70,12 @@ public:;
         renderer_->set_model_transform(transform_);
         renderer_->clear();
         renderer_->draw(txt_);
+        renderer_->draw(shape2D_);
     }
 
 private:
 
+    sun::shape2D shape2D_;
     sun::text   txt_;
     sun::font fnt_;
     sun::matrix4 transform_;

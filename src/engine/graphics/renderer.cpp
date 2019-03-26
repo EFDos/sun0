@@ -30,6 +30,7 @@ namespace sun {
 
 renderer::renderer(context& c)
 :   system(c),
+    draw_mode_(draw_mode::triangles),
     current_shader_(nullptr),
     current_texture_(nullptr)
 {

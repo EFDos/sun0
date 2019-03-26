@@ -66,7 +66,7 @@ public:
               const sun::shader* p_shader = nullptr) const override;
 
     void draw(const sun::vertex_buffer& buffer,
-              const sun::texture* p_texture = nullptr,
+              const sun::texture* p_texture,
               const sun::shader* p_shader = nullptr) const override;
 
     void draw_indexed(const sun::vertex_buffer& vbuffer,
@@ -75,7 +75,7 @@ public:
 
     void draw_indexed(const sun::vertex_buffer& vbuffer,
                       const sun::index_buffer& ibuffer,
-                      const sun::texture* p_texture = nullptr,
+                      const sun::texture* p_texture,
                       const sun::shader* p_shader = nullptr) const override;
 
     uint get_texture_max_size() const override;

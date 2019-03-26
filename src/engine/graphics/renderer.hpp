@@ -44,6 +44,13 @@ public:
 
     SUN_SYSTEM_TYPE(SYS_RENDERER);
 
+    enum class draw_mode {
+        points,
+        lines,
+        triangles,
+        triangle_fan
+    };
+
     struct info
     {
         std::string name;
@@ -85,7 +92,7 @@ public:
                       const shader* p_shader = nullptr) const = 0;
 
     virtual void draw(const vertex_buffer& buffer,
-                      const texture* p_texture = nullptr,
+                      const texture* p_texture,
                       const shader* p_shader = nullptr) const = 0;
 
     virtual void draw_indexed(const vertex_buffer& vbuffer,
@@ -94,7 +101,7 @@ public:
 
     virtual void draw_indexed(const vertex_buffer& vbuffer,
                               const index_buffer& ibuffer,
-                              const texture* p_texture = nullptr,
+                              const texture* p_texture,
                               const shader* p_shader = nullptr) const = 0;
 
     virtual void set_model_transform(const matrix4& transform) = 0;
@@ -105,6 +112,14 @@ public:
 
     virtual uint get_texture_max_size() const = 0;
 
+    inline void set_draw_mode(draw_mode mode) {
+        draw_mode_ = mode;
+    }
+
+    inline draw_mode get_draw_mode() const {
+        return draw_mode_;
+    }
+
 protected:
 
     explicit renderer(context&);
@@ -113,7 +128,8 @@ protected:
 
     virtual void set_texture_(const texture*) const = 0;
 
-    colorf              clear_color_;
+    colorf                      clear_color_;
+    draw_mode                   draw_mode_;
     mutable const shader*       current_shader_;
     mutable const texture*      current_texture_;
 };

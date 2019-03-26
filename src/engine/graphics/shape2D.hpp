@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  shape2D.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,38 +23,41 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+#include "renderer.hpp"
+#include "drawable.hpp"
+#include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
-// GRAPHICS
-#include "graphics/image.hpp"
-#include "graphics/font.hpp"
-#include "graphics/sprite.hpp"
-#include "graphics/text.hpp"
-#include "graphics/shape2D.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/texture.hpp"
+namespace sun {
 
-// AUDIO
-#include "audio/sound_stream.hpp"
+namespace shapes {
+class primitive_shape;
+}
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API shape2D : public drawable
+{
+public:
+
+    shape2D(context& p_context);
+
+    ~shape2D();
+
+    void draw(renderer* r) const override;
+
+    void set_shape(const shapes::primitive_shape&);
+
+    inline void set_color(const color& c) {
+        color_ = c;
+    }
+
+private:
+
+    color               color_;
+    renderer::draw_mode draw_mode_;
+    vertex_buffer*      vertices_;
+    index_buffer*       indices_;
+};
+
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sprite.hpp                                                           */
+/*  rectangle.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,40 +23,96 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/types.hpp"
-
-#include "drawable.hpp"
-#include "vertex_buffer.hpp"
-#include "index_buffer.hpp"
+#include "primitive_shape.hpp"
 
 namespace sun {
+namespace shapes {
 
-class texture;
-class renderer;
-
-class SUN_API sprite : public drawable
+class SUN_API rectangle : public primitive_shape
 {
 public:
 
-    sprite(context& p_context);
+    rectangle() : primitive_shape()
+    {
+        type_ = type::rectangle;
+    }
 
-    ~sprite();
+    rectangle(float x, float y) : primitive_shape(), size_(x, y)
+    {
+        type_ = type::rectangle;
+    }
 
-    void draw(renderer* r) const override;
+    rectangle(const vector2f& size) : primitive_shape(), size_(size)
+    {
+        type_ = type::rectangle;
+    }
 
-    void set_texture(const texture* tex);
+    rectangle(const rectangle&) = default;
 
-    inline void set_rect(const recti& r) {
-        rect_ = r;
+    rectangle(rectangle&&) = default;
+
+    rectangle& operator =(const rectangle& other)
+    {
+        size_ = other.size_;
+
+        return *this;
+    }
+
+    rectangle& operator =(rectangle&& other)
+    {
+        size_ = other.size_;
+
+        return *this;
+    }
+
+    ~rectangle() {}
+
+    inline void set_size(const vector2f& size)
+    {
+        size_ = size;
+    }
+
+    inline void set_size(float x, float y)
+    {
+        size_.x = x;
+        size_.y = y;
+    }
+
+    inline vector2f get_point(size_t i) const override
+    {
+        switch(i)
+        {
+            case 0:
+                return {0, 0};
+                break;
+            case 1:
+                return {0, size_.y};
+                break;
+            case 2:
+                return {size_.x, size_.y};
+                break;
+            case 3:
+                return {size_.x, 0};
+                break;
+            default:
+                return {0, 0};
+        }
+    }
+
+    inline size_t get_point_count() const override
+    {
+        return 4;
+    }
+
+    inline const vector2f& get_size() const
+    {
+        return size_;
     }
 
 private:
 
-    recti           rect_;
-
-    vertex_buffer*  vertices_;
-    index_buffer*   indices_;
-    const texture*  texture_;
+    vector2f    size_;
 };
 
+}
 }

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  convex.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,38 +23,73 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "primitive_shape.hpp"
+#include <vector>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
+namespace sun {
+namespace shapes {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API convex : public primitive_shape
+{
+public:
 
-// GRAPHICS
-#include "graphics/image.hpp"
-#include "graphics/font.hpp"
-#include "graphics/sprite.hpp"
-#include "graphics/text.hpp"
-#include "graphics/shape2D.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/texture.hpp"
+    convex() : primitive_shape()
+    {
+        type_ = type::convex;
+    }
 
-// AUDIO
-#include "audio/sound_stream.hpp"
+    convex(size_t size) : primitive_shape(), vertices_(size)
+    {
+        type_ = type::convex;
+    }
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    convex(const convex& convex) = default;
+
+    convex(convex&& convex) = default;
+
+    convex& operator =(const convex& other)
+    {
+        vertices_ = other.vertices_;
+
+        return *this;
+    }
+
+    convex& operator =(convex&& other)
+    {
+        vertices_ = std::move(other.vertices_);
+
+        return *this;
+    }
+
+    ~convex() {}
+
+    inline void set_point(size_t i, const vector2f& point)
+    {
+        if (i > vertices_.size())
+            return;
+
+        vertices_[i] = point;
+    }
+
+    inline void set_point_count(size_t points)
+    {
+        vertices_.resize(points);
+    }
+
+    inline vector2f get_point(size_t i) const override
+    {
+        return vertices_[i];
+    }
+
+    inline size_t get_point_count() const override
+    {
+        return vertices_.size();
+    }
+
+private:
+
+    std::vector<vector2f>   vertices_;
+};
+
+}
+}

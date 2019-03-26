@@ -56,7 +56,9 @@ sound_stream::~sound_stream()
         is_streaming_ = false;
     }
 
-    thread_.join();
+    if (thread_.joinable()) {
+        thread_.join();
+    }
 
     if (decoder_ != nullptr) {
         delete decoder_;

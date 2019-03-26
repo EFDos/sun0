@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  primitive_shape.hpp                                                  */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,38 +23,39 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/config.hpp"
+#include "math/vector2.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
+namespace sun {
+namespace shapes {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API primitive_shape
+{
+public:
 
-// GRAPHICS
-#include "graphics/image.hpp"
-#include "graphics/font.hpp"
-#include "graphics/sprite.hpp"
-#include "graphics/text.hpp"
-#include "graphics/shape2D.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/texture.hpp"
+    enum class type
+    {
+        rectangle,
+        circle,
+        convex
+    };
 
-// AUDIO
-#include "audio/sound_stream.hpp"
+    primitive_shape() {}
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    virtual ~primitive_shape() {}
+
+    virtual vector2f get_point(size_t index) const = 0;
+
+    virtual size_t get_point_count() const = 0;
+
+    type get_type() const
+    {
+        return type_;
+    }
+
+protected:
+    type    type_;
+};
+
+}
+}

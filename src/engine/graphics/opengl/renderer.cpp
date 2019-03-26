@@ -38,6 +38,17 @@
 namespace sun {
 namespace opengl {
 
+constexpr GLenum get_gl_type(renderer::draw_mode mode)
+{
+    switch (mode) {
+        case renderer::draw_mode::triangles:    return GLenum(GL_TRIANGLES);
+        case renderer::draw_mode::lines:        return GLenum(GL_LINES);
+        case renderer::draw_mode::points:       return GLenum(GL_POINTS);
+        case renderer::draw_mode::triangle_fan: return GLenum(GL_TRIANGLE_FAN);
+        default: return GLenum();
+    }
+}
+
 renderer::renderer(context& c)
 :   sun::renderer(c),
     base_vao_(0),
@@ -135,7 +146,7 @@ void renderer::set_model_transform(const matrix4& transform)
     default_flat_shader_->set_uniform("model", transform);
     default_textured_shader_->set_uniform("model", transform);
 
-    //TODO: Provisory fix
+    //TODO: Provisory fix, cause set_uniform unbinds shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
         current_shader_->bind();
     }
@@ -218,12 +229,12 @@ void renderer::draw(const sun::vertex_buffer& buffer,
     buffer.bind();
 
     if (p_shader != nullptr) {
-        p_shader->bind();
+        set_shader_(p_shader);
     } else {
-        default_flat_shader_->bind();
+        set_shader_(default_flat_shader_);
     }
 
-    glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
+    glDrawArrays(get_gl_type(draw_mode_), 0, buffer.get_vertex_count());
 }
 
 void renderer::draw(const sun::vertex_buffer& buffer,
@@ -241,7 +252,7 @@ void renderer::draw(const sun::vertex_buffer& buffer,
         set_texture_(p_texture);
     }
 
-    glDrawArrays(GL_TRIANGLES, 0, buffer.get_vertex_count());
+    glDrawArrays(get_gl_type(draw_mode_), 0, buffer.get_vertex_count());
 }
 
 void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
@@ -252,12 +263,14 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     vbuffer.bind();
 
     if (p_shader != nullptr) {
-        p_shader->bind();
+        set_shader_(p_shader);
     } else {
-        default_flat_shader_->bind();
+        set_shader_(default_flat_shader_);
     }
 
-    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
+    glDrawElements(get_gl_type(draw_mode_),
+                   ibuffer.get_index_count(),
+                   GL_UNSIGNED_INT, 0);
 }
 
 void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
@@ -277,7 +290,9 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
         set_texture_(p_texture);
     }
 
-    glDrawElements(GL_TRIANGLES, ibuffer.get_index_count(), GL_UNSIGNED_INT, 0);
+    glDrawElements(get_gl_type(draw_mode_),
+                   ibuffer.get_index_count(),
+                   GL_UNSIGNED_INT, 0);
 }
 
 uint renderer::get_texture_max_size() const

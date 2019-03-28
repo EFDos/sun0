@@ -33,6 +33,7 @@
 #include "core/logger.hpp"
 #include "core/application.hpp"
 #include "core/event.hpp"
+#include "core/context.hpp"
 
 // TYPES
 #include "common/types.hpp"

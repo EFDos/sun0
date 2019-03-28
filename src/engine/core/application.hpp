@@ -38,7 +38,7 @@ class SUN_API application
 {
 public:
 
-    explicit application();
+    explicit application(context&);
 
     virtual ~application();
 
@@ -50,7 +50,7 @@ public:
 
 protected:
 
-    context     context_;
+    context&    context_;
 	window      window_;
 	renderer*   renderer_;
 
@@ -61,10 +61,13 @@ private:
 
 }
 
+
+
 #define SUN_DEFINE_MAIN_APP(classname) \
 int run_application() \
 { \
-    classname application; \
+    sun::context runtime_context; \
+    classname application(runtime_context); \
     sun_print("Running application " #classname "\n"); \
     return application.run(); \
 } \

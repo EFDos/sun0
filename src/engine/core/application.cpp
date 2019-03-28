@@ -33,7 +33,8 @@
 
 namespace sun {
 
-application::application() :
+application::application(context& p_context)
+:   context_(p_context),
     running_(false)
 {
     sun_printf("******* Sun-0 Engine *******\n"

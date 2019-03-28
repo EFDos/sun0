@@ -3,24 +3,24 @@
 
 class sandbox : public sun::application
 {
-public:;
+public:
 
-	sandbox()
-	:   sun::application(),
-	    shape2D_(context_),
-	    txt_(context_),
-	    fnt_(context_),
-	    music_(context_)
+	sandbox(sun::context& p_context)
+	:   sun::application(p_context),
+	    shape2D_(p_context),
+	    text_(p_context),
+	    font_(p_context),
+	    music_(p_context)
 	{
         renderer_->set_color(sun::color::dark_grey);
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
 
-        fnt_.load("res/Wattauchimma.ttf");
+        font_.load("res/Wattauchimma.ttf");
 
-        txt_.set_font(&fnt_);
-        txt_.set_color(sun::color::sun);
-        txt_.set_character_size(72);
-        txt_.set_text("Hello\n   Sun!");
+        text_.set_font(&font_);
+        text_.set_color(sun::color::sun);
+        text_.set_character_size(72);
+        text_.set_text("Hello\n   Sun!");
 
         shape2D_.set_color(sun::color::sun);
         shape2D_.set_shape(sun::shapes::circle(400.f, 240));
@@ -69,17 +69,17 @@ public:;
         transform_.translate(speed_);
         renderer_->set_model_transform(transform_);
         renderer_->clear();
-        renderer_->draw(txt_);
+        renderer_->draw(text_);
         renderer_->draw(shape2D_);
     }
 
 private:
 
-    sun::shape2D shape2D_;
-    sun::text   txt_;
-    sun::font fnt_;
-    sun::matrix4 transform_;
-    sun::vector2f speed_;
+    sun::shape2D    shape2D_;
+    sun::text       text_;
+    sun::font       font_;
+    sun::matrix4    transform_;
+    sun::vector2f   speed_;
 
     sun::sound_stream music_;
 };

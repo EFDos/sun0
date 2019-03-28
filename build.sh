@@ -7,4 +7,4 @@ fi
 cd build/
 ninja
 cd ..
-./build/src/demos/sun-sandbox
+./build/src/demos/sun-pong

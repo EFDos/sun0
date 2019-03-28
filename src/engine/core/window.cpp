@@ -204,4 +204,13 @@ void window::close()
     }
 }
 
+void window::set_title(const std::string& title)
+{
+    if (window_hndl_ == nullptr) {
+        sun_log_error("Can't set title on closed window.");
+        return;
+    }
+    SDL_SetWindowTitle(static_cast<SDL_Window*>(window_hndl_), title.c_str());
+}
+
 }

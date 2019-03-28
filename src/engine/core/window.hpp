@@ -39,8 +39,8 @@ public:
 	window();
 
     window(const std::string& name,
-    		const vector2u& size,
-    		bool fullscreen = false);
+       	   const vector2u& size,
+    	   bool fullscreen = false);
 
 	window(const window&) = delete;
 
@@ -53,12 +53,14 @@ public:
     bool poll_event(event& e);
 
     void create(const std::string& name,
-    		const vector2u& size,
-    		bool fullscreen = false);
+    		    const vector2u& size,
+    		    bool fullscreen = false);
 
     void close();
 
 	inline bool is_open() const { return window_hndl_ != nullptr; }
+
+    void set_title(const std::string& title);
 
 private:
 

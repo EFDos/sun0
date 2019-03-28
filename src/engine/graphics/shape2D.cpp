@@ -66,23 +66,18 @@ void shape2D::set_shape(const shapes::primitive_shape& shape)
         vertex_data[i * 6 + 5] = col.a;
     }
 
-    switch(shape.get_point_count())
+    switch(shape.get_type())
     {
-        case 1:
-            draw_mode_ = renderer::draw_mode::points;
-            break;
-        case 2:
-            draw_mode_ = renderer::draw_mode::lines;
-            break;
-        case 3:
-            draw_mode_ = renderer::draw_mode::triangles;
-            break;
-        case 4:
+        case shapes::primitive_shape::type::rectangle:
             draw_mode_ = renderer::draw_mode::triangles;
             quad = true;
             break;
-        default:
+        case shapes::primitive_shape::type::circle:
             draw_mode_ = renderer::draw_mode::triangle_fan;
+            break;
+        case shapes::primitive_shape::type::convex:
+            draw_mode_ = renderer::draw_mode::triangles;
+            break;
     }
 
     if (quad) {

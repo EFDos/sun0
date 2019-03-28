@@ -174,19 +174,11 @@ void renderer::set_shader_(const sun::shader* p_shader) const
         if (current_shader_ == default_flat_shader_) {
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
-            glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
-            glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6,
-                (void*)(sizeof(float) * 2));
         }
         if (current_shader_ == default_textured_shader_) {
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
-            glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8,
-                (void*)(sizeof(float) * 2));
-            glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8,
-                (void*)(sizeof(float) * 4));
         }
     }
 }
@@ -233,6 +225,9 @@ void renderer::draw(const sun::vertex_buffer& buffer,
     } else {
         set_shader_(default_flat_shader_);
     }
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6,
+        (void*)(sizeof(float) * 2));
 
     glDrawArrays(get_gl_type(draw_mode_), 0, buffer.get_vertex_count());
 }
@@ -251,6 +246,11 @@ void renderer::draw(const sun::vertex_buffer& buffer,
     if (p_texture != nullptr) {
         set_texture_(p_texture);
     }
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8,
+        (void*)(sizeof(float) * 2));
+    glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8,
+        (void*)(sizeof(float) * 4));
 
     glDrawArrays(get_gl_type(draw_mode_), 0, buffer.get_vertex_count());
 }
@@ -267,6 +267,9 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     } else {
         set_shader_(default_flat_shader_);
     }
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 6, 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 6,
+        (void*)(sizeof(float) * 2));
 
     glDrawElements(get_gl_type(draw_mode_),
                    ibuffer.get_index_count(),
@@ -289,6 +292,11 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
     if (p_texture != nullptr) {
         set_texture_(p_texture);
     }
+    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8,
+        (void*)(sizeof(float) * 2));
+    glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(float) * 8,
+        (void*)(sizeof(float) * 4));
 
     glDrawElements(get_gl_type(draw_mode_),
                    ibuffer.get_index_count(),

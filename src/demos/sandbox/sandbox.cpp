@@ -1,5 +1,4 @@
 #include <sun.hpp>
-#include <cstdio>
 
 class sandbox : public sun::application
 {

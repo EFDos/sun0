@@ -39,6 +39,14 @@ public:
 
     virtual void draw(renderer*) const = 0;
 
+    inline void set_bounding_rect(const recti& r) { bounding_rect_ = r; }
+
+    const recti& get_bounding_rect() { return bounding_rect_; }
+
+protected:
+
+    recti   bounding_rect_;
+
 };
 
 }

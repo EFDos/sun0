@@ -28,6 +28,7 @@
 #include "renderer.hpp"
 
 #include <vector>
+#include <algorithm>
 
 namespace sun {
 
@@ -53,18 +54,23 @@ void shape2D::set_shape(const shapes::primitive_shape& shape)
     vertices_->resize(shape.get_point_count());
     std::vector<float> vertex_data(shape.get_point_count() * 6);
     bool quad = false;
+    int far_x = 0, far_y = 0;
     auto col = to_colorf(color_);
 
     for (size_t i = 0 ; i < shape.get_point_count() ; ++i)
     {
-
-        vertex_data[i * 6 + 0] = shape.get_point(i).x;
-        vertex_data[i * 6 + 1] = shape.get_point(i).y;
+        const auto& point = shape.get_point(i);
+        far_x = std::max(far_x, static_cast<int>(point.x));
+        far_y = std::max(far_y, static_cast<int>(point.y));
+        vertex_data[i * 6 + 0] = point.x;
+        vertex_data[i * 6 + 1] = point.y;
         vertex_data[i * 6 + 2] = col.r;
         vertex_data[i * 6 + 3] = col.g;
         vertex_data[i * 6 + 4] = col.b;
         vertex_data[i * 6 + 5] = col.a;
     }
+
+    bounding_rect_ = { 0, 0, far_x, far_y };
 
     switch(shape.get_type())
     {

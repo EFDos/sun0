@@ -26,10 +26,12 @@
 #include "common/config.hpp"
 
 #include <string>
+#include <memory>
 
 namespace sun {
 
 class context;
+class component;
 
 class SUN_API system
 {
@@ -43,11 +45,27 @@ public:
 
     virtual void shutdown();
 
+    template<typename T>
+    std::shared_ptr<T> create_component() {
+        return std::make_shared(static_cast<T*>(
+            create_component_(T::get_static_type_name())
+        ));
+    }
+
+    template<typename T>
+    bool handles_component() {
+        return handles_component_(T::get_static_type_name());
+    }
+
     virtual const std::string& get_type_name() const = 0;
 
     virtual size_t get_type_hash() const = 0;
 
 protected:
+
+    virtual component* create_component_(const std::string& type_name) = 0;
+
+    virtual bool handles_component_(const std::string& type_name) = 0;
 
     context&    context_;
     bool        initialized_;

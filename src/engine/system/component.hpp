@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  object.hpp                                                           */
+/*  component.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,21 +23,68 @@
 /*************************************************************************/
 #pragma once
 
-#include "config.hpp"
+#include "common/object.hpp"
 
 namespace sun {
 
-class context;
-
-class SUN_API object
+class SUN_API component : public object
 {
+public:
+
+    enum class property : uint8 {
+        update          =   0x01,
+        consume_event   =   0x02,
+        draw            =   0x04
+    };
+
+    inline void set_update(bool update) {
+        update ? flags_ |= property::update :
+            flags_ &= ~property::update;
+    }
+
+    inline void set_consume_event(bool event) {
+        event ? flags_ |= property::consume_event :
+            flags_ &= ~property::consume_event;
+    }
+
+    inline void set_draw(bool draw) {
+        draw ? flags_ |= property::draw : flags_ &= ~property::draw;
+    }
+
+    inline bool get_update() {
+        return flags_ & property::update;
+    }
+
+    inline bool get_consume_event() {
+        return flags_ & property::consume_event;
+    }
+
+    inline bool get_draw() {
+        return flags_ & property::draw;
+    }
+
+    virtual const std::string& get_type_name() const = 0;
+
+    virtual size_t get_type_hash() const = 0;
+
 protected:
 
-    object(context& p_context) : context_(p_context) {}
+    component(context& p_context) : object(p_context), flags_(0) {}
 
-    virtual ~object() {}
+    virtual ~component(context&) {}
 
-    context&    context_;
+    uint8   flags_;
 };
+
+#define SUN_COMPONENT_TYPE(type) const std::string& get_type_name() const override \
+    { return get_static_type_name(); } \
+    size_t get_type_hash() const override \
+    { return get_static_type_hash(); } \
+    static const std::string& get_static_type_name() { \
+        static std::string static_name(#type); \
+        return static_name; \
+    } \
+    static const size_t get_static_type_hash() \
+    { return std::hash<std::string>{}(#type); } \
 
 }

@@ -132,6 +132,12 @@ protected:
     draw_mode                   draw_mode_;
     mutable const shader*       current_shader_;
     mutable const texture*      current_texture_;
+
+private:
+
+    component* create_component_(const std::string& type_name) override;
+
+    bool handles_component_(const std::string& type_name) override;
 };
 
 }

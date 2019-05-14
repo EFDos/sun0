@@ -91,6 +91,12 @@ protected:
     ALCdevice*  alc_device_;
     ALCdevice*  alc_capture_device_;
     ALCcontext* alc_context_;
+
+private:
+
+    component* create_component_(const std::string& type_name) override;
+
+    bool handles_component_(const std::string& type_name) override;
 };
 
 }

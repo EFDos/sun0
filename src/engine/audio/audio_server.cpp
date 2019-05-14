@@ -222,4 +222,14 @@ const char* audio_server::get_alc_error(ALCenum error) const noexcept
     }
 }
 
+component* audio_server::create_component_(const std::string& type_name)
+{
+    return nullptr;
+}
+
+bool audio_server::handles_component_(const std::string& type_name)
+{
+    return false;
+}
+
 }

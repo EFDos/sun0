@@ -52,4 +52,14 @@ void renderer::set_color(const color& col)
     clear_color_ = to_colorf(col);
 }
 
+component* renderer::create_component_(const std::string& type_name)
+{
+    return nullptr;
+}
+
+bool renderer::handles_component_(const std::string& type_name)
+{
+    return false;
+}
+
 }

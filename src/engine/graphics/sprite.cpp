@@ -24,6 +24,7 @@
 #include "sprite.hpp"
 
 #include "core/context.hpp"
+#include "scene/entity.hpp"
 #include "renderer.hpp"
 #include "texture.hpp"
 
@@ -48,6 +49,9 @@ sprite::~sprite()
 
 void sprite::draw(renderer* r) const
 {
+    if (owning_entity_ != nullptr) {
+        r->set_model_transform(owning_entity_->get_transform());
+    }
     r->draw_indexed(*vertices_, *indices_, texture_, nullptr);
 }
 

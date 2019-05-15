@@ -28,6 +28,8 @@
 
 namespace sun {
 
+class entity;
+
 class SUN_API component : public object
 {
 public:
@@ -53,6 +55,10 @@ public:
             flags_ &= ~(uint8)property::draw;
     }
 
+    inline void set_owning_entity(entity* ent) {
+        owning_entity_ = ent;
+    }
+
     inline bool get_update() {
         return flags_ & (uint8)property::update;
     }
@@ -71,11 +77,15 @@ public:
 
 protected:
 
-    component(context& p_context) : object(p_context), flags_(0) {}
+    component(context& p_context)
+    :   object(p_context),
+        flags_(0),
+        owning_entity_(nullptr) {}
 
     virtual ~component() {}
 
     uint8   flags_;
+    entity* owning_entity_;
 };
 
 #define SUN_COMPONENT_TYPE(type) const std::string& get_type_name() const override \

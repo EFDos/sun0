@@ -25,11 +25,14 @@
 
 #include "common/config.hpp"
 #include "system/system.hpp"
+//#include "system/component.hpp"
 
 #include <string>
 #include <unordered_map>
 
 namespace sun {
+
+class component;
 
 class SUN_API context
 {
@@ -61,6 +64,17 @@ public:
     {
         auto* sys = get_system_(T::get_static_type_hash());
         return static_cast<T*>(sys);
+    }
+
+    template<typename T>
+    T* create_component()
+    {
+        for (auto sys : systems_) {
+            if (sys.second->handles_component<T>()) {
+                return sys.second->create_component<T>();
+            }
+        }
+        return nullptr;
     }
 
     context& operator=(const context&) = delete;

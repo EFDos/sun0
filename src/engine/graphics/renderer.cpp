@@ -74,6 +74,9 @@ component* renderer::create_component_(const std::string& type_name)
 
 bool renderer::handles_component_(const std::string& type_name)
 {
+    if (type_name == "sprite") {
+        return true;
+    }
     return false;
 }
 

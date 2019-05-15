@@ -45,7 +45,7 @@ public:
             left_pad_.transform.translate(0.f, 8.f);
         }
 
-        renderer_->clear();
+        /*renderer_->clear();
 
         renderer_->set_model_transform(left_pad_.transform);
         renderer_->draw(left_pad_.shape);
@@ -55,7 +55,7 @@ public:
 
         ball_.transform.translate(ball_.speed);
         renderer_->set_model_transform(ball_.transform);
-        renderer_->draw(ball_.shape);
+        renderer_->draw(ball_.shape);*/
     }
 
 private:

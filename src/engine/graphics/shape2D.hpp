@@ -40,6 +40,8 @@ class SUN_API shape2D : public drawable
 {
 public:
 
+    SUN_COMPONENT_TYPE(shape2D)
+
     shape2D(context& p_context);
 
     ~shape2D();

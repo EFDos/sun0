@@ -44,4 +44,8 @@ void system::shutdown()
     initialized_ = false;
 }
 
+void system::update()
+{
+}
+
 }

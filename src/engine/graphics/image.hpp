@@ -34,7 +34,7 @@ class SUN_API image
 {
 public:
 
-    image();
+    image(const std::string& = "");
 
     image(const image&);
 

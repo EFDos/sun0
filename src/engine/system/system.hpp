@@ -45,11 +45,11 @@ public:
 
     virtual void shutdown();
 
+    virtual void update();
+
     template<typename T>
-    std::shared_ptr<T> create_component() {
-        return std::make_shared(static_cast<T*>(
-            create_component_(T::get_static_type_name())
-        ));
+    T* create_component() {
+        return static_cast<T*>(create_component_(T::get_static_type_name()));
     }
 
     template<typename T>

@@ -25,6 +25,7 @@
 #include "core/logger.hpp"
 
 #include "font.hpp"
+#include "sprite.hpp"
 
 namespace sun {
 
@@ -52,9 +53,23 @@ void renderer::set_color(const color& col)
     clear_color_ = to_colorf(col);
 }
 
+void renderer::update()
+{
+    clear();
+    for (auto s : sprites_) {
+        draw(*s);
+    }
+}
+
 component* renderer::create_component_(const std::string& type_name)
 {
-    return nullptr;
+    component* comp = nullptr;
+    if (type_name == "sprite") {
+        auto sprite_ptr = new sprite(context_);
+        sprites_.push_back(sprite_ptr);
+        comp = sprite_ptr;
+    }
+    return comp;
 }
 
 bool renderer::handles_component_(const std::string& type_name)

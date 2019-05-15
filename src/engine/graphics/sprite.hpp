@@ -34,9 +34,11 @@ namespace sun {
 class texture;
 class renderer;
 
-class SUN_API sprite : public drawable
+class SUN_API sprite final : public drawable
 {
 public:
+
+    SUN_COMPONENT_TYPE(sprite)
 
     sprite(context& p_context);
 

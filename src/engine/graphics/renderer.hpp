@@ -25,6 +25,9 @@
 
 #include "system/system.hpp"
 #include "common/color.hpp"
+#include "sprite.hpp"
+
+#include <vector>
 
 namespace sun {
 
@@ -73,6 +76,8 @@ public:
     virtual bool init() override;
 
     virtual void shutdown() override;
+
+    virtual void update() override;
 
     virtual vertex_buffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const = 0;
 
@@ -138,6 +143,8 @@ private:
     component* create_component_(const std::string& type_name) override;
 
     bool handles_component_(const std::string& type_name) override;
+
+    std::vector<sprite*> sprites_;
 };
 
 }

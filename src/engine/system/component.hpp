@@ -24,6 +24,7 @@
 #pragma once
 
 #include "common/object.hpp"
+#include <string>
 
 namespace sun {
 
@@ -38,29 +39,30 @@ public:
     };
 
     inline void set_update(bool update) {
-        update ? flags_ |= property::update :
-            flags_ &= ~property::update;
+        update ? flags_ |= (uint8)property::update :
+            flags_ &= ~(uint8)property::update;
     }
 
     inline void set_consume_event(bool event) {
-        event ? flags_ |= property::consume_event :
-            flags_ &= ~property::consume_event;
+        event ? flags_ |= (uint8)property::consume_event :
+            flags_ &= ~(uint8)property::consume_event;
     }
 
     inline void set_draw(bool draw) {
-        draw ? flags_ |= property::draw : flags_ &= ~property::draw;
+        draw ? flags_ |= (uint8)property::draw :
+            flags_ &= ~(uint8)property::draw;
     }
 
     inline bool get_update() {
-        return flags_ & property::update;
+        return flags_ & (uint8)property::update;
     }
 
     inline bool get_consume_event() {
-        return flags_ & property::consume_event;
+        return flags_ & (uint8)property::consume_event;
     }
 
     inline bool get_draw() {
-        return flags_ & property::draw;
+        return flags_ & (uint8)property::draw;
     }
 
     virtual const std::string& get_type_name() const = 0;
@@ -71,7 +73,7 @@ protected:
 
     component(context& p_context) : object(p_context), flags_(0) {}
 
-    virtual ~component(context&) {}
+    virtual ~component() {}
 
     uint8   flags_;
 };

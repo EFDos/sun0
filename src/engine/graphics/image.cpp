@@ -32,8 +32,11 @@
 
 namespace sun {
 
-image::image() : data_(nullptr)
+image::image(const std::string& path) : data_(nullptr)
 {
+    if (!path.empty()) {
+        load(path);
+    }
 }
 
 image::image(const image& other)

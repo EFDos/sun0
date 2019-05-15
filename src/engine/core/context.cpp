@@ -52,6 +52,13 @@ void context::shutdown_systems()
     }
 }
 
+void context::update_systems()
+{
+    for(auto sys : systems_) {
+        sys.second->update();
+    }
+}
+
 system* context::register_system_(const std::string& type)
 {
     system* sys = nullptr;

@@ -23,17 +23,17 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/object.hpp"
+#include "system/component.hpp"
 
 namespace sun {
 
 class renderer;
 
-class SUN_API drawable : public object
+class SUN_API drawable : public component
 {
 public:
 
-    drawable(context& p_context) : object(p_context) {}
+    drawable(context& p_context) : component(p_context) {}
 
     virtual ~drawable() {}
 

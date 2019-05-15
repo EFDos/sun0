@@ -40,6 +40,8 @@ class SUN_API text : public drawable
 {
 public:
 
+    SUN_COMPONENT_TYPE(text)
+
     text(context& p_context);
 
     void draw(renderer*) const override;

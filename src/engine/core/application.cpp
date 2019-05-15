@@ -67,6 +67,7 @@ int application::run()
             }
         }
         on_update();
+        context_.update_systems();
         window_.update();
     }
     window_.close();

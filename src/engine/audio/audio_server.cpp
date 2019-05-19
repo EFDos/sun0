@@ -25,6 +25,8 @@
 
 #include "core/logger.hpp"
 
+#include "sound_stream.hpp"
+
 namespace sun {
 
 audio_server::audio_server(context& p_context)
@@ -110,6 +112,10 @@ void audio_server::shutdown()
 
     if (alc_capture_device_ != nullptr) {
         alcCloseDevice(alc_capture_device_);
+    }
+
+    for (auto snd_src : sound_sources_) {
+        delete snd_src;
     }
 
     sun_log_info("OpenAL Audio Server shutdown.");
@@ -222,13 +228,23 @@ const char* audio_server::get_alc_error(ALCenum error) const noexcept
     }
 }
 
-component* audio_server::create_component_(const std::string& type_name)
+component* audio_server::create_component_(uint type_hash)
 {
+    /*component* comp = nullptr;
+    if (type_hash == sound_stream::get_static_type_hash()) {
+        comp = new sound_stream(context_);
+    }
+    sound_sources_.push_back(static_cast<sound_source*>(comp));
+    return comp;*/
     return nullptr;
 }
 
-bool audio_server::handles_component_(const std::string& type_name)
+bool audio_server::handles_component_(uint type_hash)
 {
+    /*if (type_hash == sound_stream::get_static_type_hash()) {
+        return true;
+    }
+    return false;*/
     return false;
 }
 

@@ -24,9 +24,9 @@
 #include "text.hpp"
 
 #include "core/context.hpp"
+#include "scene/entity.hpp"
 #include "renderer.hpp"
 #include "font.hpp"
-#include "core/logger.hpp"
 
 #include "common/color.hpp"
 
@@ -140,6 +140,9 @@ void text::set_text(const std::string& str)
 
 void text::draw(renderer* r) const
 {
+    if (owning_entity_ != nullptr) {
+        r->set_model_transform(owning_entity_->get_transform());
+    }
     r->draw_indexed(*vertices_, *indices_, font_->get_page_texture(font_size_), nullptr);
 }
 

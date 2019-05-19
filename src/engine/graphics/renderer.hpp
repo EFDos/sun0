@@ -25,7 +25,6 @@
 
 #include "system/system.hpp"
 #include "common/color.hpp"
-#include "sprite.hpp"
 
 #include <vector>
 
@@ -140,11 +139,11 @@ protected:
 
 private:
 
-    component* create_component_(const std::string& type_name) override;
+    component* create_component_(uint type_hash) override;
 
-    bool handles_component_(const std::string& type_name) override;
+    bool handles_component_(uint type_hash) override;
 
-    std::vector<sprite*> sprites_;
+    std::vector<drawable*>    drawables_;
 };
 
 }

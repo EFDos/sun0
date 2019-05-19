@@ -40,6 +40,8 @@ class SUN_API sound_stream final : public sound_source
 {
 public:
 
+    //SUN_COMPONENT_TYPE(sound_stream)
+
     template<typename T>
     struct span
     {

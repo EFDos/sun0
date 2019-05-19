@@ -25,7 +25,10 @@
 #include "core/logger.hpp"
 
 #include "font.hpp"
+
 #include "sprite.hpp"
+#include "text.hpp"
+#include "shape2D.hpp"
 
 namespace sun {
 
@@ -45,6 +48,9 @@ bool renderer::init()
 
 void renderer::shutdown()
 {
+    for (auto drawable : drawables_) {
+        delete drawable;
+    }
     sun_log_info("Graphics System shutdown.");
 }
 
@@ -56,25 +62,33 @@ void renderer::set_color(const color& col)
 void renderer::update()
 {
     clear();
-    for (auto s : sprites_) {
+    for (auto s : drawables_) {
         draw(*s);
     }
 }
 
-component* renderer::create_component_(const std::string& type_name)
+component* renderer::create_component_(uint type_hash)
 {
     component* comp = nullptr;
-    if (type_name == "sprite") {
-        auto sprite_ptr = new sprite(context_);
-        sprites_.push_back(sprite_ptr);
-        comp = sprite_ptr;
+    if (type_hash == sprite::get_static_type_hash()) {
+        comp = new sprite(context_);
     }
+    if (type_hash == text::get_static_type_hash()) {
+        comp = new text(context_);
+    }
+    if (type_hash == shape2D::get_static_type_hash()) {
+        comp = new shape2D(context_);
+    }
+    drawables_.push_back(static_cast<drawable*>(comp));
     return comp;
 }
 
-bool renderer::handles_component_(const std::string& type_name)
+bool renderer::handles_component_(uint type_hash)
 {
-    if (type_name == "sprite") {
+    if (type_hash == sprite::get_static_type_hash() ||
+        type_hash == text::get_static_type_hash() ||
+        type_hash == shape2D::get_static_type_hash())
+    {
         return true;
     }
     return false;

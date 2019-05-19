@@ -97,6 +97,8 @@ protected:
         return static_name; \
     } \
     static const size_t get_static_type_hash() \
-    { return std::hash<std::string>{}(#type); } \
+    { static uint hash = std::hash<std::string>{}(#type); \
+      return hash; \
+    } \
 
 }

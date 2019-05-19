@@ -49,12 +49,12 @@ public:
 
     template<typename T>
     T* create_component() {
-        return static_cast<T*>(create_component_(T::get_static_type_name()));
+        return static_cast<T*>(create_component_(T::get_static_type_hash()));
     }
 
     template<typename T>
     bool handles_component() {
-        return handles_component_(T::get_static_type_name());
+        return handles_component_(T::get_static_type_hash());
     }
 
     virtual const std::string& get_type_name() const = 0;
@@ -63,9 +63,9 @@ public:
 
 protected:
 
-    virtual component* create_component_(const std::string& type_name) = 0;
+    virtual component* create_component_(uint type_hash) = 0;
 
-    virtual bool handles_component_(const std::string& type_name) = 0;
+    virtual bool handles_component_(uint type_hash) = 0;
 
     context&    context_;
     bool        initialized_;
@@ -81,6 +81,8 @@ protected:
         return static_name; \
     } \
     static const size_t get_static_type_hash() \
-    { return std::hash<std::string>{}(#type); } \
+    { static uint hash = std::hash<std::string>{}(#type); \
+      return hash; \
+    } \
 
 }

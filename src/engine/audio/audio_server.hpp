@@ -24,15 +24,17 @@
 #pragma once
 
 #include "system/system.hpp"
-
 #include "math/vector3.hpp"
 
 #include <AL/al.h>
 #include <AL/alc.h>
 
+#include <vector>
+
 namespace sun {
 
 class context;
+class sound_source;
 
 /*struct audio_listener2D
 {
@@ -92,11 +94,13 @@ protected:
     ALCdevice*  alc_capture_device_;
     ALCcontext* alc_context_;
 
+    std::vector<sound_source*>  sound_sources_;
+
 private:
 
-    component* create_component_(const std::string& type_name) override;
+    component* create_component_(uint type_hash) override;
 
-    bool handles_component_(const std::string& type_name) override;
+    bool handles_component_(uint type_hash) override;
 };
 
 }

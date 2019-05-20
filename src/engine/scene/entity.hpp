@@ -49,6 +49,8 @@ public:
         return nullptr;
     }
 
+    entity* create_child();
+
     void move(float x, float y);
 
     void move(const vector2f& pos);
@@ -75,7 +77,9 @@ public:
 
     void set_z_order(float z);
 
-    void set_transform(const matrix4&);
+    void set_local_transform(const matrix4&);
+
+    void set_global_transform(const matrix4&);
 
     void clear_dirty_flag();
 
@@ -91,15 +95,20 @@ public:
 
     float get_z_order() const;
 
-    const matrix4& get_transform() const;
+    matrix4 get_local_transform() const;
+
+    const matrix4& get_global_transform() const;
 
     const matrix4& get_inverse_transform() const;
 
 private:
 
+    void mark_dirty_();
+
     uint64  id_;
 
-    std::vector<entity>     children_;
+    entity*                 parent_;
+    std::vector<entity*>     children_;
     std::vector<component*> components_;
 
     vector2f    pos_;
@@ -108,11 +117,9 @@ private:
     float       rot_;
     float       z_order_;
 
-    bool                dirty_;
-    mutable matrix4     transform_;
-    mutable bool        transform_update_;
+    mutable bool                dirty_;
+    mutable matrix4     global_transform_;
     mutable matrix4     inverse_transform_;
-    mutable bool        inverse_transform_update_;
 };
 
 }

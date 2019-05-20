@@ -29,13 +29,20 @@ namespace sun {
 entity::entity(context& p_context)
 :   object(p_context),
     id_(0),
+    parent_(nullptr),
     scale_(1.f, 1.f),
     rot_(0.f),
     z_order_(0.f),
-    dirty_(false),
-    transform_update_(false),
-    inverse_transform_update_(false)
+    dirty_(false)
 {
+}
+
+entity* entity::create_child()
+{
+    entity* child = new entity(context_);
+    children_.push_back(child);
+    child->parent_ = this;
+    return child;
 }
 
 void entity::move(float x, float y)
@@ -66,37 +73,37 @@ void entity::rotate(float angle)
 void entity::set_position(float x, float y)
 {
     pos_ = {x, y};
-    dirty_ = transform_update_ = inverse_transform_update_ = true;
+    mark_dirty_();
 }
 
 void entity::set_position(const vector2f& pos)
 {
     pos_ = pos;
-    dirty_ = transform_update_ = inverse_transform_update_ = true;
+    mark_dirty_();
 }
 
 void entity::set_scale(float x, float y)
 {
     scale_ = {x, y};
-    dirty_ = transform_update_ = inverse_transform_update_ = true;
+    mark_dirty_();
 }
 
 void entity::set_scale(const vector2f& scale)
 {
     scale_ = scale;
-    dirty_= transform_update_ = inverse_transform_update_ = true;
+    mark_dirty_();
 }
 
 void entity::set_origin(float x, float y)
 {
     origin_ = {x, y};
-    dirty_ = transform_update_ = inverse_transform_update_ = true;
+    mark_dirty_();
 }
 
 void entity::set_origin(const vector2f& origin)
 {
     origin_ = origin;
-    dirty_ = transform_update_ = inverse_transform_update_ = true;
+    mark_dirty_();
 }
 
 void entity::set_rotation(float angle)
@@ -107,7 +114,7 @@ void entity::set_rotation(float angle)
         rot_ += 360.f;
     }
 
-    dirty_ = transform_update_ = inverse_transform_update_ = true;
+    mark_dirty_();
 }
 
 void entity::set_z_order(float z)
@@ -115,12 +122,10 @@ void entity::set_z_order(float z)
     z_order_ = z;
 }
 
-void entity::set_transform(const matrix4& transform)
+void entity::set_global_transform(const matrix4& transform)
 {
-    transform_ = transform;
+    global_transform_ = transform;
     dirty_ = false;
-    transform_update_ = false;
-    inverse_transform_update_ = false;
 }
 
 bool entity::is_dirty() const
@@ -158,36 +163,52 @@ float entity::get_z_order() const
     return z_order_;
 }
 
-const matrix4& entity::get_transform() const
+matrix4 entity::get_local_transform() const
 {
-    if (transform_update_)
-    {
-        float angle     = -rot_ * math::pi / 180.f;
-        float cosine    = std::cos(angle);
-        float sine      = std::sin(angle);
-        float sxc       = scale_.x * cosine;
-        float syc       = scale_.y * cosine;
-        float sxs       = scale_.x * sine;
-        float sys       = scale_.y * sine;
-        float tx        = -origin_.x * sxc - origin_.y * sys + pos_.x;
-        float ty        =  origin_.x * sxs - origin_.y * syc + pos_.y;
+    matrix4 transform;
+    float angle     = -rot_ * math::pi / 180.f;
+    float cosine    = std::cos(angle);
+    float sine      = std::sin(angle);
+    float sxc       = scale_.x * cosine;
+    float syc       = scale_.y * cosine;
+    float sxs       = scale_.x * sine;
+    float sys       = scale_.y * sine;
+    float tx        = -origin_.x * sxc - origin_.y * sys + pos_.x;
+    float ty        =  origin_.x * sxs - origin_.y * syc + pos_.y;
 
-        transform_.set_transformation(sxc, sys, tx, -sxs, syc, ty, 0.f, 0.f, 1.f);
-        transform_update_ = false;
+    transform.set_transformation(sxc, sys, tx, -sxs, syc, ty, 0.f, 0.f, 1.f);
+
+    return transform;
+}
+
+const matrix4& entity::get_global_transform() const
+{
+    if (dirty_) {
+        if (parent_ != nullptr) {
+            global_transform_ = parent_->get_global_transform() *
+                get_local_transform();
+        } else {
+            global_transform_ = get_local_transform();
+        }
+        dirty_ = false;
     }
-
-    return transform_;
+    return global_transform_;
 }
 
 const matrix4& entity::get_inverse_transform() const
 {
-    if (inverse_transform_update_)
-    {
-        inverse_transform_ = get_transform().get_inverse();
-        inverse_transform_update_ = false;
+    if (dirty_) {
+        inverse_transform_ = get_global_transform().get_inverse();
     }
-
     return inverse_transform_;
+}
+
+void entity::mark_dirty_()
+{
+    dirty_ = true;
+    for (auto child : children_) {
+        child->mark_dirty_();
+    }
 }
 
 }

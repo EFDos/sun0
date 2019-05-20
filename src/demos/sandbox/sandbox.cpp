@@ -16,8 +16,14 @@ public:
         font_.load("res/Wattauchimma.ttf");
 
         auto sprite_component = entity_.create_component<sun::sprite>();
-        auto text_component = entity_.create_component<sun::text>();
-        auto shape_component = entity_.create_component<sun::shape2D>();
+        //auto text_component = entity_.create_component<sun::text>();
+        //auto shape_component = entity_.create_component<sun::shape2D>();
+
+        auto child_entity = entity_.create_child();
+        auto text_component = child_entity->create_component<sun::text>();
+        auto shape_component = child_entity->create_component<sun::shape2D>();
+        child_entity->set_position(64, 64);
+        child_entity->rotate(24);
 
         texture_->load(sun::image("res/bototem.png"));
 
@@ -36,6 +42,7 @@ public:
 
     void on_update() override {
         entity_.move(0.2f, 0.2f);
+        entity_.rotate(0.2f);
     }
 
 private:

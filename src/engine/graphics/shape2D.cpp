@@ -101,7 +101,7 @@ void shape2D::set_shape(const shapes::primitive_shape& shape)
 void shape2D::draw(renderer* r) const
 {
     if (owning_entity_ != nullptr) {
-        r->set_model_transform(owning_entity_->get_transform());
+        r->set_model_transform(owning_entity_->get_global_transform());
     }
     r->set_draw_mode(draw_mode_);
     if (indices_->get_index_count() == 0) {

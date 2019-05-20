@@ -81,6 +81,14 @@ public:
 
     void set_global_transform(const matrix4&);
 
+    void set_transform_mask(uint8 transform_bits);
+
+    void set_translation_bit(bool);
+
+    void set_rotation_bit(bool);
+
+    void set_scale_bit(bool);
+
     void clear_dirty_flag();
 
     bool is_dirty() const;
@@ -103,9 +111,17 @@ public:
 
 private:
 
+    enum class transform_bits : uint8
+    {
+        translation = 1,
+        rotation    = 2,
+        scale       = 4
+    };
+
     void mark_dirty_();
 
     uint64  id_;
+    uint8   transform_mask_;
 
     entity*                 parent_;
     std::vector<entity*>     children_;

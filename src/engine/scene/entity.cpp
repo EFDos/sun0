@@ -29,6 +29,9 @@ namespace sun {
 entity::entity(context& p_context)
 :   object(p_context),
     id_(0),
+    transform_mask_((uint8)transform_bits::translation |
+                    (uint8)transform_bits::rotation |
+                    (uint8)transform_bits::scale),
     parent_(nullptr),
     scale_(1.f, 1.f),
     rot_(0.f),
@@ -128,6 +131,38 @@ void entity::set_global_transform(const matrix4& transform)
     dirty_ = false;
 }
 
+void entity::set_transform_mask(uint8 transform_bits)
+{
+    transform_mask_ = transform_bits;
+}
+
+void entity::set_translation_bit(bool bit)
+{
+    if (bit) {
+        transform_mask_ |= (uint8)transform_bits::translation;
+    } else {
+        transform_mask_ &= ~(uint8)transform_bits::translation;
+    }
+}
+
+void entity::set_rotation_bit(bool bit)
+{
+    if (bit) {
+        transform_mask_ |= (uint8)transform_bits::rotation;
+    } else {
+        transform_mask_ &= ~(uint8)transform_bits::rotation;
+    }
+}
+
+void entity::set_scale_bit(bool bit)
+{
+    if (bit) {
+        transform_mask_ |= (uint8)transform_bits::scale;
+    } else {
+        transform_mask_ &= ~(uint8)transform_bits::scale;
+    }
+}
+
 bool entity::is_dirty() const
 {
     return dirty_;
@@ -185,8 +220,25 @@ const matrix4& entity::get_global_transform() const
 {
     if (dirty_) {
         if (parent_ != nullptr) {
-            global_transform_ = parent_->get_global_transform() *
+
+            // All bits are true, just multiply the matrices
+            if (transform_mask_ == 7) {
+                global_transform_ = parent_->get_global_transform() *
                 get_local_transform();
+            } else {
+                // Ignore false transform bits
+                matrix4 parent_transform = parent_->get_global_transform();
+                if (!(transform_mask_ & (uint8)transform_bits::translation)) {
+                    parent_transform.set_translation(0.f, 0.f);
+                }
+                if (!(transform_mask_ & (uint8)transform_bits::rotation)) {
+                    parent_transform.set_rotation(0.f);
+                }
+                if (!(transform_mask_ & (uint8)transform_bits::scale)) {
+                    parent_transform.set_scale(1.f, 1.f);
+                }
+                global_transform_ = parent_transform * get_local_transform();
+            }
         } else {
             global_transform_ = get_local_transform();
         }

@@ -16,21 +16,16 @@ public:
         font_.load("res/Wattauchimma.ttf");
 
         auto sprite_component = entity_.create_component<sun::sprite>();
-        //auto text_component = entity_.create_component<sun::text>();
-        //auto shape_component = entity_.create_component<sun::shape2D>();
 
         auto child_entity = entity_.create_child();
         auto text_component = child_entity->create_component<sun::text>();
-        auto shape_component = child_entity->create_component<sun::shape2D>();
         child_entity->set_position(64, 64);
-        child_entity->rotate(24);
 
         texture_->load(sun::image("res/bototem.png"));
 
         sprite_component->set_texture(texture_);
         text_component->set_font(&font_);
         text_component->set_text("Hello Sun!");
-        shape_component->set_shape(sun::shapes::circle(16.f, 32));
 	}
 
     ~sandbox() {

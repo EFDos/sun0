@@ -42,6 +42,24 @@ struct rect
 
     rect(rect&&) noexcept = default;
 
+    void set_point(const vector2<T> point) {
+        set_point(point.x, point.y);
+    }
+
+    void set_point(T p_x, T p_y) {
+        x = p_x;
+        y = p_y;
+    }
+
+    void set_size(const vector2<T>& size) {
+        set_size(size.x, size.y);
+    }
+
+    void set_size(T p_w, T p_h) {
+        w = p_w;
+        h = p_h;
+    }
+
     inline bool contains(T px, T py)
     {
         return ((px > x && px < x + w) && (py > y && py < y + h));

@@ -45,6 +45,8 @@ public:
 
 protected:
 
+    virtual void update_geometry_() = 0;
+
     recti   bounding_rect_;
 
 };

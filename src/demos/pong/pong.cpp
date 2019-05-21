@@ -1,5 +1,9 @@
 #include <sun.hpp>
 
+    /*
+     * DEPRECATED
+     */
+
 class pong : public sun::application
 {
 public:

@@ -24,6 +24,9 @@
 #include "shape2D.hpp"
 
 #include "common/shapes/primitive_shape.hpp"
+#include "common/shapes/rectangle.hpp"
+#include "common/shapes/circle.hpp"
+#include "common/shapes/convex.hpp"
 #include "core/context.hpp"
 #include "scene/entity.hpp"
 #include "renderer.hpp"
@@ -35,6 +38,7 @@ namespace sun {
 
 shape2D::shape2D(context& p_context)
 :   drawable(p_context),
+    shape_(nullptr),
     vertices_(nullptr),
     indices_(nullptr)
 {
@@ -47,20 +51,49 @@ shape2D::~shape2D()
 {
     delete vertices_;
     delete indices_;
+    if (shape_ == nullptr) {
+        delete shape_;
+    }
 }
 
-void shape2D::set_shape(const shapes::primitive_shape& shape)
+void shape2D::set_shape(const shapes::primitive_shape& p_shape)
 {
+    switch(p_shape.get_type())
+    {
+        case shapes::primitive_shape::type::rectangle:
+            shape_ = new shapes::rectangle(
+                static_cast<const shapes::rectangle&>(p_shape)
+            );
+            break;
+        case shapes::primitive_shape::type::circle:
+            shape_ = new shapes::circle(
+                static_cast<const shapes::circle&>(p_shape)
+            );
+            break;
+        case shapes::primitive_shape::type::convex:
+            shape_ = new shapes::convex(
+                static_cast<const shapes::convex&>(p_shape)
+            );
+            break;
+    }
+    update_geometry_();
+}
+
+void shape2D::update_geometry_()
+{
+    if (shape_ == nullptr) {
+        return;
+    }
     vertices_->clear();
-    vertices_->resize(shape.get_point_count());
-    std::vector<float> vertex_data(shape.get_point_count() * 6);
+    vertices_->resize(shape_->get_point_count());
+    std::vector<float> vertex_data(shape_->get_point_count() * 6);
     bool quad = false;
     int far_x = 0, far_y = 0;
     auto col = to_colorf(color_);
 
-    for (size_t i = 0 ; i < shape.get_point_count() ; ++i)
+    for (size_t i = 0 ; i < shape_->get_point_count() ; ++i)
     {
-        const auto& point = shape.get_point(i);
+        const auto& point = shape_->get_point(i);
         far_x = std::max(far_x, static_cast<int>(point.x));
         far_y = std::max(far_y, static_cast<int>(point.y));
         vertex_data[i * 6 + 0] = point.x;
@@ -73,7 +106,7 @@ void shape2D::set_shape(const shapes::primitive_shape& shape)
 
     bounding_rect_ = { 0, 0, far_x, far_y };
 
-    switch(shape.get_type())
+    switch(shape_->get_type())
     {
         case shapes::primitive_shape::type::rectangle:
             draw_mode_ = renderer::draw_mode::triangles;
@@ -95,7 +128,7 @@ void shape2D::set_shape(const shapes::primitive_shape& shape)
         indices_->clear();
     }
 
-    vertices_->fill_data(0, shape.get_point_count(), vertex_data.data());
+    vertices_->fill_data(0, shape_->get_point_count(), vertex_data.data());
 }
 
 void shape2D::draw(renderer* r) const

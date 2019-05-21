@@ -45,13 +45,9 @@ text::text(context& p_context)
     indices_ = r->create_index_buffer(0);
 }
 
-void text::set_text(const std::string& str)
+void text::update_geometry_()
 {
-    if (font_ == nullptr) {
-        return;
-    }
-
-    for (auto c: str) {
+    for (auto c: str_) {
         font_->get_glyph(c, font_size_);
     }
 
@@ -61,8 +57,8 @@ void text::set_text(const std::string& str)
         return;
     }
 
-    vertices_->resize(str.length() * 4);
-    indices_->resize(str.length() * 6);
+    vertices_->resize(str_.length() * 4);
+    indices_->resize(str_.length() * 6);
 
     float hspace = (float)font_->get_glyph(' ', font_size_).advance;
     float vspace = (float)font_->get_line_spacing(font_size_);
@@ -73,7 +69,7 @@ void text::set_text(const std::string& str)
     int i_offset = 0;
     uint i_value_offset = 0;
     char prev_char = 0;
-    for (auto c : str)
+    for (auto c : str_)
     {
 
         x += font_->get_kerning(prev_char, c, font_size_);

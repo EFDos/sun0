@@ -50,9 +50,12 @@ public:
 
     inline void set_rect(const recti& r) {
         rect_ = r;
+        update_geometry_();
     }
 
 private:
+
+    void update_geometry_() override;
 
     recti           rect_;
 

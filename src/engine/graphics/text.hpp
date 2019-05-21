@@ -46,22 +46,31 @@ public:
 
     void draw(renderer*) const override;
 
-    void set_text(const std::string&);
+    void set_text(const std::string& p_str) {
+        str_ = p_str;
+        update_geometry_();
+    }
 
     inline void set_color(const color& c) {
         color_ = c;
+        update_geometry_();
     }
 
     inline void set_font(font* f) {
         font_ = f;
+        update_geometry_();
     }
 
     inline void set_character_size(uint size) {
         font_size_ = size;
+        update_geometry_();
     }
 
 private:
 
+    void update_geometry_() override;
+
+    std::string     str_;
     color           color_;
     uint            font_size_;
     vertex_buffer*  vertices_;

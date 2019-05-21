@@ -48,18 +48,22 @@ public:
 
     void draw(renderer* r) const override;
 
-    void set_shape(const shapes::primitive_shape&);
+    void set_shape(const shapes::primitive_shape& p_shape);
 
     inline void set_color(const color& c) {
         color_ = c;
+        update_geometry_();
     }
 
 private:
 
-    color               color_;
-    renderer::draw_mode draw_mode_;
-    vertex_buffer*      vertices_;
-    index_buffer*       indices_;
+    void update_geometry_() override;
+
+    shapes::primitive_shape*    shape_;
+    color                       color_;
+    renderer::draw_mode         draw_mode_;
+    vertex_buffer*              vertices_;
+    index_buffer*               indices_;
 };
 
 }

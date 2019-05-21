@@ -63,6 +63,15 @@ void sprite::set_texture(const texture* tex)
 
     texture_ = tex;
 
+    if (rect_.x == 0 && rect_.y == 0 && rect_.w == 0 && rect_.h == 0) {
+        rect_.set_size(texture_->get_size().x, texture_->get_size().y);
+    }
+
+    update_geometry_();
+}
+
+void sprite::update_geometry_()
+{
     struct vertex_def {
         float x, y;
         float u, v;
@@ -70,10 +79,34 @@ void sprite::set_texture(const texture* tex)
     };
 
     vertex_def quad_verts[] = {
-        {0.f , 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f},
-        {(float)tex->get_size().x, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f},
-        {(float)tex->get_size().x, (float)tex->get_size().y, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f},
-        {0.f , (float)tex->get_size().y, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f},
+        {
+            0.f ,
+            0.f,
+            (float)rect_.x / (float)texture_->get_size().w,
+            (float)rect_.y / (float)texture_->get_size().h,
+            1.f, 1.f, 1.f, 1.f
+        },
+        {
+            (float)rect_.w,
+            0.f,
+            (float)rect_.w / (float)texture_->get_size().w,
+            (float)rect_.y / (float)texture_->get_size().h,
+            1.f, 1.f, 1.f, 1.f
+        },
+        {
+            (float)rect_.w,
+            (float)rect_.h,
+            (float)rect_.w / (float)texture_->get_size().w,
+            (float)rect_.h / (float)texture_->get_size().h,
+            1.f, 1.f, 1.f, 1.f
+        },
+        {
+            0.f,
+            (float)rect_.h,
+            (float)rect_.x / (float)texture_->get_size().w,
+            (float)rect_.h / (float)texture_->get_size().h,
+            1.f, 1.f, 1.f, 1.f
+        },
     };
 
     uint indices_data[] = {

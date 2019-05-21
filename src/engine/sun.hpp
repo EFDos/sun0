@@ -45,6 +45,7 @@
 #include "graphics/image.hpp"
 #include "graphics/font.hpp"
 #include "graphics/sprite.hpp"
+#include "graphics/sprite_batch.hpp"
 #include "graphics/text.hpp"
 #include "graphics/shape2D.hpp"
 #include "graphics/renderer.hpp"

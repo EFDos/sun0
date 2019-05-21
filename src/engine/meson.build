@@ -30,6 +30,7 @@ sun_lib_src = [
   'graphics/font.cpp',
   'graphics/image.cpp',
   'graphics/sprite.cpp',
+  'graphics/sprite_batch.cpp',
   'graphics/text.cpp',
   'graphics/shape2D.cpp',
   'graphics/renderer.cpp',

@@ -7,6 +7,7 @@
 
 ###Sound
 
+* Integrate sound related components
 * Add Sound Buffers
 
 ###Resource Management

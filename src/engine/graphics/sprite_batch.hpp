@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  renderer.cpp                                                         */
+/*  sprite_batch.hpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,82 +21,47 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "renderer.hpp"
-#include "core/logger.hpp"
+#pragma once
 
-#include "font.hpp"
+#include "common/types.hpp"
 
-#include "sprite.hpp"
-#include "sprite_batch.hpp"
-#include "text.hpp"
-#include "shape2D.hpp"
+#include "drawable.hpp"
+#include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
 namespace sun {
 
-renderer::renderer(context& c)
-:   system(c),
-    draw_mode_(draw_mode::triangles),
-    current_shader_(nullptr),
-    current_texture_(nullptr)
-{
-}
+class texture;
+class renderer;
 
-bool renderer::init()
+class SUN_API sprite_batch final : public drawable
 {
-    sun_log_info("Graphics System ready.");
-    return true;
-}
+public:
 
-void renderer::shutdown()
-{
-    for (auto drawable : drawables_) {
-        delete drawable;
-    }
-    sun_log_info("Graphics System shutdown.");
-}
+    SUN_COMPONENT_TYPE(sprite_batch)
 
-void renderer::set_color(const color& col)
-{
-    clear_color_ = to_colorf(col);
-}
+    sprite_batch(context& p_context);
 
-void renderer::update()
-{
-    clear();
-    for (auto s : drawables_) {
-        draw(*s);
-    }
-}
+    ~sprite_batch();
 
-component* renderer::create_component_(uint type_hash)
-{
-    component* comp = nullptr;
-    if (type_hash == sprite::get_static_type_hash()) {
-        comp = new sprite(context_);
-    }
-    if (type_hash == sprite_batch::get_static_type_hash()) {
-        comp = new sprite_batch(context_);
-    }
-    if (type_hash == text::get_static_type_hash()) {
-        comp = new text(context_);
-    }
-    if (type_hash == shape2D::get_static_type_hash()) {
-        comp = new shape2D(context_);
-    }
-    drawables_.push_back(static_cast<drawable*>(comp));
-    return comp;
-}
+    void draw(renderer* r) const override;
 
-bool renderer::handles_component_(uint type_hash)
-{
-    if (type_hash == sprite::get_static_type_hash() ||
-        type_hash == text::get_static_type_hash() ||
-        type_hash == shape2D::get_static_type_hash() ||
-        type_hash == sprite_batch::get_static_type_hash())
-    {
-        return true;
-    }
-    return false;
-}
+    void set_texture(const texture* tex);
+
+    void add_sprite_rect(const vector2f& position,
+                         const recti& rect,
+                         const color& c = sun::color::white);
+
+private:
+
+    void update_geometry_() override;
+
+    uint vertex_offset_;
+    uint index_offset_;
+
+    vertex_buffer*  vertices_;
+    index_buffer*   indices_;
+    const texture*  texture_;
+};
 
 }

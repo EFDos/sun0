@@ -39,19 +39,16 @@ namespace sun
 {
 
 font::font(context& p_context)
-:   object(p_context),
+:   resource(p_context),
     library_(nullptr),
     face_(nullptr)
 {
 }
 
-font::~font()
+void font::clear()
 {
-    cleanup_();
-}
+    resource::clear();
 
-void font::cleanup_()
-{
     if (face_ == nullptr){
         FT_Done_Face(static_cast<FT_Face>(face_));
     }
@@ -69,7 +66,7 @@ void font::cleanup_()
 
 void font::load(const std::string& filepath)
 {
-    cleanup_();
+    clear();
 
     FT_Library ft;
     if (FT_Init_FreeType(&ft) != 0) {
@@ -87,6 +84,8 @@ void font::load(const std::string& filepath)
 
     library_ = ft;
     face_ = face;
+
+    resource::load(filepath);
 }
 
 const font::glyph& font::get_glyph(uint8 code, uint char_size) const

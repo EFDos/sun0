@@ -25,13 +25,14 @@
 
 #include "common/config.hpp"
 #include "common/types.hpp"
+#include "resources/resource.hpp"
 #include "gpu_object.hpp"
 
 namespace sun {
 
 class image;
 
-class SUN_API texture : public gpu_object
+class SUN_API texture : public gpu_object, public resource
 {
 public:
 
@@ -73,6 +74,8 @@ public:
 
     virtual ~texture() = default;
 
+    virtual void load(const std::string&) override;
+
     virtual void load(const image& img) = 0;
 
     virtual void load(const vector2u& size, const ubyte* data) = 0;
@@ -110,7 +113,7 @@ public:
 
 protected:
 
-    texture();
+    texture(context&);
 
     filter_mode     filter_mode_;
     address_mode    address_mode_;

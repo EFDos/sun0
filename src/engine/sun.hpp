@@ -58,7 +58,7 @@
 #include "audio/sound_stream.hpp"
 
 //SCENE
-#include "scene/entity.hpp"
+#include "scene/scene_tree.hpp"
 
 /*********** ENTRY POINT ***********/
 #include "core/main.hpp"

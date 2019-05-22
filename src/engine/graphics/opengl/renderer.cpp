@@ -135,7 +135,7 @@ sun::shader* renderer::create_shader(const std::string& path) const
 
 sun::texture* renderer::create_texture() const
 {
-    return dynamic_cast<sun::texture*>(new opengl::texture());
+    return dynamic_cast<sun::texture*>(new opengl::texture(context_));
 }
 
 void renderer::set_model_transform(const matrix4& transform)

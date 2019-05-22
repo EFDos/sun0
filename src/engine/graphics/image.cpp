@@ -32,7 +32,9 @@
 
 namespace sun {
 
-image::image(const std::string& path) : data_(nullptr)
+image::image(context& p_context, const std::string& path)
+:   resource(p_context),
+    data_(nullptr)
 {
     if (!path.empty()) {
         load(path);
@@ -40,6 +42,7 @@ image::image(const std::string& path) : data_(nullptr)
 }
 
 image::image(const image& other)
+:   resource(other.context_)
 {
     if (other.data_ != nullptr) {
         set_data(other.size_, other.data_);
@@ -53,11 +56,6 @@ image& image::operator=(const image& other)
     }
 
     return *this;
-}
-
-image::~image()
-{
-    clear();
 }
 
 void image::load(const std::string& path)
@@ -84,6 +82,8 @@ void image::load(const std::string& path)
     std::memcpy(data_, data, width * height * 4);
 
     stbi_image_free(data);
+
+    resource::load(path);
 }
 
 void image::allocate(uint width, uint height)
@@ -110,6 +110,8 @@ void image::set_data(const vector2u& size, const ubyte* data)
 
 void image::clear()
 {
+    resource::clear();
+
     if (data_ != nullptr) {
         delete [] data_;
         data_ = nullptr;

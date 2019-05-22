@@ -23,6 +23,7 @@ sun_lib_src = [
   'core/window.cpp',
   'core/input/keyboard.cpp',
   'system/system.cpp',
+  'resources/resource.cpp',
   'audio/decoders/vorbis_decoder.cpp',
   'audio/audio_server.cpp',
   'audio/sound_source.cpp',

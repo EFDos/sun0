@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  scene_tree.cpp                                                       */
+/*  resource.hpp                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,19 +21,33 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "scene_tree.hpp"
+#pragma once
+#include "common/object.hpp"
+
+#include <string>
 
 namespace sun {
 
-scene_tree::scene_tree(context& p_context)
-:   object(p_context),
-    root_(p_context)
+class SUN_API resource : public object
 {
-}
+public:
 
-entity* scene_tree::create_entity()
-{
-    return root_.create_child();
-}
+    resource(context&);
+
+    virtual ~resource();
+
+    virtual void load(const std::string&);
+
+    virtual void clear();
+
+    const std::string& get_path() const {
+        return path_;
+    }
+
+private:
+
+    std::string path_;
+
+};
 
 }

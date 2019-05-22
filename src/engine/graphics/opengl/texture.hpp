@@ -32,7 +32,7 @@ class SUN_API texture final : public sun::texture
 {
 public:
 
-    texture();
+    texture(context&);
 
     ~texture();
 

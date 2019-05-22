@@ -22,6 +22,7 @@
 /*                                                                       */
 /*************************************************************************/
 #include "common/object.hpp"
+#include "entity.hpp"
 
 namespace sun {
 
@@ -31,6 +32,15 @@ public:
 
     scene_tree(context& p_context);
 
+    entity* create_entity();
+
+    entity& get_root() {
+        return root_;
+    }
+
+private:
+
+    entity  root_;
 };
 
 }

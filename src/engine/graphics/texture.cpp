@@ -22,15 +22,24 @@
 /*                                                                       */
 /*************************************************************************/
 #include "texture.hpp"
+#include "image.hpp"
 
 namespace sun {
 
-texture::texture()
-:   filter_mode_(filter_mode::nearest),
+texture::texture(context& p_context)
+:   resource(p_context),
+    filter_mode_(filter_mode::nearest),
     address_mode_(address_mode::wrap),
     usage_(usage::static_usage),
     map_buffer_(nullptr)
 {
+}
+
+void texture::load(const std::string& path)
+{
+    resource::load(path);
+
+    load(image(context_, path));
 }
 
 }

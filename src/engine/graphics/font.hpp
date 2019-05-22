@@ -24,7 +24,7 @@
 #pragma once
 
 #include "common/types.hpp"
-#include "common/object.hpp"
+#include "resources/resource.hpp"
 #include "texture.hpp"
 
 #include <unordered_map>
@@ -35,7 +35,7 @@ namespace sun
 
 class context;
 
-class SUN_API font : public object
+class SUN_API font : public resource
 {
 public:
 
@@ -50,9 +50,9 @@ public:
 
     font(context&);
 
-    ~font();
+    void load(const std::string& filepath) override;
 
-    void load(const std::string& filepath);
+    void clear() override;
 
     const glyph& get_glyph(uint8 code, uint char_size) const;
 

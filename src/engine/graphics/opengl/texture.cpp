@@ -59,7 +59,7 @@ constexpr int get_pixel_size(sun::texture::format fmt)
     }
 }
 
-texture::texture() : sun::texture(), id_(0)
+texture::texture(context& p_context) : sun::texture(p_context), id_(0)
 {
     glGenTextures(1, &id_);
     glBindTexture(GL_TEXTURE_2D, id_);
@@ -158,6 +158,8 @@ void texture::fill(const vector2u& offset, const vector2u& size,
 
 void texture::clear()
 {
+    resource::clear();
+
     if (id_ == 0) {
         sun_log_error("Error clearing texture: Texture in invalid state.");
         return;

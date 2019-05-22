@@ -25,32 +25,31 @@
 
 #include "common/config.hpp"
 #include "common/types.hpp"
+#include "resources/resource.hpp"
 
 #include <string>
 
 namespace sun {
 
-class SUN_API image
+class SUN_API image : public resource
 {
 public:
 
-    image(const std::string& = "");
+    image(context&, const std::string& = "");
 
     image(const image&);
 
     image(image&&) = default;
 
-    ~image();
+    void load(const std::string&) override;
 
-    void load(const std::string&);
+    void clear() override;
 
     void allocate(uint width, uint height);
 
     void allocate(const vector2u& size);
 
     void set_data(const vector2u& size, const ubyte* data);
-
-    void clear();
 
     inline const uint8* get_data() const { return data_; }
 

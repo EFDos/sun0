@@ -41,7 +41,7 @@ public:
 
     image(image&&) = default;
 
-    void load(const std::string&) override;
+    bool load(const std::string&) override;
 
     void clear() override;
 

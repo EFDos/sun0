@@ -99,21 +99,21 @@ void texture::unbind() const
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void texture::load(const image& img)
+bool texture::load(const image& img)
 {
-    load(img.get_size(), img.get_data());
+    return load(img.get_size(), img.get_data());
 }
 
-void texture::load(const vector2u& size, const ubyte* data)
+bool texture::load(const vector2u& size, const ubyte* data)
 {
     if (id_ == 0) {
         sun_log_error("Error loading texture: Texture in invalid state.");
-        return;
+        return false;
     }
 
     if (data == nullptr) {
         sun_log_error("Error loading texture: data is null");
-        return;
+        return false;
     }
 
     size_ = size;
@@ -121,6 +121,8 @@ void texture::load(const vector2u& size, const ubyte* data)
     glTexImage2D(GL_TEXTURE_2D, 0, get_gl_type(format_), size.w, size.h, 0,
                  get_gl_type(format_), GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    return true;
 }
 
 void texture::resize(const vector2u& size)

@@ -50,8 +50,6 @@ public:
 
     sun::texture* create_texture() const override;
 
-    //font* create_font() const override;
-
     void clear(const color&) override;
 
     void clear() override;

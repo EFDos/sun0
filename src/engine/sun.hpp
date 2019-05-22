@@ -41,6 +41,9 @@
 #include "common/shapes/circle.hpp"
 #include "common/shapes/convex.hpp"
 
+// RESOURCES
+#include "resources/resource_cache.hpp"
+
 // GRAPHICS
 #include "graphics/image.hpp"
 #include "graphics/font.hpp"

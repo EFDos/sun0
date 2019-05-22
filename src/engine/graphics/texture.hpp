@@ -74,11 +74,11 @@ public:
 
     virtual ~texture() = default;
 
-    virtual void load(const std::string&) override;
+    virtual bool load(const std::string&) override;
 
-    virtual void load(const image& img) = 0;
+    virtual bool load(const image& img) = 0;
 
-    virtual void load(const vector2u& size, const ubyte* data) = 0;
+    virtual bool load(const vector2u& size, const ubyte* data) = 0;
 
     virtual void resize(const vector2u& size) = 0;
 

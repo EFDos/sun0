@@ -64,7 +64,7 @@ void font::clear()
     pixel_buffer_.clear();
 }
 
-void font::load(const std::string& filepath)
+bool font::load(const std::string& filepath)
 {
     clear();
 
@@ -72,20 +72,20 @@ void font::load(const std::string& filepath)
     if (FT_Init_FreeType(&ft) != 0) {
         sun_log_error("Could not init FreeType Library");
         ft = nullptr;
-        return;
+        return false;
     }
 
     FT_Face face;
     if (FT_New_Face(ft, filepath.c_str(), 0, &face) != 0) {
         sun_logf_error("Could no load font %s", filepath.c_str());
         face = nullptr;
-        return;
+        return false;
     }
 
     library_ = ft;
     face_ = face;
 
-    resource::load(filepath);
+    return resource::load(filepath);
 }
 
 const font::glyph& font::get_glyph(uint8 code, uint char_size) const

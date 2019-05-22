@@ -24,7 +24,7 @@
 #include "application.hpp"
 #include "../version.hpp"
 
-//#include "system/system.hpp"
+#include "resources/resource_cache.hpp"
 #include "graphics/opengl/renderer.hpp"
 #include "audio/audio_server.hpp"
 
@@ -45,6 +45,7 @@ application::application(context& p_context)
 
 	window_.create("Sandbox - Sun0 Engine", {1280, 720});
 
+    context_.register_system<sun::resource_cache>();
     context_.register_system<sun::audio_server>();
     renderer_ = context_.register_system<sun::renderer>();
 

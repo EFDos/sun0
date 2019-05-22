@@ -58,7 +58,7 @@ image& image::operator=(const image& other)
     return *this;
 }
 
-void image::load(const std::string& path)
+bool image::load(const std::string& path)
 {
     clear();
 
@@ -73,7 +73,7 @@ void image::load(const std::string& path)
 
     if (data == nullptr) {
         sun_logf_error("Error loading image: %s", path.c_str());
-        return;
+        return false;
     }
     //TODO: DISCOVER FUCKING WHY THIS FUNCTION CALL KILLS EVERYTHING
     //set_data({static_cast<uint>(width), static_cast<uint>(height)}, data);
@@ -83,7 +83,7 @@ void image::load(const std::string& path)
 
     stbi_image_free(data);
 
-    resource::load(path);
+    return resource::load(path);
 }
 
 void image::allocate(uint width, uint height)

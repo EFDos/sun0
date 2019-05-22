@@ -35,11 +35,16 @@ texture::texture(context& p_context)
 {
 }
 
-void texture::load(const std::string& path)
+bool texture::load(const std::string& path)
 {
-    resource::load(path);
+    image img(context_);
 
-    load(image(context_, path));
+    if (img.load(path)) {
+        if (load(img)) {
+            return resource::load(path);
+        }
+    }
+    return false;
 }
 
 }

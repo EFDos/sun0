@@ -36,11 +36,11 @@ public:
 
     virtual ~resource();
 
-    virtual void load(const std::string&);
+    virtual bool load(const std::string&);
 
     virtual void clear();
 
-    const std::string& get_path() const {
+    inline const std::string& get_path() const {
         return path_;
     }
 

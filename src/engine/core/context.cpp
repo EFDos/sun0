@@ -24,6 +24,7 @@
 #include "context.hpp"
 
 #include "system/system.hpp"
+#include "resources/resource_cache.hpp"
 #include "graphics/opengl/renderer.hpp"
 #include "audio/audio_server.hpp"
 
@@ -69,6 +70,10 @@ system* context::register_system_(const std::string& type)
     if (type == "SYS_AUDIO_SERVER") {
         sun_logf_debug("registering new openal renderer as %s", type.c_str());
         sys = new audio_server(*this);
+    }
+    if (type == "SYS_RESOURCE_CACHE") {
+        sun_logf_debug("registering new resource_cache as %s", type.c_str());
+        sys = new resource_cache(*this);
     }
 
     if (sys != nullptr) {

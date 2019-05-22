@@ -46,9 +46,9 @@ public:
 
     // implements sun::texture
 
-    void load(const image& img) override;
+    bool load(const image& img) override;
 
-    void load(const vector2u& size, const ubyte* data) override;
+    bool load(const vector2u& size, const ubyte* data) override;
 
     void resize(const vector2u& size) override;
 

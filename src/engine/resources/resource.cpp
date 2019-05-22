@@ -34,9 +34,10 @@ resource::~resource()
     clear();
 }
 
-void resource::load(const std::string& path)
+bool resource::load(const std::string& path)
 {
     path_ = path;
+    return true;
 }
 
 void resource::clear()

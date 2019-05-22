@@ -50,7 +50,7 @@ public:
 
     font(context&);
 
-    void load(const std::string& filepath) override;
+    bool load(const std::string& filepath) override;
 
     void clear() override;
 

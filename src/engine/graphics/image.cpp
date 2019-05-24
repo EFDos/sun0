@@ -75,11 +75,9 @@ bool image::load(const std::string& path)
         sun_logf_error("Error loading image: %s", path.c_str());
         return false;
     }
-    //TODO: DISCOVER FUCKING WHY THIS FUNCTION CALL KILLS EVERYTHING
-    //set_data({static_cast<uint>(width), static_cast<uint>(height)}, data);
 
     allocate(width, height);
-    std::memcpy(data_, data, width * height * 4);
+    std::memcpy(data_, data, width * height * channels);
 
     stbi_image_free(data);
 

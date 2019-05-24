@@ -20,11 +20,14 @@ public:
 
         auto sprite_batch = scene_.get_root().create_component<sun::sprite_batch>();
         auto text = scene_.get_root().create_component<sun::text>();
+        auto sprite = scene_.get_root().create_component<sun::sprite>();
 
         texture_->load(*img_);
 
+        sprite->set_texture(texture_);
         sprite_batch->set_texture(texture_);
 
+        sprite_batch->add_sprite_rect({0.f, 0.f}, {0, 0, 64, 64});
         for (int x = 0 ; x < (1280 / 64) ; ++x) {
             for (int y = 0 ; y < (720 / 64) ; ++y) {
                 sprite_batch->add_sprite_rect({(float)x * 64.f, (float)y * 64.f}, {0, 0, 64, 64});
@@ -33,6 +36,7 @@ public:
 
         text->set_font(font_.get());
         text->set_text("Hello Sun!");
+        text->set_character_size(72);
 	}
 
     ~sandbox() {

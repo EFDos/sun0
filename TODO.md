@@ -10,10 +10,6 @@
 * Integrate sound related components
 * Add Sound Buffers
 
-###Resource Management
-
-* Figure our Resource Management Architecture
-
 ###Core
 
 * Define Core Application Loop

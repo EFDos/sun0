@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "texture.hpp"
 #include "image.hpp"
+#include "core/logger.hpp"
 
 namespace sun {
 
@@ -31,6 +32,7 @@ texture::texture(context& p_context)
     filter_mode_(filter_mode::nearest),
     address_mode_(address_mode::wrap),
     usage_(usage::static_usage),
+    format_(format::rgba),
     map_buffer_(nullptr)
 {
 }
@@ -44,6 +46,7 @@ bool texture::load(const std::string& path)
             return resource::load(path);
         }
     }
+    sun_logf_error("Error loading texture from image: %s", path.c_str());
     return false;
 }
 

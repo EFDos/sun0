@@ -33,13 +33,13 @@ namespace sun {
 
 class resource;
 
-class SUN_API resource_cache : public system
+class SUN_API resource_cache final : public system
 {
 public:
 
     SUN_SYSTEM_TYPE(SYS_RESOURCE_CACHE)
 
-    resource_cache(context&);
+    explicit resource_cache(context&);
 
     bool init() override;
 

@@ -25,6 +25,7 @@
 #include "../version.hpp"
 
 #include "resources/resource_cache.hpp"
+#include "physics/physics_server.hpp"
 #include "graphics/opengl/renderer.hpp"
 #include "audio/audio_server.hpp"
 
@@ -47,6 +48,7 @@ application::application(context& p_context)
 
     context_.register_system<sun::resource_cache>();
     context_.register_system<sun::audio_server>();
+    context_.register_system<sun::physics_server>();
     renderer_ = context_.register_system<sun::renderer>();
 
     context_.init_systems();

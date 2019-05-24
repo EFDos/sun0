@@ -40,7 +40,7 @@ bool resource_cache::init()
 void resource_cache::shutdown()
 {
     system::shutdown();
-    sun_log_info("Resource Cache Shutdown.");
+    sun_log_info("Resource Cache shutdown.");
 }
 
 }

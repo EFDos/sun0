@@ -25,6 +25,7 @@
 
 #include "system/system.hpp"
 #include "resources/resource_cache.hpp"
+#include "physics/physics_server.hpp"
 #include "graphics/opengl/renderer.hpp"
 #include "audio/audio_server.hpp"
 
@@ -74,6 +75,10 @@ system* context::register_system_(const std::string& type)
     if (type == "SYS_RESOURCE_CACHE") {
         sun_logf_debug("registering new resource_cache as %s", type.c_str());
         sys = new resource_cache(*this);
+    }
+    if (type == "SYS_PHYSICS_SERVER") {
+        sun_logf_debug("registering new box2d wrapper as %s", type.c_str());
+        sys = new physics_server(*this);
     }
 
     if (sys != nullptr) {

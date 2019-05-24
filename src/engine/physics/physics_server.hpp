@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  audio_server.hpp                                                     */
+/*  physics_server.hpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -24,77 +24,30 @@
 #pragma once
 
 #include "system/system.hpp"
-#include "math/vector3.hpp"
 
-#include <AL/al.h>
-#include <AL/alc.h>
-
-#include <vector>
+#include <Box2D/Box2D.h>
 
 namespace sun {
 
 class context;
-class sound_source;
 
-/*struct audio_listener2D
-{
-    vector2f    position;
-    vector2f    velocity;
-    vector2f    orientation;
-    vector2f    up_vector;
-};*/
-
-struct audio_listener3D
-{
-    vector3f    position;
-    vector3f    velocity;
-    vector3f    orientation;
-    vector3f    up_vector;
-};
-
-class SUN_API audio_server final : public system
+class SUN_API physics_server final : public system
 {
 public:
 
-    SUN_SYSTEM_TYPE(SYS_AUDIO_SERVER);
+    SUN_SYSTEM_TYPE(SYS_PHYSICS_SERVER);
 
-    explicit audio_server(context&);
+    explicit physics_server(context&);
 
-    ~audio_server() = default;
+    ~physics_server() = default;
 
     bool init() override;
 
     void shutdown() override;
 
-    void set_global_volume(float volume);
-
-    void set_listener(const audio_listener3D& listener);
-
-    void set_listener_position(vector3f pos);
-
-    void set_listener_velocity(vector3f vel);
-
-    void set_listener_orientation(vector3f ori, vector3f up_vec);
-
-    int get_format_from_channel_count(uint count) const;
-
-    inline float get_global_volume() { return volume_; }
-
-    inline const audio_listener3D& get_listener() const { return listener_; }
-
 private:
 
-    audio_listener3D    listener_;
-    float               volume_;
-
-    const char* get_al_error(ALenum error) const noexcept;
-    const char* get_alc_error(ALCenum error) const noexcept;
-
-    ALCdevice*  alc_device_;
-    ALCdevice*  alc_capture_device_;
-    ALCcontext* alc_context_;
-
-    std::vector<sound_source*>  sound_sources_;
+    b2World world_;
 
     // system functions
 

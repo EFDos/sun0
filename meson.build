@@ -20,7 +20,9 @@ sun_depends = [
 	dependency('openal'),
 	dependency('vorbisfile'),
 	dependency('threads'),
-	meson.get_compiler('cpp').find_library('freetype')
+	meson.get_compiler('cpp').find_library('freetype'),
+	meson.get_compiler('cpp').find_library('Box2D',
+        dirs: join_paths(meson.source_root(), 'src/thirdparty/Box2D')),
 ]
 
 subdir('src/engine')

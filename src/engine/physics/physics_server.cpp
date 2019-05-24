@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  audio_server.hpp                                                     */
+/*  physics_server.cpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,86 +21,38 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "system/system.hpp"
-#include "math/vector3.hpp"
-
-#include <AL/al.h>
-#include <AL/alc.h>
-
-#include <vector>
+#include "physics_server.hpp"
+#include "core/logger.hpp"
 
 namespace sun {
 
-class context;
-class sound_source;
-
-/*struct audio_listener2D
+physics_server::physics_server(context& p_context)
+:   system(p_context),
+    world_(b2Vec2(0.f, -9.807f))
 {
-    vector2f    position;
-    vector2f    velocity;
-    vector2f    orientation;
-    vector2f    up_vector;
-};*/
+}
 
-struct audio_listener3D
+bool physics_server::init()
 {
-    vector3f    position;
-    vector3f    velocity;
-    vector3f    orientation;
-    vector3f    up_vector;
-};
+    sun_log_info("Box2D World created");
+    sun_log_info("Physics System ready.");
+    return system::init();
+}
 
-class SUN_API audio_server final : public system
+void physics_server::shutdown()
 {
-public:
+    system::shutdown();
+    sun_log_info("Physics System shutdown.");
+}
 
-    SUN_SYSTEM_TYPE(SYS_AUDIO_SERVER);
+component* physics_server::create_component_(uint type_hash)
+{
+    return nullptr;
+}
 
-    explicit audio_server(context&);
-
-    ~audio_server() = default;
-
-    bool init() override;
-
-    void shutdown() override;
-
-    void set_global_volume(float volume);
-
-    void set_listener(const audio_listener3D& listener);
-
-    void set_listener_position(vector3f pos);
-
-    void set_listener_velocity(vector3f vel);
-
-    void set_listener_orientation(vector3f ori, vector3f up_vec);
-
-    int get_format_from_channel_count(uint count) const;
-
-    inline float get_global_volume() { return volume_; }
-
-    inline const audio_listener3D& get_listener() const { return listener_; }
-
-private:
-
-    audio_listener3D    listener_;
-    float               volume_;
-
-    const char* get_al_error(ALenum error) const noexcept;
-    const char* get_alc_error(ALCenum error) const noexcept;
-
-    ALCdevice*  alc_device_;
-    ALCdevice*  alc_capture_device_;
-    ALCcontext* alc_context_;
-
-    std::vector<sound_source*>  sound_sources_;
-
-    // system functions
-
-    component* create_component_(uint type_hash) override;
-
-    bool handles_component_(uint type_hash) override;
-};
+bool physics_server::handles_component_(uint type_hash)
+{
+    return false;
+}
 
 }

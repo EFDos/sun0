@@ -68,6 +68,13 @@ void rigid_body::create(const shapes::primitive_shape& shape, type t)
             return;
     }
 
+    if (owning_entity_ != nullptr) {
+
+        body_def.position = physics::to_b2vec(owning_entity_->get_position());
+        /*if (owning_entity_->get_position() != 0) {
+        }*/
+    }
+
     auto world = context_.get_system<physics_server>()->get_b2_world();
 
     body_ = world->CreateBody(&body_def);

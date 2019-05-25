@@ -136,6 +136,11 @@ void text::update_geometry_()
 
 void text::draw(renderer* r) const
 {
+    if (font_ == nullptr ||
+        vertices_->get_vertex_count() == 0 ||
+        indices_->get_index_count() == 0) {
+        return;
+    }
     if (owning_entity_ != nullptr) {
         r->set_model_transform(owning_entity_->get_global_transform());
     }

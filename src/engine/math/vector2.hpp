@@ -174,9 +174,19 @@ public:
 		return x == v.x && y == v.y;
 	}
 
+    inline bool operator==(T t) const
+	{
+		return x == t && y == t;
+	}
+
 	inline bool operator!=(const vector2<T>& v) const
 	{
 		return x != v.x || y != v.y;
+	}
+
+	inline bool operator!=(T t) const
+	{
+		return x != t || y != t;
 	}
 };
 

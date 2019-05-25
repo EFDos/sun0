@@ -68,7 +68,7 @@ int run_application() \
 { \
     sun::context runtime_context; \
     classname application(runtime_context); \
-    sun_print("Running application " #classname "\n"); \
+    sun_print("Running application " #classname ":\n"); \
     return application.run(); \
 } \
 SUN_DEFINE_MAIN(run_application());

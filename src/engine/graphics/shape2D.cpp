@@ -60,17 +60,17 @@ void shape2D::set_shape(const shapes::primitive_shape& p_shape)
 {
     switch(p_shape.get_type())
     {
-        case shapes::primitive_shape::type::rectangle:
+        case shapes::type::rectangle:
             shape_ = new shapes::rectangle(
                 static_cast<const shapes::rectangle&>(p_shape)
             );
             break;
-        case shapes::primitive_shape::type::circle:
+        case shapes::type::circle:
             shape_ = new shapes::circle(
                 static_cast<const shapes::circle&>(p_shape)
             );
             break;
-        case shapes::primitive_shape::type::convex:
+        case shapes::type::convex:
             shape_ = new shapes::convex(
                 static_cast<const shapes::convex&>(p_shape)
             );
@@ -108,14 +108,14 @@ void shape2D::update_geometry_()
 
     switch(shape_->get_type())
     {
-        case shapes::primitive_shape::type::rectangle:
+        case shapes::type::rectangle:
             draw_mode_ = renderer::draw_mode::triangles;
             quad = true;
             break;
-        case shapes::primitive_shape::type::circle:
+        case shapes::type::circle:
             draw_mode_ = renderer::draw_mode::triangle_fan;
             break;
-        case shapes::primitive_shape::type::convex:
+        case shapes::type::convex:
             draw_mode_ = renderer::draw_mode::triangles;
             break;
     }

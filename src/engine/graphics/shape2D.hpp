@@ -59,6 +59,7 @@ private:
 
     void update_geometry_() override;
 
+    //TODO Maybe change primitive_shape* to union?
     shapes::primitive_shape*    shape_;
     color                       color_;
     renderer::draw_mode         draw_mode_;

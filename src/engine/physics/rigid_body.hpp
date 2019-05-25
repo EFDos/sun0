@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  primitive_shape.hpp                                                  */
+/*  rigid_body.hpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,39 +23,46 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/config.hpp"
-#include "math/vector2.hpp"
+#include "system/component.hpp"
+
+class b2Body;
 
 namespace sun {
+
 namespace shapes {
+class primitive_shape;
+}
 
-enum class type
-{
-    rectangle,
-    circle,
-    convex
-};
-
-class SUN_API primitive_shape
+class SUN_API rigid_body final : public component
 {
 public:
 
-    primitive_shape() {}
+    SUN_COMPONENT_TYPE(rigid_body)
 
-    virtual ~primitive_shape() {}
-
-    virtual vector2f get_point(size_t index) const = 0;
-
-    virtual size_t get_point_count() const = 0;
-
-    type get_type() const
+    enum class type
     {
+        undefined,
+        static_body,
+        dynamic_body,
+        kinematic_body,
+        sensor,
+        max_enum
+    };
+
+    rigid_body(context&);
+
+    void create(const shapes::primitive_shape& shp, type t);
+
+    void update_entity();
+
+    inline type get_type() const {
         return type_;
     }
 
-protected:
+private:
+
     type    type_;
+    b2Body* body_;
 };
 
-}
 }

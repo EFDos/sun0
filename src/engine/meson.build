@@ -30,6 +30,7 @@ sun_lib_src = [
   'audio/sound_source.cpp',
   'audio/sound_stream.cpp',
   'physics/physics_server.cpp',
+  'physics/rigid_body.cpp',
   'graphics/font.cpp',
   'graphics/image.cpp',
   'graphics/sprite.cpp',

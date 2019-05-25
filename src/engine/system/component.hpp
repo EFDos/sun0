@@ -23,6 +23,7 @@
 /*************************************************************************/
 #pragma once
 
+#include "common/int.hpp"
 #include "common/object.hpp"
 #include <string>
 
@@ -34,7 +35,7 @@ class SUN_API component : public object
 {
 public:
 
-    enum class property : uint8 {
+    enum class property {
         update          =   0x01,
         consume_event   =   0x02,
         draw            =   0x04
@@ -101,4 +102,4 @@ protected:
       return hash; \
     } \
 
-}
+} // sun0

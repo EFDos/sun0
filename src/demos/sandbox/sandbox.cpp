@@ -20,6 +20,9 @@ public:
 
         auto sprite = scene_.get_root().create_component<sun::sprite>();
         auto text = scene_.get_root().create_component<sun::text>();
+        auto body = scene_.get_root().create_component<sun::rigid_body>();
+
+        body->create(sun::shapes::rectangle(64, 64), sun::rigid_body::type::dynamic_body);
 
         texture_->load(*img_);
 

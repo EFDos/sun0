@@ -60,6 +60,9 @@
 // AUDIO
 #include "audio/sound_stream.hpp"
 
+// PHYSICS
+#include "physics/rigid_body.hpp"
+
 //SCENE
 #include "scene/scene_tree.hpp"
 

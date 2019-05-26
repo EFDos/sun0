@@ -41,11 +41,15 @@ uint get_pixel_scale() {
 physics_server::physics_server(context& p_context)
 :   system(p_context),
     world_(b2Vec2(0.f, -9.807f)),
+    debug_rasterizer_(default_meter),
     timestep_(1/45.f),
     vel_iterations_(8), //These are the suggested values for velocity
     pos_iterations_(3), //and position iterations from the Box2D manual
     debug_draw_(false)
 {
+    world_.SetDebugDraw(&debug_rasterizer_);
+
+    debug_rasterizer_.SetFlags(b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit);
 }
 
 bool physics_server::init()
@@ -69,11 +73,17 @@ void physics_server::update()
     }
 }
 
-void physics_server::draw_physics_debug(renderer& renderer)
+void physics_server::draw_physics_debug(renderer* render)
 {
     if (!debug_draw_) {
         return;
     }
+
+    if (debug_rasterizer_.get_renderer() == nullptr) {
+        debug_rasterizer_.set_renderer(render);
+    }
+
+    world_.DrawDebugData();
 }
 
 bool physics_server::lazy_raycast(const vector2f& begin, const vector2f& end)

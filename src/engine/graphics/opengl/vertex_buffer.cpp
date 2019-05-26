@@ -62,7 +62,9 @@ void vertex_buffer::fill_data(size_t offset, size_t count, const void *data)
         return;
     }
 
-    vertex_count_ += count;
+    if (count + offset > vertex_count_) {
+        vertex_count_ += count;
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     glBufferSubData(GL_ARRAY_BUFFER, offset * vertex_size_,

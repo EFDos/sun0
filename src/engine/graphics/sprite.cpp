@@ -52,6 +52,7 @@ void sprite::draw(renderer* r) const
     if (owning_entity_ != nullptr) {
         r->set_model_transform(owning_entity_->get_global_transform());
     }
+    r->set_draw_mode(renderer::draw_mode::triangles);
     r->draw_indexed(*vertices_, *indices_, texture_, nullptr);
 }
 

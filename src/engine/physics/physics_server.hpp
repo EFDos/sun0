@@ -23,6 +23,7 @@
 /*************************************************************************/
 #pragma once
 
+#include "physics_rasterizer.hpp"
 #include "common/types.hpp"
 #include "system/system.hpp"
 
@@ -84,7 +85,7 @@ public:
 
     void update() override;
 
-    void draw_physics_debug(renderer&);
+    void draw_physics_debug(renderer*);
 
     bool lazy_raycast(const vector2f& begin, const vector2f& end);
 
@@ -147,8 +148,8 @@ private:
         return &world_;
     }
 
-    b2World world_;
-    //physics_rasterizer
+    b2World             world_;
+    physics_rasterizer  debug_rasterizer_;
     //contact_listener
     float   timestep_;
     int     vel_iterations_;

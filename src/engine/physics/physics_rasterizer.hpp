@@ -57,6 +57,10 @@ public:
         renderer_ = rend;
     }
 
+    inline const renderer* get_renderer() const {
+        return renderer_;
+    }
+
     inline void set_scale(uint scale) {
         scale_ = scale;
     }

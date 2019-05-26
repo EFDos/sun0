@@ -25,6 +25,7 @@
 
 #include "system/system.hpp"
 #include "common/color.hpp"
+#include "math/rect.hpp"
 
 #include <vector>
 
@@ -90,8 +91,10 @@ public:
 
     virtual void clear() = 0;
 
+    // Drawable draw-call
     virtual void draw(const drawable&) const = 0;
 
+    // Low-level draw-calls
     virtual void draw(const vertex_buffer& buffer,
                       const shader* p_shader = nullptr) const = 0;
 
@@ -107,6 +110,17 @@ public:
                               const index_buffer& ibuffer,
                               const texture* p_texture,
                               const shader* p_shader = nullptr) const = 0;
+
+    // Utility draw-calls
+    virtual void draw_rect(const rectf& rect, const color&) const;
+
+    virtual void draw_circle(const vector2f& pos, float radius, int verts) const;
+
+    virtual void draw_line(const vector2f& begin, const vector2f& end, const color&) const;
+
+    virtual void draw_polygon(uint vert_count,
+                              const vector2f* vertices,
+                              const color&) const;
 
     virtual void set_model_transform(const matrix4& transform) = 0;
 
@@ -133,7 +147,11 @@ protected:
     virtual void set_texture_(const texture*) const = 0;
 
     colorf                      clear_color_;
-    draw_mode                   draw_mode_;
+    mutable draw_mode           draw_mode_;
+
+    vertex_buffer*              primitive_vertices_;
+    index_buffer*               primitive_indices_;
+
     mutable const shader*       current_shader_;
     mutable const texture*      current_texture_;
 

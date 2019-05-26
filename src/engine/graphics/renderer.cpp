@@ -36,6 +36,8 @@ namespace sun {
 renderer::renderer(context& c)
 :   system(c),
     draw_mode_(draw_mode::triangles),
+    primitive_vertices_(nullptr),
+    primitive_indices_(nullptr),
     current_shader_(nullptr),
     current_texture_(nullptr)
 {
@@ -43,6 +45,12 @@ renderer::renderer(context& c)
 
 bool renderer::init()
 {
+
+    if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
+        sun_log_warn("Graphics backend did not intialize buffers"
+            " for primitives rendering");
+    }
+
     sun_log_info("Graphics System ready.");
     return true;
 }
@@ -65,6 +73,170 @@ void renderer::update()
     clear();
     for (auto s : drawables_) {
         draw(*s);
+    }
+}
+
+void renderer::draw_rect(const rectf& rect, const color& c) const
+{
+    if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
+        sun_log_error("Graphics backend did not intialize buffers"
+            " for primitives rendering");
+        return;
+    }
+
+    auto fcolor = to_colorf(c);
+    std::vector<float> vertices{
+        rect.x, rect.y,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+        rect.x + rect.w, rect.y,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+        rect.x + rect.w, rect.y + rect.h,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+        rect.x, rect.y + rect.h,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+    };
+
+    draw_mode_ = draw_mode::triangles;
+
+    uint32 indices[] = {0, 1, 3, 1, 2, 3};
+
+    if (primitive_indices_->get_index_count() == 0) {
+        primitive_indices_->resize(6);
+    }
+    primitive_indices_->fill_data(0, 6, indices);
+
+    if (primitive_vertices_->get_vertex_count() < 4) {
+        primitive_vertices_->resize(4);
+    }
+    primitive_vertices_->fill_data(0, 4, vertices.data());
+
+    draw_indexed(*primitive_vertices_, *primitive_indices_);
+}
+
+void renderer::draw_circle(const vector2f& pos, float radius, int verts) const
+{
+    if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
+        sun_log_error("Graphics backend did not intialize buffers"
+            " for primitives rendering");
+        return;
+    }
+
+    /*auto fcolor = to_colorf(c);
+    std::vector<float> vertices{
+        rect.x, rect.y,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+        rect.x + rect.w, rect.y,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+        rect.x + rect.w, rect.y + rect.h,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+        rect.x, rect.y + rect.h,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+    };
+
+    draw_mode_ = draw_mode::triangles;
+
+    uint32 indices[] = {0, 1, 3, 1, 2, 3};
+
+    if (primitive_indices_->get_index_count() == 0) {
+        primitive_indices_->resize(6);
+    }
+    primitive_indices_->fill_data(0, 6, indices);
+
+    if (primitive_vertices_->get_vertex_count() < 4) {
+        primitive_vertices_->resize(4);
+    }
+    primitive_vertices_->fill_data(0, 4, vertices.data());
+
+    draw_indexed(*primitive_vertices_, *primitive_indices_);*/
+}
+
+void renderer::draw_line(const vector2f& begin, const vector2f& end, const color& c) const
+{
+    if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
+        sun_log_error("Graphics backend did not intialize buffers"
+            " for primitives rendering");
+        return;
+    }
+
+    auto fcolor = to_colorf(c);
+    std::vector<float> vertices{
+        begin.x, begin.y,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+        end.x, end.y,
+        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
+    };
+
+    draw_mode_ = draw_mode::lines;
+
+    if (primitive_vertices_->get_vertex_count() < 2) {
+        primitive_vertices_->resize(2);
+    }
+    primitive_vertices_->fill_data(0, 2, vertices.data());
+
+    draw(*primitive_vertices_);
+}
+
+void renderer::draw_polygon(uint vert_count,
+                            const vector2f* verts,
+                            const color& c) const
+{
+    if (vert_count < 3) {
+        sun_log_error("Can't draw polygon with less than 3 vertices");
+        return;
+    }
+
+    if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
+        sun_log_error("Graphics backend did not intialize buffers"
+            " for primitives rendering");
+        return;
+    }
+
+
+    if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
+        sun_log_error("Graphics backend did not intialize buffers"
+            " for primitives rendering");
+        return;
+    }
+
+    auto fcolor = to_colorf(c);
+    std::vector<float> vertices(vert_count * 6);
+
+    for (uint i = 0 ; i < vert_count ; ++i)
+    {
+        vertices[i * 6 + 0] = verts[i].x;
+        vertices[i * 6 + 1] = verts[i].y;
+        vertices[i * 6 + 2] = fcolor.r;
+        vertices[i * 6 + 3] = fcolor.g;
+        vertices[i * 6 + 4] = fcolor.b;
+        vertices[i * 6 + 5] = fcolor.a;
+    }
+
+    if (vert_count > 4) {
+        draw_mode_ = draw_mode::triangle_fan;
+    } else {
+        draw_mode_ = draw_mode::triangles;
+    }
+
+    if (vert_count == 4) {
+        uint32 indices[] = {0, 1, 3, 1, 2, 3};
+
+        if (primitive_indices_->get_index_count() != 6) {
+            primitive_indices_->resize(6);
+        }
+        primitive_indices_->fill_data(0, 6, indices);
+    }
+
+    if (primitive_vertices_->get_vertex_count() < vert_count) {
+        primitive_vertices_->resize(vert_count);
+    }
+    primitive_vertices_->fill_data(0, vert_count, vertices.data());
+
+    if (vert_count == 4) {
+        sun_logf_info("FUCKING VERTEX COUNT: %d", primitive_vertices_->get_vertex_count());
+        sun_logf_info("FUCKING INDEX COUNT: %d", primitive_indices_->get_index_count());
+        draw_indexed(*primitive_vertices_, *primitive_indices_);
+    } else {
+        draw(*primitive_vertices_);
     }
 }
 

@@ -62,7 +62,9 @@ void index_buffer::fill_data(size_t offset, size_t count, const uint* data)
         return;
     }
 
-    index_count_ += count;
+    if (count + offset > index_count_) {
+        index_count_ += count;
+    }
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset * sizeof(uint),

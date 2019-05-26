@@ -33,6 +33,7 @@ namespace sun {
 
 class event;
 class renderer;
+class physics_server;
 
 class SUN_API application
 {
@@ -53,6 +54,7 @@ protected:
     context&    context_;
 	window      window_;
 	renderer*   renderer_;
+	physics_server* physics_;
 
 private:
 

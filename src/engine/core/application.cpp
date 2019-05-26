@@ -48,8 +48,10 @@ application::application(context& p_context)
 
     context_.register_system<sun::resource_cache>();
     context_.register_system<sun::audio_server>();
-    context_.register_system<sun::physics_server>();
+    physics_ = context_.register_system<sun::physics_server>();
     renderer_ = context_.register_system<sun::renderer>();
+
+    physics_->set_debug_draw(true);
 
     context_.init_systems();
 }
@@ -71,6 +73,7 @@ int application::run()
         }
         on_update();
         context_.update_systems();
+        physics_->draw_physics_debug(renderer_);
         window_.update();
     }
     window_.close();

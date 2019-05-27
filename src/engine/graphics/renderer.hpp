@@ -34,6 +34,7 @@ namespace sun {
 class context;
 
 class drawable;
+class camera;
 class matrix4;
 class vertex_buffer;
 class index_buffer;
@@ -126,6 +127,10 @@ public:
 
     virtual void set_projection(const matrix4& projection) = 0;
 
+    virtual void set_camera_transform(const matrix4& camera) = 0;
+
+    virtual void set_viewport(const rectf& viewport);
+
     virtual void set_color(const color&);
 
     virtual uint get_texture_max_size() const = 0;
@@ -146,6 +151,7 @@ protected:
 
     virtual void set_texture_(const texture*) const = 0;
 
+    rectf                       viewport_;
     colorf                      clear_color_;
     mutable draw_mode           draw_mode_;
 
@@ -161,7 +167,8 @@ private:
 
     bool handles_component_(uint type_hash) override;
 
-    std::vector<drawable*>    drawables_;
+    std::vector<camera*>   cameras_;
+    std::vector<drawable*>  drawables_;
 };
 
 }

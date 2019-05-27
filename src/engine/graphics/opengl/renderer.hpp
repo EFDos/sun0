@@ -54,9 +54,13 @@ public:
 
     void clear() override;
 
+    void set_viewport(const rectf& viewport) override;
+
     void set_model_transform(const matrix4& transform) override;
 
     void set_projection(const matrix4& projection) override;
+
+    void set_camera_transform(const matrix4& transform) override;
 
     void draw(const drawable& d) const override;
 

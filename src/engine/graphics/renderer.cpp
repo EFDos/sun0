@@ -26,6 +26,8 @@
 
 #include "font.hpp"
 
+// components
+#include "camera.hpp"
 #include "sprite.hpp"
 #include "sprite_batch.hpp"
 #include "text.hpp"
@@ -68,9 +70,17 @@ void renderer::set_color(const color& col)
     clear_color_ = to_colorf(col);
 }
 
+void renderer::set_viewport(const rectf& viewport)
+{
+    viewport_ = viewport;
+}
+
 void renderer::update()
 {
     clear();
+    for (auto c : cameras_) {
+        c->update_transform(*this);
+    }
     for (auto s : drawables_) {
         draw(*s);
     }
@@ -237,6 +247,13 @@ void renderer::draw_polygon(uint vert_count,
 component* renderer::create_component_(uint type_hash)
 {
     component* comp = nullptr;
+    if (type_hash == camera::get_static_type_hash()) {
+        camera* cam = new camera(context_);
+        cam->set_viewport_size(viewport_.get_size());
+        cameras_.push_back(cam);
+        comp = cam;
+        return comp;
+    }
     if (type_hash == sprite::get_static_type_hash()) {
         comp = new sprite(context_);
     }
@@ -258,7 +275,8 @@ bool renderer::handles_component_(uint type_hash)
     if (type_hash == sprite::get_static_type_hash() ||
         type_hash == text::get_static_type_hash() ||
         type_hash == shape2D::get_static_type_hash() ||
-        type_hash == sprite_batch::get_static_type_hash())
+        type_hash == sprite_batch::get_static_type_hash() ||
+        type_hash == camera::get_static_type_hash())
     {
         return true;
     }

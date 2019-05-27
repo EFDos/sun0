@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  camera.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,50 +23,85 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
+#include "system/component.hpp"
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-// RESOURCES
-#include "resources/resource_cache.hpp"
+class renderer;
 
-// GRAPHICS
-#include "graphics/image.hpp"
-#include "graphics/font.hpp"
-#include "graphics/camera.hpp"
-#include "graphics/sprite.hpp"
-#include "graphics/sprite_batch.hpp"
-#include "graphics/text.hpp"
-#include "graphics/shape2D.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/vertex_buffer.hpp"
-#include "graphics/index_buffer.hpp"
-#include "graphics/shader.hpp"
-#include "graphics/texture.hpp"
+class SUN_API camera final : public component
+{
+public:
 
-// AUDIO
-#include "audio/sound_stream.hpp"
+    SUN_COMPONENT_TYPE(camera)
 
-// PHYSICS
-#include "physics/rigid_body.hpp"
+    camera(context&);
 
-//SCENE
-#include "scene/scene_tree.hpp"
+    void update_transform(renderer&);
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    inline void set_viewport_size(const vector2f& size) {
+        viewport_.set_size(size);
+    }
+
+    inline void set_viewport_size(float w, float h) {
+        viewport_.set_size({w, h});
+    }
+
+    inline void set_follow(bool follow) {
+        follow_ = follow;
+    }
+
+    inline void set_hard_limit(bool hard_limit) {
+        hard_limit_ = hard_limit;
+    }
+
+    inline void set_follow_speed(float speed) {
+        follow_speed_ = speed;
+    }
+
+    inline void set_follow_offset(const recti& offset) {
+        offset_ = offset;
+    }
+
+    inline void set_limits(const recti& limits) {
+        limit_ = limits;
+    }
+
+    inline bool get_follow() const {
+        return follow_;
+    }
+
+    inline bool get_hard_limit() const {
+        return hard_limit_;
+    }
+
+    inline float get_follow_speed() const {
+        return follow_speed_;
+    }
+
+    inline const recti& get_follow_offset() const {
+        return offset_;
+    }
+
+    inline const recti& get_limits() const {
+        return limit_;
+    }
+
+    vector2f get_center() const;
+
+private:
+
+    rectf   viewport_;
+    recti   offset_;
+    recti   limit_;
+
+    float   follow_speed_;
+
+    bool    follow_;
+    bool    hard_limit_;
+
+    matrix4 transform_;
+};
+
+} // sun

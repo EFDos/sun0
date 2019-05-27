@@ -9,6 +9,7 @@ public:
 	    scene_(p_context)
 	{
         renderer_->set_color(sun::color::dark_grey);
+        renderer_->set_viewport({0, 0, 1280, 720});
         renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
         auto texture = renderer_->create_texture();
 
@@ -31,6 +32,8 @@ public:
         auto sprite = entity->create_component<sun::sprite>();
         auto text = entity->create_component<sun::text>();
         auto ent_body = entity->create_component<sun::rigid_body>();
+        auto camera = entity->create_component<sun::camera>();
+        camera->set_follow(true);
 
         ent_body->create(sun::shapes::rectangle(64, 64),
             sun::rigid_body::type::dynamic_body);

@@ -3,12 +3,11 @@
 ###Graphics
 
 * Canvas Layers (framebuffers)
-* Make renderer architecture more solid -- partially done
 
-###Sound
+###Resource
 
-* Integrate sound related components
-* Add Sound Buffers
+* Sound sources and Textures need a way to be factored
+as resources.
 
 ###Core
 

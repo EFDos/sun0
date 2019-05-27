@@ -23,14 +23,14 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/object.hpp"
+#include "system/component.hpp"
 #include "math/vector3.hpp"
 
 namespace sun {
 
 class context;
 
-class SUN_API sound_source : public object
+class SUN_API sound_source : public component
 {
 public:
 

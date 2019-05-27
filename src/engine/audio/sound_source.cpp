@@ -29,7 +29,7 @@
 namespace sun {
 
 sound_source::sound_source(context& p_context)
-:   object(p_context),
+:   component(p_context),
     source_(0)
 {
     alGenSources(1, &source_);
@@ -37,7 +37,7 @@ sound_source::sound_source(context& p_context)
 }
 
 sound_source::sound_source(const sound_source& other)
-:   object(other.context_)
+:   component(other.context_)
 {
     alGenSources(1, &source_);
     alSourcei(source_, AL_BUFFER, 0);

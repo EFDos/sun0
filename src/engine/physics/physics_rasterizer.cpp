@@ -130,7 +130,8 @@ void physics_rasterizer::DrawSolidPolygon(const b2Vec2* vertices, int32 count,
         nxt_vertices[i].y = vertices[i].y * scale_ * -1;
     }
 
-    renderer_->draw_polygon(count, nxt_vertices.data(), color::white);
+    renderer_->draw_polygon(count, nxt_vertices.data(), {255, 255, 255,
+        (uint8)(col.r * 255)});
 }
 
 void physics_rasterizer::DrawTransform(const b2Transform& transform)

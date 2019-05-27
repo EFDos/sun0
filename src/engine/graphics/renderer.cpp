@@ -100,7 +100,7 @@ void renderer::draw_rect(const rectf& rect, const color& c) const
 
     uint32 indices[] = {0, 1, 3, 1, 2, 3};
 
-    if (primitive_indices_->get_index_count() == 0) {
+    if (primitive_indices_->get_index_count() != 6) {
         primitive_indices_->resize(6);
     }
     primitive_indices_->fill_data(0, 6, indices);
@@ -168,9 +168,7 @@ void renderer::draw_line(const vector2f& begin, const vector2f& end, const color
 
     draw_mode_ = draw_mode::lines;
 
-    if (primitive_vertices_->get_vertex_count() < 2) {
-        primitive_vertices_->resize(2);
-    }
+    primitive_vertices_->resize(2);
     primitive_vertices_->fill_data(0, 2, vertices.data());
 
     draw(*primitive_vertices_);
@@ -226,14 +224,10 @@ void renderer::draw_polygon(uint vert_count,
         primitive_indices_->fill_data(0, 6, indices);
     }
 
-    if (primitive_vertices_->get_vertex_count() < vert_count) {
-        primitive_vertices_->resize(vert_count);
-    }
+    primitive_vertices_->resize(vert_count);
     primitive_vertices_->fill_data(0, vert_count, vertices.data());
 
     if (vert_count == 4) {
-        sun_logf_info("FUCKING VERTEX COUNT: %d", primitive_vertices_->get_vertex_count());
-        sun_logf_info("FUCKING INDEX COUNT: %d", primitive_indices_->get_index_count());
         draw_indexed(*primitive_vertices_, *primitive_indices_);
     } else {
         draw(*primitive_vertices_);

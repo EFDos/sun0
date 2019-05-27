@@ -73,6 +73,7 @@ int application::run()
         }
         on_update();
         context_.update_systems();
+        renderer_->set_model_transform(matrix4());
         physics_->draw_physics_debug(renderer_);
         window_.update();
     }

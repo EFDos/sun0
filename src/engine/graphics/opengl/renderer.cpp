@@ -75,7 +75,7 @@ bool renderer::init()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    primitive_vertices_ = create_vertex_buffer(6, 0);
+    primitive_vertices_ = create_vertex_buffer(sizeof(float) * 6, 0);
     primitive_indices_ = create_index_buffer(0);
 
     default_flat_shader_ = create_shader("res/flat.glsl");

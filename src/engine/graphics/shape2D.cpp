@@ -39,6 +39,7 @@ namespace sun {
 shape2D::shape2D(context& p_context)
 :   drawable(p_context),
     shape_(nullptr),
+    color_(sun::color::white),
     vertices_(nullptr),
     indices_(nullptr)
 {

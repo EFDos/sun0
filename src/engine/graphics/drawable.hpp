@@ -39,9 +39,17 @@ public:
 
     virtual void draw(renderer*) const = 0;
 
-    inline void set_bounding_rect(const recti& r) { bounding_rect_ = r; }
+    /*recti get_global_bounding_rect() const {
+        recti rect(bounding_rect_);
+        if (owning_entity_ != nullptr) {
+            rect.set_point((int)owning_entity_->get_position().x, (int)owning_entity_->get_position().y);
+        }
+        return rect;
+    }*/
 
-    const recti& get_bounding_rect() { return bounding_rect_; }
+    const recti& get_bounding_rect() const {
+        return bounding_rect_;
+    }
 
 protected:
 

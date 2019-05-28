@@ -71,7 +71,7 @@ public:
 
 
 
-    component* create_component_(uint type_hash) override {
+    component* create_component_(uint type_hash, uint id) override {
         return nullptr;
     }
 

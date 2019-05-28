@@ -22,6 +22,7 @@
 /*                                                                       */
 /*************************************************************************/
 #include "entity.hpp"
+#include "system/component.hpp"
 #include "math/math.hpp"
 
 namespace sun {
@@ -253,6 +254,17 @@ const matrix4& entity::get_inverse_transform() const
         inverse_transform_ = get_global_transform().get_inverse();
     }
     return inverse_transform_;
+}
+
+component* entity::get_component_(uint id)
+{
+    component* comp = nullptr;
+    for (auto c : components_) {
+        if (c->get_id() == id) {
+            comp = c;
+        }
+    }
+    return comp;
 }
 
 void entity::mark_dirty_()

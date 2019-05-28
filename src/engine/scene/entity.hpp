@@ -21,6 +21,8 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
+#pragma once
+
 #include "common/object.hpp"
 #include "common/types.hpp"
 
@@ -39,14 +41,23 @@ public:
     entity(context& p_context);
 
     template<typename T>
-    T* create_component() {
-        auto comp = context_.create_component<T>();
+    T* create_component(const std::string& name = "") {
+        auto comp = context_
+            .create_component<T>(std::hash<std::string>{}(name));
         if (comp != nullptr) {
             comp->set_owning_entity(this);
             components_.push_back(comp);
             return static_cast<T*>(comp);
         }
         return nullptr;
+    }
+
+    template<typename T>
+    T* get_component(const std::string& name) {
+        T* comp = nullptr;
+        uint hash = std::hash<std::string>{}(name);
+        comp = static_cast<T*>(get_component_(hash));
+        return comp;
     }
 
     entity* create_child();
@@ -110,6 +121,8 @@ public:
     const matrix4& get_inverse_transform() const;
 
 private:
+
+    component* get_component_(uint id);
 
     enum class transform_bits : uint8
     {

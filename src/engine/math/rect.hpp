@@ -72,8 +72,8 @@ struct rect
 
     inline bool intersects(const rect& r)
     {
-        return (contains(r.x) || contains(r.y) ||
-                contains(r.w) || contains(r.h));
+        return (contains(r.x, r.y) || contains(r.x + r.w, r.y) ||
+                contains(r.x + r.w, r.y + r.h) || contains(r.x, r.y + r.h));
     }
 
     inline vector2<T> get_position() const

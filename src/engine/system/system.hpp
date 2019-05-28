@@ -48,8 +48,8 @@ public:
     virtual void update();
 
     template<typename T>
-    T* create_component() {
-        return static_cast<T*>(create_component_(T::get_static_type_hash()));
+    T* create_component(uint id) {
+        return static_cast<T*>(create_component_(T::get_static_type_hash(), id));
     }
 
     template<typename T>
@@ -63,7 +63,7 @@ public:
 
 protected:
 
-    virtual component* create_component_(uint type_hash) = 0;
+    virtual component* create_component_(uint type_hash, uint id) = 0;
 
     virtual bool handles_component_(uint type_hash) = 0;
 

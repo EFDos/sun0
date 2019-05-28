@@ -127,13 +127,14 @@ void physics_server::set_update_rate(float timestep, int vel_it, int pos_it)
     pos_iterations_ = pos_it;
 }
 
-component* physics_server::create_component_(uint type_hash)
+component* physics_server::create_component_(uint type_hash, uint id)
 {
     component* comp = nullptr;
     if (type_hash == rigid_body::get_static_type_hash()) {
         comp = new rigid_body(context_);
         bodies_.push_back(static_cast<rigid_body*>(comp));
     }
+    comp->set_id(id);
     return comp;
 }
 

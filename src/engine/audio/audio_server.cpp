@@ -227,13 +227,14 @@ const char* audio_server::get_alc_error(ALCenum error) const noexcept
     }
 }
 
-component* audio_server::create_component_(uint type_hash)
+component* audio_server::create_component_(uint type_hash, uint id)
 {
     component* comp = nullptr;
     if (type_hash == sound_stream::get_static_type_hash()) {
         comp = new sound_stream(context_);
         sound_sources_.push_back(static_cast<sound_stream*>(comp));
     }
+    comp->set_id(id);
     return comp;
 }
 

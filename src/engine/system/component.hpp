@@ -60,6 +60,10 @@ public:
         owning_entity_ = ent;
     }
 
+    inline void set_id(uint id) {
+        id_ = id;
+    }
+
     inline bool get_update() {
         return flags_ & (uint8)property::update;
     }
@@ -72,6 +76,14 @@ public:
         return flags_ & (uint8)property::draw;
     }
 
+    inline entity* get_owning_entity() const {
+        return owning_entity_;
+    }
+
+    inline uint get_id() const {
+        return id_;
+    }
+
     virtual const std::string& get_type_name() const = 0;
 
     virtual size_t get_type_hash() const = 0;
@@ -80,11 +92,13 @@ protected:
 
     component(context& p_context)
     :   object(p_context),
+        id_(0),
         flags_(0),
         owning_entity_(nullptr) {}
 
     virtual ~component() {}
 
+    uint    id_;
     uint8   flags_;
     entity* owning_entity_;
 };

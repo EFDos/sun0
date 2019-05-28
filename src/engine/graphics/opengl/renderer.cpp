@@ -155,6 +155,12 @@ void renderer::set_model_transform(const matrix4& transform)
     }
 }
 
+void renderer::set_viewport(const rectf& viewport)
+{
+    glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
+    sun::renderer::set_viewport(viewport);
+}
+
 void renderer::set_projection(const matrix4& projection)
 {
     if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
@@ -162,7 +168,20 @@ void renderer::set_projection(const matrix4& projection)
     }
     default_flat_shader_->set_uniform("projection", projection);
     default_textured_shader_->set_uniform("projection", projection);
-    //glViewport(0, 0, 1280, 720);
+}
+
+void renderer::set_camera_transform(const matrix4& transform)
+{
+    if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
+        return;
+    }
+    default_flat_shader_->set_uniform("viewport", transform);
+    default_textured_shader_->set_uniform("viewport", transform);
+
+    //TODO: Provisory fix, cause set_uniform unbinds shader
+    if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
+        current_shader_->bind();
+    }
 }
 
 void renderer::set_shader_(const sun::shader* p_shader) const

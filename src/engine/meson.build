@@ -34,6 +34,7 @@ sun_lib_src = [
   'physics/rigid_body.cpp',
   'graphics/font.cpp',
   'graphics/image.cpp',
+  'graphics/camera.cpp',
   'graphics/sprite.cpp',
   'graphics/sprite_batch.cpp',
   'graphics/text.cpp',

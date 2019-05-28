@@ -24,7 +24,6 @@
 #include "physics_rasterizer.hpp"
 #include "common/shapes/circle.hpp"
 #include "graphics/renderer.hpp"
-#include "core/logger.hpp"
 
 #include <vector>
 

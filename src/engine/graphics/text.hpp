@@ -47,8 +47,10 @@ public:
     void draw(renderer*) const override;
 
     void set_text(const std::string& p_str) {
-        str_ = p_str;
-        update_geometry_();
+        if (p_str != str_) {
+            str_ = p_str;
+            update_geometry_();
+        }
     }
 
     inline void set_color(const color& c) {

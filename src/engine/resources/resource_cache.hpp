@@ -47,14 +47,22 @@ public:
 
     template<typename T>
     std::shared_ptr<T> get_resource(const std::string& name) {
-        T* res = new T(context_);
-        if (res->load(path_ + name)) {
-            auto res_shared_ptr = std::shared_ptr<T>(res);
-            resources_[name] = static_cast<std::shared_ptr<resource>>(res_shared_ptr);
-            return res_shared_ptr;
-        } else {
-            delete res;
-            return nullptr;
+        auto it = resources_.find(name);
+
+        if (it != resources_.end()) {
+            return std::dynamic_pointer_cast<T>(it->second);
+        }
+        else {
+            T* res = new T(context_);
+            if (res->load(path_ + name)) {
+                auto res_shared_ptr = std::shared_ptr<T>(res);
+                resources_[name] = static_cast<std::shared_ptr<resource>>
+                    (res_shared_ptr);
+                return res_shared_ptr;
+            } else {
+                delete res;
+                return nullptr;
+            }
         }
     }
 

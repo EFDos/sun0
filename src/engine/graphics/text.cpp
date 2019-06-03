@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "text.hpp"
 
+#include "core/logger.hpp"
 #include "core/context.hpp"
 #include "scene/entity.hpp"
 #include "renderer.hpp"
@@ -47,6 +48,10 @@ text::text(context& p_context)
 
 void text::update_geometry_()
 {
+    if (font_ == nullptr) {
+        return;
+    }
+
     for (auto c: str_) {
         font_->get_glyph(c, font_size_);
     }

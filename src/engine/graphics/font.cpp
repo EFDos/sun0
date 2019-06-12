@@ -246,6 +246,19 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
         p.page_texture->fill({(uint)g.tex_coords.x, (uint)g.tex_coords.y},
                              {(uint)g.tex_coords.w, (uint)g.tex_coords.h},
                              pixel_buffer_.data());
+        p.page_texture->map();
+        /*p.page_texture->unmap();
+        auto data = p.page_texture->get_data();
+
+        bool all_zeroes = true;
+        for (uint i = 0 ; i < p.page_texture->get_size().x * p.page_texture->get_size().y ; ++i) {
+            if (data[i] != 0) {
+                all_zeroes = false;
+            }
+        }
+        if (all_zeroes) {
+            sun_log_fatal("TEXTURE BECAME BLANK!");
+        }*/
     }
 
     FT_Done_Glyph(glyph_desc);
@@ -360,6 +373,7 @@ texture* font::generate_page_texture_() const
 {
     texture* tex = context_.get_system<renderer>()->create_texture();
 
+    tex->set_usage(texture::usage::dynamic);
     tex->set_format(texture::format::rgba);
     tex->resize({128, 128});
     return tex;

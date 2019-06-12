@@ -182,6 +182,7 @@ void texture::map()
     glBindTexture(GL_TEXTURE_2D, id_);
     glGetTexImage(GL_TEXTURE_2D, 0, get_gl_type(format_), GL_UNSIGNED_BYTE,
         map_buffer_);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void texture::unmap()

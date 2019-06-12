@@ -212,8 +212,8 @@ void renderer::set_texture_(const sun::texture* p_texture) const
         if (current_texture_ == nullptr){
             return;
         }
-        current_texture_->bind();
     }
+    current_texture_->bind();
 }
 
 void renderer::clear(const color& col)

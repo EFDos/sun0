@@ -45,7 +45,6 @@ public:
 
     void on_update()
     {
-        score_text_->set_text(std::to_string(left_score) + "|" + std::to_string(right_score));
         if (sun::keyboard::is_key_pressed(sun::keyboard::key::UP)) {
             right_pad_->move(0.f, -8.f);
         }
@@ -91,7 +90,7 @@ public:
     void respawn() {
         ball_->set_position(640.f - 20.f, 360.f - 20.f);
         ball_speed_ = {8.f, 0.f};
-        score_text_->set_text(std::to_string(left_score) + "|" + std::to_string(right_score));
+        score_text_->set_text(std::to_string(left_score) + " | " + std::to_string(right_score));
     }
 
     bool check_collision(const sun::shape2D* shape_a, const sun::shape2D* shape_b)

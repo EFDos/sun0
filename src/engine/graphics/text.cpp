@@ -76,7 +76,6 @@ void text::update_geometry_()
     char prev_char = 0;
     for (auto c : str_)
     {
-        sun_logf_info("trying to draw %c", c);
         x += font_->get_kerning(prev_char, c, font_size_);
         prev_char = c;
 
@@ -102,10 +101,6 @@ void text::update_geometry_()
         float tex_y = (float)g.tex_coords.y / (float)tex_size.y;
         float tex_w = (float)g.tex_coords.w / (float)tex_size.x;
         float tex_h = (float)g.tex_coords.h / (float)tex_size.y;
-
-        sun_logf_info("tex size: {%f, %f}", (float)tex_size.x, (float)tex_size.y);
-        sun_logf_info("glyph rect: {%f, %f, %f, %f}", g.rect.x, g.rect.y, g.rect.w, g.rect.h);
-        sun_logf_info("glyph tex coords: {%f, %f, %f, %f}", tex_x, tex_y, tex_w, tex_h);
 
         colorf col = to_colorf(color_);
 

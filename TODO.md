@@ -3,6 +3,7 @@
 ###Graphics
 
 * Canvas Layers (framebuffers)
+* Sort out binding states to avoid bugs
 
 ###Resource
 

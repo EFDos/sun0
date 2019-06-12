@@ -28,9 +28,6 @@ public:
         score_text_->set_character_size(72);
         score_text_->set_text("0 | 0");
 
-        auto font_page_sprt = scene_.get_root().create_component<sun::sprite>();
-        font_page_sprt->set_texture(res_cache->get_resource<sun::font>("Wattauchimma.ttf").get()->get_page_texture(72));
-
         left_pad_->set_position(0.f, 360.f - 64.f);
         auto shape = left_pad_->create_component<sun::shape2D>("shape");
         shape->set_shape(sun::shapes::rectangle(32.f, 128.f));

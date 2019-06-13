@@ -23,7 +23,7 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/int.hpp"
+#include "vertex_layout.hpp"
 #include "gpu_object.hpp"
 
 namespace sun {
@@ -44,9 +44,17 @@ public:
 
     virtual void unbind() const = 0;
 
+    void set_layout(const vertex_layout& layout) {
+        layout_ = layout;
+    }
+
     virtual void set_dynamic(bool dynamic) { dynamic_ = dynamic; }
 
     bool is_dynamic() const { return dynamic_; }
+
+    const vertex_layout& get_layout() const {
+        return layout_;
+    }
 
     uint8 get_vertex_size() const { return vertex_size_; }
 
@@ -58,10 +66,11 @@ protected:
 
     vertex_buffer(uint8 vertex_size, size_t capacity, bool dynamic = false);
 
-    uint8   vertex_size_;
-    size_t  vertex_count_;
-    size_t  capacity_;
-    bool    dynamic_;
+    vertex_layout   layout_;
+    uint8           vertex_size_;
+    size_t          vertex_count_;
+    size_t          capacity_;
+    bool            dynamic_;
 };
 
 }

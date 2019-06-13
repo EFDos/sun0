@@ -27,13 +27,24 @@ public:
         auto rwall_body = rwall->create_component<sun::rigid_body>();
         rwall_body->create(sun::shapes::rectangle({20, 600}), sun::rigid_body::type::static_body);
 
-        for (uint i = 0 ; i < 80 ; ++i) {
+        for (uint i = 0 ; i < 4 ; ++i) {
             auto ball = scene_.create_entity();
-            ball->set_position(240 + (i * 8), 310);
+            ball->set_position(640 + (i * 8), 310);
             auto body = ball->create_component<sun::rigid_body>();
             body->create(sun::shapes::circle(16, 84), sun::rigid_body::type::dynamic_body);
         }
     }
+
+    void on_event(sun::event& e) override {
+        sun::application::on_event(e);
+
+        if (e.type == sun::event_type::mouse_button_pressed) {
+            auto ball = scene_.create_entity();
+            ball->set_position(e.mouse_button.x, e.mouse_button.y);
+            auto body = ball->create_component<sun::rigid_body>();
+            body->create(sun::shapes::circle(16, 84), sun::rigid_body::type::dynamic_body);
+        }
+	}
 
     void on_update()
     {

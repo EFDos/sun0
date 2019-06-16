@@ -15,13 +15,13 @@ public:
 
         auto res_cache = context_.get_system<sun::resource_cache>();
         res_cache->set_path("res");
-        auto font = res_cache->get_resource<sun::font>("Wattauchimma.ttf");
+        //auto font = res_cache->get_resource<sun::font>("Wattauchimma.ttf");
         auto img = res_cache->get_resource<sun::image>("player_128.png");
 
         texture->load(*img);
 
         auto ground = scene_.create_entity();
-        auto entity = scene_.create_entity();
+        entity_ = scene_.create_entity();
 
         ground->set_position(0, 600);
         auto ground_body = ground->create_component<sun::rigid_body>();
@@ -29,18 +29,17 @@ public:
         ground_body->create(sun::shapes::rectangle(1280, 32),
             sun::rigid_body::type::static_body);
 
-        auto sprite = entity->create_component<sun::sprite>();
-        auto text = entity->create_component<sun::text>();
-        auto ent_body = entity->create_component<sun::rigid_body>();
-        auto camera = entity->create_component<sun::camera>();
+        auto sprite = entity_->create_component<sun::sprite>();
+        auto ent_body = entity_->create_component<sun::rigid_body>("body");
+        auto camera = entity_->create_component<sun::camera>();
         camera->set_follow(true);
+        camera->set_follow_speed(1.f);
 
-        ent_body->create(sun::shapes::rectangle(64, 64),
+        ent_body->create(sun::shapes::convex({{-32, 18}, {0, -36}, {32, 18}}),
             sun::rigid_body::type::dynamic_body);
         sprite->set_texture(texture);
-        text->set_font(font.get());
-        text->set_text("Hello Sun!");
-        text->set_character_size(72);
+        entity_->set_origin(48, 48);
+        entity_->set_scale(0.75f, 0.75f);
 	}
 
     ~sandbox() {
@@ -48,6 +47,12 @@ public:
 
 	void on_event(sun::event& e) override {
         sun::application::on_event(e);
+
+        if (e.type == sun::event_type::key_pressed) {
+            if (e.key.code == sun::keyboard::key::RIGHT) {
+                entity_->get_component<sun::rigid_body>("body")->apply_linear_impulse({10.f, 0.f});
+            }
+        }
 	}
 
     void on_update() override {
@@ -56,6 +61,7 @@ public:
 private:
 
     sun::scene_tree scene_;
+    sun::entity* entity_;
 };
 
 SUN_DEFINE_MAIN_APP(sandbox)

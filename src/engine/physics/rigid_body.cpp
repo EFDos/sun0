@@ -80,7 +80,6 @@ void rigid_body::create(const shapes::primitive_shape& shape, type t)
         sun_log_error("Failed to create rigid body");
     }
 
-
     switch (shape.get_type())
     {
         case shapes::type::rectangle:
@@ -128,7 +127,16 @@ void rigid_body::update_entity()
     }
 
     owning_entity_->set_position(physics::to_vec2(body_->GetPosition()));
-    owning_entity_->set_rotation(math::rad_to_deg(body_->GetAngle()));
+    owning_entity_->set_rotation(-math::rad_to_deg(body_->GetAngle()));
+}
+
+void rigid_body::apply_linear_impulse(const vector2f& impulse)
+{
+    if (body_ == nullptr) {
+        return;
+    }
+
+    body_->ApplyLinearImpulse(physics::to_b2vec(impulse), body_->GetLocalCenter(), true);
 }
 
 }

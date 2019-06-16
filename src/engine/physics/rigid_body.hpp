@@ -23,6 +23,7 @@
 /*************************************************************************/
 #pragma once
 
+#include "math/vector2.hpp"
 #include "system/component.hpp"
 
 class b2Body;
@@ -54,6 +55,8 @@ public:
     void create(const shapes::primitive_shape& shp, type t);
 
     void update_entity();
+
+    void apply_linear_impulse(const vector2f& impulse);
 
     inline type get_type() const {
         return type_;

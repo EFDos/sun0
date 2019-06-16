@@ -117,7 +117,7 @@ void physics_server::set_pixel_scale(uint scale)
     }
 
     physics::pixel_scale = scale;
-    // debug_raster
+    debug_rasterizer_.set_scale(scale);
 }
 
 void physics_server::set_update_rate(float timestep, int vel_it, int pos_it)

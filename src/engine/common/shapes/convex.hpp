@@ -43,6 +43,12 @@ public:
         type_ = type::convex;
     }
 
+    convex(const std::initializer_list<vector2f>& vertices)
+    : primitive_shape(), vertices_(vertices)
+    {
+        type_ = type::convex;
+    }
+
     convex(const convex& convex) = default;
 
     convex(convex&& convex) = default;

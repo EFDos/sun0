@@ -38,7 +38,7 @@ public:
         ent_body->create(sun::shapes::convex({{-32, 18}, {0, -36}, {32, 18}}),
             sun::rigid_body::type::dynamic_body);
         sprite->set_texture(texture);
-        entity_->set_origin(48, 48);
+        entity_->set_origin(48, 56);
         entity_->set_scale(0.75f, 0.75f);
 	}
 

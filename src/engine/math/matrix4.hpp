@@ -28,19 +28,19 @@
 
 namespace sun {
 
-class matrix4
+class Matrix4
 {
 public:
 
-    matrix4() noexcept;
+    Matrix4() noexcept;
 
-    matrix4(float e00, float e01, float e02,
+    Matrix4(float e00, float e01, float e02,
             float e10, float e11, float e12,
             float e20, float e21, float e22) noexcept;
 
-    matrix4(const matrix4&) noexcept = default;
+    Matrix4(const Matrix4&) noexcept = default;
 
-    matrix4(matrix4&&) noexcept = default;
+    Matrix4(Matrix4&&) noexcept = default;
 
     void set_identity();
 
@@ -48,43 +48,43 @@ public:
             float sx, float sy, float ox,
             float oy, float kx, float ky);
 
-    void set_translation(const vector2f& v);
+    void set_translation(const Vector2f& v);
 
     void set_translation(float x, float y);
 
-    void set_scale(const vector2f& v);
+    void set_scale(const Vector2f& v);
 
     void set_scale(float x, float y);
 
     void set_rotation(float angle);
 
-    matrix4 combine(const matrix4& m) const;
+    Matrix4 combine(const Matrix4& m) const;
 
-    matrix4& translate(const vector2f& v);
+    Matrix4& translate(const Vector2f& v);
 
-    matrix4& translate(float x, float y);
+    Matrix4& translate(float x, float y);
 
-    matrix4& scale(const vector2f& v);
+    Matrix4& scale(const Vector2f& v);
 
-    matrix4& scale(float x, float y);
+    Matrix4& scale(float x, float y);
 
-    matrix4& rotate(float angle);
+    Matrix4& rotate(float angle);
 
-    matrix4 get_inverse() const;
+    Matrix4 get_inverse() const;
 
     const float* get_data() const;
 
-    matrix4& operator=(const matrix4&) noexcept;
+    Matrix4& operator=(const Matrix4&) noexcept;
 
-    matrix4& operator=(matrix4&&) = default;
+    Matrix4& operator=(Matrix4&&) = default;
 
-    matrix4 operator*(const matrix4& other) const;
+    Matrix4 operator*(const Matrix4& other) const;
 
-    void operator*=(const matrix4& other);
+    void operator*=(const Matrix4& other);
 
-    static matrix4 orthogonal(float left, float right, float bottom, float top);
+    static Matrix4 orthogonal(float left, float right, float bottom, float top);
 
-    static matrix4 orthogonal(const rect<float>& r);
+    static Matrix4 orthogonal(const rect<float>& r);
 
 private:
 

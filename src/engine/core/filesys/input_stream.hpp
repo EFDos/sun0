@@ -31,17 +31,17 @@
 namespace sun {
 namespace filesys {
 
-class SUN_API input_stream
+class SUN_API InputStream
 {
 public:
 
-    input_stream() noexcept;
+    InputStream() noexcept;
 
-    ~input_stream();
+    ~InputStream();
 
-    input_stream(const input_stream&) = delete;
+    InputStream(const InputStream&) = delete;
 
-    input_stream& operator=(const input_stream&) = delete;
+    InputStream& operator=(const InputStream&) = delete;
 
     bool open(const std::string& path);
 

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  rect.hpp                                                             */
+/*  Rect.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -28,21 +28,21 @@
 namespace sun {
 
 template<typename T>
-struct rect
+struct Rect
 {
     T x, y, w, h;
 
-    rect(T p_x = 0, T p_y = 0, T p_w = 0, T p_h = 0) noexcept
+    Rect(T p_x = 0, T p_y = 0, T p_w = 0, T p_h = 0) noexcept
     :   x(p_x), y(p_y), w(p_w), h(p_h) {}
 
-    rect(const vector2<T>& pos, const vector2<T>& size)
+    Rect(const Vector2<T>& pos, const Vector2<T>& size)
     :   x(pos.x), y(pos.y), w(size.w), h(size.h) {}
 
-    rect(const rect& r) noexcept = default;
+    Rect(const Rect& r) noexcept = default;
 
-    rect(rect&&) noexcept = default;
+    Rect(Rect&&) noexcept = default;
 
-    void set_point(const vector2<T> point) {
+    void set_point(const Vector2<T> point) {
         set_point(point.x, point.y);
     }
 
@@ -51,7 +51,7 @@ struct rect
         y = p_y;
     }
 
-    void set_size(const vector2<T>& size) {
+    void set_size(const Vector2<T>& size) {
         set_size(size.x, size.y);
     }
 
@@ -65,34 +65,34 @@ struct rect
         return ((px > x && px < x + w) && (py > y && py < y + h));
     }
 
-    inline bool contains(const vector2<T>& p)
+    inline bool contains(const Vector2<T>& p)
     {
         return ((p.x > x && p.x < x + w) && (p.y > y && p.y < y + h));
     }
 
-    inline bool intersects(const rect& r)
+    inline bool intersects(const Rect& r)
     {
         return (contains(r.x, r.y) || contains(r.x + r.w, r.y) ||
                 contains(r.x + r.w, r.y + r.h) || contains(r.x, r.y + r.h));
     }
 
-    inline vector2<T> get_position() const
+    inline Vector2<T> get_position() const
     {
-        return vector2<T>(x,y);
+        return Vector2<T>(x,y);
     }
 
-    inline vector2<T> get_size() const
+    inline Vector2<T> get_size() const
     {
-        return vector2<T>(w, h);
+        return Vector2<T>(w, h);
     }
 
-    rect& operator=(rect&&) noexcept = default;
+    Rect& operator=(Rect&&) noexcept = default;
 
-    rect& operator=(const rect&) noexcept = default;
+    Rect& operator=(const Rect&) noexcept = default;
 };
 
-using recti = rect<int>;
-using rectu = rect<unsigned>;
-using rectf = rect<float>;
+using Recti = Rect<int>;
+using Rectu = Rect<unsigned>;
+using Rectf = Rect<float>;
 
 }

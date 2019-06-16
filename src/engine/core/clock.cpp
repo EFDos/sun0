@@ -25,19 +25,19 @@
 
 namespace sun {
 
-clock::clock()
+Clock::Clock()
 {
     reset();
 }
 
-void clock::reset()
+void Clock::reset()
 {
     start_ = high_res_clock::now();
 }
 
-time clock::elapsed()
+Time Clock::elapsed()
 {
-    return time(std::chrono::duration_cast<milliseconds>
+    return Time(std::chrono::duration_cast<milliseconds>
                 (high_res_clock::now() - start_).count());
 }
 

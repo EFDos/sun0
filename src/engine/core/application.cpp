@@ -34,8 +34,8 @@
 
 namespace sun {
 
-application::application(context& p_context)
-:   context_(p_context),
+Application::Application(Context& context)
+:   context_(context),
     running_(false)
 {
     sun_printf("******* Sun-0 Engine *******\n"
@@ -46,22 +46,22 @@ application::application(context& p_context)
 
 	window_.create("Sandbox - Sun0 Engine", {1280, 720});
 
-    context_.register_system<sun::resource_cache>();
-    context_.register_system<sun::audio_server>();
-    physics_ = context_.register_system<sun::physics_server>();
-    renderer_ = context_.register_system<sun::renderer>();
+    context_.register_system<sun::ResourceCache>();
+    context_.register_system<sun::AudioServer>();
+    physics_ = context_.register_system<sun::PhysicsServer>();
+    renderer_ = context_.register_system<sun::Renderer>();
 
     physics_->set_debug_draw(true);
 
     context_.init_systems();
 }
 
-application::~application()
+Application::~Application()
 {
     context_.shutdown_systems();
 }
 
-int application::run()
+int Application::run()
 {
 	running_ = true;
     while(running_) {
@@ -81,9 +81,9 @@ int application::run()
     return 0;
 }
 
-void application::on_event(event& e)
+void Application::on_event(Event& e)
 {
-	if (e.type == event_type::closed) {
+	if (e.type == EventType::Closed) {
 		running_ = false;
 	}
 }

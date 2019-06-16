@@ -27,7 +27,7 @@
 namespace sun {
 namespace keyboard {
 
-    bool is_key_pressed(key k)
+    bool is_key_pressed(Key k)
     {
         const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 

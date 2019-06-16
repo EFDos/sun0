@@ -27,9 +27,9 @@
 namespace sun
 {
 
-matrix4 matrix4::orthogonal(float l, float r, float b, float t)
+Matrix4 Matrix4::orthogonal(float l, float r, float b, float t)
 {
-    matrix4 m;
+    Matrix4 m;
 
 	m.m_[0] = 2.0f / (r - l);
 	m.m_[5] = 2.0f / (t - b);
@@ -40,9 +40,9 @@ matrix4 matrix4::orthogonal(float l, float r, float b, float t)
 	return m;
 }
 
-matrix4 matrix4::orthogonal(const rect<float>& r)
+Matrix4 Matrix4::orthogonal(const rect<float>& r)
 {
-    matrix4 m;
+    Matrix4 m;
 
     m.m_[0] = 2.0f / (r.w - r.x);
     m.m_[5] = 2.0f / (r.y - r.h);
@@ -53,38 +53,38 @@ matrix4 matrix4::orthogonal(const rect<float>& r)
     return m;
 }
 
-matrix4::matrix4() noexcept
+Matrix4::Matrix4() noexcept
 {
     set_identity();
 }
 
-matrix4::matrix4(float x,  float y,  float angle,
+Matrix4::Matrix4(float x,  float y,  float angle,
         float sx, float sy, float ox,
         float oy, float kx, float ky) noexcept
 {
     set_transformation(x,y,angle,sx,sy,ox,oy,kx,ky);
 }
 
-matrix4 matrix4::operator*(const matrix4& m) const
+Matrix4 Matrix4::operator*(const Matrix4& m) const
 {
     return combine(m);
 }
 
-void matrix4::operator*=(const matrix4& m)
+void Matrix4::operator*=(const Matrix4& m)
 {
-    matrix4 t = this->operator*(m);
+    Matrix4 t = this->operator*(m);
     memcpy(m_, t.m_, sizeof(float)*16);
 }
 
-matrix4& matrix4::operator=(const matrix4& m) noexcept
+Matrix4& Matrix4::operator=(const Matrix4& m) noexcept
 {
     memcpy(m_, m.m_, sizeof(float)*16);
     return *this;
 }
 
-matrix4 matrix4::combine(const matrix4& m) const
+Matrix4 Matrix4::combine(const Matrix4& m) const
 {
-    matrix4 t;
+    Matrix4 t;
 
     t.m_[0] = (m_[0]*m.m_[0]) + (m_[4]*m.m_[1]) + (m_[8]*m.m_[2]) + (m_[12]*m.m_[3]);
 	t.m_[4] = (m_[0]*m.m_[4]) + (m_[4]*m.m_[5]) + (m_[8]*m.m_[6]) + (m_[12]*m.m_[7]);
@@ -109,7 +109,7 @@ matrix4 matrix4::combine(const matrix4& m) const
     return t;
 }
 
-void matrix4::set_identity()
+void Matrix4::set_identity()
 {
     for(auto &e : m_)
         e = 0.f;
@@ -117,19 +117,19 @@ void matrix4::set_identity()
     m_[0] = m_[5] = m_[10] = m_[15] = 1.f;
 }
 
-void matrix4::set_translation(float x, float y)
+void Matrix4::set_translation(float x, float y)
 {
     m_[12] = x;
     m_[13] = y;
 }
 
-void matrix4::set_translation(const vector2f& v)
+void Matrix4::set_translation(const Vector2f& v)
 {
     m_[12] = v.x;
     m_[13] = v.y;
 }
 
-void matrix4::set_rotation(float r)
+void Matrix4::set_rotation(float r)
 {
     r = r * 3.14f / 180.f;
     float c = std::cos(r), s = std::sin(r);
@@ -139,19 +139,19 @@ void matrix4::set_rotation(float r)
     m_[5] = c;
 }
 
-void matrix4::set_scale(float x, float y)
+void Matrix4::set_scale(float x, float y)
 {
     m_[0] = x;
     m_[5] = y;
 }
 
-void matrix4::set_scale(const vector2f& v)
+void Matrix4::set_scale(const Vector2f& v)
 {
     m_[0] = v.x;
     m_[5] = v.y;
 }
 
-void matrix4::set_transformation(float e00, float e01, float e02,
+void Matrix4::set_transformation(float e00, float e01, float e02,
                                  float e10, float e11, float e12,
                                  float e20, float e21, float e22)
 {
@@ -161,7 +161,7 @@ void matrix4::set_transformation(float e00, float e01, float e02,
     m_[3] = e20; m_[7] = e21; m_[11] = 0.f; m_[15] = e22;
 }
 
-matrix4 matrix4::get_inverse() const
+Matrix4 Matrix4::get_inverse() const
 {
     float det = m_[0] * (m_[15] * m_[5] - m_[7] * m_[13]) -
             m_[1] * (m_[15] * m_[4] - m_[7] * m_[12]) +
@@ -169,7 +169,7 @@ matrix4 matrix4::get_inverse() const
 
     if(det != 0.f)
     {
-        return matrix4((m_[15] * m_[5] - m_[7] * m_[13]) / det,
+        return Matrix4((m_[15] * m_[5] - m_[7] * m_[13]) / det,
                 -(m_[15] * m_[4] - m_[7] * m_[12]) / det,
                  (m_[13] * m_[4] - m_[5] * m_[12]) / det,
                 -(m_[15] * m_[1] - m_[3] * m_[13]) / det,
@@ -180,50 +180,50 @@ matrix4 matrix4::get_inverse() const
                  (m_[5]  * m_[0] - m_[1] * m_[4])  / det);
     }
     else{
-        return matrix4();
+        return Matrix4();
     }
 }
 
-const float* matrix4::get_data() const
+const float* Matrix4::get_data() const
 {
     return m_;
 }
 
-matrix4& matrix4::rotate(float a)
+Matrix4& Matrix4::rotate(float a)
 {
-    matrix4 t;
+    Matrix4 t;
     t.set_rotation(a);
     *this *= t;
     return *this;
 }
 
-matrix4& matrix4::scale(const vector2f& s)
+Matrix4& Matrix4::scale(const Vector2f& s)
 {
-    matrix4 t;
+    Matrix4 t;
     t.set_scale(s);
     *this *= t;
     return *this;
 }
 
-matrix4& matrix4::scale(float x, float y)
+Matrix4& Matrix4::scale(float x, float y)
 {
-    matrix4 t;
+    Matrix4 t;
     t.set_scale(x,y);
     *this *= t;
     return *this;
 }
 
-matrix4& matrix4::translate(const vector2f& v)
+Matrix4& Matrix4::translate(const Vector2f& v)
 {
-    matrix4 t;
+    Matrix4 t;
     t.set_translation(v);
     *this *= t;
     return *this;
 }
 
-matrix4& matrix4::translate(float x, float y)
+Matrix4& Matrix4::translate(float x, float y)
 {
-    matrix4 t;
+    Matrix4 t;
     t.set_translation(x,y);
     *this *= t;
     return *this;

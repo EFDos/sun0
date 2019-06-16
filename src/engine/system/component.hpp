@@ -29,31 +29,31 @@
 
 namespace sun {
 
-class entity;
+class Entity;
 
-class SUN_API component : public object
+class SUN_API Component : public Object
 {
 public:
 
-    enum class property {
-        update          =   0x01,
-        consume_event   =   0x02,
-        draw            =   0x04
+    enum class Property {
+        Update          =   0x01,
+        HandleEvent     =   0x02,
+        Draw            =   0x04
     };
 
     inline void set_update(bool update) {
-        update ? flags_ |= (uint8)property::update :
-            flags_ &= ~(uint8)property::update;
+        update ? flags_ |= (uint8)Property::Update :
+            flags_ &= ~(uint8)Property::Update;
     }
 
-    inline void set_consume_event(bool event) {
-        event ? flags_ |= (uint8)property::consume_event :
-            flags_ &= ~(uint8)property::consume_event;
+    inline void set_handle_event(bool event) {
+        event ? flags_ |= (uint8)Property::HandleEvent :
+            flags_ &= ~(uint8)Property::HandleEvent;
     }
 
     inline void set_draw(bool draw) {
-        draw ? flags_ |= (uint8)property::draw :
-            flags_ &= ~(uint8)property::draw;
+        draw ? flags_ |= (uint8)Property::Draw :
+            flags_ &= ~(uint8)Property::Draw;
     }
 
     inline void set_owning_entity(entity* ent) {
@@ -65,15 +65,15 @@ public:
     }
 
     inline bool get_update() {
-        return flags_ & (uint8)property::update;
+        return flags_ & (uint8)Property::Update;
     }
 
-    inline bool get_consume_event() {
-        return flags_ & (uint8)property::consume_event;
+    inline bool get_handle_event() {
+        return flags_ & (uint8)Property::HandleEvent;
     }
 
     inline bool get_draw() {
-        return flags_ & (uint8)property::draw;
+        return flags_ & (uint8)Property::Draw;
     }
 
     inline entity* get_owning_entity() const {
@@ -90,17 +90,17 @@ public:
 
 protected:
 
-    component(context& p_context)
-    :   object(p_context),
+    Component(Context& context)
+    :   Object(context),
         id_(0),
         flags_(0),
         owning_entity_(nullptr) {}
 
-    virtual ~component() {}
+    virtual ~Component() {}
 
     uint    id_;
     uint8   flags_;
-    entity* owning_entity_;
+    Entity* owning_entity_;
 };
 
 #define SUN_COMPONENT_TYPE(type) const std::string& get_type_name() const override \

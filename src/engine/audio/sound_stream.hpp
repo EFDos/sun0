@@ -33,35 +33,35 @@
 
 namespace sun {
 
-class context;
-class decoder;
+class Context;
+class Decoder;
 
-class SUN_API sound_stream final : public sound_source
+class SUN_API SoundStream final : public SoundSource
 {
 public:
 
-    SUN_COMPONENT_TYPE(sound_stream)
+    SUN_COMPONENT_TYPE(SoundStream)
 
     template<typename T>
-    struct span
+    struct Span
     {
         T offset;
         T length;
 
-        span() {}
-        span(T off, T len) : offset(off), length(len) {}
+        Span() {}
+        Span(T off, T len) : offset(off), length(len) {}
     };
 
-    typedef span<time> time_span;
+    typedef Span<Time> TimeSpan;
 
-    struct chunk {
+    struct Chunk {
         const int16*    samples;
         size_t          sample_count;
     };
 
-    sound_stream(context& p_context);
+    SoundStream(context& p_context);
 
-    ~sound_stream();
+    ~SoundStream();
 
     bool load(const std::string&);
 
@@ -71,21 +71,21 @@ public:
 
     void stop() override;
 
-    void set_playing_offset(time);
+    void set_playing_offset(Time);
 
-    void set_loop_points(time_span points);
+    void set_loop_points(TimeSpan points);
 
     inline void set_loop(bool loop) {
         loop_ = loop;
     }
 
-    time get_playing_offset() const;
+    Time get_playing_offset() const;
 
-    time get_duration() const;
+    Time get_duration() const;
 
-    time_span get_loop_points() const;
+    TimeSpan get_loop_points() const;
 
-    state get_state() const override;
+    State get_state() const override;
 
     inline bool get_loop() const {
         return loop_;
@@ -107,7 +107,7 @@ private:
 
     void initialize_();
 
-    bool on_get_data_(chunk& data);
+    bool on_get_data_(Chunk& data);
 
     void on_seek_(time);
 
@@ -121,9 +121,9 @@ private:
 
     void clear_queue_();
 
-    uint64 time_to_samples_(time pos) const;
+    uint64 time_to_samples_(Time pos) const;
 
-    time samples_to_time(uint64 samples) const;
+    Time samples_to_time(uint64 samples) const;
 
     enum {
         buffer_count = 3,
@@ -133,7 +133,7 @@ private:
     std::thread             thread_;
     mutable std::mutex      thread_mutex_;
 
-    state           thread_start_state_;
+    State           thread_start_state_;
     uint            channel_count_;
     uint            sample_rate_;
     uint32          format_;
@@ -143,11 +143,11 @@ private:
     uint            buffers_[buffer_count];
     int64           buffer_seeks_[buffer_count];
 
-    filesys::input_stream   file_;
-    decoder*                decoder_;
+    filesys::InputStream    file_;
+    Decoder*                decoder_;
     std::vector<int16>      samples_;
     std::mutex              file_mutex_;
-    span<uint64>            loop_span_;
+    Span<uint64>            loop_span_;
 };
 
 }

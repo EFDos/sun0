@@ -23,51 +23,51 @@
 /*************************************************************************/
 #pragma once
 
-#include "primitive_shape.hpp"
+#include "shape.hpp"
 #include <vector>
 
 namespace sun {
 namespace shapes {
 
-class SUN_API convex : public primitive_shape
+class SUN_API Convex : public Shape
 {
 public:
 
-    convex() : primitive_shape()
+    Convex() : Shape()
     {
-        type_ = type::convex;
+        type_ = ShapeType::Convex;
     }
 
-    convex(size_t size) : primitive_shape(), vertices_(size)
+    Convex(size_t size) : Shape(), vertices_(size)
     {
-        type_ = type::convex;
+        type_ = ShapeType::Convex;
     }
 
-    convex(const std::initializer_list<vector2f>& vertices)
-    : primitive_shape(), vertices_(vertices)
+    Convex(const std::initializer_list<vector2f>& vertices)
+    : Shape(), vertices_(vertices)
     {
-        type_ = type::convex;
+        type_ = ShapeType::Convex;
     }
 
-    convex(const convex& convex) = default;
+    Convex(const Convex& convex) = default;
 
-    convex(convex&& convex) = default;
+    Convex(Convex&& convex) = default;
 
-    convex& operator =(const convex& other)
+    Convex& operator =(const Convex& other)
     {
         vertices_ = other.vertices_;
 
         return *this;
     }
 
-    convex& operator =(convex&& other)
+    Convex& operator =(Convex&& other)
     {
         vertices_ = std::move(other.vertices_);
 
         return *this;
     }
 
-    ~convex() {}
+    ~Convex() {}
 
     inline void set_point(size_t i, const vector2f& point)
     {

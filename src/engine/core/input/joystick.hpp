@@ -29,17 +29,17 @@
 namespace sun {
 namespace joystick {
 
-    enum class hat : uint8
+    enum class Hat : uint8
     {
-        center      = SDL_HAT_CENTERED,
-        up          = SDL_HAT_UP,
-        right       = SDL_HAT_RIGHT,
-        left        = SDL_HAT_LEFT,
-        down        = SDL_HAT_DOWN,
-        right_up    = SDL_HAT_RIGHTUP,
-        right_down  = SDL_HAT_RIGHTDOWN,
-        left_up     = SDL_HAT_LEFTUP,
-        left_down   = SDL_HAT_LEFTDOWN
+        Center      = SDL_HAT_CENTERED,
+        Up          = SDL_HAT_UP,
+        Right       = SDL_HAT_RIGHT,
+        Left        = SDL_HAT_LEFT,
+        Down        = SDL_HAT_DOWN,
+        RightUp    = SDL_HAT_RIGHTUP,
+        RightDown  = SDL_HAT_RIGHTDOWN,
+        LeftUp     = SDL_HAT_LEFTUP,
+        LeftDown   = SDL_HAT_LEFTDOWN
     };
 
 } // joystick

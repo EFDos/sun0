@@ -30,30 +30,30 @@
 
 namespace sun {
 
-class event;
+class Event;
 
-class SUN_API window
+class SUN_API Window
 {
 public:
 
-	window();
+	Window();
 
-    window(const std::string& name,
-       	   const vector2u& size,
+    Window(const std::string& name,
+       	   const Vector2u& size,
     	   bool fullscreen = false);
 
-	window(const window&) = delete;
+	Window(const Window&) = delete;
 
-	window& operator=(const window&) = delete;
+	Window& operator=(const Window&) = delete;
 
-    ~window();
+    ~Window();
 
 	void update();
 
-    bool poll_event(event& e);
+    bool poll_event(Event& e);
 
     void create(const std::string& name,
-    		    const vector2u& size,
+    		    const Vector2u& size,
     		    bool fullscreen = false);
 
     void close();

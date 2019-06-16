@@ -32,13 +32,13 @@
 
 namespace sun {
 
-class component;
+class Component;
 
-class SUN_API entity : object
+class SUN_API Entity : Object
 {
 public:
 
-    entity(context& p_context);
+    Entity(Context& context);
 
     template<typename T>
     T* create_component(const std::string& name = "") {
@@ -60,37 +60,37 @@ public:
         return comp;
     }
 
-    entity* create_child();
+    Entity* create_child();
 
     void move(float x, float y);
 
-    void move(const vector2f& pos);
+    void move(const Vector2f& pos);
 
     void scale(float x, float y);
 
-    void scale(const vector2f& scale);
+    void scale(const Vector2f& scale);
 
     void rotate(float angle);
 
     void set_position(float x, float y);
 
-    void set_position(const vector2f& pos);
+    void set_position(const Vector2f& pos);
 
     void set_scale(float x, float y);
 
-    void set_scale(const vector2f& scale);
+    void set_scale(const Vector2f& scale);
 
     void set_origin(float x, float);
 
-    void set_origin(const vector2f&);
+    void set_origin(const Vector2f&);
 
     void set_rotation(float angle);
 
     void set_z_order(float z);
 
-    void set_local_transform(const matrix4&);
+    void set_local_transform(const Matrix4&);
 
-    void set_global_transform(const matrix4&);
+    void set_global_transform(const Matrix4&);
 
     void set_transform_mask(uint8 transform_bits);
 
@@ -104,25 +104,25 @@ public:
 
     bool is_dirty() const;
 
-    const vector2f& get_position() const;
+    const Vector2f& get_position() const;
 
-    const vector2f& get_scale() const;
+    const Vector2f& get_scale() const;
 
-    const vector2f& get_origin() const;
+    const Vector2f& get_origin() const;
 
     float get_rotation() const;
 
     float get_z_order() const;
 
-    matrix4 get_local_transform() const;
+    Matrix4 get_local_transform() const;
 
-    const matrix4& get_global_transform() const;
+    const Matrix4& get_global_transform() const;
 
-    const matrix4& get_inverse_transform() const;
+    const Matrix4& get_inverse_transform() const;
 
 private:
 
-    component* get_component_(uint id);
+    Component* get_component_(uint id);
 
     enum class transform_bits : uint8
     {
@@ -136,19 +136,19 @@ private:
     uint64  id_;
     uint8   transform_mask_;
 
-    entity*                 parent_;
-    std::vector<entity*>     children_;
-    std::vector<component*> components_;
+    Entity*                 parent_;
+    std::vector<Entity*>     children_;
+    std::vector<Component*> components_;
 
-    vector2f    pos_;
-    vector2f    scale_;
-    vector2f    origin_;
+    Vector2f    pos_;
+    Vector2f    scale_;
+    Vector2f    origin_;
     float       rot_;
     float       z_order_;
 
     mutable bool                dirty_;
-    mutable matrix4     global_transform_;
-    mutable matrix4     inverse_transform_;
+    mutable Matrix4     global_transform_;
+    mutable Matrix4     inverse_transform_;
 };
 
 }

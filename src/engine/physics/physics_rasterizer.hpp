@@ -23,18 +23,19 @@
 /*************************************************************************/
 #pragma once
 
+#include "common/int.hpp"
 #include "common/config.hpp"
 #include <Box2D/Common/b2Draw.h>
 
 namespace sun {
 
-class renderer;
+class Renderer;
 
-class SUN_API physics_rasterizer : public b2Draw
+class SUN_API PhysicsRasterizer : public b2Draw
 {
 public:
 
-    physics_rasterizer(uint scale);
+    PhysicsRasterizer(uint scale);
 
     void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
         override;
@@ -53,11 +54,11 @@ public:
 
     void DrawTransform(const b2Transform& transform) override;
 
-    inline void set_renderer(renderer* rend) {
+    inline void set_renderer(Renderer* rend) {
         renderer_ = rend;
     }
 
-    inline const renderer* get_renderer() const {
+    inline const Renderer* get_renderer() const {
         return renderer_;
     }
 
@@ -71,7 +72,7 @@ public:
 
 private:
 
-    renderer*   renderer_;
+    Renderer*   renderer_;
     uint        scale_;
 };
 

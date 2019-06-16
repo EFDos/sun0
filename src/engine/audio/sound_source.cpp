@@ -28,16 +28,16 @@
 
 namespace sun {
 
-sound_source::sound_source(context& p_context)
-:   component(p_context),
+SoundSource::SoundSource(Context& context)
+:   Component(context),
     source_(0)
 {
     alGenSources(1, &source_);
     alSourcei(source_, AL_BUFFER, 0);
 }
 
-sound_source::sound_source(const sound_source& other)
-:   component(other.context_)
+SoundSource::SoundSource(const SoundSource& other)
+:   Component(other.context_)
 {
     alGenSources(1, &source_);
     alSourcei(source_, AL_BUFFER, 0);
@@ -50,90 +50,90 @@ sound_source::sound_source(const sound_source& other)
     set_attenuation(other.get_attenuation());
 }
 
-sound_source::~sound_source()
+SoundSource::~SoundSource()
 {
     alSourcei(source_, AL_BUFFER, 0);
     alDeleteSources(1, &source_);
 }
 
-void sound_source::set_pitch(float pitch)
+void SoundSource::set_pitch(float pitch)
 {
     alSourcef(source_, AL_PITCH, pitch);
 }
 
-void sound_source::set_volume(float vol)
+void SoundSource::set_volume(float vol)
 {
     alSourcef(source_, AL_GAIN, vol * 0.01f);
 }
 
-void sound_source::set_position(float x, float y, float z)
+void SoundSource::set_position(float x, float y, float z)
 {
     alSource3f(source_, AL_POSITION, x, y, z);
 }
 
-void sound_source::set_position(const vector3f& pos)
+void SoundSource::set_position(const Vector3f& pos)
 {
     set_position(pos.x, pos.y, pos.z);
 }
 
-void sound_source::set_relative(bool relative)
+void SoundSource::set_relative(bool relative)
 {
     alSourcei(source_, AL_SOURCE_RELATIVE, relative);
 }
 
-void sound_source::set_minmum_distance(float distance)
+void SoundSource::set_minmum_distance(float distance)
 {
     alSourcef(source_, AL_REFERENCE_DISTANCE, distance);
 }
 
-void sound_source::set_attenuation(float attenuation)
+void SoundSource::set_attenuation(float attenuation)
 {
     alSourcef(source_, AL_ROLLOFF_FACTOR, attenuation);
 }
 
-float sound_source::get_pitch() const
+float SoundSource::get_pitch() const
 {
     ALfloat pitch;
     alGetSourcef(source_, AL_PITCH, &pitch);
     return pitch;
 }
 
-float sound_source::get_volume() const
+float SoundSource::get_volume() const
 {
     ALfloat gain;
     alGetSourcef(source_, AL_GAIN, &gain);
     return gain;
 }
 
-vector3f sound_source::get_position() const
+vector3f SoundSource::get_position() const
 {
     vector3f pos;
     alGetSource3f(source_, AL_POSITION, &pos.x, &pos.y, &pos.z);
     return pos;
 }
 
-bool sound_source::is_relative() const
+bool SoundSource::is_relative() const
 {
     ALint relative;
     alGetSourcei(source_, AL_SOURCE_RELATIVE, &relative);
     return relative != 0;
 }
 
-float sound_source::get_minimum_distance() const
+float SoundSource::get_minimum_distance() const
 {
     ALfloat distance;
     alGetSourcef(source_, AL_REFERENCE_DISTANCE, &distance);
     return distance;
 }
 
-float sound_source::get_attenuation() const
+float SoundSource::get_attenuation() const
 {
     ALfloat attenuation;
     alGetSourcef(source_, AL_ROLLOFF_FACTOR, &attenuation);
     return attenuation;
 }
 
-sound_source::state sound_source::get_state() const
+SoundSource::state SoundSource::get_state() const
 {
     ALint state;
     alGetSourcei(source_, AL_SOURCE_STATE, &state);

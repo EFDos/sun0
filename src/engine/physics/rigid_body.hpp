@@ -31,40 +31,39 @@ class b2Body;
 namespace sun {
 
 namespace shapes {
-class primitive_shape;
+class Shape;
 }
 
-class SUN_API rigid_body final : public component
+class SUN_API RigidBody final : public Component
 {
 public:
 
-    SUN_COMPONENT_TYPE(rigid_body)
+    SUN_COMPONENT_TYPE(RigidBody)
 
-    enum class type
+    enum class Type
     {
-        undefined,
-        static_body,
-        dynamic_body,
-        kinematic_body,
-        sensor,
-        max_enum
+        Undefined,
+        Static,
+        Dynamic,
+        Kinematic,
+        Sensor
     };
 
-    rigid_body(context&);
+    RigidBody(Context&);
 
-    void create(const shapes::primitive_shape& shp, type t);
+    void create(const shapes::Shape& shp, Type t);
 
     void update_entity();
 
-    void apply_linear_impulse(const vector2f& impulse);
+    void apply_linear_impulse(const Vector2f& impulse);
 
-    inline type get_type() const {
+    inline Type get_type() const {
         return type_;
     }
 
 private:
 
-    type    type_;
+    Type    type_;
     b2Body* body_;
 };
 

@@ -31,15 +31,15 @@
 
 namespace sun {
 
-class resource;
+class Resource;
 
-class SUN_API resource_cache final : public system
+class SUN_API ResourceCache final : public System
 {
 public:
 
-    SUN_SYSTEM_TYPE(SYS_RESOURCE_CACHE)
+    SUN_SYSTEM_TYPE(ResourceCache)
 
-    explicit resource_cache(context&);
+    explicit ResourceCache(Context&);
 
     bool init() override;
 
@@ -56,7 +56,7 @@ public:
             T* res = new T(context_);
             if (res->load(path_ + name)) {
                 auto res_shared_ptr = std::shared_ptr<T>(res);
-                resources_[name] = static_cast<std::shared_ptr<resource>>
+                resources_[name] = static_cast<std::shared_ptr<Resource>>
                     (res_shared_ptr);
                 return res_shared_ptr;
             } else {
@@ -79,7 +79,7 @@ public:
 
 
 
-    component* create_component_(uint type_hash, uint id) override {
+    Component* create_component_(uint type_hash, uint id) override {
         return nullptr;
     }
 
@@ -90,7 +90,7 @@ public:
 private:
 
     std::string path_;
-    std::unordered_map<std::string, std::shared_ptr<resource>>  resources_;
+    std::unordered_map<std::string, std::shared_ptr<Resource>>  resources_;
 };
 
 }

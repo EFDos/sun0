@@ -31,10 +31,10 @@
 
 namespace sun {
 
-sound_stream::sound_stream(context& p_context)
-:   sound_source(p_context),
+SoundStream::SoundStream(Context& context)
+:   SoundSource(p_context),
     thread_(),
-    thread_start_state_(state::stopped),
+    thread_start_state_(State::Stopped),
     channel_count_(0),
     sample_rate_(0),
     format_(0),
@@ -47,7 +47,7 @@ sound_stream::sound_stream(context& p_context)
 
 }
 
-sound_stream::~sound_stream()
+SoundStream::~SoundStream()
 {
     //stop();
 
@@ -65,14 +65,14 @@ sound_stream::~sound_stream()
     }
 }
 
-bool sound_stream::load(const std::string& filepath)
+bool SoundStream::load(const std::string& filepath)
 {
     if (decoder_ != nullptr && get_state() == state::playing) {
         stop();
     }
 
     //TODO: make decoder based on file type
-    decoder_ = new vorbis_decoder();
+    decoder_ = new VorbisDecoder();
 
     if (!file_.open(filepath) && decoder_ != nullptr) {
         return false;
@@ -83,7 +83,7 @@ bool sound_stream::load(const std::string& filepath)
     return true;
 }
 
-void sound_stream::initialize_()
+void SoundStream::initialize_()
 {
     decoder_->open(file_);
 
@@ -109,7 +109,7 @@ void sound_stream::initialize_()
     }
 }
 
-void sound_stream::play()
+void SoundStream::play()
 {
     if (format_ == 0 || decoder_ == nullptr) {
         sun_log_error("Failed to play sound stream: not initialized.");
@@ -137,10 +137,10 @@ void sound_stream::play()
 
     is_streaming_ = true;
     thread_start_state_ = state::playing;
-    thread_ = std::thread(&sound_stream::stream_data_, this);
+    thread_ = std::thread(&SoundStream::stream_data_, this);
 }
 
-void sound_stream::pause()
+void SoundStream::pause()
 {
     {
         std::lock_guard<std::mutex> lock(thread_mutex_);
@@ -154,7 +154,7 @@ void sound_stream::pause()
     alSourcePause(source_);
 }
 
-void sound_stream::stop()
+void SoundStream::stop()
 {
     {
         std::lock_guard<std::mutex> lock(thread_mutex_);
@@ -165,10 +165,10 @@ void sound_stream::stop()
         thread_.join();
     }
 
-    on_seek_(time::zero);
+    on_seek_(Time::zero);
 }
 
-sound_source::state sound_stream::get_state() const
+SoundSource::State SoundStream::get_state() const
 {
     auto st = sound_source::get_state();
 
@@ -183,7 +183,7 @@ sound_source::state sound_stream::get_state() const
     return st;
 }
 
-void sound_stream::set_playing_offset(time offset)
+void SoundStream::set_playing_offset(Time offset)
 {
     state old_state = get_state();
 
@@ -199,10 +199,10 @@ void sound_stream::set_playing_offset(time offset)
 
     is_streaming_ = true;
     thread_start_state_ = old_state;
-    thread_ = std::thread(&sound_stream::stream_data_, this);
+    thread_ = std::thread(&SoundStream::stream_data_, this);
 }
 
-void sound_stream::set_loop_points(time_span points)
+void SoundStream::set_loop_points(TimeSpan points)
 {
 
     if (decoder_ == nullptr) {
@@ -210,8 +210,8 @@ void sound_stream::set_loop_points(time_span points)
         return;
     }
 
-    span<uint64> sample_points(time_to_samples_(points.offset),
-        time_to_samples_(points.length));
+    span<uint64> sample_points(Time_to_samples_(points.offset),
+        Time_to_samples_(points.length));
 
     if (get_channel_count() == 0 || decoder_->get_info().sample_count == 0)
     {
@@ -245,14 +245,14 @@ void sound_stream::set_loop_points(time_span points)
         return;
     }
 
-    state old_state = get_state();
-    time old_pos = get_playing_offset();
+    State old_state = get_state();
+    Time old_pos = get_playing_offset();
 
     stop();
 
     loop_span_ = sample_points;
 
-    if (old_pos != time::zero) {
+    if (old_pos != Time::zero) {
         set_playing_offset(old_pos);
     }
 
@@ -261,35 +261,35 @@ void sound_stream::set_loop_points(time_span points)
     }
 }
 
-time sound_stream::get_playing_offset() const
+Time SoundStream::get_playing_offset() const
 {
     if (sample_rate_ && channel_count_)
     {
         ALfloat secs = 0.f;
         alGetSourcef(source_, AL_SEC_OFFSET, &secs);
 
-        return time::seconds(secs + static_cast<float>(samples_processed_) / sample_rate_ / channel_count_);
+        return Time::seconds(secs + static_cast<float>(samples_processed_) / sample_rate_ / channel_count_);
     } else {
-        return time::zero;
+        return Time::zero;
     }
 }
 
-time sound_stream::get_duration() const
+Time SoundStream::get_duration() const
 {
     if (decoder_ == nullptr) {
-        return time::zero;
+        return Time::zero;
     }
 
     return decoder_->get_duration();
 }
 
-sound_stream::time_span sound_stream::get_loop_points() const
+SoundStream::TimeSpan SoundStream::get_loop_points() const
 {
-    return time_span(samples_to_time(loop_span_.offset),
-        samples_to_time(loop_span_.length));
+    return TimeSpan(samples_to_Time(loop_span_.offset),
+        samples_to_Time(loop_span_.length));
 }
 
-int64 sound_stream::on_loop_()
+int64 SoundStream::on_loop_()
 {
     std::lock_guard<std::mutex> lock(file_mutex_);
 
@@ -309,7 +309,7 @@ int64 sound_stream::on_loop_()
     return no_loop;
 }
 
-bool sound_stream::on_get_data_(sound_stream::chunk& data)
+bool SoundStream::on_get_data_(SoundStream::Chunk& data)
 {
     std::lock_guard<std::mutex> lock(file_mutex_);
 
@@ -336,13 +336,13 @@ bool sound_stream::on_get_data_(sound_stream::chunk& data)
         !(current_offset == loop_end && loop_span_.length != 0);
 }
 
-void sound_stream::on_seek_(time offset)
+void SoundStream::on_seek_(Time offset)
 {
     std::lock_guard<std::mutex> lock(file_mutex_);
-    decoder_->seek(time_to_samples_(offset));
+    decoder_->seek(Time_to_samples_(offset));
 }
 
-void sound_stream::stream_data_()
+void SoundStream::stream_data_()
 {
     bool request_stop = false;
 
@@ -456,11 +456,11 @@ void sound_stream::stream_data_()
     alDeleteBuffers(buffer_count, buffers_);
 }
 
-bool sound_stream::fill_and_push_buffer_(uint buffer_n, bool immediate_loop)
+bool SoundStream::fill_and_push_buffer_(uint buffer_n, bool immediate_loop)
 {
     bool request_stop = false;
 
-    chunk data = {nullptr, 0};
+    Chunk data = {nullptr, 0};
     for (uint32 retry_count = 0 ; !on_get_data_(data) &&
         (retry_count < buffer_retries) ; ++retry_count)
     {
@@ -499,7 +499,7 @@ bool sound_stream::fill_and_push_buffer_(uint buffer_n, bool immediate_loop)
     return request_stop;
 }
 
-bool sound_stream::fill_queue_()
+bool SoundStream::fill_queue_()
 {
     bool request_stop = false;
     for (int i = 0 ; i < buffer_count && !request_stop ; ++i) {
@@ -511,7 +511,7 @@ bool sound_stream::fill_queue_()
     return request_stop;
 }
 
-void sound_stream::clear_queue_()
+void SoundStream::clear_queue_()
 {
     ALint n_queued;
 
@@ -523,7 +523,7 @@ void sound_stream::clear_queue_()
     }
 }
 
-uint64 sound_stream::time_to_samples_(time pos) const
+uint64 SoundStream::time_to_samples_(Time pos) const
 {
     // Taken from SFML
     // Always ROUND, no unchecked truncation, hence the addition in the numerator.
@@ -534,13 +534,13 @@ uint64 sound_stream::time_to_samples_(time pos) const
 }
 
 
-time sound_stream::samples_to_time(uint64 samples) const
+Time SoundStream::samples_to_time(uint64 samples) const
 {
-    time pos = time::zero;
+    Time pos = Time::zero;
 
     // Make sure we don't divide by 0
     if (get_sample_rate() != 0 && get_channel_count() != 0)
-        pos = time::microseconds((samples * 1000000) /
+        pos = Time::microseconds((samples * 1000000) /
             (get_channel_count() * get_sample_rate()));
 
     return pos;

@@ -25,22 +25,22 @@
 
 namespace sun {
 
-resource::resource(context& p_context) : object(p_context)
+Resource::Resource(Context& context) : Object(context)
 {
 }
 
-resource::~resource()
+Resource::~Resource()
 {
     clear();
 }
 
-bool resource::load(const std::string& path)
+bool Resource::load(const std::string& path)
 {
     path_ = path;
     return true;
 }
 
-void resource::clear()
+void Resource::clear()
 {
     path_.clear();
 }

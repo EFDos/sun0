@@ -28,20 +28,20 @@
 namespace sun {
 namespace mouse {
 
-enum class button : uint8
+enum class Button : uint8
 {
-    undefined,
-    left,
-    right,
-    middle,
-    x1,
-    x2,
+    Undefined,
+    Left,
+    Right,
+    Middle,
+    X1,
+    X2,
 };
 
-enum class wheel : uint8
+enum class Wheel : uint8
 {
-    vertical,
-    horizontal
+    Vertical,
+    Horizontal
 };
 
 } // mouse

@@ -30,17 +30,17 @@ namespace sun {
 
 class context;
 
-class SUN_API sound_source : public component
+class SUN_API SoundSource : public Component
 {
 public:
 
-    enum class state {
-        stopped,
-        paused,
-        playing
+    enum class State {
+        Stopped,
+        Paused,
+        Playing
     };
 
-    virtual ~sound_source();
+    virtual ~SoundSource();
 
     virtual void play() = 0;
 
@@ -60,7 +60,7 @@ public:
 
     void set_position(float x, float y, float z);
 
-    void set_position(const vector3f& pos);
+    void set_position(const Vector3f& pos);
 
     float get_volume() const;
 
@@ -78,11 +78,11 @@ public:
 
 protected:
 
-    sound_source(context& p_context);
+    SoundSource(context& p_context);
 
-    sound_source(const sound_source&);
+    SoundSource(const SoundSource&);
 
-    sound_source(sound_source&&) = default;
+    SoundSource(SoundSource&&) = default;
 
     uint source_;
 };

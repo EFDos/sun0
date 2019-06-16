@@ -28,7 +28,7 @@
 namespace sun {
 
 template<typename T = float>
-class vector2
+class Vector2
 {
 public:
 
@@ -42,13 +42,13 @@ public:
 		T h;
 	};
 
-	vector2(T p_x = 0, T p_y = 0) noexcept : x(p_x), y(p_y) {}
+	Vector2(T p_x = 0, T p_y = 0) noexcept : x(p_x), y(p_y) {}
 
-	vector2(const T* data) : x(data[0]), y(data[1]) {}
+	Vector2(const T* data) : x(data[0]), y(data[1]) {}
 
-	vector2(const vector2<T>&) noexcept = default;
+	Vector2(const Vector2<T>&) noexcept = default;
 
-	vector2(vector2<T>&&) noexcept = default;
+	Vector2(Vector2<T>&&) noexcept = default;
 
 	inline float length() const
 	{
@@ -65,36 +65,36 @@ public:
 		}
 	}
 
-	inline vector2<T> get_normalized()
+	inline Vector2<T> get_normalized()
 	{
-		return vector2<T>(*this).normalize();
+		return Vector2<T>(*this).normalize();
 	}
 
-	inline T dot(const vector2<T>& v) const
+	inline T dot(const Vector2<T>& v) const
 	{
 		return x * v.x + y * v.y;
 	}
 
-	inline T cross(const vector2<T>& v) const
+	inline T cross(const Vector2<T>& v) const
 	{
 		return x * v.x - y * v.y;
 	}
 
-	vector2<T>& operator=(const vector2<T>&) noexcept = default;
+	Vector2<T>& operator=(const Vector2<T>&) noexcept = default;
 
-	vector2<T>& operator=(vector2<T>&&) noexcept = default;
+	Vector2<T>& operator=(Vector2<T>&&) noexcept = default;
 
-	inline vector2<T> operator+(const vector2<T>& v) const
+	inline Vector2<T> operator+(const Vector2<T>& v) const
 	{
 		return {x + v.x, y + v.y};
 	}
 
-	inline vector2<T> operator+(T t) const
+	inline Vector2<T> operator+(T t) const
 	{
 		return {x + t, y + t};
 	}
 
-	inline void operator+=(const vector2<T>& v)
+	inline void operator+=(const Vector2<T>& v)
 	{
 		x += v.x; y += v.y;
 	}
@@ -104,17 +104,17 @@ public:
 		x += t; y += t;
 	}
 
-	inline vector2<T> operator-(const vector2<T>& v) const
+	inline Vector2<T> operator-(const Vector2<T>& v) const
 	{
 		return {x - v.x, y - v.y};
 	}
 
-	inline vector2<T> operator-(T t) const
+	inline Vector2<T> operator-(T t) const
 	{
 		return {x - t, y - t};
 	}
 
-	inline void operator-=(const vector2<T>& v)
+	inline void operator-=(const Vector2<T>& v)
 	{
 		x -= v.x; y -= v.y;
 	}
@@ -124,17 +124,17 @@ public:
 		x -= t;	y -= t;
 	}
 
-	inline vector2<T> operator*(const vector2<T>& v) const
+	inline Vector2<T> operator*(const Vector2<T>& v) const
 	{
 		return {x * v.x, y * v.y};
 	}
 
-	inline vector2<T> operator*(T t) const
+	inline Vector2<T> operator*(T t) const
 	{
 		return {x * t, y * t};
 	}
 
-	inline void operator*=(const vector2<T>& v)
+	inline void operator*=(const Vector2<T>& v)
 	{
 		x *= v.x; y *= v.y;
 	}
@@ -144,17 +144,17 @@ public:
 		x *= t;	y *= t;
 	}
 
-	inline vector2<T> operator/(const vector2<T>& v) const
+	inline Vector2<T> operator/(const Vector2<T>& v) const
 	{
 		return {x / v.x, y / v.y};
 	}
 
-	inline vector2<T> operator/(T t) const
+	inline Vector2<T> operator/(T t) const
 	{
 		return {x / t, y / t};
 	}
 
-	inline void operator/=(const vector2<T>& v)
+	inline void operator/=(const Vector2<T>& v)
 	{
 		x /= v.x; y /= v.y;
 	}
@@ -164,12 +164,12 @@ public:
 		x /= t;	y /= t;
 	}
 
-	inline vector2<T> operator-() const
+	inline Vector2<T> operator-() const
 	{
 		return {-x, -y};
 	}
 
-	inline bool operator==(const vector2<T>& v) const
+	inline bool operator==(const Vector2<T>& v) const
 	{
 		return x == v.x && y == v.y;
 	}
@@ -179,7 +179,7 @@ public:
 		return x == t && y == t;
 	}
 
-	inline bool operator!=(const vector2<T>& v) const
+	inline bool operator!=(const Vector2<T>& v) const
 	{
 		return x != v.x || y != v.y;
 	}
@@ -190,9 +190,9 @@ public:
 	}
 };
 
-using vector2f = vector2<float>;
-using vector2d = vector2<double>;
-using vector2i = vector2<int>;
-using vector2u = vector2<unsigned>;
+using Vector2f = Vector2<float>;
+using Vector2d = Vector2<double>;
+using Vector2i = Vector2<int>;
+using Vector2u = Vector2<unsigned>;
 
 } // sun0

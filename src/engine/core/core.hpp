@@ -26,10 +26,10 @@
 
 namespace sun {
 
-class SUN_API core {
+class SUN_API Core {
 public:
 
-    core() {}
+    Core() {}
 };
 
 }

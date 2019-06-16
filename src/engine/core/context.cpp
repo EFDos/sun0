@@ -33,52 +33,52 @@
 
 namespace sun {
 
-context::context()
+Context::Context()
 {
 }
 
-context::~context()
+Context::~Context()
 {
 }
 
-void context::init_systems()
+void Context::init_systems()
 {
     for (auto sys : systems_) {
         sys.second->init();
     }
 }
-void context::shutdown_systems()
+void Context::shutdown_systems()
 {
     for (auto sys : systems_) {
         sys.second->shutdown();
     }
 }
 
-void context::update_systems()
+void Context::update_systems()
 {
     for(auto sys : systems_) {
         sys.second->update();
     }
 }
 
-system* context::register_system_(const std::string& type)
+system* Context::register_system_(const std::string& type)
 {
     system* sys = nullptr;
-    if (type == "SYS_RENDERER") {
+    if (type.compare("Renderer")) {
         sun_logf_debug("registering new opengl renderer as %s", type.c_str());
-        sys = new opengl::renderer(*this);
+        sys = new opengl::Renderer(*this);
     }
-    if (type == "SYS_AUDIO_SERVER") {
+    if (type.compare("AudioServer")) {
         sun_logf_debug("registering new openal renderer as %s", type.c_str());
-        sys = new audio_server(*this);
+        sys = new AudioServer(*this);
     }
-    if (type == "SYS_RESOURCE_CACHE") {
+    if (type.compare("ResourceCache")) {
         sun_logf_debug("registering new resource_cache as %s", type.c_str());
-        sys = new resource_cache(*this);
+        sys = new ResourceCache(*this);
     }
-    if (type == "SYS_PHYSICS_SERVER") {
+    if (type.compare("PhysicsServer")) {
         sun_logf_debug("registering new box2d wrapper as %s", type.c_str());
-        sys = new physics_server(*this);
+        sys = new PhysicsServer(*this);
     }
 
     if (sys != nullptr) {
@@ -90,7 +90,7 @@ system* context::register_system_(const std::string& type)
     return sys;
 }
 
-system* context::get_system_(size_t type_hash)
+System* Context::get_system_(size_t type_hash)
 {
     auto it = systems_.find(type_hash);
     if (it != systems_.end()) {

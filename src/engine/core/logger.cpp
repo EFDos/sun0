@@ -27,21 +27,21 @@
 
 namespace sun {
 
-logger::logger() : level_(loglevel::all), show_timestamp_(true) {}
+Logger::Logger() : level_(LogLevel::All), show_timestamp_(true) {}
 
-logger& logger::instance()
+Logger& Logger::instance()
 {
-    static logger singleton;
+    static Logger singleton;
     return singleton;
 }
 
-void logger::log(const std::string& message, loglevel level)
+void Logger::log(const std::string& message, LogLevel level)
 {
     if (level < level_) {
         return;
     }
 
-    auto output = (level == loglevel::error || level == loglevel::fatal) ?
+    auto output = (level == LogLevel::Error || level == LogLevel::Fatal) ?
              stderr : stdout;
 
     if (show_timestamp_)
@@ -54,24 +54,24 @@ void logger::log(const std::string& message, loglevel level)
 
     switch (level)
     {
-        case loglevel::all:
+        case LogLevel::All:
             return;
-        case loglevel::trace:
+        case LogLevel::Trace:
             std::fprintf(output, "\033[1;37mTRACE\033[0m] ");
             break;
-        case loglevel::debug:
+        case LogLevel::Debug:
             std::fprintf(output, "\033[1;34mDEBUG\033[0m] ");
             break;
-        case loglevel::info:
+        case LogLevel::Info:
             std::fprintf(output, "\033[1;37mINFO\033[0m] ");
             break;
-        case loglevel::warn:
+        case LogLevel::Warn:
             std::fprintf(output, "\033[1;33mWARN\033[0m] ");
             break;
-        case loglevel::error:
+        case LogLevel::Error:
             std::fprintf(output, "\033[1;31mERROR\033[0m] ");
             break;
-        case loglevel::fatal:
+        case LogLevel::Fatal:
             std::fprintf(output, "\033[1;31mFATAL\033[0m] ");
             break;
     }
@@ -91,12 +91,12 @@ void logger::log(const std::string& message, loglevel level)
     std::fprintf(output, "%s\n", message.c_str());
 }
 
-void logger::naked_log(const std::string& message)
+void Logger::naked_log(const std::string& message)
 {
     std::printf("%s\n", message.c_str());
 }
 
-std::string logger::get_timestamp_()
+std::string Logger::get_timestamp_()
 {
     time_t rawtime;
     struct tm* timeinfo;

@@ -30,52 +30,52 @@
 
 namespace sun {
 
-enum class event_type : uint8
+enum class EventType : uint8
 {
-    undefined,
-    closed,
-    lost_focus, // unimplemented
-    gained_focus, // unimplemented
-    key_pressed,
-    key_released,
-    text_entered,
-    mouse_wheel_scrolled,
-    mouse_button_pressed,
-    mouse_button_released,
-    mouse_moved,
-    mouse_entered, // unimplemented
-    mouse_left, // unimplemented
-    joystick_button_pressed,
-    joystick_button_released,
-    joystick_hat_moved,
-    joystick_axis_moved,
-    joystick_connected,
-    joystick_disconnected,
-    touch_began,
-    touch_moved,
-    touch_ended
+    Undefined,
+    Closed,
+    LostFocus, // unimplemented
+    GainedFocus, // unimplemented
+    KeyPressed,
+    KeyReleased,
+    TextEntered,
+    MouseWheelScrolled,
+    MouseButtonPressed,
+    MouseButtonReleased,
+    MouseMoved,
+    MouseEntered, // unimplemented
+    MouseLeft, // unimplemented
+    JoystickButtonPressed,
+    JoystickButtonReleased,
+    JoystickHatMoved,
+    JoystickAxisMoved,
+    JoystickConnected,
+    JoystickDisconnected,
+    TouchBegan,
+    TouchMoved,
+    TouchEnded
 };
 
-class SUN_API event
+class SUN_API Event
 {
 public:
 
-    struct key_event
+    struct KeyEvent
     {
-        keyboard::key    code;
+        keyboard::Key    code;
         bool            alt;
         bool            control;
         bool            shift;
         bool            system;
     };
 
-    struct text_input_event
+    struct TextInputEvent
     {
         char text[32];
         uint8 text_size;
     };
 
-    struct mouse_move_event
+    struct MouseMoveEvent
     {
         int32   x;
         int32   y;
@@ -83,66 +83,66 @@ public:
         int32   y_rel;
     };
 
-    struct mouse_button_event
+    struct MouseButtonEvent
     {
-        mouse::button   button;
+        mouse::Button   button;
         int32   x;
         int32   y;
     };
 
-    struct mouse_wheel_event
+    struct MouseWheelEvent
     {
         float   delta;
         int32   x;
         int32   y;
     };
 
-    struct joystick_connect_event
+    struct JoystickConnectEvent
     {
         uint8   id;
     };
 
-    struct joystick_axis_event
+    struct JoystickAxisEvent
     {
         uint8   id;
         uint8   axis;
         float   position;
     };
 
-    struct joystick_button_event
+    struct JoystickButtonEvent
     {
         uint8   id;
         uint8   button;
     };
 
-    struct joystick_hat_event
+    struct JoystickHatEvent
     {
         uint8   id;
         uint8   hat;
         uint8   value;
     };
 
-    struct touch_event
+    struct TouchEvent
     {
         uint8   finger;
         int32     x;
         int32     y;
     };
 
-    event_type  type = event_type::undefined;
+    EventType  type = EventType::Undefined;
 
     union
     {
-        key_event               key;
-        text_input_event        text_input;
-        mouse_move_event        mouse_move;
-        mouse_button_event      mouse_button;
-        mouse_wheel_event       mouse_wheel_scroll;
-        joystick_axis_event     joystick_axis;
-        joystick_hat_event      joystick_hat;
-        joystick_button_event   joystick_button;
-        joystick_connect_event  joystick_connect;
-        touch_event             touch;
+        KeyEvent                key_event;
+        TextInputEvent          text_input_event;
+        MouseMoveEvent          mouse_move_event;
+        MouseButtonEvent        mouse_button_event;
+        MouseWheelEvent         mouse_wheel_event;
+        JoystickAxisEvent       joystick_axis_event;
+        JoystickHatEvent        joystick_hat_event;
+        JoystickButtonEvent     joystick_button_event;
+        JoystickConnectEvent    joystick_connect_event;
+        TouchEvent              touch_event;
     };
 
 };

@@ -28,8 +28,8 @@
 
 namespace sun {
 
-audio_server::audio_server(context& p_context)
-:   system(p_context),
+AudioServer::AudioServer(Context& context)
+:   System(context),
     volume_(0.f),
     alc_device_(nullptr),
     alc_capture_device_(nullptr),
@@ -37,7 +37,7 @@ audio_server::audio_server(context& p_context)
 {
 }
 
-bool audio_server::init()
+bool AudioServer::init()
 {
     alGetError();
     alc_device_ = alcOpenDevice(0);
@@ -97,7 +97,7 @@ bool audio_server::init()
     return system::init();
 }
 
-void audio_server::shutdown()
+void AudioServer::shutdown()
 {
     if (alc_context_ != nullptr) {
         alcSuspendContext(alc_context_);
@@ -121,32 +121,32 @@ void audio_server::shutdown()
     system::shutdown();
 }
 
-void audio_server::set_global_volume(float volume)
+void AudioServer::set_global_volume(float volume)
 {
     volume_ = volume;
     alListenerf(AL_GAIN, volume * 0.01f);
 }
 
-void audio_server::set_listener(const audio_listener3D& listener)
+void AudioServer::set_listener(const AudioListener3D& listener)
 {
     set_listener_position(listener.position);
     set_listener_velocity(listener.velocity);
     set_listener_orientation(listener.orientation, listener.up_vector);
 }
 
-void audio_server::set_listener_position(vector3f pos)
+void AudioServer::set_listener_position(Vector3f pos)
 {
     listener_.position = pos;
     alListener3f(AL_POSITION, pos.x, pos.y, pos.z);
 }
 
-void audio_server::set_listener_velocity(vector3f vel)
+void AudioServer::set_listener_velocity(Vector3f vel)
 {
     listener_.velocity = vel;
     alListener3f(AL_VELOCITY, vel.x, vel.y, vel.z);
 }
 
-void audio_server::set_listener_orientation(vector3f ori, vector3f up_vec)
+void AudioServer::set_listener_orientation(Vector3f ori, Vector3f up_vec)
 {
     listener_.orientation = ori;
     listener_.up_vector = up_vec;
@@ -163,10 +163,10 @@ void audio_server::set_listener_orientation(vector3f ori, vector3f up_vec)
     alListenerfv(AL_ORIENTATION, orientation);
 }
 
-int audio_server::get_format_from_channel_count(uint count) const
+int AudioServer::get_format_from_channel_count(uint count) const
 {
     if(alc_device_ == nullptr) {
-        sun_log_warn("Querying format while audio_server is uinitialized");
+        sun_log_warn("Querying format while AudioServer is uinitialized");
     }
 
     int format = 0;
@@ -187,7 +187,7 @@ int audio_server::get_format_from_channel_count(uint count) const
     return format;
 }
 
-const char* audio_server::get_al_error(ALenum error) const noexcept
+const char* AudioServer::get_al_error(ALenum error) const noexcept
 {
     switch (error)
     {
@@ -207,7 +207,7 @@ const char* audio_server::get_al_error(ALenum error) const noexcept
     }
 }
 
-const char* audio_server::get_alc_error(ALCenum error) const noexcept
+const char* AudioServer::get_alc_error(ALCenum error) const noexcept
 {
     switch (error)
     {
@@ -227,20 +227,20 @@ const char* audio_server::get_alc_error(ALCenum error) const noexcept
     }
 }
 
-component* audio_server::create_component_(uint type_hash, uint id)
+Component* AudioServer::create_component_(uint type_hash, uint id)
 {
-    component* comp = nullptr;
-    if (type_hash == sound_stream::get_static_type_hash()) {
-        comp = new sound_stream(context_);
-        sound_sources_.push_back(static_cast<sound_stream*>(comp));
+    Component* comp = nullptr;
+    if (type_hash == SoundStream::get_static_type_hash()) {
+        comp = new SoundStream(context_);
+        sound_sources_.push_back(static_cast<SoundStream*>(comp));
     }
     comp->set_id(id);
     return comp;
 }
 
-bool audio_server::handles_component_(uint type_hash)
+bool AudioServer::handles_component_(uint type_hash)
 {
-    if (type_hash == sound_stream::get_static_type_hash()) {
+    if (type_hash == SoundStream::get_static_type_hash()) {
         return true;
     }
     return false;

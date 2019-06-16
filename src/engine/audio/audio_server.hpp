@@ -33,8 +33,8 @@
 
 namespace sun {
 
-class context;
-class sound_source;
+class Context;
+class SoundSource;
 
 /*struct audio_listener2D
 {
@@ -44,23 +44,23 @@ class sound_source;
     vector2f    up_vector;
 };*/
 
-struct audio_listener3D
+struct AudioListener3D
 {
-    vector3f    position;
-    vector3f    velocity;
-    vector3f    orientation;
-    vector3f    up_vector;
+    Vector3f    position;
+    Vector3f    velocity;
+    Vector3f    orientation;
+    Vector3f    up_vector;
 };
 
-class SUN_API audio_server final : public system
+class SUN_API AudioServer final : public System
 {
 public:
 
-    SUN_SYSTEM_TYPE(SYS_AUDIO_SERVER);
+    SUN_SYSTEM_TYPE(AudioServer);
 
-    explicit audio_server(context&);
+    explicit AudioServer(Context&);
 
-    ~audio_server() = default;
+    ~AudioServer() = default;
 
     bool init() override;
 
@@ -68,23 +68,23 @@ public:
 
     void set_global_volume(float volume);
 
-    void set_listener(const audio_listener3D& listener);
+    void set_listener(const AudioListener3D& listener);
 
-    void set_listener_position(vector3f pos);
+    void set_listener_position(Vector3f pos);
 
-    void set_listener_velocity(vector3f vel);
+    void set_listener_velocity(Vector3f vel);
 
-    void set_listener_orientation(vector3f ori, vector3f up_vec);
+    void set_listener_orientation(Vector3f ori, Vector3f up_vec);
 
     int get_format_from_channel_count(uint count) const;
 
     inline float get_global_volume() { return volume_; }
 
-    inline const audio_listener3D& get_listener() const { return listener_; }
+    inline const AudioListener3D& get_listener() const { return listener_; }
 
 private:
 
-    audio_listener3D    listener_;
+    AudioListener3D    listener_;
     float               volume_;
 
     const char* get_al_error(ALenum error) const noexcept;
@@ -94,11 +94,11 @@ private:
     ALCdevice*  alc_capture_device_;
     ALCcontext* alc_context_;
 
-    std::vector<sound_source*>  sound_sources_;
+    std::vector<SoundSource*>  sound_sources_;
 
     // system functions
 
-    component* create_component_(uint type_hash, uint id) override;
+    Component* create_component_(uint type_hash, uint id) override;
 
     bool handles_component_(uint type_hash) override;
 };

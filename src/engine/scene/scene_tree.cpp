@@ -25,13 +25,13 @@
 
 namespace sun {
 
-scene_tree::scene_tree(context& p_context)
-:   object(p_context),
-    root_(p_context)
+SceneTree::SceneTree(Context& context)
+:   Object(context),
+    root_(context)
 {
 }
 
-entity* scene_tree::create_entity()
+Entity* SceneTree::create_entity()
 {
     return root_.create_child();
 }

@@ -28,7 +28,7 @@
 
 namespace sun {
 
-class contact_listener : public b2ContactListener
+class ContactListener : public b2ContactListener
 {
     void BeginContact(b2Contact* contact) override;
 

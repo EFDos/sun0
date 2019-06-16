@@ -30,13 +30,13 @@
 
 namespace sun {
 
-size_t vorbis_decoder::callback_read(void* ptr, size_t size, size_t nmemb, void* data)
+size_t VorbisDecoder::callback_read(void* ptr, size_t size, size_t nmemb, void* data)
 {
     filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
     return static_cast<std::size_t>(stream->read(ptr, size * nmemb));
 }
 
-int vorbis_decoder::callback_seek(void* data, ogg_int64_t offset, int whence)
+int VorbisDecoder::callback_seek(void* data, ogg_int64_t offset, int whence)
 {
     filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
     switch (whence)
@@ -52,30 +52,30 @@ int vorbis_decoder::callback_seek(void* data, ogg_int64_t offset, int whence)
     return static_cast<int>(stream->seek(offset));
 }
 
-long vorbis_decoder::callback_tell(void* data)
+long VorbisDecoder::callback_tell(void* data)
 {
     filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
     return static_cast<long>(stream->tell());
 }
 
-ov_callbacks vorbis_decoder::callbacks_ = {
-    &vorbis_decoder::callback_read,
-    &vorbis_decoder::callback_seek,
+ov_callbacks VorbisDecoder::callbacks_ = {
+    &VorbisDecoder::callback_read,
+    &VorbisDecoder::callback_seek,
     nullptr,
-    &vorbis_decoder::callback_tell
+    &VorbisDecoder::callback_tell
 };
 
-vorbis_decoder::vorbis_decoder()
+VorbisDecoder::VorbisDecoder()
 {
     vorbis_.datasource = nullptr;
 }
 
-vorbis_decoder::~vorbis_decoder()
+VorbisDecoder::~VorbisDecoder()
 {
     close_();
 }
 
-bool vorbis_decoder::open(filesys::input_stream& stream)
+bool VorbisDecoder::open(filesys::InputStream& stream)
 {
     int status = ov_open_callbacks(&stream, &vorbis_, nullptr, 0, callbacks_);
 
@@ -94,7 +94,7 @@ bool vorbis_decoder::open(filesys::input_stream& stream)
     return true;
 }
 
-void vorbis_decoder::seek(uint64 sample_offset)
+void VorbisDecoder::seek(uint64 sample_offset)
 {
     if (vorbis_.datasource == nullptr) {
         sun_log_fatal("Vorbis can't decode null data source!");
@@ -105,7 +105,7 @@ void vorbis_decoder::seek(uint64 sample_offset)
     ov_pcm_seek(&vorbis_, sample_offset_ / info_.channel_count);
 }
 
-uint64 vorbis_decoder::read(int16* samples, uint64 max)
+uint64 VorbisDecoder::read(int16* samples, uint64 max)
 {
     if (vorbis_.datasource == nullptr) {
         sun_log_fatal("Vorbis can't decode null data source!");
@@ -133,7 +133,7 @@ uint64 vorbis_decoder::read(int16* samples, uint64 max)
     return count;
 }
 
-void vorbis_decoder::close_()
+void VorbisDecoder::close_()
 {
     if (vorbis_.datasource != nullptr) {
         ov_clear(&vorbis_);
@@ -142,7 +142,7 @@ void vorbis_decoder::close_()
     }
 }
 
-bool vorbis_decoder::check(filesys::input_stream& stream)
+bool VorbisDecoder::check(filesys::InputStream& stream)
 {
     OggVorbis_File file;
     if (ov_test_callbacks(&stream, &file, nullptr, 0, callbacks_) == 0) {

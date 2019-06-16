@@ -30,7 +30,7 @@ namespace sun {
 
 namespace physics {
 
-uint pixel_scale = physics_server::default_meter;
+uint pixel_scale = PhysicsServer::DEFAULT_METER;
 
 uint get_pixel_scale() {
     return pixel_scale;
@@ -38,34 +38,36 @@ uint get_pixel_scale() {
 
 }
 
-physics_server::physics_server(context& p_context)
-:   system(p_context),
+PhysicsServer::PhysicsServer(Context& context)
+:   System(context),
     world_(b2Vec2(0.f, -9.807f)),
-    debug_rasterizer_(default_meter),
+    debug_rasterizer_(DEFAULT_METER),
+    contact_listener_(),
     timestep_(1/45.f),
     vel_iterations_(8), //These are the suggested values for velocity
     pos_iterations_(3), //and position iterations from the Box2D manual
     debug_draw_(false)
 {
     world_.SetDebugDraw(&debug_rasterizer_);
+    world_.SetContactListener(&contact_listener_);
 
     debug_rasterizer_.SetFlags(b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit);
 }
 
-bool physics_server::init()
+bool PhysicsServer::init()
 {
     sun_log_info("Box2D World created");
-    sun_log_info("Physics System ready.");
-    return system::init();
+    sun_log_info("Physics Server ready.");
+    return System::init();
 }
 
-void physics_server::shutdown()
+void PhysicsServer::shutdown()
 {
-    system::shutdown();
+    System::shutdown();
     sun_log_info("Physics System shutdown.");
 }
 
-void physics_server::update()
+void PhysicsServer::update()
 {
     world_.Step(timestep_, vel_iterations_, pos_iterations_);
     for (auto body : bodies_) {
@@ -73,7 +75,7 @@ void physics_server::update()
     }
 }
 
-void physics_server::draw_physics_debug(renderer* render)
+void PhysicsServer::draw_physics_debug(Renderer* render)
 {
     if (!debug_draw_) {
         return;
@@ -86,33 +88,33 @@ void physics_server::draw_physics_debug(renderer* render)
     world_.DrawDebugData();
 }
 
-bool physics_server::lazy_raycast(const vector2f& begin, const vector2f& end)
+bool PhysicsServer::lazy_raycast(const Vector2f& begin, const Vector2f& end)
 {
-    lazy_raycast_callback callback;
+    LazyRaycastCallback callback;
     world_.RayCast(&callback, physics::to_b2vec(begin), physics::to_b2vec(end));
 
     return callback.is_colliding();
 }
 
-physics::raycast_collision physics_server::raycast(const vector2f& begin,
-                                                   const vector2f& end)
+physics::RaycastCollision PhysicsServer::raycast(const Vector2f& begin,
+                                                   const Vector2f& end)
 {
-    physics::raycast_collision collision_obj;
-    nearest_raycast_callback callback(collision_obj);
+    physics::RaycastCollision collision_obj;
+    NearestRaycastCallback callback(collision_obj);
     world_.RayCast(&callback, physics::to_b2vec(begin), physics::to_b2vec(end));
 
     return collision_obj;
 }
 
-void physics_server::set_gravity(const vector2f& gravity)
+void PhysicsServer::set_gravity(const Vector2f& gravity)
 {
     world_.SetGravity(b2Vec2(gravity.x, gravity.y));
 }
 
-void physics_server::set_pixel_scale(uint scale)
+void PhysicsServer::set_pixel_scale(uint scale)
 {
     if (scale == 0) {
-        physics::pixel_scale = default_meter;
+        physics::pixel_scale = DEFAULT_METER;
         return;
     }
 
@@ -120,27 +122,27 @@ void physics_server::set_pixel_scale(uint scale)
     debug_rasterizer_.set_scale(scale);
 }
 
-void physics_server::set_update_rate(float timestep, int vel_it, int pos_it)
+void PhysicsServer::set_update_rate(float timestep, int vel_it, int pos_it)
 {
     timestep_ = 1 / timestep;
     vel_iterations_ = vel_it;
     pos_iterations_ = pos_it;
 }
 
-component* physics_server::create_component_(uint type_hash, uint id)
+Component* PhysicsServer::create_component_(uint type_hash, uint id)
 {
-    component* comp = nullptr;
-    if (type_hash == rigid_body::get_static_type_hash()) {
-        comp = new rigid_body(context_);
-        bodies_.push_back(static_cast<rigid_body*>(comp));
+    Component* comp = nullptr;
+    if (type_hash == RigidBody::get_static_type_hash()) {
+        comp = new RigidBody(context_);
+        bodies_.push_back(static_cast<RigidBody*>(comp));
     }
     comp->set_id(id);
     return comp;
 }
 
-bool physics_server::handles_component_(uint type_hash)
+bool PhysicsServer::handles_component_(uint type_hash)
 {
-    if (type_hash == rigid_body::get_static_type_hash())
+    if (type_hash == RigidBody::get_static_type_hash())
     {
         return true;
     }

@@ -24,4 +24,4 @@
 #include "time.hpp"
 
 // Most useful cpp file :)
-sun::time sun::time::zero(0);
+sun::Time sun::Time::ZERO(0);

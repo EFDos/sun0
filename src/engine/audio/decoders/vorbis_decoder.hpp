@@ -28,22 +28,22 @@
 
 namespace sun {
 
-class SUN_API vorbis_decoder final : public decoder
+class SUN_API VorbisDecoder final : public Decoder
 {
 public:
 
-    vorbis_decoder();
+    VorbisDecoder();
 
-    ~vorbis_decoder();
+    ~VorbisDecoder();
 
     // Implements decoder
-    bool open(filesys::input_stream& stream) override;
+    bool open(filesys::InputStream& stream) override;
 
     void seek(uint64 sample_offset) override;
 
     uint64 read(int16* samples, uint64 max) override;
 
-    static bool check(filesys::input_stream& stream);
+    static bool check(filesys::InputStream& stream);
 
 private:
 

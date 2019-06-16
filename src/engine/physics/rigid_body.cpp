@@ -36,16 +36,16 @@
 
 namespace sun {
 
-rigid_body::rigid_body(context& p_context)
-:   component(p_context),
-    type_(type::undefined),
+RigidBody::RigidBody(Context& context)
+:   Component(context),
+    type_(Type::Undefined),
     body_(nullptr)
 {
 }
 
-void rigid_body::create(const shapes::primitive_shape& shape, type t)
+void RigidBody::create(const shapes::Shape& shape, Type t)
 {
-    if (t == type::undefined) {
+    if (t == Type::Undefined) {
         sun_log_error("Can't create shape of type 'undefined'");
     }
 
@@ -54,14 +54,14 @@ void rigid_body::create(const shapes::primitive_shape& shape, type t)
 
     switch (t)
     {
-        case type::sensor: // falls into static_body
-        case type::static_body:
+        case Type::Sensor: // falls into static_body
+        case Type::Static:
             body_def.type = b2_staticBody;
             break;
-        case type::dynamic_body:
+        case Type::Dynamic:
             body_def.type = b2_dynamicBody;
             break;
-        case type::kinematic_body:
+        case Type::Kinematic:
             body_def.type = b2_kinematicBody;
             break;
         default:
@@ -72,7 +72,7 @@ void rigid_body::create(const shapes::primitive_shape& shape, type t)
         body_def.position = physics::to_b2vec(owning_entity_->get_position());
     }
 
-    auto world = context_.get_system<physics_server>()->get_b2_world();
+    auto world = context_.get_system<PhysicsServer>()->get_b2_world();
 
     body_ = world->CreateBody(&body_def);
 
@@ -82,9 +82,9 @@ void rigid_body::create(const shapes::primitive_shape& shape, type t)
 
     switch (shape.get_type())
     {
-        case shapes::type::rectangle:
+        case shapes::ShapeType::Rectangle:
             {
-                auto rectangle = static_cast<const shapes::rectangle&>(shape);
+                auto rectangle = static_cast<const shapes::Rectangle&>(shape);
                 b2PolygonShape b2_shape;
                 b2_shape.SetAsBox(
                     physics::scale_to_meters(rectangle.get_size().x) / 2,
@@ -93,15 +93,15 @@ void rigid_body::create(const shapes::primitive_shape& shape, type t)
                 body_->CreateFixture(&b2_shape, 1.f);
             }
             break;
-        case shapes::type::circle:
+        case shapes::ShapeType::Circle:
             {
-                auto circle = static_cast<const shapes::circle&>(shape);
+                auto circle = static_cast<const shapes::Circle&>(shape);
                 b2CircleShape b2_shape;
                 b2_shape.m_radius = physics::scale_to_meters(circle.get_radius());
                 body_->CreateFixture(&b2_shape, 1.f);
             }
             break;
-        case shapes::type::convex:
+        case shapes::ShapeType::Convex:
             {
                 b2PolygonShape b2_shape;
                 b2Vec2* b2_vec_list = new b2Vec2[shape.get_point_count()];

@@ -27,17 +27,17 @@
 
 namespace sun {
 
-class context;
+class Context;
 
-class SUN_API object
+class SUN_API Object
 {
 protected:
 
-    object(context& p_context) : context_(p_context) {}
+    Object(Context& context) : context_(context) {}
 
-    virtual ~object() {}
+    virtual ~Object() {}
 
-    context&    context_;
+    Context&    context_;
 };
 
 }

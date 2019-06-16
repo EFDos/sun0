@@ -28,13 +28,13 @@
 
 namespace sun {
 
-class SUN_API time
+class SUN_API Time
 {
 public:
 
-    time() : microseconds_(0) {}
+    Time() : microseconds_(0) {}
 
-    time(int64 microseconds) : microseconds_(microseconds) {}
+    Time(int64 microseconds) : microseconds_(microseconds) {}
 
     inline float as_seconds() const {
         return microseconds_ / 1000000.f;
@@ -48,23 +48,23 @@ public:
         return microseconds_;
     }
 
-    inline static time seconds(float amount) {
-        return time(static_cast<int64>(amount * 1000000));
+    inline static Time seconds(float amount) {
+        return Time(static_cast<int64>(amount * 1000000));
     }
 
-    inline static time milliseconds(int32 amount) {
-        return time(static_cast<int64>(amount * 1000));
+    inline static Time milliseconds(int32 amount) {
+        return Time(static_cast<int64>(amount * 1000));
     }
 
-    inline static time microseconds(int64 amount) {
-        return time(amount);
+    inline static Time microseconds(int64 amount) {
+        return Time(amount);
     }
 
-    static time zero;
-
-    bool operator!=(const time& other) {
+    bool operator!=(const Time& other) {
         return microseconds_ != other.microseconds_;
     }
+
+    static Time ZERO;
 
 private:
 

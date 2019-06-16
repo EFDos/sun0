@@ -28,13 +28,13 @@
 
 namespace sun {
 
-class SUN_API resource : public object
+class SUN_API Resource : public Object
 {
 public:
 
-    resource(context&);
+    Resource(Context&);
 
-    virtual ~resource();
+    virtual ~Resource();
 
     virtual bool load(const std::string&);
 

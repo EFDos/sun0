@@ -27,8 +27,8 @@
 
 namespace sun {
 
-entity::entity(context& p_context)
-:   object(p_context),
+Entity::Entity(Context& context)
+:   Object(context),
     id_(0),
     transform_mask_((uint8)transform_bits::translation |
                     (uint8)transform_bits::rotation |
@@ -41,76 +41,76 @@ entity::entity(context& p_context)
 {
 }
 
-entity* entity::create_child()
+Entity* Entity::create_child()
 {
-    entity* child = new entity(context_);
+    Entity* child = new Entity(context_);
     children_.push_back(child);
     child->parent_ = this;
     return child;
 }
 
-void entity::move(float x, float y)
+void Entity::move(float x, float y)
 {
     set_position(pos_.x + x, pos_.y + y);
 }
 
-void entity::move(const vector2f& pos)
+void Entity::move(const Vector2f& pos)
 {
     set_position(pos_ + pos);
 }
 
-void entity::scale(float x, float y)
+void Entity::scale(float x, float y)
 {
     set_scale(scale_.x + x, scale_.y + y);
 }
 
-void entity::scale(const vector2f& scale)
+void Entity::scale(const Vector2f& scale)
 {
     set_scale(scale_ + scale_);
 }
 
-void entity::rotate(float angle)
+void Entity::rotate(float angle)
 {
     set_rotation(rot_ + angle);
 }
 
-void entity::set_position(float x, float y)
+void Entity::set_position(float x, float y)
 {
     pos_ = {x, y};
     mark_dirty_();
 }
 
-void entity::set_position(const vector2f& pos)
+void Entity::set_position(const Vector2f& pos)
 {
     pos_ = pos;
     mark_dirty_();
 }
 
-void entity::set_scale(float x, float y)
+void Entity::set_scale(float x, float y)
 {
     scale_ = {x, y};
     mark_dirty_();
 }
 
-void entity::set_scale(const vector2f& scale)
+void Entity::set_scale(const Vector2f& scale)
 {
     scale_ = scale;
     mark_dirty_();
 }
 
-void entity::set_origin(float x, float y)
+void Entity::set_origin(float x, float y)
 {
     origin_ = {x, y};
     mark_dirty_();
 }
 
-void entity::set_origin(const vector2f& origin)
+void Entity::set_origin(const Vector2f& origin)
 {
     origin_ = origin;
     mark_dirty_();
 }
 
-void entity::set_rotation(float angle)
+void Entity::set_rotation(float angle)
 {
     rot_ = std::fmod(angle, 360);
 
@@ -121,23 +121,23 @@ void entity::set_rotation(float angle)
     mark_dirty_();
 }
 
-void entity::set_z_order(float z)
+void Entity::set_z_order(float z)
 {
     z_order_ = z;
 }
 
-void entity::set_global_transform(const matrix4& transform)
+void Entity::set_global_transform(const Matrix4& transform)
 {
     global_transform_ = transform;
     dirty_ = false;
 }
 
-void entity::set_transform_mask(uint8 transform_bits)
+void Entity::set_transform_mask(uint8 transform_bits)
 {
     transform_mask_ = transform_bits;
 }
 
-void entity::set_translation_bit(bool bit)
+void Entity::set_translation_bit(bool bit)
 {
     if (bit) {
         transform_mask_ |= (uint8)transform_bits::translation;
@@ -146,7 +146,7 @@ void entity::set_translation_bit(bool bit)
     }
 }
 
-void entity::set_rotation_bit(bool bit)
+void Entity::set_rotation_bit(bool bit)
 {
     if (bit) {
         transform_mask_ |= (uint8)transform_bits::rotation;
@@ -155,7 +155,7 @@ void entity::set_rotation_bit(bool bit)
     }
 }
 
-void entity::set_scale_bit(bool bit)
+void Entity::set_scale_bit(bool bit)
 {
     if (bit) {
         transform_mask_ |= (uint8)transform_bits::scale;
@@ -164,45 +164,45 @@ void entity::set_scale_bit(bool bit)
     }
 }
 
-bool entity::is_dirty() const
+bool Entity::is_dirty() const
 {
     return dirty_;
 }
 
-void entity::clear_dirty_flag()
+void Entity::clear_dirty_flag()
 {
     dirty_ = false;
 }
 
-const vector2f& entity::get_position() const
+const Vector2f& Entity::get_position() const
 {
     return pos_;
 }
 
-const vector2f& entity::get_scale() const
+const Vector2f& Entity::get_scale() const
 {
     return scale_;
 }
 
-const vector2f& entity::get_origin() const
+const Vector2f& Entity::get_origin() const
 {
     return origin_;
 }
 
-float entity::get_rotation() const
+float Entity::get_rotation() const
 {
     return rot_;
 }
 
-float entity::get_z_order() const
+float Entity::get_z_order() const
 {
     return z_order_;
 }
 
-matrix4 entity::get_local_transform() const
+Matrix4 Entity::get_local_transform() const
 {
-    matrix4 transform;
-    float angle     = -rot_ * math::pi / 180.f;
+    Matrix4 transform;
+    float angle     = -rot_ * math::PI / 180.f;
     float cosine    = std::cos(angle);
     float sine      = std::sin(angle);
     float sxc       = scale_.x * cosine;
@@ -217,7 +217,7 @@ matrix4 entity::get_local_transform() const
     return transform;
 }
 
-const matrix4& entity::get_global_transform() const
+const Matrix4& Entity::get_global_transform() const
 {
     if (dirty_) {
         if (parent_ != nullptr) {
@@ -228,7 +228,7 @@ const matrix4& entity::get_global_transform() const
                 get_local_transform();
             } else {
                 // Ignore false transform bits
-                matrix4 parent_transform = parent_->get_global_transform();
+                Matrix4 parent_transform = parent_->get_global_transform();
                 if (!(transform_mask_ & (uint8)transform_bits::translation)) {
                     parent_transform.set_translation(0.f, 0.f);
                 }
@@ -248,7 +248,7 @@ const matrix4& entity::get_global_transform() const
     return global_transform_;
 }
 
-const matrix4& entity::get_inverse_transform() const
+const Matrix4& Entity::get_inverse_transform() const
 {
     if (dirty_) {
         inverse_transform_ = get_global_transform().get_inverse();
@@ -256,9 +256,9 @@ const matrix4& entity::get_inverse_transform() const
     return inverse_transform_;
 }
 
-component* entity::get_component_(uint id)
+Component* Entity::get_component_(uint id)
 {
-    component* comp = nullptr;
+    Component* comp = nullptr;
     for (auto c : components_) {
         if (c->get_id() == id) {
             comp = c;
@@ -267,7 +267,7 @@ component* entity::get_component_(uint id)
     return comp;
 }
 
-void entity::mark_dirty_()
+void Entity::mark_dirty_()
 {
     dirty_ = true;
     for (auto child : children_) {

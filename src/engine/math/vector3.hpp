@@ -28,21 +28,21 @@
 namespace sun {
 
 template<typename T = float>
-class vector3
+class Vector3
 {
 public:
 
 	T x, y, z;
 
-	vector3(T p_x = 0, T p_y = 0, T p_z = 0) noexcept
+	Vector3(T p_x = 0, T p_y = 0, T p_z = 0) noexcept
 	: x(p_x), y(p_y), z(p_z) {}
 
-	vector3(const T* data) : x(data[0]), y(data[1]), z(data[2])
+	Vector3(const T* data) : x(data[0]), y(data[1]), z(data[2])
 	{}
 
-	vector3(const vector3<T>&) noexcept = default;
+	Vector3(const Vector3<T>&) noexcept = default;
 
-	vector3(vector3<T>&&) noexcept = default;
+	Vector3(Vector3<T>&&) noexcept = default;
 
 	inline float length() const
 	{
@@ -60,36 +60,36 @@ public:
 		}
 	}
 
-	inline vector3<T> get_normalized()
+	inline Vector3<T> get_normalized()
 	{
-		return vector3<T>(*this).normalize();
+		return Vector3<T>(*this).normalize();
 	}
 
-	inline T dot(const vector3<T>& v) const
+	inline T dot(const Vector3<T>& v) const
 	{
 		return x * v.x + y * v.y + z * v.z;
 	}
 
-	inline T cross(const vector3<T>& v) const
+	inline T cross(const Vector3<T>& v) const
 	{
 		return x * v.x - y * v.y - z * v.z;
 	}
 
-	vector3<T>& operator=(const vector3<T>&) noexcept = default;
+	Vector3<T>& operator=(const Vector3<T>&) noexcept = default;
 
-	vector3<T>& operator=(vector3<T>&&) noexcept = default;
+	Vector3<T>& operator=(Vector3<T>&&) noexcept = default;
 
-	inline vector3<T> operator+(const vector3<T>& v) const
+	inline Vector3<T> operator+(const Vector3<T>& v) const
 	{
 		return {x + v.x, y + v.y, z + v.z};
 	}
 
-	inline vector3<T> operator+(T t) const
+	inline Vector3<T> operator+(T t) const
 	{
 		return {x + t, y + t, z + t};
 	}
 
-	inline void operator+=(const vector3<T>& v)
+	inline void operator+=(const Vector3<T>& v)
 	{
 		x += v.x; y += v.y; z += v.z;
 	}
@@ -99,17 +99,17 @@ public:
 		x += t; y += t; z += t;
 	}
 
-	inline vector3<T> operator-(const vector3<T>& v) const
+	inline Vector3<T> operator-(const Vector3<T>& v) const
 	{
 		return {x - v.x, y - v.y, z - v.z};
 	}
 
-	inline vector3<T> operator-(T t) const
+	inline Vector3<T> operator-(T t) const
 	{
 		return {x - t, y - t, z - t};
 	}
 
-	inline void operator-=(const vector3<T>& v)
+	inline void operator-=(const Vector3<T>& v)
 	{
 		x -= v.x; y -= v.y; z -= v.z;
 	}
@@ -119,17 +119,17 @@ public:
 		x -= t;	y -= t; z -= t;
 	}
 
-	inline vector3<T> operator*(const vector3<T>& v) const
+	inline Vector3<T> operator*(const Vector3<T>& v) const
 	{
 		return {x * v.x, y * v.y, z * v.z};
 	}
 
-	inline vector3<T> operator*(T t) const
+	inline Vector3<T> operator*(T t) const
 	{
 		return {x * t, y * t, z * t};
 	}
 
-	inline void operator*=(const vector3<T>& v)
+	inline void operator*=(const Vector3<T>& v)
 	{
 		x *= v.x; y *= v.y; z *= v.z;
 	}
@@ -139,17 +139,17 @@ public:
 		x *= t;	y *= t; z *= t;
 	}
 
-	inline vector3<T> operator/(const vector3<T>& v) const
+	inline Vector3<T> operator/(const Vector3<T>& v) const
 	{
 		return {x / v.x, y / v.y, z / v.z};
 	}
 
-	inline vector3<T> operator/(T t) const
+	inline Vector3<T> operator/(T t) const
 	{
 		return {x / t, y / t, z / t};
 	}
 
-	inline void operator/=(const vector3<T>& v)
+	inline void operator/=(const Vector3<T>& v)
 	{
 		x /= v.x; y /= v.y; z /= v.z;
 	}
@@ -159,25 +159,25 @@ public:
 		x /= t;	y /= t; z /= t;
 	}
 
-	inline vector3<T> operator-() const
+	inline Vector3<T> operator-() const
 	{
 		return {-x, -y, -z};
 	}
 
-	inline bool operator==(const vector3<T>& v) const
+	inline bool operator==(const Vector3<T>& v) const
 	{
 		return x == v.x && y == v.y && z == v.z;
 	}
 
-	inline bool operator!=(const vector3<T>& v) const
+	inline bool operator!=(const Vector3<T>& v) const
 	{
 		return x != v.x || y != v.y || z != v.z;
 	}
 };
 
-using vector3f = vector3<float>;
-using vector3d = vector3<double>;
-using vector3i = vector3<int>;
-using vector3u = vector3<unsigned>;
+using Vector3f = Vector3<float>;
+using Vector3d = Vector3<double>;
+using Vector3i = Vector3<int>;
+using Vector3u = Vector3<unsigned>;
 
 } // sun0

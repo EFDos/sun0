@@ -25,7 +25,7 @@
 
 namespace sun {
 
-void contact_listener::BeginContact(b2Contact* contact)
+void ContactListener::BeginContact(b2Contact* contact)
 {
     //void* bodyA_user_data = contact->GetFixtureA()->GetBody()->GetUserData();
 	//void* bodyB_user_data = contact->GetFixtureB()->GetBody()->GetUserData();
@@ -100,7 +100,7 @@ void contact_listener::BeginContact(b2Contact* contact)
       //  body_b->_parent->on_collision(*body_a->_parent);
 }
 
-void contact_listener::EndContact(b2Contact* contact)
+void ContactListener::EndContact(b2Contact* contact)
 {
     /*contact->SetEnabled(true);
 

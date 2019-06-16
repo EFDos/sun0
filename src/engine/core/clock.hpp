@@ -29,20 +29,20 @@
 namespace sun
 {
 
-class clock
+class Clock
 {
 public:
 
-    clock();
+    Clock();
 
-    clock(const clock&) = delete;
-    clock(const clock&&) = delete;
-    clock& operator=(const clock&) = delete;
-    clock& operator=(clock&&) = delete;
+    Clock(const Clock&) = delete;
+    Clock(const Clock&&) = delete;
+    Clock& operator=(const Clock&) = delete;
+    Clock& operator=(Clock&&) = delete;
 
     void reset();
 
-    time elapsed();
+    Time elapsed();
 
 private:
 

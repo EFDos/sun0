@@ -31,17 +31,17 @@
 
 namespace sun {
 
-class event;
-class renderer;
-class physics_server;
+class Event;
+class Renderer;
+class PhysicsServer;
 
-class SUN_API application
+class SUN_API Application
 {
 public:
 
-    explicit application(context&);
+    explicit Application(Context&);
 
-    virtual ~application();
+    virtual ~Application();
 
     virtual void on_update() = 0;
 
@@ -53,8 +53,8 @@ protected:
 
     context&    context_;
 	window      window_;
-	renderer*   renderer_;
-	physics_server* physics_;
+	Renderer*   renderer_;
+	PhysicsServer* physics_;
 
 private:
 
@@ -68,9 +68,9 @@ private:
 #define SUN_DEFINE_MAIN_APP(classname) \
 int run_application() \
 { \
-    sun::context runtime_context; \
-    classname application(runtime_context); \
+    sun::Context runtime_context; \
+    classname app(runtime_context); \
     sun_print("Running application " #classname ":\n"); \
-    return application.run(); \
+    return app.run(); \
 } \
 SUN_DEFINE_MAIN(run_application());

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  window.cpp                                                           */
+/*  Window.cpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -30,36 +30,36 @@
 
 namespace sun {
 
-window::window() : window_hndl_(nullptr), gl_context_(nullptr)
+Window::Window() : window_hndl_(nullptr), gl_context_(nullptr)
 {
 }
 
-window::window(const std::string& name,
-        const vector2u& size,
+Window::Window(const std::string& name,
+        const Vector2u& size,
 		bool fullscreen)
-:   window()
+:   Window()
 {
 	create(name, size, fullscreen);
 }
 
-window::~window()
+Window::~Window()
 {
 	close();
 }
 
-void window::update()
+void Window::update()
 {
 	if (window_hndl_ == nullptr) {
-        sun_log_warn("call ignored: can't update unitiliazed window");
+        sun_log_warn("call ignored: can't update unitiliazed Window");
         return;
     }
     SDL_GL_SwapWindow(static_cast<SDL_Window*>(window_hndl_));
 }
 
-bool window::poll_event(event& e)
+bool Window::poll_event(Event& e)
 {
 	if (window_hndl_ == nullptr) {
-        sun_log_warn("call ignored: can't poll events on unitiliazed window");
+        sun_log_warn("call ignored: can't poll events on unitiliazed Window");
         return false;
     }
 	SDL_Event sdl_e;
@@ -68,77 +68,78 @@ bool window::poll_event(event& e)
     switch(sdl_e.type)
     {
     	case SDL_QUIT:
-    	    e.type = event_type::closed;
+    	    e.type = EventType::Closed;
     	    return ret;
     	case SDL_MOUSEWHEEL:
-    		e.type = event_type::mouse_wheel_scrolled;
-    		e.mouse_wheel_scroll.x = sdl_e.wheel.x;
-    		e.mouse_wheel_scroll.y = sdl_e.wheel.y;
+    		e.type = EventType::MouseWheelScrolled;
+    		e.mouse_wheel_event.x = sdl_e.wheel.x;
+    		e.mouse_wheel_event.y = sdl_e.wheel.y;
     		return ret;
     	case SDL_MOUSEBUTTONDOWN:
-    		e.type = event_type::mouse_button_pressed;
-    		e.mouse_button.button = mouse::button(sdl_e.button.button);
-    		e.mouse_button.x = sdl_e.button.x;
-    		e.mouse_button.y = sdl_e.button.y;
+    		e.type = EventType::MouseButtonPressed;
+    		e.mouse_button_event.button = mouse::Button(sdl_e.button.button);
+    		e.mouse_button_event.x = sdl_e.button.x;
+    		e.mouse_button_event.y = sdl_e.button.y;
     		return ret;
     	case SDL_MOUSEBUTTONUP:
-    		e.type = event_type::mouse_button_released;
-    		e.mouse_button.button = mouse::button(sdl_e.button.button);
-    		e.mouse_button.x = sdl_e.button.x;
-    		e.mouse_button.y = sdl_e.button.y;
+    		e.type = EventType::MouseButtonReleased;
+    		e.mouse_button_event.button = mouse::Button(sdl_e.button.button);
+    		e.mouse_button_event.x = sdl_e.button.x;
+    		e.mouse_button_event.y = sdl_e.button.y;
     		return ret;
     	case SDL_MOUSEMOTION:
-    		e.type = event_type::mouse_moved;
-    		e.mouse_move.x = sdl_e.motion.x;
-    		e.mouse_move.y = sdl_e.motion.y;
-    		e.mouse_move.x_rel = sdl_e.motion.xrel;
-    		e.mouse_move.y_rel = sdl_e.motion.yrel;
+    		e.type = EventType::MouseMoved;
+    		e.mouse_move_event.x = sdl_e.motion.x;
+    		e.mouse_move_event.y = sdl_e.motion.y;
+    		e.mouse_move_event.x_rel = sdl_e.motion.xrel;
+    		e.mouse_move_event.y_rel = sdl_e.motion.yrel;
     		return ret;
     	case SDL_KEYDOWN:
-    		e.type = event_type::key_pressed;
-    		e.key.code = keyboard::key(sdl_e.key.keysym.sym);
+    		e.type = EventType::KeyPressed;
+    		e.key_event.code = keyboard::Key(sdl_e.key.keysym.sym);
     		if (sdl_e.key.keysym.mod & KMOD_NONE) {
     			return ret;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_ALT) {
-    			e.key.alt = true;
+    			e.key_event.alt = true;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_SHIFT) {
-    			e.key.shift = true;
+    			e.key_event.shift = true;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_CTRL) {
-    			e.key.control = true;
+    			e.key_event.control = true;
     		}
     		return ret;
     	case SDL_KEYUP:
-    		e.type = event_type::key_released;
-    		e.key.code = keyboard::key(sdl_e.key.keysym.sym);
+    		e.type = EventType::KeyReleased;
+    		e.key_event.code = keyboard::Key(sdl_e.key.keysym.sym);
     		if (sdl_e.key.keysym.mod & KMOD_NONE) {
     			return ret;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_ALT) {
-    			e.key.alt = false;
+    			e.key_event.alt = false;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_SHIFT) {
-    			e.key.shift = false;
+    			e.key_event.shift = false;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_CTRL) {
-    			e.key.control = false;
+    			e.key_event.control = false;
     		}
     		return ret;
     	case SDL_TEXTINPUT:
-    		e.type = event_type::text_entered;
-    		std::memcpy(e.text_input.text, sdl_e.text.text, 32);
-    		e.text_input.text_size = std::strlen(sdl_e.text.text);
+    		e.type = EventType::TextEntered;
+    		std::memcpy(e.text_input_event.text, sdl_e.text.text, 32);
+    		e.text_input_event.text_size = std::strlen(sdl_e.text.text);
     		return ret;
         default:
-        	e.type = event_type::undefined;
+        	e.type = EventType::Undefined;
+        	sun_logf_warn("Event type %d is undefined: ", sdl_e.type);
             return ret;
     }
 }
 
-void window::create(const std::string& name,
-                    const vector2u& size,
+void Window::create(const std::string& name,
+                    const Vector2u& size,
                     bool fullscreen)
 {
 	close();
@@ -192,7 +193,7 @@ void window::create(const std::string& name,
     SDL_GL_SetSwapInterval(true);
 }
 
-void window::close()
+void Window::close()
 {
     if (gl_context_ != nullptr) {
     	SDL_GL_DeleteContext(static_cast<SDL_GLContext>(gl_context_));
@@ -204,10 +205,10 @@ void window::close()
     }
 }
 
-void window::set_title(const std::string& title)
+void Window::set_title(const std::string& title)
 {
     if (window_hndl_ == nullptr) {
-        sun_log_error("Can't set title on closed window.");
+        sun_log_error("Can't set title on closed Window.");
         return;
     }
     SDL_SetWindowTitle(static_cast<SDL_Window*>(window_hndl_), title.c_str());

@@ -30,58 +30,58 @@ namespace sun {
 
 namespace filesys {
 
-class input_stream;
+class InputStream;
 
 }
 
-class SUN_API decoder
+class SUN_API Decoder
 {
 public:
 
-    struct info
+    struct Info
     {
         uint64  sample_count;
         uint    channel_count;
         uint    sample_rate;
     };
 
-    decoder() : sample_offset_(0) {}
+    Decoder() : sample_offset_(0) {}
 
-    virtual ~decoder() {}
+    virtual ~Decoder() {}
 
-    virtual bool open(filesys::input_stream& stream) = 0;
+    virtual bool open(filesys::InputStream& stream) = 0;
 
     virtual void seek(uint64 sample_offset) = 0;
 
     virtual uint64 read(int16* samples, uint64 max) = 0;
 
-    inline time get_duration() const
+    inline Time get_duration() const
     {
         if (info_.channel_count == 0 || info_.sample_rate == 0) {
-            return time::zero;
+            return Time::zero;
         }
 
-        return time::seconds(static_cast<float>(info_.sample_count) /
+        return Time::seconds(static_cast<float>(info_.sample_count) /
             info_.channel_count / info_.sample_rate);
     }
 
-    inline time get_time_offset() const
+    inline Time get_Time_offset() const
     {
         if (info_.channel_count == 0 || info_.sample_rate == 0) {
-            return time::zero;
+            return Time::zero;
         }
 
-        return time::seconds(static_cast<float>(sample_offset_) /
+        return Time::seconds(static_cast<float>(sample_offset_) /
             info_.channel_count / info_.sample_rate);
     }
 
     inline uint64 get_sample_offset() const { return sample_offset_; }
 
-    inline const info& get_info() const { return info_; }
+    inline const Info& get_Info() const { return info_; }
 
 protected:
 
-    info    info_;
+    Info    info_;
     uint64  sample_offset_;
 };
 

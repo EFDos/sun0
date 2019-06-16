@@ -26,21 +26,21 @@
 
 namespace sun {
 
-class SUN_API scene_tree : object
+class SUN_API SceneTree : Object
 {
 public:
 
-    scene_tree(context& p_context);
+    SceneTree(Context& context);
 
-    entity* create_entity();
+    Entity* create_entity();
 
-    entity& get_root() {
+    Entity& get_root() {
         return root_;
     }
 
 private:
 
-    entity  root_;
+    Entity  root_;
 };
 
 }

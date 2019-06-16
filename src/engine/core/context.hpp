@@ -25,26 +25,25 @@
 
 #include "common/config.hpp"
 #include "system/system.hpp"
-//#include "system/component.hpp"
 
 #include <string>
 #include <unordered_map>
 
 namespace sun {
 
-class component;
+class Component;
 
-class SUN_API context
+class SUN_API Context
 {
 public:
 
-    context();
+    Context();
 
-    context(const context&) = delete;
+    Context(const Context&) = delete;
 
-    context(context&&) = delete;
+    Context(Context&&) = delete;
 
-    ~context();
+    ~Context();
 
     void init_systems();
 
@@ -77,17 +76,17 @@ public:
         return nullptr;
     }
 
-    context& operator=(const context&) = delete;
+    Context& operator=(const Context&) = delete;
 
-    context& operator=(context&&) = delete;
+    Context& operator=(Context&&) = delete;
 
 private:
 
-    system* register_system_(const std::string& type);
+    System* register_system_(const std::string& type);
 
-    system* get_system_(size_t);
+    System* get_system_(size_t);
 
-    std::unordered_map<size_t, system*> systems_;
+    std::unordered_map<size_t, System*> systems_;
 };
 
 }

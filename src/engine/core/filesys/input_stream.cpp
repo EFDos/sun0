@@ -28,19 +28,19 @@
 namespace sun {
 namespace filesys {
 
-input_stream::input_stream() noexcept : file_(nullptr)
+InputStream::InputStream() noexcept : file_(nullptr)
 {
     // do nothing
 }
 
-input_stream::~input_stream()
+InputStream::~InputStream()
 {
     if (file_ != nullptr) {
         std::fclose(file_);
     }
 }
 
-bool input_stream::open(const std::string& path)
+bool InputStream::open(const std::string& path)
 {
     if (file_ != nullptr) {
         std::fclose(file_);
@@ -59,14 +59,14 @@ bool input_stream::open(const std::string& path)
     return true;
 }
 
-void input_stream::close()
+void InputStream::close()
 {
     if (file_ != nullptr) {
         std::fclose(file_);
     }
 }
 
-int64 input_stream::read(void* buffer, int64 size) const
+int64 InputStream::read(void* buffer, int64 size) const
 {
     if (file_ == nullptr) {
         sun_log_error("Can't read from closed stream.");
@@ -76,7 +76,7 @@ int64 input_stream::read(void* buffer, int64 size) const
     return std::fread(buffer, 1, static_cast<std::size_t>(size), file_);
 }
 
-int64 input_stream::seek(int64 position)
+int64 InputStream::seek(int64 position)
 {
     if (file_ == nullptr) {
         sun_log_error("Can't seek on closed stream.");
@@ -88,7 +88,7 @@ int64 input_stream::seek(int64 position)
     return tell();
 }
 
-int64 input_stream::tell() const
+int64 InputStream::tell() const
 {
     if (file_ == nullptr) {
         sun_log_error("Can't tell from closed stream.");
@@ -98,7 +98,7 @@ int64 input_stream::tell() const
     return std::ftell(file_);
 }
 
-int64 input_stream::get_size() const
+int64 InputStream::get_size() const
 {
     if (file_ == nullptr) {
         sun_log_error("Can't get size from closed stream.");

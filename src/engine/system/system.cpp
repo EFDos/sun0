@@ -26,26 +26,23 @@
 
 namespace sun {
 
-system::system(context& c) : context_(c), initialized_(false)
-{
-}
+System::System(Context& context) : context_(context), initialized_(false)
+{}
 
-system::~system()
-{
-}
+System::~System()
+{}
 
-bool system::init()
+bool System::init()
 {
     return initialized_ = true;
 }
 
-void system::shutdown()
+void System::shutdown()
 {
     initialized_ = false;
 }
 
-void system::update()
-{
-}
+void System::update()
+{}
 
 }

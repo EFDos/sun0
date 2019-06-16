@@ -30,16 +30,16 @@
 
 namespace sun {
 
-class context;
-class component;
+class Context;
+class Component;
 
-class SUN_API system
+class SUN_API System
 {
 public:
 
-    explicit system(context&);
+    explicit System(Context&);
 
-    virtual ~system();
+    virtual ~System();
 
     virtual bool init();
 
@@ -63,11 +63,11 @@ public:
 
 protected:
 
-    virtual component* create_component_(uint type_hash, uint id) = 0;
+    virtual Component* create_component_(uint type_hash, uint id) = 0;
 
     virtual bool handles_component_(uint type_hash) = 0;
 
-    context&    context_;
+    Context&    context_;
     bool        initialized_;
 
 };

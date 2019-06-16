@@ -24,6 +24,7 @@
 #pragma once
 
 #include "physics_rasterizer.hpp"
+#include "contact_listener.hpp"
 #include "common/types.hpp"
 #include "system/system.hpp"
 
@@ -32,17 +33,17 @@
 
 namespace sun {
 
-class context;
-class renderer;
-class rigid_body;
+class Context;
+class Renderer;
+class RigidBody;
 
 namespace physics {
 
-struct raycast_collision
+struct RaycastCollision
 {
-    vector2f    point;
-    vector2f    normal;
-    rigid_body* owner = nullptr;
+    Vector2f    point;
+    Vector2f    normal;
+    RigidBody* owner = nullptr;
 };
 
 uint get_pixel_scale();
@@ -57,27 +58,27 @@ inline float scale_to_meters(float val) {
 
 float scale_to_meters(float val);
 
-inline b2Vec2 to_b2vec(const vector2f& vec) {
+inline b2Vec2 to_b2vec(const Vector2f& vec) {
     return b2Vec2(scale_to_meters(vec.x), -scale_to_meters(vec.y));
 }
 
-inline vector2f to_vec2(const b2Vec2& b2vec) {
+inline Vector2f to_vec2(const b2Vec2& b2vec) {
     return {scale_to_pixels(b2vec.x), -scale_to_pixels(b2vec.y)};
 }
 
 }
 
-class SUN_API physics_server final : public system
+class SUN_API PhysicsServer final : public System
 {
 public:
 
-    friend class rigid_body;
+    friend class RigidBody;
 
-    SUN_SYSTEM_TYPE(SYS_PHYSICS_SERVER);
+    SUN_SYSTEM_TYPE(PhysicsServer);
 
-    explicit physics_server(context&);
+    explicit PhysicsServer(Context&);
 
-    ~physics_server() = default;
+    ~PhysicsServer() = default;
 
     bool init() override;
 
@@ -85,14 +86,14 @@ public:
 
     void update() override;
 
-    void draw_physics_debug(renderer*);
+    void draw_physics_debug(Renderer*);
 
-    bool lazy_raycast(const vector2f& begin, const vector2f& end);
+    bool lazy_raycast(const Vector2f& begin, const Vector2f& end);
 
-    physics::raycast_collision raycast(const vector2f& begin,
-                                       const vector2f& end);
+    physics::RaycastCollision raycast(const Vector2f& begin,
+                                       const Vector2f& end);
 
-    void set_gravity(const vector2f& gravity);
+    void set_gravity(const Vector2f& gravity);
 
     void set_pixel_scale(uint scale);
 
@@ -102,17 +103,17 @@ public:
         debug_draw_ = b;
     }
 
-    static constexpr uint   default_meter = 64;
+    static constexpr uint   DEFAULT_METER = 64;
 
 private:
 
-    class lazy_raycast_callback : public b2RayCastCallback
+    class LazyRaycastCallback : public b2RayCastCallback
     {
         bool is_colliding_;
 
         public:
 
-            lazy_raycast_callback() : is_colliding_(false) {}
+            LazyRaycastCallback() : is_colliding_(false) {}
 
             float ReportFixture(b2Fixture*, const b2Vec2&, const b2Vec2&, float)
                 override
@@ -124,13 +125,13 @@ private:
             bool is_colliding() { return is_colliding_; }
     };
 
-    class nearest_raycast_callback : public b2RayCastCallback
+    class NearestRaycastCallback : public b2RayCastCallback
     {
-        physics::raycast_collision&    collision_;
+        physics::RaycastCollision&    collision_;
 
         public:
 
-            nearest_raycast_callback(physics::raycast_collision& collision)
+            NearestRaycastCallback(physics::RaycastCollision& collision)
             : collision_(collision) {}
 
             float ReportFixture(b2Fixture* fixture, const b2Vec2& point,
@@ -138,7 +139,7 @@ private:
             {
                 collision_.point = physics::to_vec2(point);
                 collision_.normal = physics::to_vec2(normal);
-                collision_.owner    = static_cast<rigid_body*>
+                collision_.owner    = static_cast<RigidBody*>
                                         (fixture->GetBody()->GetUserData());
                 return fraction;
             }
@@ -149,18 +150,18 @@ private:
     }
 
     b2World             world_;
-    physics_rasterizer  debug_rasterizer_;
-    //contact_listener
+    PhysicsRasterizer   debug_rasterizer_;
+    ContactListener     contact_listener_;
     float   timestep_;
     int     vel_iterations_;
     int     pos_iterations_;
     bool    debug_draw_;
 
-    // system functions
+    // System functions
 
-    std::vector<rigid_body*> bodies_;
+    std::vector<RigidBody*> bodies_;
 
-    component* create_component_(uint type_hash, uint id) override;
+    Component* create_component_(uint type_hash, uint id) override;
 
     bool handles_component_(uint type_hash) override;
 };

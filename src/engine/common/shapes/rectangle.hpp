@@ -28,46 +28,46 @@
 namespace sun {
 namespace shapes {
 
-class SUN_API rectangle : public primitive_shape
+class SUN_API Rectangle : public Shape
 {
 public:
 
-    rectangle() : primitive_shape()
+    Rectangle() : Shape()
     {
-        type_ = type::rectangle;
+        type_ = ShapeType::rectangle;
     }
 
-    rectangle(float x, float y) : primitive_shape(), size_(x, y)
+    Rectangle(float x, float y) : Shape(), size_(x, y)
     {
-        type_ = type::rectangle;
+        type_ = ShapeType::rectangle;
     }
 
-    rectangle(const vector2f& size) : primitive_shape(), size_(size)
+    Rectangle(const Vector2f& size) : Shape(), size_(size)
     {
-        type_ = type::rectangle;
+        type_ = ShapeType::Rectangle;
     }
 
-    rectangle(const rectangle&) = default;
+    Rectangle(const Rectangle&) = default;
 
-    rectangle(rectangle&&) = default;
+    Rectangle(Rectangle&&) = default;
 
-    rectangle& operator =(const rectangle& other)
-    {
-        size_ = other.size_;
-
-        return *this;
-    }
-
-    rectangle& operator =(rectangle&& other)
+    Rectangle& operator =(const Rectangle& other)
     {
         size_ = other.size_;
 
         return *this;
     }
 
-    ~rectangle() {}
+    Rectangle& operator =(Rectangle&& other)
+    {
+        size_ = other.size_;
 
-    inline void set_size(const vector2f& size)
+        return *this;
+    }
+
+    ~Rectangle() {}
+
+    inline void set_size(const Vector2f& size)
     {
         size_ = size;
     }
@@ -78,7 +78,7 @@ public:
         size_.y = y;
     }
 
-    inline vector2f get_point(size_t i) const override
+    inline Vector2f get_point(size_t i) const override
     {
         switch(i)
         {
@@ -104,14 +104,14 @@ public:
         return 4;
     }
 
-    inline const vector2f& get_size() const
+    inline const Vector2f& get_size() const
     {
         return size_;
     }
 
 private:
 
-    vector2f    size_;
+    Vector2f    size_;
 };
 
 }

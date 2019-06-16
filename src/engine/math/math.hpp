@@ -26,7 +26,7 @@
 namespace sun {
 namespace math {
 
-constexpr float pi = 3.14159265358979323846f;
+constexpr float PI = 3.14159265358979323846f;
 
 template<class T>
 constexpr inline T& crop(T& val, T crop_up, T crop_down)
@@ -41,12 +41,12 @@ constexpr inline T& crop(T& val, T crop_up, T crop_down)
 
 constexpr inline float rad_to_deg(float angle)
 {
-    return (angle * 180) / pi;
+    return (angle * 180) / PI;
 }
 
 constexpr inline float deg_to_rad(float angle)
 {
-    return pi * (180 / angle);
+    return PI * (180 / angle);
 }
 
 }

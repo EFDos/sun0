@@ -28,19 +28,19 @@
 namespace sun {
 
 template<typename T>
-struct base_color
+struct BaseColor
 {
     T r;
     T g;
     T b;
     T a;
 
-    base_color(T p_r = 0, T p_g = 0, T p_b = 0, T p_a = 255) noexcept
+    BaseColor(T p_r = 0, T p_g = 0, T p_b = 0, T p_a = 255) noexcept
     : r(p_r), g(p_g), b(p_b), a(p_a) {}
 
-    base_color(const base_color&) noexcept = default;
+    BaseColor(const BaseColor&) noexcept = default;
 
-    base_color(base_color&&) noexcept = default;
+    BaseColor(BaseColor&&) noexcept = default;
 
     void set(T p_r, T p_g, T p_b, T p_a) {
         r = p_r;
@@ -49,21 +49,21 @@ struct base_color
         a = p_a;
     }
 
-    base_color<T>& operator=(const base_color&) noexcept = default;
+    BaseColor<T>& operator=(const BaseColor&) noexcept = default;
 
-    base_color<T>& operator=(base_color&&) noexcept = default;
+    BaseColor<T>& operator=(BaseColor&&) noexcept = default;
 
-    bool operator==(const base_color<T>& other) const
+    bool operator==(const BaseColor<T>& other) const
     {
         return r == other.r && g == other.g && b == other.b && a == other.a;
     }
 
-    bool operator!=(const base_color<T>& other) const
+    bool operator!=(const BaseColor<T>& other) const
     {
         return r != other.r || g != other.g || b != other.b || a != other.a;
     }
 
-    base_color<T> operator+=(const base_color<T>& other)
+    BaseColor<T> operator+=(const BaseColor<T>& other)
     {
         r += other.r;
         g += other.g;
@@ -72,7 +72,7 @@ struct base_color
         return *this;
     }
 
-    base_color<T> operator+=(T v)
+    BaseColor<T> operator+=(T v)
     {
         r += v;
         g += v;
@@ -80,7 +80,7 @@ struct base_color
         a += v;
     }
 
-    base_color<T> operator-=(const base_color<T>& other)
+    BaseColor<T> operator-=(const BaseColor<T>& other)
     {
         r -= other.r;
         g -= other.g;
@@ -89,7 +89,7 @@ struct base_color
         return *this;
     }
 
-    base_color<T> operator-=(T v)
+    BaseColor<T> operator-=(T v)
     {
         r -= v;
         g -= v;
@@ -97,7 +97,7 @@ struct base_color
         a -= v;
     }
 
-    base_color<T> operator*=(const base_color<T>& other)
+    BaseColor<T> operator*=(const BaseColor<T>& other)
     {
         r *= other.r;
         g *= other.g;
@@ -105,7 +105,7 @@ struct base_color
         a *= other.a;
     }
 
-    base_color<T> operator*=(T v)
+    BaseColor<T> operator*=(T v)
     {
         r *= v;
         g *= v;
@@ -113,7 +113,7 @@ struct base_color
         a *= v;
     }
 
-    base_color<T> operator/=(const base_color<T>& other)
+    BaseColor<T> operator/=(const BaseColor<T>& other)
     {
         r /= other.r;
         g /= other.g;
@@ -122,7 +122,7 @@ struct base_color
         return *this;
     }
 
-    base_color<T> operator/=(T v)
+    BaseColor<T> operator/=(T v)
     {
         r /= v;
         g /= v;
@@ -130,60 +130,60 @@ struct base_color
         a /= v;
     }
 
-    static base_color<uint8> red;
-    static base_color<uint8> blue;
-    static base_color<uint8> green;
-    static base_color<uint8> black;
-    static base_color<uint8> white;
-    static base_color<uint8> yellow;
-    static base_color<uint8> magenta;
-    static base_color<uint8> sun;
-    static base_color<uint8> light_grey;
-    static base_color<uint8> dark_grey;
+    static BaseColor<uint8> RED;
+    static BaseColor<uint8> BLUE;
+    static BaseColor<uint8> GREEN;
+    static BaseColor<uint8> BLACK;
+    static BaseColor<uint8> WHITE;
+    static BaseColor<uint8> YELLOW;
+    static BaseColor<uint8> MAGENTA;
+    static BaseColor<uint8> SUN;
+    static BaseColor<uint8> LIGHT_GREY;
+    static BaseColor<uint8> DARK_GREY;
 };
 
 template<typename T>
-base_color<T> operator+(const base_color<T> &a, const base_color<T>& b)
+BaseColor<T> operator+(const BaseColor<T> &a, const BaseColor<T>& b)
 {
-    base_color<T> col(a);
+    BaseColor<T> col(a);
     return col += b;
 }
 
 template<typename T>
-base_color<T> operator-(const base_color<T> &a, const base_color<T>& b)
+BaseColor<T> operator-(const BaseColor<T> &a, const BaseColor<T>& b)
 {
-    base_color<T> col(a);
+    BaseColor<T> col(a);
     return col -= b;
 }
 
 template<typename T>
-base_color<T> operator*(const base_color<T> &a, const base_color<T>& b)
+BaseColor<T> operator*(const BaseColor<T> &a, const BaseColor<T>& b)
 {
-    base_color<T> col(a);
+    BaseColor<T> col(a);
     return col *= b;
 }
 
 template<typename T>
-base_color<T> operator/(const base_color<T> &a, const base_color<T>& b)
+BaseColor<T> operator/(const BaseColor<T> &a, const BaseColor<T>& b)
 {
-    base_color<T> col(a);
+    BaseColor<T> col(a);
     return col /= b;
 }
 
-using color     = base_color<uint8>;
-using colorf    = base_color<float>;
+using Color     = BaseColor<uint8>;
+using Colorf    = BaseColor<float>;
 
-inline color to_color(const colorf& cf)
+inline Color to_color(const Colorf& cf)
 {
-    return color(static_cast<uint8>(cf.r * 255.f),
+    return Color(static_cast<uint8>(cf.r * 255.f),
                  static_cast<uint8>(cf.g * 255.f),
                  static_cast<uint8>(cf.b * 255.f),
                  static_cast<uint8>(cf.a * 255.f));
 }
 
-inline colorf to_colorf(const color& c)
+inline Colorf to_colorf(const Color& c)
 {
-    return colorf(static_cast<float>(c.r / 255.f),
+    return Colorf(static_cast<float>(c.r / 255.f),
                   static_cast<float>(c.g / 255.f),
                   static_cast<float>(c.b / 255.f),
                   static_cast<float>(c.a / 255.f));

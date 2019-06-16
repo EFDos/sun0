@@ -23,33 +23,33 @@
 /*************************************************************************/
 #pragma once
 
-#include "primitive_shape.hpp"
+#include "shape.hpp"
 #include "math/math.hpp"
 
 
 namespace sun {
 namespace shapes {
 
-class SUN_API circle : public primitive_shape
+class SUN_API Circle : public Shape
 {
 public:
 
-    circle() : primitive_shape(), radius_(1.f), points_(360)
+    Circle() : Shape(), radius_(1.f), points_(360)
     {
-        type_ = type::circle;
+        type_ = ShapeType::Circle;
     }
 
-    circle(float radius, size_t points) : primitive_shape(), radius_(radius),
+    Circle(float radius, size_t points) : Shape(), radius_(radius),
         points_(points)
     {
-        type_ = type::circle;
+        type_ = ShapeType::Circle;
     }
 
-    circle(const circle& circle) = default;
+    Circle(const Circle& circle) = default;
 
-    circle(circle&& circle) = default;
+    Circle(Circle&& circle) = default;
 
-    circle& operator =(const circle& circle)
+    Circle& operator =(const Circle& circle)
     {
         radius_ = circle.radius_;
         points_ = circle.points_;
@@ -57,7 +57,7 @@ public:
         return *this;
     }
 
-    circle& operator =(circle&& circle)
+    Circle& operator =(Circle&& circle)
     {
         radius_ = circle.radius_;
         points_ = circle.points_;
@@ -65,7 +65,7 @@ public:
         return *this;
     }
 
-    ~circle() {}
+    ~Circle() {}
 
     inline void set_point_count(size_t points)
     {
@@ -79,7 +79,7 @@ public:
 
     inline vector2f get_point(size_t i) const override
     {
-        float angle = i * 2 * math::pi / points_ - math::pi / 2;
+        float angle = i * 2 * math::PI / points_ - math::PI / 2;
         float x = std::cos(angle) * radius_;
         float y = std::sin(angle) * radius_;
 

@@ -31,26 +31,25 @@
 
 namespace sun {
 
-class texture;
-class renderer;
+class Texture;
 
-class SUN_API sprite_batch final : public drawable
+class SUN_API SpriteBatch final : public Drawable
 {
 public:
 
-    SUN_COMPONENT_TYPE(sprite_batch)
+    SUN_COMPONENT_TYPE(SpriteBatch)
 
-    sprite_batch(context& p_context);
+    SpriteBatch(Context& context);
 
-    ~sprite_batch();
+    ~SpriteBatch();
 
-    void draw(renderer* r) const override;
+    void draw(Renderer* r) const override;
 
-    void set_texture(const texture* tex);
+    void set_texture(const Texture* tex);
 
-    void add_sprite_rect(const vector2f& position,
-                         const recti& rect,
-                         const color& c = sun::color::white);
+    void add_sprite_rect(const Vector2f& position,
+                         const Recti& rect,
+                         const Color& c = sun::Color::WHITE);
 
 private:
 
@@ -59,9 +58,9 @@ private:
     uint vertex_offset_;
     uint index_offset_;
 
-    vertex_buffer*  vertices_;
-    index_buffer*   indices_;
-    const texture*  texture_;
+    VertexBuffer*   vertices_;
+    IndexBuffer*    indices_;
+    const Texture*  texture_;
 };
 
 }

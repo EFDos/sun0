@@ -27,17 +27,17 @@
 
 namespace sun {
 
-class renderer;
+class Renderer;
 
-class SUN_API drawable : public component
+class SUN_API Drawable : public Component
 {
 public:
 
-    drawable(context& p_context) : component(p_context) {}
+    Drawable(Context& context) : Component(context) {}
 
-    virtual ~drawable() {}
+    virtual ~Drawable() {}
 
-    virtual void draw(renderer*) const = 0;
+    virtual void draw(Renderer*) const = 0;
 
     /*recti get_global_bounding_rect() const {
         recti rect(bounding_rect_);
@@ -47,7 +47,7 @@ public:
         return rect;
     }*/
 
-    const recti& get_bounding_rect() const {
+    const Recti& get_bounding_rect() const {
         return bounding_rect_;
     }
 
@@ -55,7 +55,7 @@ protected:
 
     virtual void update_geometry_() = 0;
 
-    recti   bounding_rect_;
+    Recti   bounding_rect_;
 
 };
 

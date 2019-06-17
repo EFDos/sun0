@@ -29,19 +29,19 @@
 namespace sun {
 namespace opengl {
 
-index_buffer::index_buffer(size_t capacity)
-:   sun::index_buffer(capacity), ibo_(0)
+IndexBuffer::IndexBuffer(size_t capacity)
+:   sun::IndexBuffer(capacity), ibo_(0)
 {
     glGenBuffers(1, &ibo_);
     resize(capacity);
 }
 
-index_buffer::~index_buffer()
+IndexBuffer::~IndexBuffer()
 {
     release();
 }
 
-void index_buffer::release()
+void IndexBuffer::release()
 {
     if (ibo_ != 0) {
         glDeleteBuffers(GL_ELEMENT_ARRAY_BUFFER, &ibo_);
@@ -50,7 +50,7 @@ void index_buffer::release()
     }
 }
 
-void index_buffer::fill_data(size_t offset, size_t count, const uint* data)
+void IndexBuffer::fill_data(size_t offset, size_t count, const uint* data)
 {
     if (ibo_ == 0) {
         sun_log_error("Failed to fill index buffer: Buffer in invalid state.");
@@ -72,7 +72,7 @@ void index_buffer::fill_data(size_t offset, size_t count, const uint* data)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void index_buffer::resize(size_t capacity)
+void IndexBuffer::resize(size_t capacity)
 {
     if (ibo_ == 0) {
         sun_log_error("Failed to resize index buffer:"
@@ -88,7 +88,7 @@ void index_buffer::resize(size_t capacity)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void index_buffer::clear()
+void IndexBuffer::clear()
 {
     if (ibo_ == 0) {
         sun_log_error("Failed to clear index buffer: Buffer in invalid state.");
@@ -102,7 +102,7 @@ void index_buffer::clear()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void index_buffer::bind() const
+void IndexBuffer::bind() const
 {
     if (ibo_ == 0) {
         sun_log_error("Failed to bind index buffer: Buffer in invalid state.");
@@ -112,7 +112,7 @@ void index_buffer::bind() const
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
 }
 
-void index_buffer::unbind() const
+void IndexBuffer::unbind() const
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

@@ -33,20 +33,20 @@
 
 namespace sun {
 
-text::text(context& p_context)
-:   drawable(p_context),
-    color_(color::white),
+Text::Text(Context& context)
+:   Drawable(context),
+    color_(Color::WHITE),
     font_size_(16),
     vertices_(nullptr),
     indices_(nullptr),
     font_(nullptr)
 {
-    auto r = context_.get_system<renderer>();
+    auto r = context_.get_system<Renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 0);
     indices_ = r->create_index_buffer(0);
 }
 
-void text::update_geometry_()
+void Text::update_geometry_()
 {
     if (font_ == nullptr) {
         return;
@@ -90,7 +90,7 @@ void text::update_geometry_()
             continue;
         }
 
-        const font::glyph& g = font_->get_glyph(c, font_size_);
+        const Font::Glyph& g = font_->get_glyph(c, font_size_);
         auto tex_size = page_texture->get_size();
 
         float pos_x = x + g.rect.x;
@@ -102,7 +102,7 @@ void text::update_geometry_()
         float tex_w = (float)g.tex_coords.w / (float)tex_size.x;
         float tex_h = (float)g.tex_coords.h / (float)tex_size.y;
 
-        colorf col = to_colorf(color_);
+        Colorf col = to_colorf(color_);
 
         x += g.advance + g.rect.w / 6.f;
 
@@ -138,7 +138,7 @@ void text::update_geometry_()
     }
 }
 
-void text::draw(renderer* r) const
+void Text::draw(Renderer* renderer) const
 {
     if (font_ == nullptr ||
         vertices_->get_vertex_count() == 0 ||
@@ -151,10 +151,11 @@ void text::draw(renderer* r) const
         return;
     }
     if (owning_entity_ != nullptr) {
-        r->set_model_transform(owning_entity_->get_global_transform());
+        renderer->set_model_transform(owning_entity_->get_global_transform());
     }
-    r->set_draw_mode(renderer::draw_mode::triangles);
-    r->draw_indexed(*vertices_, *indices_, font_->get_page_texture(font_size_), nullptr);
+    renderer->set_draw_mode(Renderer::DrawMode::Triangles);
+    renderer->draw_indexed(*vertices_, *indices_,
+        font_->get_page_texture(font_size_), nullptr);
 }
 
 }

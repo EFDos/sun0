@@ -28,8 +28,8 @@
 
 namespace sun {
 
-camera::camera(context& p_context)
-:   component(p_context),
+Camera::Camera(Context& context)
+:   Component(context),
     viewport_({0.f, 0.f, 1280.f, 720.f}),
     offset_({280, 280, 280, 280}),
     follow_speed_(2.f),
@@ -38,7 +38,7 @@ camera::camera(context& p_context)
 {
 }
 
-void camera::update_transform(renderer& r)
+void Camera::update_transform(Renderer& renderer)
 {
     if (owning_entity_ != nullptr && follow_)
     {
@@ -88,11 +88,11 @@ void camera::update_transform(renderer& r)
         }
 
         transform_.set_translation(-viewport_.get_position());
-        r.set_camera_transform(transform_);
+        renderer.set_camera_transform(transform_);
     }
 }
 
-vector2f camera::get_center() const
+Vector2f Camera::get_center() const
 {
     return {viewport_.x + viewport_.w / 2.f,
             viewport_.y + viewport_.h / 2.f};

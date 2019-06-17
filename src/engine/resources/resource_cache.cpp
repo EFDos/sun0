@@ -26,20 +26,20 @@
 
 namespace sun {
 
-resource_cache::resource_cache(context& p_context)
-: system(p_context)
+ResourceCache::ResourceCache(Context& context)
+: System(context)
 {
 }
 
-bool resource_cache::init()
+bool ResourceCache::init()
 {
     sun_log_info("Resource Cache System ready.");
-    return system::init();
+    return System::init();
 }
 
-void resource_cache::shutdown()
+void ResourceCache::shutdown()
 {
-    system::shutdown();
+    System::shutdown();
     sun_log_info("Resource Cache shutdown.");
 }
 

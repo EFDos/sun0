@@ -38,28 +38,28 @@
 namespace sun {
 namespace opengl {
 
-constexpr GLenum get_gl_type(renderer::draw_mode mode)
+constexpr GLenum get_gl_type(Renderer::DrawMode mode)
 {
     switch (mode) {
-        case renderer::draw_mode::triangles:    return GLenum(GL_TRIANGLES);
-        case renderer::draw_mode::lines:        return GLenum(GL_LINES);
-        case renderer::draw_mode::points:       return GLenum(GL_POINTS);
-        case renderer::draw_mode::triangle_fan: return GLenum(GL_TRIANGLE_FAN);
+        case Renderer::DrawMode::Triangles:    return GLenum(GL_TRIANGLES);
+        case Renderer::DrawMode::Lines:        return GLenum(GL_LINES);
+        case Renderer::DrawMode::Points:       return GLenum(GL_POINTS);
+        case Renderer::DrawMode::TriangleFan:  return GLenum(GL_TRIANGLE_FAN);
         default: return GLenum();
     }
 }
 
-renderer::renderer(context& c)
-:   sun::renderer(c),
+Renderer::Renderer(Context& context)
+:   sun::Renderer(context),
     base_vao_(0),
     default_flat_shader_(nullptr),
     default_textured_shader_(nullptr)
 {
 }
 
-renderer::~renderer() {}
+Renderer::~Renderer() {}
 
-bool renderer::init()
+bool Renderer::init()
 {
     auto error = glewInit();
 
@@ -79,7 +79,7 @@ bool renderer::init()
     primitive_indices_ = create_index_buffer(0);
 
     default_flat_shader_ = create_shader("res/flat.glsl");
-    default_textured_shader_ = create_shader("res/textured.glsl");
+    default_textured_shader_ = create_shader("res/Textured.glsl");
 
     if (default_textured_shader_ != nullptr) {
         default_textured_shader_->set_uniform("tex", 0);
@@ -88,10 +88,10 @@ bool renderer::init()
     glGenVertexArrays(1, &base_vao_);
     glBindVertexArray(base_vao_);
 
-    return sun::renderer::init();
+    return sun::Renderer::init();
 }
 
-void renderer::shutdown()
+void Renderer::shutdown()
 {
     if (default_flat_shader_ != nullptr) {
         delete default_flat_shader_;
@@ -103,45 +103,45 @@ void renderer::shutdown()
 
     glDeleteVertexArrays(1, &base_vao_);
 
-    sun::renderer::shutdown();
+    sun::Renderer::shutdown();
 }
 
-sun::vertex_buffer* renderer::create_vertex_buffer(uint8 vertex_size,
+sun::VertexBuffer* Renderer::create_vertex_buffer(uint8 vertex_size,
                                                    size_t capacity) const
 {
-    return dynamic_cast<sun::vertex_buffer*>(new
-        opengl::vertex_buffer(vertex_size, capacity));
+    return dynamic_cast<sun::VertexBuffer*>(new
+        opengl::VertexBuffer(vertex_size, capacity));
 }
 
-sun::index_buffer* renderer::create_index_buffer(size_t capacity) const
+sun::IndexBuffer* Renderer::create_index_buffer(size_t capacity) const
 {
-    return dynamic_cast<sun::index_buffer*>(new opengl::index_buffer(capacity));
+    return dynamic_cast<sun::IndexBuffer*>(new opengl::IndexBuffer(capacity));
 }
 
-sun::shader* renderer::create_shader(const std::string& path) const
+sun::Shader* Renderer::create_shader(const std::string& path) const
 {
-    auto [vertex_src, fragment_src] = shader_utils::parse_source_pair(filesys::read_file(path));
+    auto [vertex_src, fragment_src] = ShaderUtils::parse_source_pair(filesys::read_file(path));
 
-    auto gl_shader = new opengl::shader(
-                new opengl::shader_stage(vertex_src, shader_stage::type::vertex),
-                new opengl::shader_stage(fragment_src, shader_stage::type::fragment)
+    auto gl_Shader = new opengl::Shader(
+                new opengl::ShaderStage(vertex_src, ShaderStage::Type::Vertex),
+                new opengl::ShaderStage(fragment_src, ShaderStage::Type::Fragment)
             );
 
-    gl_shader->build();
+    gl_Shader->build();
 
-    if (gl_shader->get_status() != shader::status::ok) {
+    if (gl_Shader->get_status() != Shader::Status::Ok) {
         return nullptr;
     } else {
-        return dynamic_cast<sun::shader*>(gl_shader);
+        return dynamic_cast<sun::Shader*>(gl_Shader);
     }
 }
 
-sun::texture* renderer::create_texture() const
+sun::Texture* Renderer::create_texture() const
 {
-    return dynamic_cast<sun::texture*>(new opengl::texture(context_));
+    return dynamic_cast<sun::Texture*>(new opengl::Texture(context_));
 }
 
-void renderer::set_model_transform(const matrix4& transform)
+void Renderer::set_model_transform(const Matrix4& transform)
 {
     if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
         return;
@@ -149,19 +149,19 @@ void renderer::set_model_transform(const matrix4& transform)
     default_flat_shader_->set_uniform("model", transform);
     default_textured_shader_->set_uniform("model", transform);
 
-    //TODO: Provisory fix, cause set_uniform unbinds shader
+    //TODO: Provisory fix, cause set_uniform unbinds Shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
         current_shader_->bind();
     }
 }
 
-void renderer::set_viewport(const rectf& viewport)
+void Renderer::set_viewport(const Rectf& viewport)
 {
     glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
-    sun::renderer::set_viewport(viewport);
+    sun::Renderer::set_viewport(viewport);
 }
 
-void renderer::set_projection(const matrix4& projection)
+void Renderer::set_projection(const Matrix4& projection)
 {
     if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
         return;
@@ -170,7 +170,7 @@ void renderer::set_projection(const matrix4& projection)
     default_textured_shader_->set_uniform("projection", projection);
 }
 
-void renderer::set_camera_transform(const matrix4& transform)
+void Renderer::set_camera_transform(const Matrix4& transform)
 {
     if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
         return;
@@ -178,16 +178,16 @@ void renderer::set_camera_transform(const matrix4& transform)
     default_flat_shader_->set_uniform("viewport", transform);
     default_textured_shader_->set_uniform("viewport", transform);
 
-    //TODO: Provisory fix, cause set_uniform unbinds shader
+    //TODO: Provisory fix, cause set_uniform unbinds Shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
         current_shader_->bind();
     }
 }
 
-void renderer::set_shader_(const sun::shader* p_shader) const
+void Renderer::set_shader_(const sun::Shader* shader) const
 {
-    if (current_shader_ != p_shader) {
-        current_shader_ = p_shader;
+    if (current_shader_ != shader) {
+        current_shader_ = shader;
         if (current_shader_ == nullptr) {
             return;
         }
@@ -205,10 +205,10 @@ void renderer::set_shader_(const sun::shader* p_shader) const
     }
 }
 
-void renderer::set_texture_(const sun::texture* p_texture) const
+void Renderer::set_texture_(const sun::Texture* texture) const
 {
-    if (current_texture_ != p_texture) {
-        current_texture_ = p_texture;
+    if (current_texture_ != texture) {
+        current_texture_ = texture;
         if (current_texture_ == nullptr){
             return;
         }
@@ -216,14 +216,14 @@ void renderer::set_texture_(const sun::texture* p_texture) const
     current_texture_->bind();
 }
 
-void renderer::clear(const color& col)
+void Renderer::clear(const Color& col)
 {
     auto colf = to_colorf(col);
     glClearColor(colf.r, colf.g, colf.b, colf.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void renderer::clear()
+void Renderer::clear()
 {
     glClearColor(clear_color_.r,
                  clear_color_.g,
@@ -232,18 +232,18 @@ void renderer::clear()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void renderer::draw(const drawable& d) const
+void Renderer::draw(const Drawable& drawable) const
 {
-    d.draw((sun::renderer*)this);
+    drawable.draw((sun::Renderer*)this);
 }
 
-void renderer::draw(const sun::vertex_buffer& buffer,
-                    const sun::shader* p_shader) const
+void Renderer::draw(const sun::VertexBuffer& buffer,
+                    const sun::Shader* shader) const
 {
     buffer.bind();
 
-    if (p_shader != nullptr) {
-        set_shader_(p_shader);
+    if (shader != nullptr) {
+        set_shader_(shader);
     } else {
         set_shader_(default_flat_shader_);
     }
@@ -254,19 +254,19 @@ void renderer::draw(const sun::vertex_buffer& buffer,
     glDrawArrays(get_gl_type(draw_mode_), 0, buffer.get_vertex_count());
 }
 
-void renderer::draw(const sun::vertex_buffer& buffer,
-                    const sun::texture* p_texture,
-                    const sun::shader* p_shader) const
+void Renderer::draw(const sun::VertexBuffer& buffer,
+                    const sun::Texture* texture,
+                    const sun::Shader* shader) const
 {
     buffer.bind();
 
-    if (p_shader != nullptr) {
-        set_shader_(p_shader);
+    if (shader != nullptr) {
+        set_shader_(shader);
     } else {
         set_shader_(default_textured_shader_);
     }
-    if (p_texture != nullptr) {
-        set_texture_(p_texture);
+    if (texture != nullptr) {
+        set_texture_(texture);
     }
     glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
     glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8,
@@ -277,15 +277,15 @@ void renderer::draw(const sun::vertex_buffer& buffer,
     glDrawArrays(get_gl_type(draw_mode_), 0, buffer.get_vertex_count());
 }
 
-void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
-                            const sun::index_buffer& ibuffer,
-                            const sun::shader* p_shader) const
+void Renderer::draw_indexed(const sun::VertexBuffer& vbuffer,
+                            const sun::IndexBuffer& ibuffer,
+                            const sun::Shader* shader) const
 {
     ibuffer.bind();
     vbuffer.bind();
 
-    if (p_shader != nullptr) {
-        set_shader_(p_shader);
+    if (shader != nullptr) {
+        set_shader_(shader);
     } else {
         set_shader_(default_flat_shader_);
     }
@@ -298,21 +298,21 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
                    GL_UNSIGNED_INT, 0);
 }
 
-void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
-                            const sun::index_buffer& ibuffer,
-                            const sun::texture* p_texture,
-                            const sun::shader* p_shader) const
+void Renderer::draw_indexed(const sun::VertexBuffer& vbuffer,
+                            const sun::IndexBuffer& ibuffer,
+                            const sun::Texture* texture,
+                            const sun::Shader* shader) const
 {
     ibuffer.bind();
     vbuffer.bind();
 
-    if (p_shader != nullptr) {
-        set_shader_(p_shader);
+    if (shader != nullptr) {
+        set_shader_(shader);
     } else {
         set_shader_(default_textured_shader_);
     }
-    if (p_texture != nullptr) {
-        set_texture_(p_texture);
+    if (texture != nullptr) {
+        set_texture_(texture);
     }
     glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 8, 0);
     glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 8,
@@ -325,7 +325,7 @@ void renderer::draw_indexed(const sun::vertex_buffer& vbuffer,
                    GL_UNSIGNED_INT, 0);
 }
 
-uint renderer::get_texture_max_size() const
+uint Renderer::get_texture_max_size() const
 {
     static bool checked = false;
     static int  size = 0;

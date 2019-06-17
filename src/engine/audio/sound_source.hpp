@@ -72,13 +72,13 @@ public:
 
     float get_attenuation() const;
 
-    virtual state get_state() const;
+    virtual State get_state() const;
 
-    vector3f get_position() const;
+    Vector3f get_position() const;
 
 protected:
 
-    SoundSource(context& p_context);
+    SoundSource(Context& context);
 
     SoundSource(const SoundSource&);
 

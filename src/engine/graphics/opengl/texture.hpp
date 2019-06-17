@@ -28,13 +28,13 @@
 namespace sun {
 namespace opengl {
 
-class SUN_API texture final : public sun::texture
+class SUN_API Texture final : public sun::Texture
 {
 public:
 
-    texture(context&);
+    Texture(Context&);
 
-    ~texture();
+    ~Texture();
 
     // implements gpu_object
 
@@ -46,13 +46,13 @@ public:
 
     // implements sun::texture
 
-    bool load(const image& img) override;
+    bool load(const Image& img) override;
 
-    bool load(const vector2u& size, const ubyte* data) override;
+    bool load(const Vector2u& size, const ubyte* data) override;
 
-    void resize(const vector2u& size) override;
+    void resize(const Vector2u& size) override;
 
-    void fill(const vector2u& offset, const vector2u& size,
+    void fill(const Vector2u& offset, const Vector2u& size,
               const ubyte* date) override;
 
     void clear() override;

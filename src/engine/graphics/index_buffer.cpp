@@ -25,7 +25,7 @@
 
 namespace sun {
 
-index_buffer::index_buffer(size_t capacity)
+IndexBuffer::IndexBuffer(size_t capacity)
 :   index_count_(0),
     capacity_(capacity)
 {

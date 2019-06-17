@@ -30,97 +30,97 @@
 
 namespace sun {
 
-class image;
+class Image;
 
-class SUN_API texture : public gpu_object, public resource
+class SUN_API Texture : public GPUObject, public Resource
 {
 public:
 
-    enum class filter_mode
+    enum class FilterMode
     {
-        nearest = 0,
-        bilinear,
-        trilinear,
-        anisotropic,
-        nearest_anisotropic
+        Nearest = 0,
+        Bilinear,
+        Trilinear,
+        Anisotropic,
+        NearestAnisotropic
     };
 
 
-    enum class address_mode
+    enum class AddressMode
     {
-        wrap = 0,
-        mirror,
-        clamp,
-        border,
+        Wrap = 0,
+        Mirror,
+        Clamp,
+        Border,
     };
 
-    enum class usage
+    enum class Usage
     {
-        static_usage = 0,
-        dynamic,
-        render_target,
-        depth_stencil
+        Static = 0,
+        Dynamic,
+        RenderTarget,
+        DepthStencil
     };
 
-    enum class format
+    enum class Format
     {
-        rgba,
-        bgra,
-        red,
-        green,
-        blue,
-        alpha
+        Rgba,
+        Bgra,
+        Red,
+        Green,
+        Blue,
+        Alpha
     };
 
-    virtual ~texture() = default;
+    virtual ~Texture() = default;
 
     virtual bool load(const std::string&) override;
 
-    virtual bool load(const image& img) = 0;
+    virtual bool load(const Image& img) = 0;
 
-    virtual bool load(const vector2u& size, const ubyte* data) = 0;
+    virtual bool load(const Vector2u& size, const ubyte* data) = 0;
 
-    virtual void resize(const vector2u& size) = 0;
+    virtual void resize(const Vector2u& size) = 0;
 
-    virtual void fill(const vector2u& offset, const vector2u& size,
+    virtual void fill(const Vector2u& offset, const Vector2u& size,
                       const ubyte* data) = 0;
 
-    virtual void clear() = 0;
+    //virtual void clear() = 0;
 
     virtual void map() = 0;
 
     virtual void unmap() = 0;
 
-    inline void set_format(format fmt) { format_ = fmt; }
+    inline void set_format(Format fmt) { format_ = fmt; }
 
-    inline void set_filter_mode(filter_mode mode) { filter_mode_ = mode; }
+    inline void set_filter_mode(FilterMode mode) { filter_mode_ = mode; }
 
-    inline void set_address_mode(address_mode mode) { address_mode_ = mode; }
+    inline void set_address_mode(AddressMode mode) { address_mode_ = mode; }
 
-    inline void set_usage(usage usg) { usage_ = usg; }
+    inline void set_usage(Usage usg) { usage_ = usg; }
 
-    inline filter_mode get_filter_mode() const { return filter_mode_; }
+    inline FilterMode get_filter_mode() const { return filter_mode_; }
 
-    inline address_mode get_address_mode() const { return address_mode_; }
+    inline AddressMode get_address_mode() const { return address_mode_; }
 
-    inline usage get_usage() const { return usage_; }
+    inline Usage get_usage() const { return usage_; }
 
-    inline format get_format() const { return format_; }
+    inline Format get_format() const { return format_; }
 
-    inline const vector2u& get_size() const { return size_; }
+    inline const Vector2u& get_size() const { return size_; }
 
     inline const uint8* get_data() const { return map_buffer_; }
 
 protected:
 
-    texture(context&);
+    Texture(Context&);
 
-    filter_mode     filter_mode_;
-    address_mode    address_mode_;
-    usage           usage_;
-    format          format_;
+    FilterMode      filter_mode_;
+    AddressMode     address_mode_;
+    Usage           usage_;
+    Format          format_;
 
-    vector2u        size_;
+    Vector2u        size_;
 
     uint8*          map_buffer_;
 };

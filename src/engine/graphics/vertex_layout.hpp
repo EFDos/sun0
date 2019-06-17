@@ -28,50 +28,50 @@
 
 namespace sun {
 
-enum class vertex_data_type : uint8
+enum class VertexDataType : uint8
 {
-    none = 0,
-    float1,
-    float2,
-    float3,
-    float4,
-    int1,
-    int2,
-    int3,
-    int4,
-    boolean,
-    mat3,
-    mat4
+    None = 0,
+    Float,
+    Float2,
+    Float3,
+    Float4,
+    Int,
+    Int2,
+    Int3,
+    Int4,
+    Bool,
+    Mat3,
+    Mat4
 };
 
-static constexpr uint32 get_data_type_size(vertex_data_type type)
+static constexpr uint32 get_data_type_size(VertexDataType type)
 {
     switch (type)
     {
-        case vertex_data_type::none:    return 0;
-        case vertex_data_type::float1:  return 4;
-        case vertex_data_type::float2:  return 4 * 2;
-        case vertex_data_type::float3:  return 4 * 3;
-        case vertex_data_type::float4:  return 4 * 4;
-        case vertex_data_type::int1:    return 4;
-        case vertex_data_type::int2:    return 4 * 2;
-        case vertex_data_type::int3:    return 4 * 3;
-        case vertex_data_type::int4:    return 4 * 4;
-        case vertex_data_type::boolean: return 1;
-        case vertex_data_type::mat3:    return 4 * 3 * 3;
-        case vertex_data_type::mat4:    return 4 * 4 * 4;
+        case VertexDataType::None:    return 0;
+        case VertexDataType::Float:   return 4;
+        case VertexDataType::Float2:  return 4 * 2;
+        case VertexDataType::Float3:  return 4 * 3;
+        case VertexDataType::Float4:  return 4 * 4;
+        case VertexDataType::Int:     return 4;
+        case VertexDataType::Int2:    return 4 * 2;
+        case VertexDataType::Int3:    return 4 * 3;
+        case VertexDataType::Int4:    return 4 * 4;
+        case VertexDataType::Bool:    return 1;
+        case VertexDataType::Mat3:    return 4 * 3 * 3;
+        case VertexDataType::Mat4:    return 4 * 4 * 4;
     }
     return 0;
 }
 
-struct vertex_element
+struct VertexElement
 {
-    vertex_data_type    type;
+    VertexDataType    type;
     uint32              size;
     uint32              offset;
     bool                normalized;
 
-    vertex_element(vertex_data_type p_type, bool p_normalized = false)
+    VertexElement(VertexDataType p_type, bool p_normalized = false)
     :   type(p_type),
         size(get_data_type_size(p_type)),
         offset(0),
@@ -82,37 +82,37 @@ struct vertex_element
     {
         switch(type)
         {
-            case vertex_data_type::none:    return 0;
-            case vertex_data_type::float1:  return 1;
-            case vertex_data_type::float2:  return 2;
-            case vertex_data_type::float3:  return 3;
-            case vertex_data_type::float4:  return 4;
-            case vertex_data_type::int1:    return 1;
-            case vertex_data_type::int2:    return 2;
-            case vertex_data_type::int3:    return 3;
-            case vertex_data_type::int4:    return 4;
-            case vertex_data_type::boolean: return 1;
-            case vertex_data_type::mat3:    return 3 * 3;
-            case vertex_data_type::mat4:    return 4 * 4;
+            case VertexDataType::None:    return 0;
+            case VertexDataType::Float:   return 1;
+            case VertexDataType::Float2:  return 2;
+            case VertexDataType::Float3:  return 3;
+            case VertexDataType::Float4:  return 4;
+            case VertexDataType::Int:     return 1;
+            case VertexDataType::Int2:    return 2;
+            case VertexDataType::Int3:    return 3;
+            case VertexDataType::Int4:    return 4;
+            case VertexDataType::Bool:    return 1;
+            case VertexDataType::Mat3:    return 3 * 3;
+            case VertexDataType::Mat4:    return 4 * 4;
         }
     }
 };
 
-class vertex_layout
+class VertexLayout
 {
 public:
 
-    vertex_layout(const std::initializer_list<vertex_element>& elements)
+    VertexLayout(const std::initializer_list<VertexElement>& elements)
     : elements_(elements)
     {
         calculate_offset_and_stride_();
     }
 
-    std::vector<vertex_element>::iterator begin() { return elements_.begin(); }
+    std::vector<VertexElement>::iterator begin() { return elements_.begin(); }
 
-    std::vector<vertex_element>::iterator end() { return elements_.end(); }
+    std::vector<VertexElement>::iterator end() { return elements_.end(); }
 
-    inline const std::vector<vertex_element> get_elements() const {
+    inline const std::vector<VertexElement> get_elements() const {
         return elements_;
     }
 
@@ -133,7 +133,7 @@ private:
         }
     }
 
-    std::vector<vertex_element> elements_;
+    std::vector<VertexElement> elements_;
     uint32                      stride_;
 };
 

@@ -23,7 +23,7 @@
 /*************************************************************************/
 #pragma once
 
-#include "primitive_shape.hpp"
+#include "shape.hpp"
 
 namespace sun {
 namespace shapes {
@@ -34,12 +34,12 @@ public:
 
     Rectangle() : Shape()
     {
-        type_ = ShapeType::rectangle;
+        type_ = ShapeType::Rectangle;
     }
 
     Rectangle(float x, float y) : Shape(), size_(x, y)
     {
-        type_ = ShapeType::rectangle;
+        type_ = ShapeType::Rectangle;
     }
 
     Rectangle(const Vector2f& size) : Shape(), size_(size)

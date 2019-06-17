@@ -105,9 +105,9 @@ float SoundSource::get_volume() const
     return gain;
 }
 
-vector3f SoundSource::get_position() const
+Vector3f SoundSource::get_position() const
 {
-    vector3f pos;
+    Vector3f pos;
     alGetSource3f(source_, AL_POSITION, &pos.x, &pos.y, &pos.z);
     return pos;
 }
@@ -133,7 +133,7 @@ float SoundSource::get_attenuation() const
     return attenuation;
 }
 
-SoundSource::state SoundSource::get_state() const
+SoundSource::State SoundSource::get_state() const
 {
     ALint state;
     alGetSourcei(source_, AL_SOURCE_STATE, &state);
@@ -141,12 +141,12 @@ SoundSource::state SoundSource::get_state() const
     switch(state)
     {
         case AL_INITIAL:
-        case AL_STOPPED: return state::stopped;
-        case AL_PAUSED: return state::paused;
-        case AL_PLAYING: return state::playing;
+        case AL_STOPPED: return State::Stopped;
+        case AL_PAUSED: return State::Paused;
+        case AL_PLAYING: return State::Playing;
     }
 
-    return state::stopped;
+    return State::Stopped;
 }
 
 }

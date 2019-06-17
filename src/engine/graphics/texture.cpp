@@ -27,23 +27,23 @@
 
 namespace sun {
 
-texture::texture(context& p_context)
-:   resource(p_context),
-    filter_mode_(filter_mode::nearest),
-    address_mode_(address_mode::wrap),
-    usage_(usage::static_usage),
-    format_(format::rgba),
+Texture::Texture(Context& context)
+:   Resource(context),
+    filter_mode_(FilterMode::Nearest),
+    address_mode_(AddressMode::Wrap),
+    usage_(Usage::Static),
+    format_(Format::Rgba),
     map_buffer_(nullptr)
 {
 }
 
-bool texture::load(const std::string& path)
+bool Texture::load(const std::string& path)
 {
-    image img(context_);
+    Image img(context_);
 
     if (img.load(path)) {
         if (load(img)) {
-            return resource::load(path);
+            return Resource::load(path);
         }
     }
     sun_logf_error("Error loading texture from image: %s", path.c_str());

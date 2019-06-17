@@ -1,19 +1,19 @@
 #include <sun.hpp>
 
-class pong : public sun::application
+class Pong : public sun::Application
 {
 public:
-    pong(sun::context& p_context)
-    :   sun::application(p_context),
+    Pong(sun::Context& p_context)
+    :   sun::Application(p_context),
         scene_(p_context),
         left_score(0),
         right_score(0)
     {
         window_.set_title("Pong!");
 
-        renderer_->set_projection(sun::matrix4::orthogonal(0, 1280, 720, 0));
+        renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
         renderer_->set_viewport({0, 0, 1280, 720});
-        auto res_cache = context_.get_system<sun::resource_cache>();
+        auto res_cache = context_.get_system<sun::ResourceCache>();
         res_cache->set_path("res");
 
         auto score_entity = scene_.create_entity();
@@ -22,53 +22,53 @@ public:
         ball_ = scene_.create_entity();
 
         score_entity->move(640.f - 64.f, 0.f);
-        score_text_ = score_entity->create_component<sun::text>();
+        score_text_ = score_entity->create_component<sun::Text>();
 
-        score_text_->set_font(res_cache->get_resource<sun::font>("Wattauchimma.ttf").get());
+        score_text_->set_font(res_cache->get_resource<sun::Font>("Wattauchimma.ttf").get());
         score_text_->set_character_size(72);
         score_text_->set_text("0 | 0");
 
         left_pad_->set_position(0.f, 360.f - 64.f);
-        auto shape = left_pad_->create_component<sun::shape2D>("shape");
-        shape->set_shape(sun::shapes::rectangle(32.f, 128.f));
+        auto shape = left_pad_->create_component<sun::Shape2D>("shape");
+        shape->set_shape(sun::shapes::Rectangle(32.f, 128.f));
 
         right_pad_->set_position(1280.f - 32.f, 360.f - 64.f);
-        shape = right_pad_->create_component<sun::shape2D>("shape");
-        shape->set_shape(sun::shapes::rectangle(32.f, 128.f));
+        shape = right_pad_->create_component<sun::Shape2D>("shape");
+        shape->set_shape(sun::shapes::Rectangle(32.f, 128.f));
 
         ball_->set_position(640.f - 20.f, 360.f - 20.f);
-        shape = ball_->create_component<sun::shape2D>("shape");
-        shape->set_shape(sun::shapes::circle(20.f, 120));
+        shape = ball_->create_component<sun::Shape2D>("shape");
+        shape->set_shape(sun::shapes::Circle(20.f, 120));
 
         ball_speed_ = {8.f, 0.f};
     }
 
     void on_update()
     {
-        if (sun::keyboard::is_key_pressed(sun::keyboard::key::UP)) {
+        if (sun::keyboard::is_key_pressed(sun::keyboard::Key::Up)) {
             right_pad_->move(0.f, -8.f);
         }
-        if (sun::keyboard::is_key_pressed(sun::keyboard::key::DOWN)) {
+        if (sun::keyboard::is_key_pressed(sun::keyboard::Key::Down)) {
             right_pad_->move(0.f, 8.f);
         }
 
-        if (sun::keyboard::is_key_pressed(sun::keyboard::key::A)) {
+        if (sun::keyboard::is_key_pressed(sun::keyboard::Key::A)) {
             left_pad_->move(0.f, -8.f);
         }
-        if (sun::keyboard::is_key_pressed(sun::keyboard::key::Z)) {
+        if (sun::keyboard::is_key_pressed(sun::keyboard::Key::Z)) {
             left_pad_->move(0.f, 8.f);
         }
 
         ball_->move(ball_speed_);
 
-        if (check_collision(ball_->get_component<sun::shape2D>("shape"),
-                            right_pad_->get_component<sun::shape2D>("shape")))
+        if (check_collision(ball_->get_component<sun::Shape2D>("shape"),
+                            right_pad_->get_component<sun::Shape2D>("shape")))
         {
             ball_speed_.x *= -1;
             ball_speed_.y += ((ball_->get_position().y + 20.f) - (right_pad_->get_position().y + 64.f)) * 0.15f;
         }
-        if (check_collision(ball_->get_component<sun::shape2D>("shape"),
-                            left_pad_->get_component<sun::shape2D>("shape")))
+        if (check_collision(ball_->get_component<sun::Shape2D>("shape"),
+                            left_pad_->get_component<sun::Shape2D>("shape")))
         {
             ball_speed_.x *= -1;
             ball_speed_.y += ((ball_->get_position().y + 20.f) - (left_pad_->get_position().y + 64.f)) * 0.15f;
@@ -93,7 +93,7 @@ public:
         score_text_->set_text(std::to_string(left_score) + " | " + std::to_string(right_score));
     }
 
-    bool check_collision(const sun::shape2D* shape_a, const sun::shape2D* shape_b)
+    bool check_collision(const sun::Shape2D* shape_a, const sun::Shape2D* shape_b)
     {
         auto rect_a = shape_a->get_bounding_rect();
         auto rect_a_pos = shape_a->get_owning_entity()->get_position();
@@ -106,18 +106,18 @@ public:
     }
 
 private:
-    sun::scene_tree scene_;
+    sun::SceneTree scene_;
 
-    sun::vector2f   ball_speed_;
+    sun::Vector2f   ball_speed_;
 
-    sun::entity*    left_pad_;
-    sun::entity*    right_pad_;
-    sun::entity*    ball_;
+    sun::Entity*    left_pad_;
+    sun::Entity*    right_pad_;
+    sun::Entity*    ball_;
 
-    sun::text*      score_text_;
+    sun::Text*      score_text_;
 
     int left_score;
     int right_score;
 };
 
-SUN_DEFINE_MAIN_APP(pong);
+SUN_DEFINE_MAIN_APP(Pong);

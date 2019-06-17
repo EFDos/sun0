@@ -28,13 +28,13 @@
 namespace sun {
 namespace opengl {
 
-class SUN_API index_buffer final : public sun::index_buffer
+class SUN_API IndexBuffer final : public sun::IndexBuffer
 {
 public:
 
-    index_buffer(size_t capacity);
+    IndexBuffer(size_t capacity);
 
-    ~index_buffer();
+    ~IndexBuffer();
 
     // implements gpu_object
 

@@ -54,7 +54,7 @@ public:
     template<typename T>
     T* register_system()
     {
-        system* sys = register_system_(T::get_static_type_name());
+        System* sys = register_system_(T::get_static_type_name());
         return static_cast<T*>(sys);
     }
 

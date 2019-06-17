@@ -33,72 +33,72 @@
 namespace sun
 {
 
-class context;
+class Context;
 
-class SUN_API font : public resource
+class SUN_API Font : public Resource
 {
 public:
 
-    struct glyph
+    struct Glyph
     {
         float       advance;
-        rectf       rect;
-        recti       tex_coords;
+        Rectf       rect;
+        Recti       tex_coords;
 
-        glyph() : advance(0) {}
+        Glyph() : advance(0) {}
     };
 
-    font(context&);
+    Font(Context&);
 
     bool load(const std::string& filepath) override;
 
     void clear() override;
 
-    const glyph& get_glyph(uint8 code, uint char_size) const;
+    const Glyph& get_glyph(uint8 code, uint char_size) const;
 
     float get_kerning(uint32 first, uint32 second, uint size) const;
 
     float get_line_spacing(uint size) const;
 
-    const texture* get_page_texture(uint size) const;
+    const Texture* get_page_texture(uint size) const;
 
 private:
 
-    struct row
+    struct Row
     {
         uint    width;
         uint    height;
         uint    top;
 
-        row(uint _top, uint _height) : width(0), height(_height), top(_top)
+        Row(uint _top, uint _height) : width(0), height(_height), top(_top)
         {
             // nothing
         }
     };
 
-    typedef std::unordered_map<uint8, glyph> glyph_table;
+    typedef std::unordered_map<uint8, Glyph> GlyphTable;
 
-    struct page
+    struct Page
     {
-        texture*    page_texture;
-        glyph_table         glyphes;
+        Texture*            texture;
+        GlyphTable          glyphes;
         uint                next_row;
-        std::vector<row>    rows;
+        std::vector<Row>    rows;
 
-        page() : page_texture(nullptr), next_row(3) {}
+        Page() : texture(nullptr), next_row(3) {}
     };
 
     void cleanup_();
 
-    glyph load_glyph_(uint8 code_point, uint char_size) const;
+    Glyph load_glyph_(uint8 code_point, uint char_size) const;
 
-    recti find_glyph_rect_(page&, uint width, uint height) const;
+    Recti find_glyph_rect_(Page&, uint width, uint height) const;
 
     bool set_current_size_(uint char_size) const;
 
-    texture* generate_page_texture_() const;
+    Texture* generate_page_texture_() const;
 
-    mutable std::unordered_map<uint, page>  pages_;
+    mutable std::unordered_map<uint, Page>  pages_;
     mutable std::vector<uint8>              pixel_buffer_;
 
     void*                           library_;

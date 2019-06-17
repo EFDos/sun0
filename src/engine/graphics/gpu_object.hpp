@@ -27,15 +27,15 @@
 
 namespace sun {
 
-class SUN_API gpu_object
+class SUN_API GPUObject
 {
 public:
 
-    virtual ~gpu_object() = default;
+    virtual ~GPUObject() = default;
 
-    gpu_object(const gpu_object&) = delete;
+    GPUObject(const GPUObject&) = delete;
 
-    gpu_object& operator=(const gpu_object&) = delete;
+    GPUObject& operator=(const GPUObject&) = delete;
 
     virtual void bind() const = 0;
 
@@ -45,7 +45,7 @@ public:
 
 protected:
 
-    gpu_object() = default;
+    GPUObject() = default;
 };
 
 }

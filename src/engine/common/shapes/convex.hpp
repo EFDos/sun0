@@ -43,7 +43,7 @@ public:
         type_ = ShapeType::Convex;
     }
 
-    Convex(const std::initializer_list<vector2f>& vertices)
+    Convex(const std::initializer_list<Vector2f>& vertices)
     : Shape(), vertices_(vertices)
     {
         type_ = ShapeType::Convex;
@@ -69,7 +69,7 @@ public:
 
     ~Convex() {}
 
-    inline void set_point(size_t i, const vector2f& point)
+    inline void set_point(size_t i, const Vector2f& point)
     {
         if (i > vertices_.size())
             return;
@@ -82,7 +82,7 @@ public:
         vertices_.resize(points);
     }
 
-    inline vector2f get_point(size_t i) const override
+    inline Vector2f get_point(size_t i) const override
     {
         return vertices_[i];
     }
@@ -94,7 +94,7 @@ public:
 
 private:
 
-    std::vector<vector2f>   vertices_;
+    std::vector<Vector2f>   vertices_;
 };
 
 }

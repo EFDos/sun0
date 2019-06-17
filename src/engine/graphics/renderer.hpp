@@ -31,47 +31,49 @@
 
 namespace sun {
 
-class context;
+class Context;
 
-class drawable;
-class camera;
-class matrix4;
-class vertex_buffer;
-class index_buffer;
-class shader;
-class texture;
-class font;
+class Drawable;
+class Camera;
+class Matrix4;
+class VertexBuffer;
+class IndexBuffer;
+class Shader;
+class Texture;
+class Font;
 
-class SUN_API renderer : public system
+class SUN_API Renderer : public System
 {
 public:
 
-    SUN_SYSTEM_TYPE(SYS_RENDERER);
+    SUN_SYSTEM_TYPE(Renderer);
 
-    enum class draw_mode {
-        points,
-        lines,
-        triangles,
-        triangle_fan
+    enum class DrawMode {
+        Points,
+        Lines,
+        Triangles,
+        TriangleFan
     };
 
-    struct info
+    //TODO Implement Info
+    struct Info
     {
-        std::string name;
-        std::string version;
-        std::string vendor;
-        std::string device;
+        std::string Name;
+        std::string Version;
+        std::string Vendor;
+        std::string Device;
     };
 
-    struct stats
+    //TODO Implement Stats
+    struct Stats
     {
-        int draw_calls;
-        int canvas_switches;
-        int shader_switches;
-        int canvases;
+        int DrawCalls;
+        int CanvasSwitches;
+        int ShaderSwitches;
+        int Canvases;
     };
 
-    virtual ~renderer() = default;
+    virtual ~Renderer() = default;
 
     // implements system
     virtual bool init() override;
@@ -80,95 +82,95 @@ public:
 
     virtual void update() override;
 
-    virtual vertex_buffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const = 0;
+    virtual VertexBuffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const = 0;
 
-    virtual shader* create_shader(const std::string& path) const = 0;
+    virtual Shader* create_shader(const std::string& path) const = 0;
 
-    virtual index_buffer* create_index_buffer(size_t capacity) const = 0;
+    virtual IndexBuffer* create_index_buffer(size_t capacity) const = 0;
 
-    virtual texture* create_texture() const = 0;
+    virtual Texture* create_texture() const = 0;
 
-    virtual void clear(const color&) = 0;
+    virtual void clear(const Color&) = 0;
 
     virtual void clear() = 0;
 
     // Drawable draw-call
-    virtual void draw(const drawable&) const = 0;
+    virtual void draw(const Drawable&) const = 0;
 
     // Low-level draw-calls
-    virtual void draw(const vertex_buffer& buffer,
-                      const shader* p_shader = nullptr) const = 0;
+    virtual void draw(const VertexBuffer& buffer,
+                      const Shader* p_shader = nullptr) const = 0;
 
-    virtual void draw(const vertex_buffer& buffer,
-                      const texture* p_texture,
-                      const shader* p_shader = nullptr) const = 0;
+    virtual void draw(const VertexBuffer& buffer,
+                      const Texture* p_texture,
+                      const Shader* p_shader = nullptr) const = 0;
 
-    virtual void draw_indexed(const vertex_buffer& vbuffer,
-                              const index_buffer& ibuffer,
-                              const shader* p_shader = nullptr) const = 0;
+    virtual void draw_indexed(const VertexBuffer& vbuffer,
+                              const IndexBuffer& ibuffer,
+                              const Shader* p_shader = nullptr) const = 0;
 
-    virtual void draw_indexed(const vertex_buffer& vbuffer,
-                              const index_buffer& ibuffer,
-                              const texture* p_texture,
-                              const shader* p_shader = nullptr) const = 0;
+    virtual void draw_indexed(const VertexBuffer& vbuffer,
+                              const IndexBuffer& ibuffer,
+                              const Texture* p_texture,
+                              const Shader* p_shader = nullptr) const = 0;
 
     // Utility draw-calls
-    virtual void draw_rect(const rectf& rect, const color&) const;
+    virtual void draw_rect(const Rectf& rect, const Color&) const;
 
-    virtual void draw_circle(const vector2f& pos, float radius, int verts) const;
+    virtual void draw_circle(const Vector2f& pos, float radius, int verts) const;
 
-    virtual void draw_line(const vector2f& begin, const vector2f& end, const color&) const;
+    virtual void draw_line(const Vector2f& begin, const Vector2f& end, const Color&) const;
 
     virtual void draw_polygon(uint vert_count,
-                              const vector2f* vertices,
-                              const color&) const;
+                              const Vector2f* vertices,
+                              const Color&) const;
 
-    virtual void set_model_transform(const matrix4& transform) = 0;
+    virtual void set_model_transform(const Matrix4& transform) = 0;
 
-    virtual void set_projection(const matrix4& projection) = 0;
+    virtual void set_projection(const Matrix4& projection) = 0;
 
-    virtual void set_camera_transform(const matrix4& camera) = 0;
+    virtual void set_camera_transform(const Matrix4& camera) = 0;
 
-    virtual void set_viewport(const rectf& viewport);
+    virtual void set_viewport(const Rectf& viewport);
 
-    virtual void set_color(const color&);
+    virtual void set_color(const Color&);
 
     virtual uint get_texture_max_size() const = 0;
 
-    inline void set_draw_mode(draw_mode mode) {
+    inline void set_draw_mode(DrawMode mode) {
         draw_mode_ = mode;
     }
 
-    inline draw_mode get_draw_mode() const {
+    inline DrawMode get_draw_mode() const {
         return draw_mode_;
     }
 
 protected:
 
-    explicit renderer(context&);
+    explicit Renderer(Context&);
 
-    virtual void set_shader_(const shader*) const = 0;
+    virtual void set_shader_(const Shader*) const = 0;
 
-    virtual void set_texture_(const texture*) const = 0;
+    virtual void set_texture_(const Texture*) const = 0;
 
-    rectf                       viewport_;
-    colorf                      clear_color_;
-    mutable draw_mode           draw_mode_;
+    Rectf                       viewport_;
+    Colorf                      clear_color_;
+    mutable DrawMode            draw_mode_;
 
-    vertex_buffer*              primitive_vertices_;
-    index_buffer*               primitive_indices_;
+    VertexBuffer*               primitive_vertices_;
+    IndexBuffer*                primitive_indices_;
 
-    mutable const shader*       current_shader_;
-    mutable const texture*      current_texture_;
+    mutable const Shader*       current_shader_;
+    mutable const Texture*      current_texture_;
 
 private:
 
-    component* create_component_(uint type_hash, uint id) override;
+    Component* create_component_(uint type_hash, uint id) override;
 
     bool handles_component_(uint type_hash) override;
 
-    std::vector<camera*>   cameras_;
-    std::vector<drawable*>  drawables_;
+    std::vector<Camera*>   cameras_;
+    std::vector<Drawable*>  drawables_;
 };
 
 }

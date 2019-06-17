@@ -32,7 +32,7 @@
 namespace sun {
 
 SoundStream::SoundStream(Context& context)
-:   SoundSource(p_context),
+:   SoundSource(context),
     thread_(),
     thread_start_state_(State::Stopped),
     channel_count_(0),
@@ -67,7 +67,7 @@ SoundStream::~SoundStream()
 
 bool SoundStream::load(const std::string& filepath)
 {
-    if (decoder_ != nullptr && get_state() == state::playing) {
+    if (decoder_ != nullptr && get_state() == State::Playing) {
         stop();
     }
 
@@ -99,7 +99,7 @@ void SoundStream::initialize_()
     samples_processed_ = 0;
     is_streaming_ = false;
 
-    format_ = context_.get_system<audio_server>()->
+    format_ = context_.get_system<AudioServer>()->
         get_format_from_channel_count(channel_count_);
 
     if (format_ == 0) {
@@ -117,7 +117,7 @@ void SoundStream::play()
     }
 
     bool is_streaming = false;
-    state thread_start_state = state::stopped;
+    State thread_start_state = State::Stopped;
 
     {
         std::lock_guard<std::mutex> lock(thread_mutex_);
@@ -126,17 +126,17 @@ void SoundStream::play()
         thread_start_state = thread_start_state_;
     }
 
-    if (is_streaming && thread_start_state == state::paused) {
+    if (is_streaming && thread_start_state == State::Paused) {
         std::lock_guard<std::mutex> lock(thread_mutex_);
-        thread_start_state_ = state::playing;
+        thread_start_state_ = State::Playing;
         alSourcePlay(source_);
         return;
-    } else if (is_streaming && thread_start_state == state::playing) {
+    } else if (is_streaming && thread_start_state == State::Playing) {
         stop();
     }
 
     is_streaming_ = true;
-    thread_start_state_ = state::playing;
+    thread_start_state_ = State::Playing;
     thread_ = std::thread(&SoundStream::stream_data_, this);
 }
 
@@ -148,7 +148,7 @@ void SoundStream::pause()
         if (!is_streaming_)
             return;
 
-        thread_start_state_ = state::paused;
+        thread_start_state_ = State::Paused;
     }
 
     alSourcePause(source_);
@@ -165,14 +165,14 @@ void SoundStream::stop()
         thread_.join();
     }
 
-    on_seek_(Time::zero);
+    on_seek_(Time::ZERO);
 }
 
 SoundSource::State SoundStream::get_state() const
 {
-    auto st = sound_source::get_state();
+    auto st = SoundSource::get_state();
 
-    if (st == state::stopped) {
+    if (st == State::Stopped) {
         std::lock_guard<std::mutex> lock(thread_mutex_);
 
         if (is_streaming_) {
@@ -185,7 +185,7 @@ SoundSource::State SoundStream::get_state() const
 
 void SoundStream::set_playing_offset(Time offset)
 {
-    state old_state = get_state();
+    State old_state = get_state();
 
     stop();
 
@@ -193,7 +193,7 @@ void SoundStream::set_playing_offset(Time offset)
 
     samples_processed_ = static_cast<uint64>(offset.as_seconds() * sample_rate_ * channel_count_);
 
-    if (old_state == state::stopped) {
+    if (old_state == State::Stopped) {
         return;
     }
 
@@ -210,8 +210,8 @@ void SoundStream::set_loop_points(TimeSpan points)
         return;
     }
 
-    span<uint64> sample_points(Time_to_samples_(points.offset),
-        Time_to_samples_(points.length));
+    Span<uint64> sample_points(time_to_samples_(points.offset),
+        time_to_samples_(points.length));
 
     if (get_channel_count() == 0 || decoder_->get_info().sample_count == 0)
     {
@@ -252,11 +252,11 @@ void SoundStream::set_loop_points(TimeSpan points)
 
     loop_span_ = sample_points;
 
-    if (old_pos != Time::zero) {
+    if (old_pos != Time::ZERO) {
         set_playing_offset(old_pos);
     }
 
-    if (old_state == state::playing) {
+    if (old_state == State::Playing) {
         play();
     }
 }
@@ -270,14 +270,14 @@ Time SoundStream::get_playing_offset() const
 
         return Time::seconds(secs + static_cast<float>(samples_processed_) / sample_rate_ / channel_count_);
     } else {
-        return Time::zero;
+        return Time::ZERO;
     }
 }
 
 Time SoundStream::get_duration() const
 {
     if (decoder_ == nullptr) {
-        return Time::zero;
+        return Time::ZERO;
     }
 
     return decoder_->get_duration();
@@ -285,8 +285,8 @@ Time SoundStream::get_duration() const
 
 SoundStream::TimeSpan SoundStream::get_loop_points() const
 {
-    return TimeSpan(samples_to_Time(loop_span_.offset),
-        samples_to_Time(loop_span_.length));
+    return TimeSpan(samples_to_time(loop_span_.offset),
+        samples_to_time(loop_span_.length));
 }
 
 int64 SoundStream::on_loop_()
@@ -339,7 +339,7 @@ bool SoundStream::on_get_data_(SoundStream::Chunk& data)
 void SoundStream::on_seek_(Time offset)
 {
     std::lock_guard<std::mutex> lock(file_mutex_);
-    decoder_->seek(Time_to_samples_(offset));
+    decoder_->seek(time_to_samples_(offset));
 }
 
 void SoundStream::stream_data_()
@@ -349,7 +349,7 @@ void SoundStream::stream_data_()
     {
         std::lock_guard<std::mutex> lock(thread_mutex_);
 
-        if (thread_start_state_ == state::stopped) {
+        if (thread_start_state_ == State::Stopped) {
             is_streaming_ = false;
             return;
         }
@@ -367,7 +367,7 @@ void SoundStream::stream_data_()
     {
         std::lock_guard<std::mutex> lock(thread_mutex_);
 
-        if (thread_start_state_ == state::paused) {
+        if (thread_start_state_ == State::Paused) {
             alSourcePause(source_);
         }
     }
@@ -382,7 +382,7 @@ void SoundStream::stream_data_()
             }
         }
 
-        if (sound_source::get_state() == state::stopped)
+        if (SoundSource::get_state() == State::Stopped)
         {
             if (!request_stop) {
                 alSourcePlay(source_);
@@ -443,7 +443,7 @@ void SoundStream::stream_data_()
             }
         }
 
-        if (sound_source::get_state() != state::stopped) {
+        if (SoundSource::get_state() != State::Stopped) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
@@ -536,7 +536,7 @@ uint64 SoundStream::time_to_samples_(Time pos) const
 
 Time SoundStream::samples_to_time(uint64 samples) const
 {
-    Time pos = Time::zero;
+    Time pos = Time::ZERO;
 
     // Make sure we don't divide by 0
     if (get_sample_rate() != 0 && get_channel_count() != 0)

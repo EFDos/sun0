@@ -28,18 +28,18 @@
 
 namespace sun {
 
-shader_stage::shader_stage(const std::string& source, type t)
+ShaderStage::ShaderStage(const std::string& source, Type t)
 :   source_(source),
     type_(t),
-    status_(status::invalid)
+    status_(Status::Invalid)
 {
 }
 
-shader_stage::~shader_stage()
+ShaderStage::~ShaderStage()
 {
 }
 
-shader_utils::source_pair shader_utils::parse_source_pair(
+ShaderUtils::SourcePair ShaderUtils::parse_source_pair(
     const std::string& source)
 {
     std::string sources[2];
@@ -53,9 +53,9 @@ shader_utils::source_pair shader_utils::parse_source_pair(
     for (std::string line ; std::getline(iss, line) ; )
     {
         if (line.find("#VERTEX") != std::string::npos) {
-            type = static_cast<int>(shader_stage::type::vertex);
+            type = static_cast<int>(ShaderStage::Type::Vertex);
         } else if (line.find("#FRAGMENT") != std::string::npos) {
-            type = static_cast<int>(shader_stage::type::fragment);
+            type = static_cast<int>(ShaderStage::Type::Fragment);
         }
         else
         {
@@ -71,19 +71,19 @@ shader_utils::source_pair shader_utils::parse_source_pair(
     return {sources[0], sources[1]};
 }
 
-shader::shader(shader_stage* vertex, shader_stage* fragment)
+Shader::Shader(ShaderStage* vertex, ShaderStage* fragment)
 :   vertex_stage_(vertex),
     fragment_stage_(fragment),
-    status_(status::invalid)
+    status_(Status::Invalid)
 {
-    if (vertex_stage_->get_status() == shader_stage::status::compile_ok &&
-        fragment_stage_->get_status() == shader_stage::status::compile_ok)
+    if (vertex_stage_->get_status() == ShaderStage::Status::CompileOk &&
+        fragment_stage_->get_status() == ShaderStage::Status::CompileOk)
     {
         return;
     }
 
-    if (vertex_stage_->get_status() == shader_stage::status::compile_ready) {
-        if (vertex_stage_->compile() != shader_stage::status::compile_ok) {
+    if (vertex_stage_->get_status() == ShaderStage::Status::CompileReady) {
+        if (vertex_stage_->compile() != ShaderStage::Status::CompileOk) {
             sun_logf_error("%s", vertex_stage_->get_warnings().c_str());
             vertex_stage_ = nullptr;
         }
@@ -91,8 +91,8 @@ shader::shader(shader_stage* vertex, shader_stage* fragment)
         vertex_stage_ = nullptr;
     }
 
-    if (fragment_stage_->get_status() == shader_stage::status::compile_ready) {
-        if (fragment_stage_->compile() != shader_stage::status::compile_ok) {
+    if (fragment_stage_->get_status() == ShaderStage::Status::CompileReady) {
+        if (fragment_stage_->compile() != ShaderStage::Status::CompileOk) {
             sun_logf_error("%s", fragment_stage_->get_warnings().c_str());
             fragment_stage_ = nullptr;
         }
@@ -101,7 +101,7 @@ shader::shader(shader_stage* vertex, shader_stage* fragment)
     }
 }
 
-shader::~shader()
+Shader::~Shader()
 {
 }
 

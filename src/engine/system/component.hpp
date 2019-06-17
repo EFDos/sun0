@@ -56,7 +56,7 @@ public:
             flags_ &= ~(uint8)Property::Draw;
     }
 
-    inline void set_owning_entity(entity* ent) {
+    inline void set_owning_entity(Entity* ent) {
         owning_entity_ = ent;
     }
 
@@ -76,7 +76,7 @@ public:
         return flags_ & (uint8)Property::Draw;
     }
 
-    inline entity* get_owning_entity() const {
+    inline Entity* get_owning_entity() const {
         return owning_entity_;
     }
 

@@ -59,7 +59,7 @@ public:
         size_t          sample_count;
     };
 
-    SoundStream(context& p_context);
+    SoundStream(Context& p_context);
 
     ~SoundStream();
 
@@ -85,7 +85,7 @@ public:
 
     TimeSpan get_loop_points() const;
 
-    State get_state() const override;
+    SoundSource::State get_state() const override;
 
     inline bool get_loop() const {
         return loop_;
@@ -109,7 +109,7 @@ private:
 
     bool on_get_data_(Chunk& data);
 
-    void on_seek_(time);
+    void on_seek_(Time);
 
     int64 on_loop_();
 

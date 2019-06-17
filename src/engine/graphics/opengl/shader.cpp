@@ -29,20 +29,20 @@
 namespace sun {
 namespace opengl {
 
-// shader_stage implementation
+// ShaderStage implementation
 
-constexpr GLenum get_gl_type(shader_stage::type t)
+constexpr GLenum get_gl_type(ShaderStage::Type t)
 {
     switch (t) {
-        case shader_stage::type::vertex:    return GLenum(GL_VERTEX_SHADER);
-        case shader_stage::type::fragment:  return GLenum(GL_FRAGMENT_SHADER);
-        case shader_stage::type::geometry:  return GLenum(GL_GEOMETRY_SHADER);
+        case ShaderStage::Type::Vertex:    return GLenum(GL_VERTEX_SHADER);
+        case ShaderStage::Type::Fragment:  return GLenum(GL_FRAGMENT_SHADER);
+        case ShaderStage::Type::Geometry:  return GLenum(GL_GEOMETRY_SHADER);
         default: return GLenum();
     }
 }
 
-shader_stage::shader_stage(const std::string& source, type t)
-:   sun::shader_stage(source, t), id_(0)
+ShaderStage::ShaderStage(const std::string& source, Type t)
+:   sun::ShaderStage(source, t), id_(0)
 {
     if (source.empty()) {
         return;
@@ -50,17 +50,17 @@ shader_stage::shader_stage(const std::string& source, type t)
 
     id_ = glCreateShader(get_gl_type(type_));
 
-    status_ = status::compile_ready;
+    status_ = Status::CompileReady;
 }
 
-shader_stage::~shader_stage()
+ShaderStage::~ShaderStage()
 {
     release();
 }
 
-shader_stage::status shader_stage::compile()
+ShaderStage::Status ShaderStage::compile()
 {
-    if (id_ == 0 || status_ != status::compile_ready) {
+    if (id_ == 0 || status_ != Status::CompileReady) {
         return status_;
     }
 
@@ -73,26 +73,26 @@ shader_stage::status shader_stage::compile()
     return status_;
 }
 
-void shader_stage::release()
+void ShaderStage::release()
 {
     if (id_ != 0) {
         glDeleteShader(id_);
     }
 }
 
-void shader_stage::compile_check_()
+void ShaderStage::compile_check_()
 {
     GLint result = -1;
     glGetShaderiv(id_, GL_COMPILE_STATUS, &result);
 
     if (!result) {
-        status_ = status::compile_fail;
+        status_ = Status::CompileFail;
     } else {
-        status_ = status::compile_ok;
+        status_ = Status::CompileOk;
     }
 }
 
-std::string shader_stage::get_warnings() const
+std::string ShaderStage::get_warnings() const
 {
     GLint length = 0;
 
@@ -106,13 +106,13 @@ std::string shader_stage::get_warnings() const
     std::string type_str;
 
     switch(type_) {
-        case type::vertex:
+        case Type::Vertex:
             type_str = "vertex";
             break;
-        case type::fragment:
+        case Type::Fragment:
             type_str = "fragment";
             break;
-        case type::geometry:
+        case Type::Geometry:
             type_str = "geometry";
     }
 
@@ -130,8 +130,8 @@ std::string shader_stage::get_warnings() const
 
 // shader implementation
 
-shader::shader(shader_stage* vertex, shader_stage* fragment)
-:   sun::shader(vertex, fragment),
+Shader::Shader(ShaderStage* vertex, ShaderStage* fragment)
+:   sun::Shader(vertex, fragment),
     id_(0)
 {
     if (vertex_stage_ != nullptr && fragment_stage_ != nullptr) {
@@ -139,12 +139,12 @@ shader::shader(shader_stage* vertex, shader_stage* fragment)
     }
 }
 
-shader::~shader()
+Shader::~Shader()
 {
     release();
 }
 
-shader::status shader::build()
+Shader::Status Shader::build()
 {
     if (id_ == 0) {
         sun_log_error("Internal OpenGL Shader failed to be created.");
@@ -152,11 +152,11 @@ shader::status shader::build()
 
     if (vertex_stage_ == nullptr || fragment_stage_ == nullptr) {
         sun_log_error("Shader stages are not available for linking.");
-        return status_ = status::invalid;
+        return status_ = Status::Invalid;
     }
 
-    auto vert_stg = dynamic_cast<shader_stage*>(vertex_stage_.get());
-    auto frag_stg = dynamic_cast<shader_stage*>(fragment_stage_.get());
+    auto vert_stg = dynamic_cast<ShaderStage*>(vertex_stage_.get());
+    auto frag_stg = dynamic_cast<ShaderStage*>(fragment_stage_.get());
 
     glAttachShader(id_, vert_stg->get_internal_id());
     glAttachShader(id_, frag_stg->get_internal_id());
@@ -171,7 +171,7 @@ shader::status shader::build()
     return status_;
 }
 
-void shader::bind() const
+void Shader::bind() const
 {
     if (id_ == 0) {
         sun_log_error("Failed to bind shader: Shader in invalid state.");
@@ -181,19 +181,19 @@ void shader::bind() const
     glUseProgram(id_);
 }
 
-void shader::unbind() const
+void Shader::unbind() const
 {
     glUseProgram(0);
 }
 
-void shader::release()
+void Shader::release()
 {
     if (id_ != 0) {
         glDeleteProgram(id_);
     }
 }
 
-void shader::linking_check_()
+void Shader::linking_check_()
 {
     if (id_ == 0) {
         sun_log_error("Failed to check linking on shader:"
@@ -205,13 +205,13 @@ void shader::linking_check_()
     glGetProgramiv(id_, GL_LINK_STATUS, &result);
 
     if (!result) {
-        status_ = status::invalid;
+        status_ = Status::Invalid;
     } else {
-        status_ = status::ok;
+        status_ = Status::Ok;
     }
 }
 
-void shader::set_uniform(const std::string& name, const matrix4& mat4)
+void Shader::set_uniform(const std::string& name, const Matrix4& mat4)
 {
     if (id_ == 0) {
         sun_log_error("Failed to set shader uniform: Shader in invalid state.");
@@ -223,7 +223,7 @@ void shader::set_uniform(const std::string& name, const matrix4& mat4)
     glUseProgram(0);
 }
 
-void shader::set_uniform(const std::string& name, int v)
+void Shader::set_uniform(const std::string& name, int v)
 {
     if (id_ == 0) {
         sun_log_error("Failed to set shader uniform: Shader in invalid state.");
@@ -235,7 +235,7 @@ void shader::set_uniform(const std::string& name, int v)
     glUseProgram(0);
 }
 
-std::string shader::get_warnings() const
+std::string Shader::get_warnings() const
 {
     if (id_ == 0) {
         sun_log_error("Failed to get shader warnings:"

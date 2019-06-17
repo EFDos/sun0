@@ -28,11 +28,11 @@
 
 namespace sun {
 
-class vertex_buffer : public gpu_object
+class VertexBuffer : public GPUObject
 {
 public:
 
-    virtual ~vertex_buffer() = default;
+    virtual ~VertexBuffer() = default;
 
     virtual void fill_data(size_t offset, size_t count, const void* data) = 0;
 
@@ -44,7 +44,7 @@ public:
 
     virtual void unbind() const = 0;
 
-    void set_layout(const vertex_layout& layout) {
+    void set_layout(const VertexLayout& layout) {
         layout_ = layout;
     }
 
@@ -52,7 +52,7 @@ public:
 
     bool is_dynamic() const { return dynamic_; }
 
-    const vertex_layout& get_layout() const {
+    const VertexLayout& get_layout() const {
         return layout_;
     }
 
@@ -64,9 +64,9 @@ public:
 
 protected:
 
-    vertex_buffer(uint8 vertex_size, size_t capacity, bool dynamic = false);
+    VertexBuffer(uint8 vertex_size, size_t capacity, bool dynamic = false);
 
-    vertex_layout   layout_;
+    VertexLayout   layout_;
     uint8           vertex_size_;
     size_t          vertex_count_;
     size_t          capacity_;

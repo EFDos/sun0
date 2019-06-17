@@ -32,13 +32,13 @@ namespace sun {
 
 size_t VorbisDecoder::callback_read(void* ptr, size_t size, size_t nmemb, void* data)
 {
-    filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
+    filesys::InputStream* stream = static_cast<filesys::InputStream*>(data);
     return static_cast<std::size_t>(stream->read(ptr, size * nmemb));
 }
 
 int VorbisDecoder::callback_seek(void* data, ogg_int64_t offset, int whence)
 {
-    filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
+    filesys::InputStream* stream = static_cast<filesys::InputStream*>(data);
     switch (whence)
     {
         case SEEK_SET:
@@ -54,7 +54,7 @@ int VorbisDecoder::callback_seek(void* data, ogg_int64_t offset, int whence)
 
 long VorbisDecoder::callback_tell(void* data)
 {
-    filesys::input_stream* stream = static_cast<filesys::input_stream*>(data);
+    filesys::InputStream* stream = static_cast<filesys::InputStream*>(data);
     return static_cast<long>(stream->tell());
 }
 

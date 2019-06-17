@@ -29,17 +29,17 @@
 namespace sun {
 namespace opengl {
 
-class SUN_API shader_stage final : public sun::shader_stage
+class SUN_API ShaderStage final : public sun::ShaderStage
 {
 public:
 
-    shader_stage(const std::string& source, type t);
+    ShaderStage(const std::string& source, Type t);
 
-    ~shader_stage();
+    ~ShaderStage();
 
     // implements sun::shader_stage
 
-    status compile() override;
+    Status compile() override;
 
     std::string get_warnings() const override;
 
@@ -62,17 +62,17 @@ private:
     uint    id_;
 };
 
-class SUN_API shader final : public sun::shader
+class SUN_API Shader final : public sun::Shader
 {
 public:
 
-    shader(shader_stage* vertex, shader_stage* fragment);
+    Shader(ShaderStage* vertex, ShaderStage* fragment);
 
-    ~shader();
+    ~Shader();
 
     // implements sun::shader
 
-    status build() override;
+    Status build() override;
 
     // implements sun::gpu_object
 
@@ -82,7 +82,7 @@ public:
 
     void unbind() const override;
 
-    void set_uniform(const std::string& name, const matrix4& mat4) override;
+    void set_uniform(const std::string& name, const Matrix4& mat4) override;
 
     void set_uniform(const std::string& name, int v) override;
 

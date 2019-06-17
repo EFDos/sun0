@@ -31,15 +31,15 @@
 
 namespace sun {
 
-class SUN_API image : public resource
+class SUN_API Image : public Resource
 {
 public:
 
-    image(context&, const std::string& = "");
+    Image(Context&, const std::string& = "");
 
-    image(const image&);
+    Image(const Image&);
 
-    image(image&&) = default;
+    Image(Image&&) = default;
 
     bool load(const std::string&) override;
 
@@ -47,22 +47,22 @@ public:
 
     void allocate(uint width, uint height);
 
-    void allocate(const vector2u& size);
+    void allocate(const Vector2u& size);
 
-    void set_data(const vector2u& size, const ubyte* data);
+    void set_data(const Vector2u& size, const ubyte* data);
 
     inline const uint8* get_data() const { return data_; }
 
-    inline const vector2u& get_size() const { return size_; }
+    inline const Vector2u& get_size() const { return size_; }
 
-    image& operator=(const image&);
+    Image& operator=(const Image&);
 
-    image& operator=(image&&) = default;
+    Image& operator=(Image&&) = default;
 
 private:
 
     ubyte*      data_;
-    vector2u    size_;
+    Vector2u    size_;
 };
 
 }

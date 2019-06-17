@@ -30,85 +30,85 @@
 
 namespace sun {
 
-class matrix4;
+class Matrix4;
 
-class SUN_API shader_stage : public gpu_object
+class SUN_API ShaderStage : public GPUObject
 {
 public:
 
-    enum class type
+    enum class Type
     {
-        vertex,
-        fragment,
-        geometry
+        Vertex,
+        Fragment,
+        Geometry
     };
 
-    enum class status
+    enum class Status
     {
-        invalid,
-        compile_ready,
-        compile_ok,
-        compile_fail
+        Invalid,
+        CompileReady,
+        CompileOk,
+        CompileFail
     };
 
-    virtual ~shader_stage();
+    virtual ~ShaderStage();
 
-    virtual status compile() = 0;
+    virtual Status compile() = 0;
 
     virtual std::string get_warnings() const = 0;
 
-    inline status get_status() const { return status_; }
+    inline Status get_status() const { return status_; }
 
 protected:
 
-    shader_stage(const std::string& source, type t);
+    ShaderStage(const std::string& source, Type t);
 
     virtual void compile_check_() = 0;
 
     std::string source_;
-    type        type_;
-    status      status_;
+    Type        type_;
+    Status      status_;
 };
 
-namespace shader_utils {
+namespace ShaderUtils {
 
-using source_pair = std::pair<std::string, std::string>;
+using SourcePair = std::pair<std::string, std::string>;
 
-source_pair parse_source_pair(const std::string& source);
+SourcePair parse_source_pair(const std::string& source);
 
 }
 
-class SUN_API shader : public gpu_object
+class SUN_API Shader : public GPUObject
 {
 public:
 
-    enum class status {
-        ok,
-        invalid
+    enum class Status {
+        Ok,
+        Invalid
     };
 
-    virtual ~shader();
+    virtual ~Shader();
 
-    virtual status build() = 0;
+    virtual Status build() = 0;
 
     virtual std::string get_warnings() const = 0;
 
-    virtual void set_uniform(const std::string& name, const matrix4& mat4) = 0;
+    virtual void set_uniform(const std::string& name, const Matrix4& mat4) = 0;
 
     virtual void set_uniform(const std::string& name, int v) = 0;
 
-    inline status get_status() const { return status_; }
+    inline Status get_status() const { return status_; }
 
 protected:
 
-    shader(shader_stage* vertex, shader_stage* fragment);
+    Shader(ShaderStage* vertex, ShaderStage* fragment);
 
     virtual void linking_check_() = 0;
 
-    std::unique_ptr<shader_stage>   vertex_stage_;
-    std::unique_ptr<shader_stage>   fragment_stage_;
+    std::unique_ptr<ShaderStage>   vertex_stage_;
+    std::unique_ptr<ShaderStage>   fragment_stage_;
 
-    status status_;
+    Status status_;
 };
 
 }

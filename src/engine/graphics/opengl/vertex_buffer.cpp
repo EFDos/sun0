@@ -29,19 +29,19 @@
 namespace sun {
 namespace opengl {
 
-vertex_buffer::vertex_buffer(uint8 vertex_size, size_t capacity)
-:   sun::vertex_buffer(vertex_size, capacity), vbo_(0)
+VertexBuffer::VertexBuffer(uint8 vertex_size, size_t capacity)
+:   sun::VertexBuffer(vertex_size, capacity), vbo_(0)
 {
     glGenBuffers(1, &vbo_);
     resize(capacity);
 }
 
-vertex_buffer::~vertex_buffer()
+VertexBuffer::~VertexBuffer()
 {
     release();
 }
 
-void vertex_buffer::release()
+void VertexBuffer::release()
 {
     if (vbo_ != 0) {
         glDeleteBuffers(GL_ARRAY_BUFFER, &vbo_);
@@ -50,7 +50,7 @@ void vertex_buffer::release()
     }
 }
 
-void vertex_buffer::fill_data(size_t offset, size_t count, const void *data)
+void VertexBuffer::fill_data(size_t offset, size_t count, const void *data)
 {
     if (vbo_ == 0) {
         sun_log_error("Failed to fill vertex buffer: Buffer in invalid state.");
@@ -72,7 +72,7 @@ void vertex_buffer::fill_data(size_t offset, size_t count, const void *data)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void vertex_buffer::resize(size_t capacity)
+void VertexBuffer::resize(size_t capacity)
 {
     if (vbo_ == 0) {
         sun_log_error("Failed to resize vertex buffer:"
@@ -88,7 +88,7 @@ void vertex_buffer::resize(size_t capacity)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void vertex_buffer::clear()
+void VertexBuffer::clear()
 {
     if (vbo_ == 0) {
         sun_log_error("Failed to clear vertex buffer:"
@@ -104,7 +104,7 @@ void vertex_buffer::clear()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void vertex_buffer::bind() const
+void VertexBuffer::bind() const
 {
     if (vbo_ == 0) {
         sun_log_error("Failed to bind vertex buffer: Buffer in invalid state.");
@@ -114,12 +114,12 @@ void vertex_buffer::bind() const
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 }
 
-void vertex_buffer::unbind() const
+void VertexBuffer::unbind() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void vertex_buffer::set_dynamic(bool dynamic)
+void VertexBuffer::set_dynamic(bool dynamic)
 {
     if (vbo_ == 0) {
         sun_log_error("Failed to set property on vertex buffer:"
@@ -143,7 +143,7 @@ void vertex_buffer::set_dynamic(bool dynamic)
         delete [] temp_data;
     }
 
-    sun::vertex_buffer::set_dynamic(dynamic);
+    sun::VertexBuffer::set_dynamic(dynamic);
 }
 
 } // opengl

@@ -61,9 +61,9 @@ void Context::update_systems()
     }
 }
 
-system* Context::register_system_(const std::string& type)
+System* Context::register_system_(const std::string& type)
 {
-    system* sys = nullptr;
+    System* sys = nullptr;
     if (type.compare("Renderer")) {
         sun_logf_debug("registering new opengl renderer as %s", type.c_str());
         sys = new opengl::Renderer(*this);

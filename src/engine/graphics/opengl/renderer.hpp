@@ -28,69 +28,69 @@
 namespace sun {
 namespace opengl {
 
-class shader;
+class Shader;
 
-class SUN_API renderer final : public sun::renderer
+class SUN_API Renderer final : public sun::Renderer
 {
 public:
 
-    renderer(context&);
+    Renderer(Context&);
 
-    ~renderer();
+    ~Renderer();
 
     bool init() override;
 
     void shutdown() override;
 
-    sun::vertex_buffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const override;
+    sun::VertexBuffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const override;
 
-    sun::shader* create_shader(const std::string& path) const override;
+    sun::Shader* create_shader(const std::string& path) const override;
 
-    sun::index_buffer* create_index_buffer(size_t capacity) const override;
+    sun::IndexBuffer* create_index_buffer(size_t capacity) const override;
 
-    sun::texture* create_texture() const override;
+    sun::Texture* create_texture() const override;
 
-    void clear(const color&) override;
+    void clear(const Color&) override;
 
     void clear() override;
 
-    void set_viewport(const rectf& viewport) override;
+    void set_viewport(const Rectf& viewport) override;
 
-    void set_model_transform(const matrix4& transform) override;
+    void set_model_transform(const Matrix4& transform) override;
 
-    void set_projection(const matrix4& projection) override;
+    void set_projection(const Matrix4& projection) override;
 
-    void set_camera_transform(const matrix4& transform) override;
+    void set_camera_transform(const Matrix4& transform) override;
 
-    void draw(const drawable& d) const override;
+    void draw(const Drawable& d) const override;
 
-    void draw(const sun::vertex_buffer& buffer,
-              const sun::shader* p_shader = nullptr) const override;
+    void draw(const sun::VertexBuffer& buffer,
+              const sun::Shader* p_shader = nullptr) const override;
 
-    void draw(const sun::vertex_buffer& buffer,
-              const sun::texture* p_texture,
-              const sun::shader* p_shader = nullptr) const override;
+    void draw(const sun::VertexBuffer& buffer,
+              const sun::Texture* p_texture,
+              const sun::Shader* p_shader = nullptr) const override;
 
-    void draw_indexed(const sun::vertex_buffer& vbuffer,
-                      const sun::index_buffer& ibuffer,
-                      const sun::shader* p_shader = nullptr) const override;
+    void draw_indexed(const sun::VertexBuffer& vbuffer,
+                      const sun::IndexBuffer& ibuffer,
+                      const sun::Shader* p_shader = nullptr) const override;
 
-    void draw_indexed(const sun::vertex_buffer& vbuffer,
-                      const sun::index_buffer& ibuffer,
-                      const sun::texture* p_texture,
-                      const sun::shader* p_shader = nullptr) const override;
+    void draw_indexed(const sun::VertexBuffer& vbuffer,
+                      const sun::IndexBuffer& ibuffer,
+                      const sun::Texture* p_texture,
+                      const sun::Shader* p_shader = nullptr) const override;
 
     uint get_texture_max_size() const override;
 
 private:
 
-    void set_shader_(const sun::shader*) const override;
+    void set_shader_(const sun::Shader*) const override;
 
-    void set_texture_(const sun::texture*) const override;
+    void set_texture_(const sun::Texture*) const override;
 
     uint            base_vao_;
-    sun::shader*    default_flat_shader_;
-    sun::shader*    default_textured_shader_;
+    sun::Shader*    default_flat_shader_;
+    sun::Shader*    default_textured_shader_;
 
 };
 

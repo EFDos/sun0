@@ -58,7 +58,7 @@ public:
     inline Time get_duration() const
     {
         if (info_.channel_count == 0 || info_.sample_rate == 0) {
-            return Time::zero;
+            return Time::ZERO;
         }
 
         return Time::seconds(static_cast<float>(info_.sample_count) /
@@ -68,7 +68,7 @@ public:
     inline Time get_Time_offset() const
     {
         if (info_.channel_count == 0 || info_.sample_rate == 0) {
-            return Time::zero;
+            return Time::ZERO;
         }
 
         return Time::seconds(static_cast<float>(sample_offset_) /
@@ -77,7 +77,7 @@ public:
 
     inline uint64 get_sample_offset() const { return sample_offset_; }
 
-    inline const Info& get_Info() const { return info_; }
+    inline const Info& get_info() const { return info_; }
 
 protected:
 

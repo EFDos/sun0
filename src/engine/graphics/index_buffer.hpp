@@ -28,11 +28,11 @@
 
 namespace sun {
 
-class index_buffer : public gpu_object
+class IndexBuffer : public GPUObject
 {
 public:
 
-    virtual ~index_buffer() = default;
+    virtual ~IndexBuffer() = default;
 
     virtual void fill_data(size_t offset, size_t count, const uint* data) = 0;
 
@@ -50,7 +50,7 @@ public:
 
 protected:
 
-    index_buffer(size_t capacity);
+    IndexBuffer(size_t capacity);
 
     size_t  index_count_;
     size_t  capacity_;

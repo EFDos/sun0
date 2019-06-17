@@ -30,27 +30,27 @@
 
 namespace sun {
 
-sprite_batch::sprite_batch(context& p_context)
-:   drawable(p_context),
+SpriteBatch::SpriteBatch(Context& context)
+:   Drawable(context),
     vertex_offset_(0),
     index_offset_(0),
     vertices_(nullptr),
     indices_(nullptr),
     texture_(nullptr)
 {
-    auto r = context_.get_system<renderer>();
+    auto r = context_.get_system<Renderer>();
     // For now we'll use a fixed maximum of 1024 sprite_batchs
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4 * 1024);
     indices_ = r->create_index_buffer(6 * 1024);
 }
 
-sprite_batch::~sprite_batch()
+SpriteBatch::~SpriteBatch()
 {
     delete vertices_;
     delete indices_;
 }
 
-void sprite_batch::draw(renderer* r) const
+void SpriteBatch::draw(Renderer* r) const
 {
     if (owning_entity_ != nullptr) {
         r->set_model_transform(owning_entity_->get_global_transform());
@@ -58,7 +58,7 @@ void sprite_batch::draw(renderer* r) const
     r->draw_indexed(*vertices_, *indices_, texture_, nullptr);
 }
 
-void sprite_batch::set_texture(const texture* tex)
+void SpriteBatch::set_texture(const Texture* tex)
 {
     if (tex == nullptr) {
         return;
@@ -71,9 +71,9 @@ void sprite_batch::set_texture(const texture* tex)
     index_offset_ = 0;
 }
 
-void sprite_batch::add_sprite_rect(const vector2f& pos,
-                                   const recti& p_rect,
-                                   const color& p_color)
+void SpriteBatch::add_sprite_rect(const Vector2f& pos,
+                                   const Recti& p_rect,
+                                   const Color& p_color)
 {
     struct vertex_def {
         float x, y;
@@ -127,10 +127,8 @@ void sprite_batch::add_sprite_rect(const vector2f& pos,
     index_offset_ += 6;
 }
 
-void sprite_batch::update_geometry_()
-{
-// not used
-}
+void SpriteBatch::update_geometry_()
+{}
 
 }
 

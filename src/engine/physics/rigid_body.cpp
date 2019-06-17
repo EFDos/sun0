@@ -24,7 +24,7 @@
 #include "rigid_body.hpp"
 #include "physics_server.hpp"
 
-#include "common/shapes/primitive_shape.hpp"
+#include "common/shapes/shape.hpp"
 #include "common/shapes/rectangle.hpp"
 #include "common/shapes/circle.hpp"
 #include "common/shapes/convex.hpp"
@@ -120,7 +120,7 @@ void RigidBody::create(const shapes::Shape& shape, Type t)
     }
 }
 
-void rigid_body::update_entity()
+void RigidBody::update_entity()
 {
     if (owning_entity_ == nullptr || body_ == nullptr) {
         return;
@@ -130,7 +130,7 @@ void rigid_body::update_entity()
     owning_entity_->set_rotation(-math::rad_to_deg(body_->GetAngle()));
 }
 
-void rigid_body::apply_linear_impulse(const vector2f& impulse)
+void RigidBody::apply_linear_impulse(const Vector2f& impulse)
 {
     if (body_ == nullptr) {
         return;

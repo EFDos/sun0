@@ -40,7 +40,7 @@ Matrix4 Matrix4::orthogonal(float l, float r, float b, float t)
 	return m;
 }
 
-Matrix4 Matrix4::orthogonal(const rect<float>& r)
+Matrix4 Matrix4::orthogonal(const Rect<float>& r)
 {
     Matrix4 m;
 

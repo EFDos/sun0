@@ -23,7 +23,7 @@
 /*************************************************************************/
 #include "shape2D.hpp"
 
-#include "common/shapes/primitive_shape.hpp"
+#include "common/shapes/shape.hpp"
 #include "common/shapes/rectangle.hpp"
 #include "common/shapes/circle.hpp"
 #include "common/shapes/convex.hpp"
@@ -36,19 +36,19 @@
 
 namespace sun {
 
-shape2D::shape2D(context& p_context)
-:   drawable(p_context),
+Shape2D::Shape2D(Context& context)
+:   Drawable(context),
     shape_(nullptr),
-    color_(sun::color::white),
+    color_(sun::Color::WHITE),
     vertices_(nullptr),
     indices_(nullptr)
 {
-    auto r = context_.get_system<renderer>();
+    auto r = context_.get_system<Renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 6, 0);
     indices_ = r->create_index_buffer(0);
 }
 
-shape2D::~shape2D()
+Shape2D::~Shape2D()
 {
     delete vertices_;
     delete indices_;
@@ -57,30 +57,30 @@ shape2D::~shape2D()
     }
 }
 
-void shape2D::set_shape(const shapes::primitive_shape& p_shape)
+void Shape2D::set_shape(const shapes::Shape& shape)
 {
-    switch(p_shape.get_type())
+    switch(shape.get_type())
     {
-        case shapes::type::rectangle:
-            shape_ = new shapes::rectangle(
-                static_cast<const shapes::rectangle&>(p_shape)
+        case shapes::ShapeType::Rectangle:
+            shape_ = new shapes::Rectangle(
+                static_cast<const shapes::Rectangle&>(shape)
             );
             break;
-        case shapes::type::circle:
-            shape_ = new shapes::circle(
-                static_cast<const shapes::circle&>(p_shape)
+        case shapes::ShapeType::Circle:
+            shape_ = new shapes::Circle(
+                static_cast<const shapes::Circle&>(shape)
             );
             break;
-        case shapes::type::convex:
-            shape_ = new shapes::convex(
-                static_cast<const shapes::convex&>(p_shape)
+        case shapes::ShapeType::Convex:
+            shape_ = new shapes::Convex(
+                static_cast<const shapes::Convex&>(shape)
             );
             break;
     }
     update_geometry_();
 }
 
-void shape2D::update_geometry_()
+void Shape2D::update_geometry_()
 {
     if (shape_ == nullptr) {
         return;
@@ -109,15 +109,15 @@ void shape2D::update_geometry_()
 
     switch(shape_->get_type())
     {
-        case shapes::type::rectangle:
-            draw_mode_ = renderer::draw_mode::triangles;
+        case shapes::ShapeType::Rectangle:
+            draw_mode_ = Renderer::DrawMode::Triangles;
             quad = true;
             break;
-        case shapes::type::circle:
-            draw_mode_ = renderer::draw_mode::triangle_fan;
+        case shapes::ShapeType::Circle:
+            draw_mode_ = Renderer::DrawMode::TriangleFan;
             break;
-        case shapes::type::convex:
-            draw_mode_ = renderer::draw_mode::triangles;
+        case shapes::ShapeType::Convex:
+            draw_mode_ = Renderer::DrawMode::Triangles;
             break;
     }
 
@@ -132,20 +132,20 @@ void shape2D::update_geometry_()
     vertices_->fill_data(0, shape_->get_point_count(), vertex_data.data());
 }
 
-void shape2D::draw(renderer* r) const
+void Shape2D::draw(Renderer* renderer) const
 {
     if (owning_entity_ != nullptr) {
-        r->set_model_transform(owning_entity_->get_global_transform());
+        renderer->set_model_transform(owning_entity_->get_global_transform());
     }
-    r->set_draw_mode(draw_mode_);
+    renderer->set_draw_mode(draw_mode_);
     if (indices_->get_index_count() == 0) {
-        r->draw(*vertices_);
+        renderer->draw(*vertices_);
     } else {
-        r->draw_indexed(*vertices_, *indices_);
+        renderer->draw_indexed(*vertices_, *indices_);
     }
     // Reset draw mode to default state
-    if (draw_mode_ != renderer::draw_mode::triangles) {
-        r->set_draw_mode(renderer::draw_mode::triangles);
+    if (draw_mode_ != Renderer::DrawMode::Triangles) {
+        renderer->set_draw_mode(Renderer::DrawMode::Triangles);
     }
 }
 

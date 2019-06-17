@@ -32,8 +32,8 @@
 
 namespace sun {
 
-image::image(context& p_context, const std::string& path)
-:   resource(p_context),
+Image::Image(Context& context, const std::string& path)
+:   Resource(context),
     data_(nullptr)
 {
     if (!path.empty()) {
@@ -41,15 +41,15 @@ image::image(context& p_context, const std::string& path)
     }
 }
 
-image::image(const image& other)
-:   resource(other.context_)
+Image::Image(const Image& other)
+:   Resource(other.context_)
 {
     if (other.data_ != nullptr) {
         set_data(other.size_, other.data_);
     }
 }
 
-image& image::operator=(const image& other)
+Image& Image::operator=(const Image& other)
 {
     if (other.data_ != nullptr) {
         set_data(other.size_, other.data_);
@@ -58,7 +58,7 @@ image& image::operator=(const image& other)
     return *this;
 }
 
-bool image::load(const std::string& path)
+bool Image::load(const std::string& path)
 {
     clear();
 
@@ -67,12 +67,12 @@ bool image::load(const std::string& path)
     ubyte* data = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
     #ifdef SUN_OUT_DEBUG
-        sun_logf_debug("STB image loaded\nwidth: %d\nheight: %d\nbpp: %d",
+        sun_logf_debug("STB Image loaded\nwidth: %d\nheight: %d\nbpp: %d",
             width, height, channels);
     #endif
 
     if (data == nullptr) {
-        sun_logf_error("Error loading image: %s", path.c_str());
+        sun_logf_error("Error loading Image: %s", path.c_str());
         return false;
     }
 
@@ -81,10 +81,10 @@ bool image::load(const std::string& path)
 
     stbi_image_free(data);
 
-    return resource::load(path);
+    return Resource::load(path);
 }
 
-void image::allocate(uint width, uint height)
+void Image::allocate(uint width, uint height)
 {
     clear();
 
@@ -92,7 +92,7 @@ void image::allocate(uint width, uint height)
     size_ = {width, height};
 }
 
-void image::allocate(const vector2u& size)
+void Image::allocate(const Vector2u& size)
 {
     clear();
 
@@ -100,15 +100,15 @@ void image::allocate(const vector2u& size)
     size_ = size;
 }
 
-void image::set_data(const vector2u& size, const ubyte* data)
+void Image::set_data(const Vector2u& size, const ubyte* data)
 {
     allocate(size);
     std::memcpy(data_, data, size.w * size.h * 4);
 }
 
-void image::clear()
+void Image::clear()
 {
-    resource::clear();
+    Resource::clear();
 
     if (data_ != nullptr) {
         delete [] data_;

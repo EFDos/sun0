@@ -33,33 +33,33 @@
 namespace sun {
 namespace opengl {
 
-constexpr GLenum get_gl_type(sun::texture::format fmt)
+constexpr GLenum get_gl_type(sun::Texture::Format fmt)
 {
     switch (fmt) {
-        case texture::format::rgba:     return GLenum(GL_RGBA);
-        case texture::format::bgra:     return GLenum(GL_BGRA);
-        case texture::format::red:      return GLenum(GL_RED);
-        case texture::format::blue:     return GLenum(GL_BLUE);
-        case texture::format::green:    return GLenum(GL_GREEN);
-        case texture::format::alpha:    return GLenum(GL_ALPHA);
+        case Texture::Format::Rgba:     return GLenum(GL_RGBA);
+        case Texture::Format::Bgra:     return GLenum(GL_BGRA);
+        case Texture::Format::Red:      return GLenum(GL_RED);
+        case Texture::Format::Blue:     return GLenum(GL_BLUE);
+        case Texture::Format::Green:    return GLenum(GL_GREEN);
+        case Texture::Format::Alpha:    return GLenum(GL_ALPHA);
         default: return GLenum();
     }
 }
 
-constexpr int get_pixel_size(sun::texture::format fmt)
+constexpr int get_pixel_size(sun::Texture::Format fmt)
 {
     switch (fmt) {
-        case texture::format::rgba:     return 4;
-        case texture::format::bgra:     return 4;
-        case texture::format::red:      return 1;
-        case texture::format::blue:     return 1;
-        case texture::format::green:    return 1;
-        case texture::format::alpha:    return 1;
+        case Texture::Format::Rgba:     return 4;
+        case Texture::Format::Bgra:     return 4;
+        case Texture::Format::Red:      return 1;
+        case Texture::Format::Blue:     return 1;
+        case Texture::Format::Green:    return 1;
+        case Texture::Format::Alpha:    return 1;
         default: return 4;
     }
 }
 
-texture::texture(context& p_context) : sun::texture(p_context), id_(0)
+Texture::Texture(Context& context) : sun::Texture(context), id_(0)
 {
     glGenTextures(1, &id_);
     glBindTexture(GL_TEXTURE_2D, id_);
@@ -71,19 +71,19 @@ texture::texture(context& p_context) : sun::texture(p_context), id_(0)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-texture::~texture()
+Texture::~Texture()
 {
     release();
 }
 
-void texture::release()
+void Texture::release()
 {
     if (id_ != 0) {
         glDeleteTextures(1, &id_);
     }
 }
 
-void texture::bind() const
+void Texture::bind() const
 {
     if (id_ == 0) {
         sun_log_error("Error binding texture: Texture in invalid state.");
@@ -94,17 +94,17 @@ void texture::bind() const
     glBindTexture(GL_TEXTURE_2D, id_);
 }
 
-void texture::unbind() const
+void Texture::unbind() const
 {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-bool texture::load(const image& img)
+bool Texture::load(const Image& img)
 {
     return load(img.get_size(), img.get_data());
 }
 
-bool texture::load(const vector2u& size, const ubyte* data)
+bool Texture::load(const Vector2u& size, const ubyte* data)
 {
     if (id_ == 0) {
         sun_log_error("Error loading texture: Texture in invalid state.");
@@ -125,7 +125,7 @@ bool texture::load(const vector2u& size, const ubyte* data)
     return true;
 }
 
-void texture::resize(const vector2u& size)
+void Texture::resize(const Vector2u& size)
 {
     if (id_ == 0) {
         sun_log_error("Failed to resize texture:"
@@ -140,7 +140,7 @@ void texture::resize(const vector2u& size)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void texture::fill(const vector2u& offset, const vector2u& size,
+void Texture::fill(const Vector2u& offset, const Vector2u& size,
                    const ubyte* data)
 {
     if (id_ == 0) {
@@ -158,9 +158,9 @@ void texture::fill(const vector2u& offset, const vector2u& size,
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void texture::clear()
+void Texture::clear()
 {
-    resource::clear();
+    Resource::clear();
 
     if (id_ == 0) {
         sun_log_error("Error clearing texture: Texture in invalid state.");
@@ -173,7 +173,7 @@ void texture::clear()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void texture::map()
+void Texture::map()
 {
     unmap();
 
@@ -185,7 +185,7 @@ void texture::map()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void texture::unmap()
+void Texture::unmap()
 {
     if(map_buffer_ == nullptr){
         return;

@@ -31,24 +31,23 @@
 
 namespace sun {
 
-class texture;
-class renderer;
+class Texture;
 
-class SUN_API sprite final : public drawable
+class SUN_API Sprite final : public Drawable
 {
 public:
 
-    SUN_COMPONENT_TYPE(sprite)
+    SUN_COMPONENT_TYPE(Sprite)
 
-    sprite(context& p_context);
+    Sprite(Context& p_context);
 
-    ~sprite();
+    ~Sprite();
 
-    void draw(renderer* r) const override;
+    void draw(Renderer* renderer) const override;
 
-    void set_texture(const texture* tex);
+    void set_texture(const Texture* tex);
 
-    inline void set_rect(const recti& r) {
+    inline void set_rect(const Recti& r) {
         rect_ = r;
         update_geometry_();
     }
@@ -57,11 +56,11 @@ private:
 
     void update_geometry_() override;
 
-    recti           rect_;
+    Recti           rect_;
 
-    vertex_buffer*  vertices_;
-    index_buffer*   indices_;
-    const texture*  texture_;
+    VertexBuffer*  vertices_;
+    IndexBuffer*   indices_;
+    const Texture*  texture_;
 };
 
 }

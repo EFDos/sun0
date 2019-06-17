@@ -28,19 +28,19 @@
 
 namespace sun {
 
-class renderer;
+class Renderer;
 
-class SUN_API camera final : public component
+class SUN_API Camera final : public Component
 {
 public:
 
-    SUN_COMPONENT_TYPE(camera)
+    SUN_COMPONENT_TYPE(Camera)
 
-    camera(context&);
+    Camera(Context&);
 
-    void update_transform(renderer&);
+    void update_transform(Renderer&);
 
-    inline void set_viewport_size(const vector2f& size) {
+    inline void set_viewport_size(const Vector2f& size) {
         viewport_.set_size(size);
     }
 
@@ -60,11 +60,11 @@ public:
         follow_speed_ = speed;
     }
 
-    inline void set_follow_offset(const recti& offset) {
+    inline void set_follow_offset(const Recti& offset) {
         offset_ = offset;
     }
 
-    inline void set_limits(const recti& limits) {
+    inline void set_limits(const Recti& limits) {
         limit_ = limits;
     }
 
@@ -80,28 +80,28 @@ public:
         return follow_speed_;
     }
 
-    inline const recti& get_follow_offset() const {
+    inline const Recti& get_follow_offset() const {
         return offset_;
     }
 
-    inline const recti& get_limits() const {
+    inline const Recti& get_limits() const {
         return limit_;
     }
 
-    vector2f get_center() const;
+    Vector2f get_center() const;
 
 private:
 
-    rectf   viewport_;
-    recti   offset_;
-    recti   limit_;
+    Rectf   viewport_;
+    Recti   offset_;
+    Recti   limit_;
 
     float   follow_speed_;
 
     bool    follow_;
     bool    hard_limit_;
 
-    matrix4 transform_;
+    Matrix4 transform_;
 };
 
 } // sun

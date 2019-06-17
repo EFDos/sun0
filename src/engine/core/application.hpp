@@ -45,14 +45,14 @@ public:
 
     virtual void on_update() = 0;
 
-    virtual void on_event(event& e);
+    virtual void on_event(Event& e);
 
     int run();
 
 protected:
 
-    context&    context_;
-	window      window_;
+    Context&    context_;
+	Window      window_;
 	Renderer*   renderer_;
 	PhysicsServer* physics_;
 

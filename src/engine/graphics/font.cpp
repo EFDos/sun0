@@ -38,16 +38,16 @@
 namespace sun
 {
 
-font::font(context& p_context)
-:   resource(p_context),
+Font::Font(Context& context)
+:   Resource(context),
     library_(nullptr),
     face_(nullptr)
 {
 }
 
-void font::clear()
+void Font::clear()
 {
-    resource::clear();
+    Resource::clear();
 
     if (face_ == nullptr){
         FT_Done_Face(static_cast<FT_Face>(face_));
@@ -64,7 +64,7 @@ void font::clear()
     pixel_buffer_.clear();
 }
 
-bool font::load(const std::string& filepath)
+bool Font::load(const std::string& filepath)
 {
     clear();
 
@@ -77,7 +77,7 @@ bool font::load(const std::string& filepath)
 
     FT_Face face;
     if (FT_New_Face(ft, filepath.c_str(), 0, &face) != 0) {
-        sun_logf_error("Could no load font %s", filepath.c_str());
+        sun_logf_error("Could no load Font %s", filepath.c_str());
         face = nullptr;
         return false;
     }
@@ -85,16 +85,16 @@ bool font::load(const std::string& filepath)
     library_ = ft;
     face_ = face;
 
-    return resource::load(filepath);
+    return Resource::load(filepath);
 }
 
-const font::glyph& font::get_glyph(uint8 code, uint char_size) const
+const Font::Glyph& Font::get_glyph(uint8 code, uint char_size) const
 {
     if (library_ == nullptr || face_ == nullptr) {
-        sun_log_warn("Retrieving glyph from unitialized font");
+        sun_log_warn("Retrieving glyph from unitialized Font");
     }
 
-    glyph_table& glyphes = pages_[char_size].glyphes;
+    GlyphTable& glyphes = pages_[char_size].glyphes;
 
     auto it = glyphes.find(code);
 
@@ -102,12 +102,12 @@ const font::glyph& font::get_glyph(uint8 code, uint char_size) const
         return it->second;
     }
     else {
-        glyph g = load_glyph_(code, char_size);
+        Glyph g = load_glyph_(code, char_size);
         return glyphes.insert(std::make_pair(code, g)).first->second;
     }
 }
 
-float font::get_kerning(uint32 first, uint32 second, uint char_size) const
+float Font::get_kerning(uint32 first, uint32 second, uint char_size) const
 {
     if (first == 0 && second == 0){
         return 0.f;
@@ -134,7 +134,7 @@ float font::get_kerning(uint32 first, uint32 second, uint char_size) const
     }
 }
 
-float font::get_line_spacing(uint char_size) const
+float Font::get_line_spacing(uint char_size) const
 {
     FT_Face face = static_cast<FT_Face>(face_);
 
@@ -147,38 +147,38 @@ float font::get_line_spacing(uint char_size) const
     }
 }
 
-const texture* font::get_page_texture(uint size) const
+const Texture* Font::get_page_texture(uint size) const
 {
-    return pages_[size].page_texture;
+    return pages_[size].texture;
 }
 
-font::glyph font::load_glyph_(uint8 code, uint char_size) const
+Font::Glyph Font::load_glyph_(uint8 code, uint char_size) const
 {
-    glyph g;
+    Glyph glyph;
 
     if (face_ == nullptr)
-        return g;
+        return glyph;
 
     if (!set_current_size_(char_size))
-        return g;
+        return glyph;
 
     FT_Face face = static_cast<FT_Face>(face_);
 
     FT_Int32 flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_FORCE_AUTOHINT;
     if (FT_Load_Char(face, code, flags)){
-        return g;
+        return glyph;
     }
 
     FT_Glyph glyph_desc;
     if (FT_Get_Glyph(face->glyph, &glyph_desc)){
-        return g;
+        return glyph;
     }
 
     FT_Glyph_To_Bitmap(&glyph_desc, FT_RENDER_MODE_NORMAL, 0, 1);
     FT_Bitmap& bitmap = reinterpret_cast<FT_BitmapGlyph>(glyph_desc)->bitmap;
 
-    g.advance = static_cast<float>(face->glyph->metrics.horiAdvance)
-                                   / static_cast<float>(1 << 6);
+    glyph.advance = static_cast<float>(face->glyph->metrics.horiAdvance)
+                                       / static_cast<float>(1 << 6);
 
     int width  = bitmap.width;
     int height = bitmap.rows;
@@ -187,17 +187,17 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
     {
         const unsigned padding = 1;
 
-        page& p = pages_[char_size];
+        Page& page = pages_[char_size];
 
-        g.tex_coords = find_glyph_rect_(p, width + 2 * padding,
-                                        height + 2 * padding);
+        glyph.tex_coords = find_glyph_rect_(page, width + 2 * padding,
+                                            height + 2 * padding);
 
-        g.tex_coords.x      += padding;
-        g.tex_coords.y      += padding;
-        g.tex_coords.w      -= 2 * padding;
-        g.tex_coords.h      -= 2 * padding;
+        glyph.tex_coords.x      += padding;
+        glyph.tex_coords.y      += padding;
+        glyph.tex_coords.w      -= 2 * padding;
+        glyph.tex_coords.h      -= 2 * padding;
 
-        g.rect = {
+        glyph.rect = {
             static_cast<float>(face->glyph->metrics.horiBearingX)
             / static_cast<float>(1 << 6),
 
@@ -243,65 +243,52 @@ font::glyph font::load_glyph_(uint8 code, uint char_size) const
             }
         }
 
-        p.page_texture->fill({(uint)g.tex_coords.x, (uint)g.tex_coords.y},
-                             {(uint)g.tex_coords.w, (uint)g.tex_coords.h},
-                             pixel_buffer_.data());
-        p.page_texture->map();
-        /*p.page_texture->unmap();
-        auto data = p.page_texture->get_data();
-
-        bool all_zeroes = true;
-        for (uint i = 0 ; i < p.page_texture->get_size().x * p.page_texture->get_size().y ; ++i) {
-            if (data[i] != 0) {
-                all_zeroes = false;
-            }
-        }
-        if (all_zeroes) {
-            sun_log_fatal("TEXTURE BECAME BLANK!");
-        }*/
+        page.texture->fill({(uint)glyph.tex_coords.x, (uint)glyph.tex_coords.y},
+                           {(uint)glyph.tex_coords.w, (uint)glyph.tex_coords.h},
+                           pixel_buffer_.data());
     }
 
     FT_Done_Glyph(glyph_desc);
 
-    return g;
+    return glyph;
 }
 
-recti font::find_glyph_rect_(page& p, uint width, uint height) const
+Recti Font::find_glyph_rect_(Page& page, uint width, uint height) const
 {
-    if (p.page_texture == nullptr) {
-        p.page_texture = generate_page_texture_();
+    if (page.texture == nullptr) {
+        page.texture = generate_page_texture_();
     }
 
-    row* r = nullptr;
+    Row* row = nullptr;
     float best_ratio = 0.f;
-    for (row& it_row : p.rows)
+    for (Row& it_row : page.rows)
     {
         float ratio = static_cast<float>(height) / it_row.height;
 
         if(ratio < 0.7f || ratio > 1.f)
             continue;
 
-        if(width > p.page_texture->get_size().x - it_row.width)
+        if(width > page.texture->get_size().x - it_row.width)
             continue;
 
         if (ratio < best_ratio)
             continue;
 
-        r = &it_row;
+        row = &it_row;
         best_ratio = ratio;
     }
 
-    if (r == nullptr)
+    if (row == nullptr)
     {
         int row_height = height + height / 10;
 
-        while (p.next_row + row_height >= p.page_texture->get_size().y ||
-               width >= p.page_texture->get_size().x)
+        while (page.next_row + row_height >= page.texture->get_size().y ||
+               width >= page.texture->get_size().x)
         {
-            uint texture_width  = p.page_texture->get_size().w;
-            uint texture_height = p.page_texture->get_size().h;
+            uint texture_width  = page.texture->get_size().w;
+            uint texture_height = page.texture->get_size().h;
 
-            uint tex_max_size = context_.get_system<renderer>()->get_texture_max_size();
+            uint tex_max_size = context_.get_system<Renderer>()->get_texture_max_size();
 
             if (texture_width * 2 <= tex_max_size &&
                 texture_height * 2 <= tex_max_size)
@@ -310,36 +297,36 @@ recti font::find_glyph_rect_(page& p, uint width, uint height) const
                 //data back to new texture
                 const uint8* buffer;
 
-                p.page_texture->map();
-                buffer = p.page_texture->get_data();
+                page.texture->map();
+                buffer = page.texture->get_data();
 
-                p.page_texture->clear();
-                p.page_texture->resize({texture_width * 2,
+                page.texture->clear();
+                page.texture->resize({texture_width * 2,
                                         texture_height * 2});
 
-                p.page_texture->fill({0,0}, {texture_width, texture_height},
+                page.texture->fill({0,0}, {texture_width, texture_height},
                                      buffer);
 
-                p.page_texture->unmap();
+                page.texture->unmap();
             }
             else {
                 sun_log_error("Font: Failed to add new character: "
                               "Maximum texture size has been reached");
-                return recti(0, 0, 2, 2);
+                return Recti(0, 0, 2, 2);
             }
         }
-        p.rows.push_back(row(p.next_row, row_height));
-        p.next_row += row_height;
-        r = &p.rows.back();
+        page.rows.push_back(Row(page.next_row, row_height));
+        page.next_row += row_height;
+        row = &page.rows.back();
     }
 
-    recti glyph_rect(r->width, r->top, width, height);
-    r->width += width;
+    Recti glyph_rect(row->width, row->top, width, height);
+    row->width += width;
 
     return glyph_rect;
 }
 
-bool font::set_current_size_(uint char_size) const
+bool Font::set_current_size_(uint char_size) const
 {
     if (face_ == nullptr) {
         return false;
@@ -357,7 +344,7 @@ bool font::set_current_size_(uint char_size) const
         {
             if (!FT_IS_SCALABLE(face))
             {
-                sun_logf_error("font: Failed to set font size to %s",
+                sun_logf_error("Font: Failed to set Font size to %s",
                           std::to_string(char_size).c_str());
             }
         }
@@ -369,12 +356,12 @@ bool font::set_current_size_(uint char_size) const
     }
 }
 
-texture* font::generate_page_texture_() const
+Texture* Font::generate_page_texture_() const
 {
-    texture* tex = context_.get_system<renderer>()->create_texture();
+    Texture* tex = context_.get_system<Renderer>()->create_texture();
 
-    tex->set_usage(texture::usage::dynamic);
-    tex->set_format(texture::format::rgba);
+    tex->set_usage(Texture::Usage::Dynamic);
+    tex->set_format(Texture::Format::Rgba);
     tex->resize({128, 128});
     return tex;
 }

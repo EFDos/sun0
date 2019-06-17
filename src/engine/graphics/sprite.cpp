@@ -30,33 +30,33 @@
 
 namespace sun {
 
-sprite::sprite(context& p_context)
-:   drawable(p_context),
+Sprite::Sprite(Context& context)
+:   Drawable(context),
     vertices_(nullptr),
     indices_(nullptr),
     texture_(nullptr)
 {
-    auto r = context_.get_system<renderer>();
+    auto r = context_.get_system<Renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4);
     indices_ = r->create_index_buffer(6);
 }
 
-sprite::~sprite()
+Sprite::~Sprite()
 {
     delete vertices_;
     delete indices_;
 }
 
-void sprite::draw(renderer* r) const
+void Sprite::draw(Renderer* renderer) const
 {
     if (owning_entity_ != nullptr) {
-        r->set_model_transform(owning_entity_->get_global_transform());
+        renderer->set_model_transform(owning_entity_->get_global_transform());
     }
-    r->set_draw_mode(renderer::draw_mode::triangles);
-    r->draw_indexed(*vertices_, *indices_, texture_, nullptr);
+    renderer->set_draw_mode(Renderer::DrawMode::Triangles);
+    renderer->draw_indexed(*vertices_, *indices_, texture_, nullptr);
 }
 
-void sprite::set_texture(const texture* tex)
+void Sprite::set_texture(const Texture* tex)
 {
     if (tex == nullptr) {
         return;
@@ -71,7 +71,7 @@ void sprite::set_texture(const texture* tex)
     update_geometry_();
 }
 
-void sprite::update_geometry_()
+void Sprite::update_geometry_()
 {
     struct vertex_def {
         float x, y;

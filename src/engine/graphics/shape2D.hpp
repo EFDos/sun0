@@ -33,24 +33,24 @@
 namespace sun {
 
 namespace shapes {
-class primitive_shape;
+class Shape;
 }
 
-class SUN_API shape2D : public drawable
+class SUN_API Shape2D : public Drawable
 {
 public:
 
-    SUN_COMPONENT_TYPE(shape2D)
+    SUN_COMPONENT_TYPE(Shape2D)
 
-    shape2D(context& p_context);
+    Shape2D(Context& context);
 
-    ~shape2D();
+    ~Shape2D();
 
-    void draw(renderer* r) const override;
+    void draw(Renderer* renderer) const override;
 
-    void set_shape(const shapes::primitive_shape& p_shape);
+    void set_shape(const shapes::Shape& p_shape);
 
-    inline void set_color(const color& c) {
+    inline void set_color(const Color& c) {
         color_ = c;
         update_geometry_();
     }
@@ -59,12 +59,12 @@ private:
 
     void update_geometry_() override;
 
-    //TODO Maybe change primitive_shape* to union?
-    shapes::primitive_shape*    shape_;
-    color                       color_;
-    renderer::draw_mode         draw_mode_;
-    vertex_buffer*              vertices_;
-    index_buffer*               indices_;
+    //TODO Maybe change Shape* to union?
+    shapes::Shape*              shape_;
+    Color                       color_;
+    Renderer::DrawMode          draw_mode_;
+    VertexBuffer*               vertices_;
+    IndexBuffer*                indices_;
 };
 
 }

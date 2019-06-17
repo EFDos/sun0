@@ -94,7 +94,7 @@ bool AudioServer::init()
     alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
 
     sun_log_info("OpenAL Audio Server initialized.");
-    return system::init();
+    return System::init();
 }
 
 void AudioServer::shutdown()
@@ -118,7 +118,7 @@ void AudioServer::shutdown()
     }
 
     sun_log_info("OpenAL Audio Server shutdown.");
-    system::shutdown();
+    System::shutdown();
 }
 
 void AudioServer::set_global_volume(float volume)

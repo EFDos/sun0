@@ -77,7 +77,7 @@ public:
         radius_ = radius;
     }
 
-    inline vector2f get_point(size_t i) const override
+    inline Vector2f get_point(size_t i) const override
     {
         float angle = i * 2 * math::PI / points_ - math::PI / 2;
         float x = std::cos(angle) * radius_;

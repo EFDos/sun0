@@ -28,15 +28,15 @@
 namespace sun {
 namespace opengl {
 
-class SUN_API vertex_buffer final : public sun::vertex_buffer
+class SUN_API VertexBuffer final : public sun::VertexBuffer
 {
 public:
 
-    vertex_buffer(uint8 vertex_size, size_t capacity);
+    VertexBuffer(uint8 vertex_size, size_t capacity);
 
-    ~vertex_buffer();
+    ~VertexBuffer();
 
-    // implements gpu_object
+    // implements GPUOBject
 
     void release() override;
 
@@ -44,7 +44,7 @@ public:
 
     void unbind() const override;
 
-    // implements sun::vertex_buffer
+    // implements sun::VertexBuffer
 
     void fill_data(size_t offset, size_t count, const void* data) override;
 

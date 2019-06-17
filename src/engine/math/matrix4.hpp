@@ -84,7 +84,7 @@ public:
 
     static Matrix4 orthogonal(float left, float right, float bottom, float top);
 
-    static Matrix4 orthogonal(const rect<float>& r);
+    static Matrix4 orthogonal(const Rect<float>& r);
 
 private:
 

@@ -65,7 +65,7 @@ int Application::run()
 {
 	running_ = true;
     while(running_) {
-    	event e;
+    	Event e;
     	if (window_.is_open()) {
             while (window_.poll_event(e)) {
     	        on_event(e);
@@ -73,7 +73,7 @@ int Application::run()
         }
         on_update();
         context_.update_systems();
-        renderer_->set_model_transform(matrix4());
+        renderer_->set_model_transform(Matrix4());
         physics_->draw_physics_debug(renderer_);
         window_.update();
     }

@@ -35,9 +35,9 @@
 
 namespace sun {
 
-renderer::renderer(context& c)
-:   system(c),
-    draw_mode_(draw_mode::triangles),
+Renderer::Renderer(Context& context)
+:   System(context),
+    draw_mode_(DrawMode::Triangles),
     primitive_vertices_(nullptr),
     primitive_indices_(nullptr),
     current_shader_(nullptr),
@@ -45,7 +45,7 @@ renderer::renderer(context& c)
 {
 }
 
-bool renderer::init()
+bool Renderer::init()
 {
 
     if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
@@ -57,7 +57,7 @@ bool renderer::init()
     return true;
 }
 
-void renderer::shutdown()
+void Renderer::shutdown()
 {
     for (auto drawable : drawables_) {
         delete drawable;
@@ -65,17 +65,17 @@ void renderer::shutdown()
     sun_log_info("Graphics System shutdown.");
 }
 
-void renderer::set_color(const color& col)
+void Renderer::set_color(const Color& col)
 {
     clear_color_ = to_colorf(col);
 }
 
-void renderer::set_viewport(const rectf& viewport)
+void Renderer::set_viewport(const Rectf& viewport)
 {
     viewport_ = viewport;
 }
 
-void renderer::update()
+void Renderer::update()
 {
     clear();
     for (auto c : cameras_) {
@@ -86,7 +86,7 @@ void renderer::update()
     }
 }
 
-void renderer::draw_rect(const rectf& rect, const color& c) const
+void Renderer::draw_rect(const Rectf& rect, const Color& c) const
 {
     if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
         sun_log_error("Graphics backend did not intialize buffers"
@@ -106,7 +106,7 @@ void renderer::draw_rect(const rectf& rect, const color& c) const
         fcolor.r, fcolor.g, fcolor.b, fcolor.a,
     };
 
-    draw_mode_ = draw_mode::triangles;
+    draw_mode_ = DrawMode::Triangles;
 
     uint32 indices[] = {0, 1, 3, 1, 2, 3};
 
@@ -123,7 +123,7 @@ void renderer::draw_rect(const rectf& rect, const color& c) const
     draw_indexed(*primitive_vertices_, *primitive_indices_);
 }
 
-void renderer::draw_circle(const vector2f& pos, float radius, int verts) const
+void Renderer::draw_circle(const Vector2f& pos, float radius, int verts) const
 {
     if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
         sun_log_error("Graphics backend did not intialize buffers"
@@ -160,7 +160,7 @@ void renderer::draw_circle(const vector2f& pos, float radius, int verts) const
     draw_indexed(*primitive_vertices_, *primitive_indices_);*/
 }
 
-void renderer::draw_line(const vector2f& begin, const vector2f& end, const color& c) const
+void Renderer::draw_line(const Vector2f& begin, const Vector2f& end, const Color& c) const
 {
     if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
         sun_log_error("Graphics backend did not intialize buffers"
@@ -176,7 +176,7 @@ void renderer::draw_line(const vector2f& begin, const vector2f& end, const color
         fcolor.r, fcolor.g, fcolor.b, fcolor.a,
     };
 
-    draw_mode_ = draw_mode::lines;
+    draw_mode_ = DrawMode::Lines;
 
     primitive_vertices_->resize(2);
     primitive_vertices_->fill_data(0, 2, vertices.data());
@@ -184,9 +184,9 @@ void renderer::draw_line(const vector2f& begin, const vector2f& end, const color
     draw(*primitive_vertices_);
 }
 
-void renderer::draw_polygon(uint vert_count,
-                            const vector2f* verts,
-                            const color& c) const
+void Renderer::draw_polygon(uint vert_count,
+                            const Vector2f* verts,
+                            const Color& c) const
 {
     if (vert_count < 3) {
         sun_log_error("Can't draw polygon with less than 3 vertices");
@@ -220,9 +220,9 @@ void renderer::draw_polygon(uint vert_count,
     }
 
     if (vert_count > 4) {
-        draw_mode_ = draw_mode::triangle_fan;
+        draw_mode_ = DrawMode::TriangleFan;
     } else {
-        draw_mode_ = draw_mode::triangles;
+        draw_mode_ = DrawMode::Triangles;
     }
 
     if (vert_count == 4) {
@@ -244,41 +244,41 @@ void renderer::draw_polygon(uint vert_count,
     }
 }
 
-component* renderer::create_component_(uint type_hash, uint id)
+Component* Renderer::create_component_(uint type_hash, uint id)
 {
-    component* comp = nullptr;
-    if (type_hash == camera::get_static_type_hash()) {
-        camera* cam = new camera(context_);
+    Component* comp = nullptr;
+    if (type_hash == Camera::get_static_type_hash()) {
+        Camera* cam = new Camera(context_);
         cam->set_viewport_size(viewport_.get_size());
         cameras_.push_back(cam);
         comp = cam;
         comp->set_id(id);
         return comp;
     }
-    if (type_hash == sprite::get_static_type_hash()) {
-        comp = new sprite(context_);
+    if (type_hash == Sprite::get_static_type_hash()) {
+        comp = new Sprite(context_);
     }
-    if (type_hash == sprite_batch::get_static_type_hash()) {
-        comp = new sprite_batch(context_);
+    if (type_hash == SpriteBatch::get_static_type_hash()) {
+        comp = new SpriteBatch(context_);
     }
-    if (type_hash == text::get_static_type_hash()) {
-        comp = new text(context_);
+    if (type_hash == Text::get_static_type_hash()) {
+        comp = new Text(context_);
     }
-    if (type_hash == shape2D::get_static_type_hash()) {
-        comp = new shape2D(context_);
+    if (type_hash == Shape2D::get_static_type_hash()) {
+        comp = new Shape2D(context_);
     }
-    drawables_.push_back(static_cast<drawable*>(comp));
+    drawables_.push_back(static_cast<Drawable*>(comp));
     comp->set_id(id);
     return comp;
 }
 
-bool renderer::handles_component_(uint type_hash)
+bool Renderer::handles_component_(uint type_hash)
 {
-    if (type_hash == sprite::get_static_type_hash() ||
-        type_hash == text::get_static_type_hash() ||
-        type_hash == shape2D::get_static_type_hash() ||
-        type_hash == sprite_batch::get_static_type_hash() ||
-        type_hash == camera::get_static_type_hash())
+    if (type_hash == Sprite::get_static_type_hash() ||
+        type_hash == Text::get_static_type_hash() ||
+        type_hash == Shape2D::get_static_type_hash() ||
+        type_hash == SpriteBatch::get_static_type_hash() ||
+        type_hash == Camera::get_static_type_hash())
     {
         return true;
     }

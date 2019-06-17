@@ -79,7 +79,7 @@ bool Renderer::init()
     primitive_indices_ = create_index_buffer(0);
 
     default_flat_shader_ = create_shader("res/flat.glsl");
-    default_textured_shader_ = create_shader("res/Textured.glsl");
+    default_textured_shader_ = create_shader("res/textured.glsl");
 
     if (default_textured_shader_ != nullptr) {
         default_textured_shader_->set_uniform("tex", 0);

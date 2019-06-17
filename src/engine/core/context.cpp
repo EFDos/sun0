@@ -64,19 +64,19 @@ void Context::update_systems()
 System* Context::register_system_(const std::string& type)
 {
     System* sys = nullptr;
-    if (type.compare("Renderer")) {
+    if (type.compare("Renderer") == 0) {
         sun_logf_debug("registering new opengl renderer as %s", type.c_str());
         sys = new opengl::Renderer(*this);
     }
-    if (type.compare("AudioServer")) {
+    if (type.compare("AudioServer") == 0) {
         sun_logf_debug("registering new openal renderer as %s", type.c_str());
         sys = new AudioServer(*this);
     }
-    if (type.compare("ResourceCache")) {
+    if (type.compare("ResourceCache") == 0) {
         sun_logf_debug("registering new resource_cache as %s", type.c_str());
         sys = new ResourceCache(*this);
     }
-    if (type.compare("PhysicsServer")) {
+    if (type.compare("PhysicsServer") == 0) {
         sun_logf_debug("registering new box2d wrapper as %s", type.c_str());
         sys = new PhysicsServer(*this);
     }

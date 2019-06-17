@@ -133,7 +133,7 @@ bool Window::poll_event(Event& e)
     		return ret;
         default:
         	e.type = EventType::Undefined;
-        	sun_logf_warn("Event type %d is undefined: ", sdl_e.type);
+        	//sun_logf_warn("Event type %d is undefined: ", sdl_e.type);
             return ret;
     }
 }

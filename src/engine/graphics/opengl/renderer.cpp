@@ -218,7 +218,7 @@ void Renderer::set_texture_(const sun::Texture* texture) const
 
 void Renderer::clear(const Color& col)
 {
-    auto colf = to_colorf(col);
+    auto colf = Color::to_colorf(col);
     glClearColor(colf.r, colf.g, colf.b, colf.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

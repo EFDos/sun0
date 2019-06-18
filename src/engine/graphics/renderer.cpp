@@ -67,7 +67,7 @@ void Renderer::shutdown()
 
 void Renderer::set_color(const Color& col)
 {
-    clear_color_ = to_colorf(col);
+    clear_color_ = Color::to_colorf(col);
 }
 
 void Renderer::set_viewport(const Rectf& viewport)
@@ -94,7 +94,7 @@ void Renderer::draw_rect(const Rectf& rect, const Color& c) const
         return;
     }
 
-    auto fcolor = to_colorf(c);
+    auto fcolor = Color::to_colorf(c);
     std::vector<float> vertices{
         rect.x, rect.y,
         fcolor.r, fcolor.g, fcolor.b, fcolor.a,
@@ -168,7 +168,7 @@ void Renderer::draw_line(const Vector2f& begin, const Vector2f& end, const Color
         return;
     }
 
-    auto fcolor = to_colorf(c);
+    auto fcolor = Color::to_colorf(c);
     std::vector<float> vertices{
         begin.x, begin.y,
         fcolor.r, fcolor.g, fcolor.b, fcolor.a,
@@ -206,7 +206,7 @@ void Renderer::draw_polygon(uint vert_count,
         return;
     }
 
-    auto fcolor = to_colorf(c);
+    auto fcolor = Color::to_colorf(c);
     std::vector<float> vertices(vert_count * 6);
 
     for (uint i = 0 ; i < vert_count ; ++i)

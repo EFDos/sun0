@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  application.hpp                                                      */
+/*  gui_system.cpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,74 +21,31 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "application.hpp"
-#include "../version.hpp"
-
-#include "resources/resource_cache.hpp"
-#include "physics/physics_server.hpp"
-#include "graphics/opengl/renderer.hpp"
-#include "audio/audio_server.hpp"
-#include "gui/gui_system.hpp"
-
-#include "logger.hpp"
-#include "event.hpp"
+#include "gui_system.hpp"
 
 namespace sun {
 
-Application::Application(Context& context)
-:   context_(context),
-    running_(false)
+GUISystem::GUISystem(Context& context)
+:   System(context)
+{}
+
+bool GUISystem::init()
 {
-    sun_printf("******* Sun-0 Engine *******\n"
-                 "Build: %s, %s",
-                 version::string,
-                 version::codename);
-    sun_print("****************************");
-
-	window_.create("Sandbox - Sun0 Engine", {1280, 720});
-
-    context_.register_system<sun::ResourceCache>();
-    context_.register_system<sun::AudioServer>();
-    physics_ = context_.register_system<sun::PhysicsServer>();
-    renderer_ = context_.register_system<sun::Renderer>();
-
-    physics_->set_debug_draw(true);
-
-    context_.init_systems();
+    return true;
 }
 
-Application::~Application()
+void GUISystem::shutdown()
 {
-    context_.shutdown_systems();
 }
 
-int Application::run()
+Component* create_component_(uint type_hash, uint id)
 {
-	running_ = true;
-    while(running_) {
-    	Event e;
-    	if (window_.is_open()) {
-            while (window_.poll_event(e)) {
-    	        on_event(e);
-            }
-        }
-        on_update();
-        context_.update_systems();
-        //renderer_->update();
-        //physics_->update();
-        renderer_->set_model_transform(Matrix4());
-        physics_->draw_physics_debug(renderer_);
-        window_.update();
-    }
-    window_.close();
-    return 0;
+    return nullptr;
 }
 
-void Application::on_event(Event& e)
+bool handles_component_(uint type_hash)
 {
-	if (e.type == EventType::Closed) {
-		running_ = false;
-	}
+    return false;
 }
 
-} // sun
+}

@@ -40,6 +40,8 @@ public:
 
     Entity(Context& context);
 
+    ~Entity();
+
     template<typename T>
     T* create_component(const std::string& name = "") {
         auto comp = context_

@@ -90,7 +90,7 @@ void Shape2D::update_geometry_()
     std::vector<float> vertex_data(shape_->get_point_count() * 6);
     bool quad = false;
     int far_x = 0, far_y = 0;
-    auto col = to_colorf(color_);
+    auto col = Color::to_colorf(color_);
 
     for (size_t i = 0 ; i < shape_->get_point_count() ; ++i)
     {

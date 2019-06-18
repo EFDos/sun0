@@ -188,6 +188,16 @@ public:
 	{
 		return x != t || y != t;
 	}
+
+	inline static Vector2<float> to_vector2f(const Vector2<int>& v)
+	{
+	    return {static_cast<float>(v.x), static_cast<float>(v.y)};
+	}
+
+	inline static Vector2<float> to_vector2f(const Vector2<unsigned>& v)
+	{
+	    return {static_cast<float>(v.x), static_cast<float>(v.y)};
+	}
 };
 
 using Vector2f = Vector2<float>;

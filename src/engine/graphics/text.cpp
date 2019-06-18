@@ -102,7 +102,7 @@ void Text::update_geometry_()
         float tex_w = (float)g.tex_coords.w / (float)tex_size.x;
         float tex_h = (float)g.tex_coords.h / (float)tex_size.y;
 
-        Colorf col = to_colorf(color_);
+        Colorf col = Color::to_colorf(color_);
 
         x += g.advance + g.rect.w / 6.f;
 

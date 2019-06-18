@@ -51,6 +51,9 @@ sun_lib_src = [
   'graphics/opengl/vertex_buffer.cpp',
   'graphics/opengl/index_buffer.cpp',
   'graphics/opengl/texture.cpp',
+  'gui/gui_system.hpp',
+  'gui/widget.cpp',
+  'gui/frame.cpp',
   'scene/scene_tree.cpp',
   'scene/entity.cpp'
 ]

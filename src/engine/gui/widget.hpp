@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  application.hpp                                                      */
+/*  widget.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,74 +21,41 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "application.hpp"
-#include "../version.hpp"
+#pragma once
 
-#include "resources/resource_cache.hpp"
-#include "physics/physics_server.hpp"
-#include "graphics/opengl/renderer.hpp"
-#include "audio/audio_server.hpp"
-#include "gui/gui_system.hpp"
-
-#include "logger.hpp"
-#include "event.hpp"
+#include "common/object.hpp"
+#include "common/types.hpp"
 
 namespace sun {
 
-Application::Application(Context& context)
-:   context_(context),
-    running_(false)
+class Renderer;
+
+class SUN_API Widget : public Object
 {
-    sun_printf("******* Sun-0 Engine *******\n"
-                 "Build: %s, %s",
-                 version::string,
-                 version::codename);
-    sun_print("****************************");
+public:
 
-	window_.create("Sandbox - Sun0 Engine", {1280, 720});
+    Widget(Context&);
 
-    context_.register_system<sun::ResourceCache>();
-    context_.register_system<sun::AudioServer>();
-    physics_ = context_.register_system<sun::PhysicsServer>();
-    renderer_ = context_.register_system<sun::Renderer>();
+    ~Widget();
 
-    physics_->set_debug_draw(true);
+    virtual void draw(Renderer&) const = 0;
 
-    context_.init_systems();
-}
-
-Application::~Application()
-{
-    context_.shutdown_systems();
-}
-
-int Application::run()
-{
-	running_ = true;
-    while(running_) {
-    	Event e;
-    	if (window_.is_open()) {
-            while (window_.poll_event(e)) {
-    	        on_event(e);
-            }
-        }
-        on_update();
-        context_.update_systems();
-        //renderer_->update();
-        //physics_->update();
-        renderer_->set_model_transform(Matrix4());
-        physics_->draw_physics_debug(renderer_);
-        window_.update();
+    inline Vector2i get_position() const {
+        return bounds_.get_position();
     }
-    window_.close();
-    return 0;
-}
 
-void Application::on_event(Event& e)
-{
-	if (e.type == EventType::Closed) {
-		running_ = false;
-	}
-}
+    inline Vector2i get_size() const {
+        return bounds_.get_size();
+    }
 
-} // sun
+    inline const Recti& get_bounding_rect() const {
+        return bounds_;
+    }
+
+protected:
+
+    Widget* parent_;
+    Recti   bounds_;
+};
+
+}

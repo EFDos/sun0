@@ -49,6 +49,13 @@ Entity* Entity::create_child()
     return child;
 }
 
+Entity::~Entity()
+{
+    for (auto child : children_) {
+        delete child;
+    }
+}
+
 void Entity::move(float x, float y)
 {
     set_position(pos_.x + x, pos_.y + y);

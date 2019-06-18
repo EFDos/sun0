@@ -89,6 +89,22 @@ struct Rect
     Rect& operator=(Rect&&) noexcept = default;
 
     Rect& operator=(const Rect&) noexcept = default;
+
+    inline static Rect<float> to_rectf(const Rect<int>& r)
+    {
+        return {static_cast<float>(r.x),
+                static_cast<float>(r.y),
+                static_cast<float>(r.w),
+                static_cast<float>(r.x)};
+    }
+
+    inline static Rect<float> to_rectf(const Rect<unsigned>& r)
+    {
+        return {static_cast<float>(r.x),
+                static_cast<float>(r.y),
+                static_cast<float>(r.w),
+                static_cast<float>(r.x)};
+    }
 };
 
 using Recti = Rect<int>;

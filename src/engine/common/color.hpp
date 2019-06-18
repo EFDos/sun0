@@ -130,6 +130,22 @@ struct BaseColor
         a /= v;
     }
 
+    inline static BaseColor<uint8> to_color(const BaseColor<float>& cf)
+    {
+        return {static_cast<uint8>(cf.r * 255.f),
+                static_cast<uint8>(cf.g * 255.f),
+                static_cast<uint8>(cf.b * 255.f),
+                static_cast<uint8>(cf.a * 255.f)};
+    }
+
+    inline static BaseColor<float> to_colorf(const BaseColor<uint8>& c)
+    {
+        return {static_cast<float>(c.r / 255.f),
+                static_cast<float>(c.g / 255.f),
+                static_cast<float>(c.b / 255.f),
+                static_cast<float>(c.a / 255.f)};
+    }
+
     static BaseColor<uint8> RED;
     static BaseColor<uint8> BLUE;
     static BaseColor<uint8> GREEN;
@@ -172,21 +188,5 @@ BaseColor<T> operator/(const BaseColor<T> &a, const BaseColor<T>& b)
 
 using Color     = BaseColor<uint8>;
 using Colorf    = BaseColor<float>;
-
-inline Color to_color(const Colorf& cf)
-{
-    return Color(static_cast<uint8>(cf.r * 255.f),
-                 static_cast<uint8>(cf.g * 255.f),
-                 static_cast<uint8>(cf.b * 255.f),
-                 static_cast<uint8>(cf.a * 255.f));
-}
-
-inline Colorf to_colorf(const Color& c)
-{
-    return Colorf(static_cast<float>(c.r / 255.f),
-                  static_cast<float>(c.g / 255.f),
-                  static_cast<float>(c.b / 255.f),
-                  static_cast<float>(c.a / 255.f));
-}
 
 }

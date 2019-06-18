@@ -36,9 +36,9 @@ public:
 
     Widget(Context&);
 
-    ~Widget();
+    //virtual ~Widget();
 
-    virtual void draw(Renderer&) const = 0;
+    virtual void draw(Renderer*) const = 0;
 
     inline Vector2i get_position() const {
         return bounds_.get_position();

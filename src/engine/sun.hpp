@@ -58,6 +58,10 @@
 #include "graphics/shader.hpp"
 #include "graphics/texture.hpp"
 
+// GUI
+#include "gui/gui_system.hpp"
+#include "gui/frame.hpp"
+
 // AUDIO
 #include "audio/sound_stream.hpp"
 

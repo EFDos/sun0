@@ -24,10 +24,11 @@
 #pragma once
 
 #include "system/system.hpp"
+#include "frame.hpp"
 
 namespace sun {
 
-class Widget;
+class Renderer;
 
 class SUN_API GUISystem : public System
 {
@@ -41,7 +42,7 @@ public:
 
     void shutdown() override;
 
-    void update() override {}
+    void render(Renderer*);
 
 private:
 
@@ -49,7 +50,8 @@ private:
 
     virtual bool handles_component_(uint type_hash) override;
 
-    Widget* root_widget_;
+    // Root widget is this frame
+    Frame   frame_;
 };
 
 }

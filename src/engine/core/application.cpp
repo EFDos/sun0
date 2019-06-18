@@ -49,7 +49,7 @@ Application::Application(Context& context)
 
     context_.register_system<sun::ResourceCache>();
     context_.register_system<sun::AudioServer>();
-    context_.register_system<sun::GUISystem>();
+    gui_ = context_.register_system<sun::GUISystem>();
     physics_ = context_.register_system<sun::PhysicsServer>();
     renderer_ = context_.register_system<sun::Renderer>();
 
@@ -74,11 +74,11 @@ int Application::run()
             }
         }
         on_update();
-        context_.update_systems();
-        //renderer_->update();
-        //physics_->update();
+        physics_->update();
+        renderer_->render();
         renderer_->set_model_transform(Matrix4());
         physics_->draw_physics_debug(renderer_);
+        gui_->render(renderer_);
         window_.update();
     }
     window_.close();

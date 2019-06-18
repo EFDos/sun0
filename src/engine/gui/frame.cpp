@@ -32,9 +32,10 @@ Frame::Frame(Context& context, const Vector2i& size)
     bounds_.set_size(size);
 }
 
-void Frame::draw(Renderer& renderer) const
+void Frame::draw(Renderer* renderer) const
 {
-    renderer.draw_rect(Recti::to_rectf(bounds_), Color::WHITE);
+    renderer->set_draw_mode(Renderer::DrawMode::Triangles);
+    renderer->draw_rect(Recti::to_rectf(bounds_), Color::WHITE);
 }
 
 }

@@ -32,6 +32,7 @@
 namespace sun {
 
 class Event;
+class GUISystem;
 class Renderer;
 class PhysicsServer;
 
@@ -54,6 +55,7 @@ protected:
     Context&    context_;
 	Window      window_;
 	Renderer*   renderer_;
+	GUISystem*  gui_;
 	PhysicsServer* physics_;
 
 private:

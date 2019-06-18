@@ -80,7 +80,7 @@ public:
 
     virtual void shutdown() override;
 
-    virtual void update() override;
+    virtual void render();
 
     virtual VertexBuffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const = 0;
 

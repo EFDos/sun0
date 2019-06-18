@@ -42,7 +42,4 @@ void System::shutdown()
     initialized_ = false;
 }
 
-void System::update()
-{}
-
 }

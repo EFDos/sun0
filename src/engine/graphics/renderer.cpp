@@ -75,7 +75,7 @@ void Renderer::set_viewport(const Rectf& viewport)
     viewport_ = viewport;
 }
 
-void Renderer::update()
+void Renderer::render()
 {
     clear();
     for (auto c : cameras_) {
@@ -94,7 +94,16 @@ void Renderer::draw_rect(const Rectf& rect, const Color& c) const
         return;
     }
 
-    auto fcolor = Color::to_colorf(c);
+    std::vector<Vector2f> vertices{
+        {rect.x, rect.y},
+        {rect.x + rect.w, rect.y},
+        {rect.x + rect.w, rect.y + rect.h},
+        {rect.x, rect.y + rect.h},
+    };
+
+    draw_polygon(4, vertices.data(), c);
+
+    /*auto fcolor = Color::to_colorf(c);
     std::vector<float> vertices{
         rect.x, rect.y,
         fcolor.r, fcolor.g, fcolor.b, fcolor.a,
@@ -120,7 +129,7 @@ void Renderer::draw_rect(const Rectf& rect, const Color& c) const
     }
     primitive_vertices_->fill_data(0, 4, vertices.data());
 
-    draw_indexed(*primitive_vertices_, *primitive_indices_);
+    draw_indexed(*primitive_vertices_, *primitive_indices_);*/
 }
 
 void Renderer::draw_circle(const Vector2f& pos, float radius, int verts) const
@@ -130,34 +139,8 @@ void Renderer::draw_circle(const Vector2f& pos, float radius, int verts) const
             " for primitives rendering");
         return;
     }
-
-    /*auto fcolor = to_colorf(c);
-    std::vector<float> vertices{
-        rect.x, rect.y,
-        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
-        rect.x + rect.w, rect.y,
-        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
-        rect.x + rect.w, rect.y + rect.h,
-        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
-        rect.x, rect.y + rect.h,
-        fcolor.r, fcolor.g, fcolor.b, fcolor.a,
-    };
-
-    draw_mode_ = draw_mode::triangles;
-
-    uint32 indices[] = {0, 1, 3, 1, 2, 3};
-
-    if (primitive_indices_->get_index_count() == 0) {
-        primitive_indices_->resize(6);
-    }
-    primitive_indices_->fill_data(0, 6, indices);
-
-    if (primitive_vertices_->get_vertex_count() < 4) {
-        primitive_vertices_->resize(4);
-    }
-    primitive_vertices_->fill_data(0, 4, vertices.data());
-
-    draw_indexed(*primitive_vertices_, *primitive_indices_);*/
+    //TODO implement draw circle
+    sun_log_warn("Renderer::draw_circle: not yet implemented");
 }
 
 void Renderer::draw_line(const Vector2f& begin, const Vector2f& end, const Color& c) const

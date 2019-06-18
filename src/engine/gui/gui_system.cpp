@@ -23,22 +23,32 @@
 /*************************************************************************/
 #include "gui_system.hpp"
 
+#include "core/context.hpp"
 #include "core/logger.hpp"
+#include "graphics/renderer.hpp"
 
 namespace sun {
 
 GUISystem::GUISystem(Context& context)
-:   System(context)
+:   System(context),
+    frame_(context, {800, 600})
 {}
 
 bool GUISystem::init()
 {
-    sun_log_info("GUI ready");
+    sun_log_info("GUISystem ready");
     return true;
 }
 
 void GUISystem::shutdown()
 {
+}
+
+void GUISystem::render(Renderer* renderer)
+{
+    renderer->set_camera_transform(Matrix4());
+
+    frame_.draw(renderer);
 }
 
 Component* GUISystem::create_component_(uint type_hash, uint id)

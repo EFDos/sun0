@@ -15,3 +15,9 @@ balls_exec = executable('sun-balls', ['balls/balls.cpp'],
   link_with: sun_lib,
   install: true
 )
+
+gui_exec = executable('sun-gui', ['gui/gui.cpp'],
+  include_directories: sun_includes,
+  link_with: sun_lib,
+  install: true
+)

@@ -49,8 +49,6 @@ public:
 
     void shutdown_systems();
 
-    void update_systems();
-
     template<typename T>
     T* register_system()
     {

@@ -2,17 +2,13 @@
 
 ###Graphics
 
-* Canvas Layers (framebuffers)
+* Canvas Layers
 * Sort out binding states to avoid bugs
 
 ###Resource
 
 * Sound sources and Textures need a way to be factored
 as resources.
-
-###Physics
-
-* Add custom contact listener
 
 ###Core
 

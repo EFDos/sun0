@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/texture.hpp                                                   */
+/*  framebuffer.hpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,53 +23,51 @@
 /*************************************************************************/
 #pragma once
 
-#include "graphics/texture.hpp"
+#include "gpu_object.hpp"
 
 namespace sun {
-namespace opengl {
 
-class SUN_API Texture final : public sun::Texture
+class Texture;
+
+class SUN_API Framebuffer : public GPUObject
 {
 public:
 
-    Texture(Context&);
+    enum class Target
+    {
+        Read,
+        Draw,
+        ReadAndDraw
+    };
 
-    ~Texture();
+    enum class Status
+    {
+        Null,
+        Incomplete,
+        Ok
+    };
 
-    // implements gpu_object
+    virtual ~Framebuffer();
 
-    void release() override;
+    virtual void attach_texture(Texture*) = 0;
 
-    void bind() const override;
+    virtual void detach_texture() = 0;
 
-    void unbind() const override;
-
-    // implements sun::texture
-
-    bool load(const Image& img) override;
-
-    bool load(const Vector2u& size, const ubyte* data) override;
-
-    void resize(const Vector2u& size) override;
-
-    void fill(const Vector2u& offset, const Vector2u& size,
-              const ubyte* date) override;
-
-    void clear() override;
-
-    void map() override;
-
-    void unmap() override;
-
-    uint get_internal_id() const {
-        return id_;
+    inline Target get_target() const {
+        return target_;
     }
 
-private:
+    inline Status get_status() const {
+        return status_;
+    }
 
-    uint    id_;
+protected:
+
+    Framebuffer(Target t = Target::ReadAndDraw);
+
+    Target  target_;
+    Status  status_;
 
 };
 
-} // opengl
 } // sun

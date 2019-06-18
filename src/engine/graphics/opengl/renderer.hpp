@@ -62,6 +62,8 @@ public:
 
     void set_camera_transform(const Matrix4& transform) override;
 
+    void set_blend_mode(BlendMode source, BlendMode dest) override;
+
     void draw(const Drawable& d) const override;
 
     void draw(const sun::VertexBuffer& buffer,

@@ -47,11 +47,12 @@ Renderer::Renderer(Context& context)
 
 bool Renderer::init()
 {
-
     if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
         sun_log_warn("Graphics backend did not intialize buffers"
             " for primitives rendering");
     }
+
+    set_blend_mode(BlendMode::SourceAlpha, BlendMode::OneMinusSourceAlpha);
 
     sun_log_info("Graphics System ready.");
     return true;
@@ -68,6 +69,12 @@ void Renderer::shutdown()
 void Renderer::set_color(const Color& col)
 {
     clear_color_ = Color::to_colorf(col);
+}
+
+void Renderer::set_blend_mode(BlendMode source, BlendMode dest)
+{
+    blend_src_ = source;
+    blend_dest_ = dest;
 }
 
 void Renderer::set_viewport(const Rectf& viewport)

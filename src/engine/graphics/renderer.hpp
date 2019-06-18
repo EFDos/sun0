@@ -55,6 +55,12 @@ public:
         TriangleFan
     };
 
+    enum class BlendMode {
+        SourceAlpha,
+        OneMinusSourceAlpha,
+        Multiply
+    };
+
     //TODO Implement Info
     struct Info
     {
@@ -135,6 +141,8 @@ public:
 
     virtual void set_color(const Color&);
 
+    virtual void set_blend_mode(BlendMode source, BlendMode dest);
+
     virtual uint get_texture_max_size() const = 0;
 
     inline void set_draw_mode(DrawMode mode) {
@@ -143,6 +151,14 @@ public:
 
     inline DrawMode get_draw_mode() const {
         return draw_mode_;
+    }
+
+    inline BlendMode get_source_blend_mode() const {
+        return blend_src_;
+    }
+
+    inline BlendMode get_dest_blend_mode() const {
+        return blend_dest_;
     }
 
 protected:
@@ -155,6 +171,8 @@ protected:
 
     Rectf                       viewport_;
     Colorf                      clear_color_;
+    mutable BlendMode           blend_src_;
+    mutable BlendMode           blend_dest_;
     mutable DrawMode            draw_mode_;
 
     VertexBuffer*               primitive_vertices_;

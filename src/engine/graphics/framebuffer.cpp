@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  opengl/texture.hpp                                                   */
+/*  framebuffer.cpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,55 +21,13 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "graphics/texture.hpp"
+#include "framebuffer.hpp"
 
 namespace sun {
-namespace opengl {
 
-class SUN_API Texture final : public sun::Texture
-{
-public:
+Framebuffer::Framebuffer(Target target)
+:   target_(target),
+    status_(Status::Null)
+{}
 
-    Texture(Context&);
-
-    ~Texture();
-
-    // implements gpu_object
-
-    void release() override;
-
-    void bind() const override;
-
-    void unbind() const override;
-
-    // implements sun::texture
-
-    bool load(const Image& img) override;
-
-    bool load(const Vector2u& size, const ubyte* data) override;
-
-    void resize(const Vector2u& size) override;
-
-    void fill(const Vector2u& offset, const Vector2u& size,
-              const ubyte* date) override;
-
-    void clear() override;
-
-    void map() override;
-
-    void unmap() override;
-
-    uint get_internal_id() const {
-        return id_;
-    }
-
-private:
-
-    uint    id_;
-
-};
-
-} // opengl
-} // sun
+}

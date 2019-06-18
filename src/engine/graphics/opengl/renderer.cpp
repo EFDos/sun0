@@ -49,6 +49,21 @@ constexpr GLenum get_gl_type(Renderer::DrawMode mode)
     }
 }
 
+constexpr GLenum get_gl_type(Renderer::BlendMode mode)
+{
+    switch (mode) {
+        case Renderer::BlendMode::SourceAlpha:
+            return GLenum(GL_SRC_ALPHA);
+        case Renderer::BlendMode::OneMinusSourceAlpha:
+            return GLenum(GL_ONE_MINUS_SRC_ALPHA);
+        case Renderer::BlendMode::Multiply:
+            //return GLenum(GL_SRC_);
+            return GLenum();
+        default:
+            return GLenum();
+    }
+}
+
 Renderer::Renderer(Context& context)
 :   sun::Renderer(context),
     base_vao_(0),
@@ -72,8 +87,6 @@ bool Renderer::init()
     sun_log_info("OpenGL Initialized");
 
     //glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     primitive_vertices_ = create_vertex_buffer(sizeof(float) * 6, 0);
     primitive_indices_ = create_index_buffer(0);
@@ -139,6 +152,13 @@ sun::Shader* Renderer::create_shader(const std::string& path) const
 sun::Texture* Renderer::create_texture() const
 {
     return dynamic_cast<sun::Texture*>(new opengl::Texture(context_));
+}
+
+void Renderer::set_blend_mode(BlendMode source, BlendMode dest)
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(get_gl_type(source), get_gl_type(dest));
+    sun::Renderer::set_blend_mode(source, dest);
 }
 
 void Renderer::set_model_transform(const Matrix4& transform)

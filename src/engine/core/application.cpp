@@ -49,6 +49,7 @@ Application::Application(Context& context)
 
     context_.register_system<sun::ResourceCache>();
     context_.register_system<sun::AudioServer>();
+    context_.register_system<sun::GUISystem>();
     physics_ = context_.register_system<sun::PhysicsServer>();
     renderer_ = context_.register_system<sun::Renderer>();
 

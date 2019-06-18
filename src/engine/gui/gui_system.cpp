@@ -23,6 +23,8 @@
 /*************************************************************************/
 #include "gui_system.hpp"
 
+#include "core/logger.hpp"
+
 namespace sun {
 
 GUISystem::GUISystem(Context& context)
@@ -31,6 +33,7 @@ GUISystem::GUISystem(Context& context)
 
 bool GUISystem::init()
 {
+    sun_log_info("GUI ready");
     return true;
 }
 
@@ -38,12 +41,12 @@ void GUISystem::shutdown()
 {
 }
 
-Component* create_component_(uint type_hash, uint id)
+Component* GUISystem::create_component_(uint type_hash, uint id)
 {
     return nullptr;
 }
 
-bool handles_component_(uint type_hash)
+bool GUISystem::handles_component_(uint type_hash)
 {
     return false;
 }

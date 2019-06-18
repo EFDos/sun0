@@ -28,6 +28,7 @@
 #include "physics/physics_server.hpp"
 #include "graphics/opengl/renderer.hpp"
 #include "audio/audio_server.hpp"
+#include "gui/gui_system.hpp"
 
 #include "logger.hpp"
 
@@ -79,6 +80,10 @@ System* Context::register_system_(const std::string& type)
     if (type.compare("PhysicsServer") == 0) {
         sun_logf_debug("registering new box2d wrapper as %s", type.c_str());
         sys = new PhysicsServer(*this);
+    }
+    if (type.compare("GUISystem") == 0) {
+        sun_logf_debug("registering new GUI as %s", type.c_str());
+        sys = new GUISystem(*this);
     }
 
     if (sys != nullptr) {

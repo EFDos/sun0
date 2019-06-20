@@ -42,6 +42,8 @@ public:
 
     void shutdown() override;
 
+    sun::Framebuffer* create_framebuffer(Framebuffer::Target target) const override;
+
     sun::VertexBuffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const override;
 
     sun::Shader* create_shader(const std::string& path) const override;

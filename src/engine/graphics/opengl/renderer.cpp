@@ -30,6 +30,7 @@
 #include "shader.hpp"
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"
+#include "framebuffer.hpp"
 #include "texture.hpp"
 
 #include "core/logger.hpp"
@@ -88,9 +89,6 @@ bool Renderer::init()
 
     //glEnable(GL_DEPTH_TEST);
 
-    primitive_vertices_ = create_vertex_buffer(sizeof(float) * 6, 0);
-    primitive_indices_ = create_index_buffer(0);
-
     default_flat_shader_ = create_shader("res/flat.glsl");
     default_textured_shader_ = create_shader("res/textured.glsl");
 
@@ -117,6 +115,11 @@ void Renderer::shutdown()
     glDeleteVertexArrays(1, &base_vao_);
 
     sun::Renderer::shutdown();
+}
+
+sun::Framebuffer* Renderer::create_framebuffer(Framebuffer::Target target) const
+{
+    return dynamic_cast<sun::Framebuffer*>(new opengl::Framebuffer(target));
 }
 
 sun::VertexBuffer* Renderer::create_vertex_buffer(uint8 vertex_size,

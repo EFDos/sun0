@@ -47,8 +47,6 @@ public:
         Ok
     };
 
-    virtual ~Framebuffer();
-
     virtual void attach_texture(Texture*) = 0;
 
     virtual void detach_texture() = 0;

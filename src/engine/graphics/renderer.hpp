@@ -26,6 +26,7 @@
 #include "system/system.hpp"
 #include "common/color.hpp"
 #include "math/rect.hpp"
+#include "framebuffer.hpp"
 
 #include <vector>
 
@@ -87,6 +88,8 @@ public:
     virtual void shutdown() override;
 
     virtual void render();
+
+    virtual Framebuffer* create_framebuffer(Framebuffer::Target target) const = 0;
 
     virtual VertexBuffer* create_vertex_buffer(uint8 vertex_size, size_t capacity) const = 0;
 
@@ -177,6 +180,12 @@ protected:
 
     VertexBuffer*               primitive_vertices_;
     IndexBuffer*                primitive_indices_;
+
+    VertexBuffer*               screen_quad_buffer_;
+    IndexBuffer*                screen_quad_indices_;
+
+    Framebuffer*                screen_buffer_;
+    Texture*                    screen_buffer_texture_;
 
     mutable const Shader*       current_shader_;
     mutable const Texture*      current_texture_;

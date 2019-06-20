@@ -198,6 +198,16 @@ public:
 	{
 	    return {static_cast<float>(v.x), static_cast<float>(v.y)};
 	}
+
+	inline static Vector2<int> to_vector2i(const Vector2<float>& v)
+	{
+	    return {static_cast<int>(v.x), static_cast<int>(v.y)};
+	}
+
+	inline static Vector2<unsigned> to_vector2u(const Vector2<float>& v)
+	{
+	    return {static_cast<unsigned>(v.x), static_cast<unsigned>(v.y)};
+	}
 };
 
 using Vector2f = Vector2<float>;

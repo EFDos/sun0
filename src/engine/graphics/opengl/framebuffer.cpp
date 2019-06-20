@@ -56,7 +56,7 @@ Framebuffer::~Framebuffer()
 }
 
 void Framebuffer::bind() const {
-    if (id_ == 0 || status_ != Status::Ok) {
+    if (id_ == 0 || status_ == Status::Null) {
         sun_log_error("Failed to bind framebuffer: invalid state.");
         return;
     }

@@ -22,6 +22,7 @@
 /*                                                                       */
 /*************************************************************************/
 #include "renderer.hpp"
+#include "common/types.hpp"
 #include "core/logger.hpp"
 
 #include "font.hpp"
@@ -47,10 +48,32 @@ Renderer::Renderer(Context& context)
 
 bool Renderer::init()
 {
-    if (primitive_vertices_ == nullptr || primitive_indices_ == nullptr) {
-        sun_log_warn("Graphics backend did not intialize buffers"
-            " for primitives rendering");
-    }
+    primitive_vertices_ = create_vertex_buffer(sizeof(float) * 6, 0);
+    primitive_indices_ = create_index_buffer(0);
+
+    screen_quad_buffer_ = create_vertex_buffer(sizeof(float) * 8, 4);
+    screen_quad_indices_ = create_index_buffer(6);
+
+    screen_buffer_ = create_framebuffer(Framebuffer::Target::ReadAndDraw);
+    screen_buffer_texture_ = create_texture();
+
+    screen_buffer_texture_->resize({800, 600});
+    screen_buffer_->attach_texture(screen_buffer_texture_);
+
+    float vertices[] = {
+        0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f,
+        800.f, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f,
+        800.f, 600.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+        0.f, 600.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+    };
+
+    uint indices[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    screen_quad_buffer_->fill_data(0, 4, vertices);
+    screen_quad_indices_->fill_data(0, 6, indices);
 
     set_blend_mode(BlendMode::SourceAlpha, BlendMode::OneMinusSourceAlpha);
 
@@ -80,10 +103,20 @@ void Renderer::set_blend_mode(BlendMode source, BlendMode dest)
 void Renderer::set_viewport(const Rectf& viewport)
 {
     viewport_ = viewport;
+    float vertices[] = {
+        0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f,
+        viewport_.w, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f,
+        viewport_.w, viewport_.h, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+        0.f, viewport_.h, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+    };
+    screen_buffer_texture_->resize(Vector2f::to_vector2u(viewport.get_size()));
+    screen_quad_buffer_->fill_data(0, 4, vertices);
 }
 
 void Renderer::render()
 {
+    clear();
+    screen_buffer_->bind();
     clear();
     for (auto c : cameras_) {
         c->update_transform(*this);
@@ -91,6 +124,10 @@ void Renderer::render()
     for (auto s : drawables_) {
         draw(*s);
     }
+    screen_buffer_->unbind();
+    set_model_transform(Matrix4());
+    set_camera_transform(Matrix4());
+    draw_indexed(*screen_quad_buffer_, *screen_quad_indices_, screen_buffer_texture_);
 }
 
 void Renderer::draw_rect(const Rectf& rect, const Color& c) const

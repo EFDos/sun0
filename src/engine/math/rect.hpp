@@ -105,6 +105,14 @@ struct Rect
                 static_cast<float>(r.w),
                 static_cast<float>(r.x)};
     }
+
+    inline static Rect<int> to_recti(const Rect<float>& r)
+    {
+        return {static_cast<int>(r.x),
+                static_cast<int>(r.y),
+                static_cast<int>(r.w),
+                static_cast<int>(r.x)};
+    }
 };
 
 using Recti = Rect<int>;

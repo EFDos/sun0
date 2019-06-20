@@ -104,10 +104,10 @@ void Renderer::set_viewport(const Rectf& viewport)
 {
     viewport_ = viewport;
     float vertices[] = {
-        0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f,
-        viewport_.w, 0.f, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f,
-        viewport_.w, viewport_.h, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f,
-        0.f, viewport_.h, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+        0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+        viewport_.w, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+        viewport_.w, viewport_.h, 1.f, 0.f, 1.f, 1.f, 1.f, 1.f,
+        0.f, viewport_.h, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f,
     };
     screen_buffer_texture_->resize(Vector2f::to_vector2u(viewport.get_size()));
     screen_quad_buffer_->fill_data(0, 4, vertices);

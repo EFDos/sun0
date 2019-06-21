@@ -127,7 +127,7 @@ void Renderer::render()
     screen_buffer_->unbind();
     set_model_transform(Matrix4());
     set_camera_transform(Matrix4());
-    draw_indexed(*screen_quad_buffer_, *screen_quad_indices_, screen_buffer_texture_);
+    draw_indexed(*screen_quad_buffer_, *screen_quad_indices_, screen_buffer_texture_, light_shader_);
 }
 
 void Renderer::draw_rect(const Rectf& rect, const Color& c) const

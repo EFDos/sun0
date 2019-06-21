@@ -187,6 +187,8 @@ protected:
     Framebuffer*                screen_buffer_;
     Texture*                    screen_buffer_texture_;
 
+    Shader*                     light_shader_;
+
     mutable const Shader*       current_shader_;
     mutable const Texture*      current_texture_;
 

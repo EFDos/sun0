@@ -91,6 +91,7 @@ bool Renderer::init()
 
     default_flat_shader_ = create_shader("res/flat.glsl");
     default_textured_shader_ = create_shader("res/textured.glsl");
+    light_shader_ = create_shader("res/light.glsl");
 
     if (default_textured_shader_ != nullptr) {
         default_textured_shader_->set_uniform("tex", 0);
@@ -191,6 +192,7 @@ void Renderer::set_projection(const Matrix4& projection)
     }
     default_flat_shader_->set_uniform("projection", projection);
     default_textured_shader_->set_uniform("projection", projection);
+    light_shader_->set_uniform("projection", projection);
 }
 
 void Renderer::set_camera_transform(const Matrix4& transform)

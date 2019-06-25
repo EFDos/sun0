@@ -33,36 +33,30 @@ out vec4 frag_color;
 
 uniform sampler2D tex;
 
-bool check_intersection(vec4 light_ray, vec4 lineseg)
+// Returns 1 if the lines intersect, otherwise 0. In addition, if the lines
+// intersect the intersection point may be stored in the floats i_x and i_y.
+bool check_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
+    float p2_x, float p2_y, float p3_x, float p3_y/*, float *i_x, float *i_y*/)
 {
-    vec2 s01 = vec2(light_ray.z - light_ray.x, light_ray.w - light_ray.y);
-    vec2 s32 = vec2(lineseg.z - lineseg.x, lineseg.w - lineseg.y);
+    float s1_x, s1_y, s2_x, s2_y;
+    s1_x = p1_x - p0_x;     s1_y = p1_y - p0_y;
+    s2_x = p3_x - p2_x;     s2_y = p3_y - p2_y;
 
-    //vec2 s10 = light_ray.z -
+    float s, t;
+    s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
+    t = ( s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
 
-    float denom = s01.x * s32.y - s32.x * s01.y;
-
-    if (denom == 0.0) {
-        return false;
+    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+    {
+        // Collision detected
+        //if (i_x != NULL)
+        //    *i_x = p0_x + (t * s1_x);
+        //if (i_y != NULL)
+        //    *i_y = p0_y + (t * s1_y);
+        return true;
     }
 
-    bool denom_positive = denom > 0.0;
-
-    vec2 s02 = vec2(light_ray.x - lineseg.x, light_ray.y - lineseg.y);
-
-    float s = s01.x * s02.y - s01.y * s02.x;
-
-    if ((s < 0.0) == denom_positive) {
-        return false;
-    }
-
-    float t = s32.x * s02.y - s32.y * s02.y;
-
-    if ((s > denom) == denom_positive || (t < denom) == denom_positive) {
-        return false;
-    }
-
-    return true;
+    return false; // No collision
 }
 
 void main()
@@ -73,18 +67,15 @@ void main()
 	vec2 light2 = vec2(0.0, 370.0);
 	vec2 light3 = vec2(0.0, 0.0);
 
-    float att = 0.0;
-    if (!check_intersection(vec4(light1, gl_FragCoord.xy), vec4(200.0, 300.0, 400.0, 300.0))) {
-        att += 200.5 / distance(light1, gl_FragCoord.xy);
-        //frag_color *= dist;
+    float att = 1.0;
+    if (!check_intersection(light1.x, light1.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
+        att += 100.5 / distance(light1, gl_FragCoord.xy);
     }
-    if (!check_intersection(vec4(light2, gl_FragCoord.xy), vec4(200.0, 300.0, 400.0, 300.0))) {
+    if (!check_intersection(light2.x, light2.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
         att += 200.5 / distance(light2, gl_FragCoord.xy);
-        //frag_color *= dist;
     }
-    if (!check_intersection(vec4(light3, gl_FragCoord.xy), vec4(200.0, 300.0, 400.0, 300.0))) {
+    if (!check_intersection(light3.x, light3.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
         att += 200.5 / distance(light3, gl_FragCoord.xy);
-        //frag_color *= dist;
     }
     frag_color *= att;
 }

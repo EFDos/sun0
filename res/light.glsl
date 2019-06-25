@@ -10,24 +10,30 @@ layout(location = 2) in vec4 att_color;
 
 out vec4 color;
 out vec2 tex_uv;
+out vec2 lights[10];
 
 uniform mat4 model = mat4(1.0);
 uniform mat4 projection = mat4(1.0);
 uniform mat4 viewport = mat4(1.0);
+
+//uniform vec2 light = vec2(640.0, 370.0);
 
 void main()
 {
     gl_Position = projection * viewport * model * vec4(att_pos, 0.0, 1.0);
     color = att_color;
     tex_uv = att_tex_uv;
+    lights[0] = vec2(640.0, 370.0);
 }
 
 #FRAGMENT
 
 #version 130
+#define MAX_N 10
 
 in vec4 color;
 in vec2 tex_uv;
+in vec2 lights[10];
 
 out vec4 frag_color;
 
@@ -63,19 +69,17 @@ void main()
 {
 	frag_color = color * texture(tex, tex_uv);
 
-	vec2 light1 = vec2(640.0, 370.0);
 	vec2 light2 = vec2(0.0, 370.0);
 	vec2 light3 = vec2(0.0, 0.0);
 
     float att = 1.0;
-    if (!check_intersection(light1.x, light1.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
-        att += 100.5 / distance(light1, gl_FragCoord.xy);
-    }
-    if (!check_intersection(light2.x, light2.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
-        att += 200.5 / distance(light2, gl_FragCoord.xy);
-    }
-    if (!check_intersection(light3.x, light3.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
-        att += 200.5 / distance(light3, gl_FragCoord.xy);
+    for (int i = 0 ; i < MAX_N ; ++i) {
+        if (lights[i] == vec2(0)) {
+            continue;
+        }
+        if (!check_intersection(lights[i].x, lights[i].y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
+            att += 100.5 / distance(lights[i], gl_FragCoord.xy);
+        }
     }
     frag_color *= att;
 }

@@ -12,7 +12,6 @@ out vec4 color;
 out vec2 tex_uv;
 out vec2 lights[10];
 
-uniform mat4 model = mat4(1.0);
 uniform mat4 projection = mat4(1.0);
 uniform mat4 viewport = mat4(1.0);
 
@@ -20,10 +19,11 @@ uniform mat4 viewport = mat4(1.0);
 
 void main()
 {
-    gl_Position = projection * viewport * model * vec4(att_pos, 0.0, 1.0);
+    gl_Position = projection * vec4(att_pos, 0.0, 1.0);
     color = att_color;
     tex_uv = att_tex_uv;
-    lights[0] = vec2(640.0, 370.0);
+    vec4 light_transform = viewport * vec4(vec2(640.0, 370.0), 0.0, 1.0);
+    lights[0] = vec2(light_transform.x, -light_transform.y);
 }
 
 #FRAGMENT

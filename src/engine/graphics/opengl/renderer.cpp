@@ -202,6 +202,7 @@ void Renderer::set_camera_transform(const Matrix4& transform)
     }
     default_flat_shader_->set_uniform("viewport", transform);
     default_textured_shader_->set_uniform("viewport", transform);
+    light_shader_->set_uniform("viewport", transform);
 
     //TODO: Provisory fix, cause set_uniform unbinds Shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {

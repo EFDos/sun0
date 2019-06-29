@@ -48,16 +48,16 @@ in mat4 view;
 out vec4 frag_color;
 
 uniform Light lights[MAX_N] = Light[MAX_N](
-    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
-    Light(vec2(0.0), 0.0, vec3(0.0, 1.0, 0.0)),
-    Light(vec2(0.0), 0.0, vec3(0.0, 0.0, 1.0)),
     Light(vec2(0.0), 0.0, vec3(1.0)),
-    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
-    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
-    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
-    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
-    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
-    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0))
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0))
 );
 
 uniform sampler2D tex;
@@ -104,10 +104,10 @@ void main()
         vec2 pos = vec2(light_transform.x, -light_transform.y);
         if (!check_intersection(pos.x, pos.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
             att += lights[i].intensity / distance(pos, gl_FragCoord.xy);
-            col += lights[i].color;
+            col += lights[i].color * att * 1.5;
         }
         ++steps;
     }
     col /= steps;
-    frag_color *= vec4(col.xyz * att, 1.0);
+    frag_color *= vec4(col.xyz, 1.0);
 }

@@ -247,6 +247,18 @@ void Shader::send(const std::string& name, const Vector2f& vec2)
     glUseProgram(0);
 }
 
+void Shader::send(const std::string& name, const Colorf& color)
+{
+    if (id_ == 0) {
+        sun_log_error("Failed to set shader uniform: Shader in invalid state.");
+        return;
+    }
+    glUseProgram(id_);
+    glUniform3f(glGetUniformLocation(id_, name.c_str()), color.r, color.g,
+        color.b);
+    glUseProgram(0);
+}
+
 void Shader::send(const std::string& name, float v)
 {
     if (id_ == 0) {

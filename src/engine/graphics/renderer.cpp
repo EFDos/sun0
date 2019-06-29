@@ -25,6 +25,7 @@
 #include "common/types.hpp"
 #include "core/logger.hpp"
 
+#include "shader.hpp"
 #include "font.hpp"
 
 // components
@@ -112,6 +113,15 @@ void Renderer::set_viewport(const Rectf& viewport)
     };
     screen_buffer_texture_->resize(Vector2f::to_vector2u(viewport.get_size()));
     screen_quad_buffer_->fill_data(0, 4, vertices);
+}
+
+int Renderer::add_light(const Vector2f& pos, const Colorf& col, float intensity) const
+{
+    auto idx_str = std::to_string(light_count_++);
+    light_shader_->send("lights[" + idx_str + "].pos", pos);
+    light_shader_->send("lights[" + idx_str + "].intensity", intensity);
+    light_shader_->send("lights[" + idx_str + "].color", col);
+    return light_count_;
 }
 
 void Renderer::render()

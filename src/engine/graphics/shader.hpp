@@ -32,6 +32,8 @@ namespace sun {
 
 class Matrix4;
 template<typename T>
+class BaseColor;
+template<typename T>
 class Vector2;
 
 class SUN_API ShaderStage : public GPUObject
@@ -98,6 +100,8 @@ public:
     virtual void send(const std::string& name, const Matrix4& mat4) = 0;
 
     virtual void send(const std::string& name, const Vector2<float>& vec2) = 0;
+
+    virtual void send(const std::string& name, const BaseColor<float>& color) = 0;
 
     virtual void send(const std::string& name, int v) = 0;
 

@@ -88,6 +88,8 @@ public:
 
     void send(const std::string& name, const Vector2<float>& vec2) override;
 
+    void send(const std::string& name, const BaseColor<float>& color) override;
+
     void send(const std::string& name, float v) override;
 
     std::string get_warnings() const override;

@@ -158,14 +158,6 @@ sun::Texture* Renderer::create_texture() const
     return dynamic_cast<sun::Texture*>(new opengl::Texture(context_));
 }
 
-int Renderer::add_light(const Vector2f& pos, const Color& col, float intensity) const
-{
-    auto idx_str = std::to_string(++light_count_);
-    light_shader_->send("lights[" + idx_str + "].pos", pos);
-    light_shader_->send("lights[" + idx_str + "].intensity", intensity);
-    return light_count_;
-}
-
 void Renderer::set_blend_mode(BlendMode source, BlendMode dest)
 {
     glEnable(GL_BLEND);

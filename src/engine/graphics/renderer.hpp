@@ -99,7 +99,7 @@ public:
 
     virtual Texture* create_texture() const = 0;
 
-    virtual int add_light(const Vector2f& pos, const Color& col, float intensity) const = 0;
+    int add_light(const Vector2f& pos, const Colorf& col, float intensity) const;
 
     virtual void clear(const Color&) = 0;
 

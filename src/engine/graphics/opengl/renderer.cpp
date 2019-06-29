@@ -94,7 +94,7 @@ bool Renderer::init()
     light_shader_ = create_shader("res/light.glsl");
 
     if (default_textured_shader_ != nullptr) {
-        default_textured_shader_->set_uniform("tex", 0);
+        default_textured_shader_->send("tex", 0);
     }
 
     glGenVertexArrays(1, &base_vao_);
@@ -158,6 +158,14 @@ sun::Texture* Renderer::create_texture() const
     return dynamic_cast<sun::Texture*>(new opengl::Texture(context_));
 }
 
+int Renderer::add_light(const Vector2f& pos, const Color& col, float intensity) const
+{
+    auto idx_str = std::to_string(++light_count_);
+    light_shader_->send("lights[" + idx_str + "].pos", pos);
+    light_shader_->send("lights[" + idx_str + "].intensity", intensity);
+    return light_count_;
+}
+
 void Renderer::set_blend_mode(BlendMode source, BlendMode dest)
 {
     glEnable(GL_BLEND);
@@ -170,10 +178,10 @@ void Renderer::set_model_transform(const Matrix4& transform)
     if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
         return;
     }
-    default_flat_shader_->set_uniform("model", transform);
-    default_textured_shader_->set_uniform("model", transform);
+    default_flat_shader_->send("model", transform);
+    default_textured_shader_->send("model", transform);
 
-    //TODO: Provisory fix, cause set_uniform unbinds Shader
+    //TODO: Provisory fix, cause send unbinds Shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
         current_shader_->bind();
     }
@@ -190,9 +198,9 @@ void Renderer::set_projection(const Matrix4& projection)
     if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
         return;
     }
-    default_flat_shader_->set_uniform("projection", projection);
-    default_textured_shader_->set_uniform("projection", projection);
-    light_shader_->set_uniform("projection", projection);
+    default_flat_shader_->send("projection", projection);
+    default_textured_shader_->send("projection", projection);
+    light_shader_->send("projection", projection);
 }
 
 void Renderer::set_camera_transform(const Matrix4& transform)
@@ -200,11 +208,11 @@ void Renderer::set_camera_transform(const Matrix4& transform)
     if (default_flat_shader_ == nullptr || default_textured_shader_ == nullptr) {
         return;
     }
-    default_flat_shader_->set_uniform("viewport", transform);
-    default_textured_shader_->set_uniform("viewport", transform);
-    light_shader_->set_uniform("viewport", transform);
+    default_flat_shader_->send("viewport", transform);
+    default_textured_shader_->send("viewport", transform);
+    light_shader_->send("viewport", transform);
 
-    //TODO: Provisory fix, cause set_uniform unbinds Shader
+    //TODO: Provisory fix, cause send unbinds Shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
         current_shader_->bind();
     }

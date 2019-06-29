@@ -11,6 +11,9 @@ public:
         renderer_->set_color(sun::Color::DARK_GREY);
         renderer_->set_viewport({0, 0, 1280, 720});
         renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
+        renderer_->add_light({10, 20}, sun::Color::SUN, 60.f);
+        renderer_->add_light({60, 80}, sun::Color::SUN, 80.f);
+        renderer_->add_light({10, 20}, sun::Color::SUN, 90.f);
         auto texture = renderer_->create_texture();
 
         auto res_cache = context_.get_system<sun::ResourceCache>();

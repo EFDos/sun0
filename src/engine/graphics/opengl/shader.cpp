@@ -211,7 +211,7 @@ void Shader::linking_check_()
     }
 }
 
-void Shader::set_uniform(const std::string& name, const Matrix4& mat4)
+void Shader::send(const std::string& name, const Matrix4& mat4)
 {
     if (id_ == 0) {
         sun_log_error("Failed to set shader uniform: Shader in invalid state.");
@@ -223,7 +223,7 @@ void Shader::set_uniform(const std::string& name, const Matrix4& mat4)
     glUseProgram(0);
 }
 
-void Shader::set_uniform(const std::string& name, int v)
+void Shader::send(const std::string& name, int v)
 {
     if (id_ == 0) {
         sun_log_error("Failed to set shader uniform: Shader in invalid state.");
@@ -232,6 +232,30 @@ void Shader::set_uniform(const std::string& name, int v)
 
     glUseProgram(id_);
     glUniform1i(glGetUniformLocation(id_, name.c_str()), v);
+    glUseProgram(0);
+}
+
+void Shader::send(const std::string& name, const Vector2f& vec2)
+{
+    if (id_ == 0) {
+        sun_log_error("Failed to set shader uniform: Shader in invalid state.");
+        return;
+    }
+
+    glUseProgram(id_);
+    glUniform2f(glGetUniformLocation(id_, name.c_str()), vec2.x, vec2.y);
+    glUseProgram(0);
+}
+
+void Shader::send(const std::string& name, float v)
+{
+    if (id_ == 0) {
+        sun_log_error("Failed to set shader uniform: Shader in invalid state.");
+        return;
+    }
+
+    glUseProgram(id_);
+    glUniform1f(glGetUniformLocation(id_, name.c_str()), v);
     glUseProgram(0);
 }
 

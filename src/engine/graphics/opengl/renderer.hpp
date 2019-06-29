@@ -52,6 +52,8 @@ public:
 
     sun::Texture* create_texture() const override;
 
+    int add_light(const Vector2f& pos, const Color& col, float intensity) const override;
+
     void clear(const Color&) override;
 
     void clear() override;

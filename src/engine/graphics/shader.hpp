@@ -31,6 +31,8 @@
 namespace sun {
 
 class Matrix4;
+template<typename T>
+class Vector2;
 
 class SUN_API ShaderStage : public GPUObject
 {
@@ -93,9 +95,13 @@ public:
 
     virtual std::string get_warnings() const = 0;
 
-    virtual void set_uniform(const std::string& name, const Matrix4& mat4) = 0;
+    virtual void send(const std::string& name, const Matrix4& mat4) = 0;
 
-    virtual void set_uniform(const std::string& name, int v) = 0;
+    virtual void send(const std::string& name, const Vector2<float>& vec2) = 0;
+
+    virtual void send(const std::string& name, int v) = 0;
+
+    virtual void send(const std::string& name, float v) = 0;
 
     inline Status get_status() const { return status_; }
 

@@ -99,6 +99,8 @@ public:
 
     virtual Texture* create_texture() const = 0;
 
+    virtual int add_light(const Vector2f& pos, const Color& col, float intensity) const = 0;
+
     virtual void clear(const Color&) = 0;
 
     virtual void clear() = 0;
@@ -188,6 +190,8 @@ protected:
     Texture*                    screen_buffer_texture_;
 
     Shader*                     light_shader_;
+
+    mutable int                         light_count_;
 
     mutable const Shader*       current_shader_;
     mutable const Texture*      current_texture_;

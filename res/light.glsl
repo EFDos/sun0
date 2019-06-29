@@ -10,20 +10,23 @@ layout(location = 2) in vec4 att_color;
 
 out vec4 color;
 out vec2 tex_uv;
-out vec2 lights[10];
+out mat4 view;
 
 uniform mat4 projection = mat4(1.0);
 uniform mat4 viewport = mat4(1.0);
-
-//uniform vec2 light = vec2(640.0, 370.0);
 
 void main()
 {
     gl_Position = projection * vec4(att_pos, 0.0, 1.0);
     color = att_color;
     tex_uv = att_tex_uv;
-    vec4 light_transform = viewport * vec4(vec2(640.0, 370.0), 0.0, 1.0);
-    lights[0] = vec2(light_transform.x, -light_transform.y);
+    view = viewport;
+    /*for (int i = 0 ; i < MAX_N ; ++i) {
+        //vec4 light_transform = viewport * vec4(lights[i].pos, 0.0, 1.0);
+        forward_lights[i].pos = vec2(light_transform.x, -light_transform.y);
+        //forward_lights[i].intensity = lights[i].intensity;
+        //forward_lights[i].color = lights[i].color;
+    }*/
 }
 
 #FRAGMENT
@@ -31,11 +34,31 @@ void main()
 #version 130
 #define MAX_N 10
 
+struct Light
+{
+    vec2 pos;
+    float intensity;
+    vec3 color;
+};
+
 in vec4 color;
 in vec2 tex_uv;
-in vec2 lights[10];
+in mat4 view;
 
 out vec4 frag_color;
+
+uniform Light lights[MAX_N] = Light[MAX_N](
+    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
+    Light(vec2(0.0), 0.0, vec3(0.0, 1.0, 0.0)),
+    Light(vec2(0.0), 0.0, vec3(0.0, 0.0, 1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0)),
+    Light(vec2(0.0), 0.0, vec3(1.0, 0.0, 0.0))
+);
 
 uniform sampler2D tex;
 
@@ -69,17 +92,22 @@ void main()
 {
 	frag_color = color * texture(tex, tex_uv);
 
-	vec2 light2 = vec2(0.0, 370.0);
-	vec2 light3 = vec2(0.0, 0.0);
-
-    float att = 1.0;
+    float att = 0.0;
+    vec3 col = vec3(0.0);
+    int steps = 0;
     for (int i = 0 ; i < MAX_N ; ++i) {
-        if (lights[i] == vec2(0)) {
+        if (lights[i].intensity == 0.0) {
             continue;
         }
-        if (!check_intersection(lights[i].x, lights[i].y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
-            att += 100.5 / distance(lights[i], gl_FragCoord.xy);
+
+        vec4 light_transform = view * vec4(lights[i].pos, 0.0, 1.0);
+        vec2 pos = vec2(light_transform.x, -light_transform.y);
+        if (!check_intersection(pos.x, pos.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
+            att += lights[i].intensity / distance(pos, gl_FragCoord.xy);
+            col += lights[i].color;
         }
+        ++steps;
     }
-    frag_color *= att;
+    col /= steps;
+    frag_color *= vec4(col.xyz * att, 1.0);
 }

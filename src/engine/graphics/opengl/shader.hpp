@@ -82,9 +82,13 @@ public:
 
     void unbind() const override;
 
-    void set_uniform(const std::string& name, const Matrix4& mat4) override;
+    void send(const std::string& name, const Matrix4& mat4) override;
 
-    void set_uniform(const std::string& name, int v) override;
+    void send(const std::string& name, int v) override;
+
+    void send(const std::string& name, const Vector2<float>& vec2) override;
+
+    void send(const std::string& name, float v) override;
 
     std::string get_warnings() const override;
 

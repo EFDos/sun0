@@ -41,6 +41,7 @@ Renderer::Renderer(Context& context)
     draw_mode_(DrawMode::Triangles),
     primitive_vertices_(nullptr),
     primitive_indices_(nullptr),
+    light_count_(0),
     current_shader_(nullptr),
     current_texture_(nullptr)
 {

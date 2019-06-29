@@ -53,7 +53,7 @@ Application::Application(Context& context)
     physics_ = context_.register_system<sun::PhysicsServer>();
     renderer_ = context_.register_system<sun::Renderer>();
 
-    physics_->set_debug_draw(true);
+    //physics_->set_debug_draw(true);
 
     context_.init_systems();
 }

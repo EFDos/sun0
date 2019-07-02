@@ -42,6 +42,7 @@ class IndexBuffer;
 class Shader;
 class Texture;
 class Font;
+class Light2D;
 
 class SUN_API Renderer : public System
 {
@@ -100,6 +101,12 @@ public:
     virtual Texture* create_texture() const = 0;
 
     int add_light(const Vector2f& pos, const Colorf& col, float intensity) const;
+
+    void update_light(int light_id, const Vector2f& pos) const;
+
+    void update_light(int light_id, const Colorf& col) const;
+
+    void update_light(int light_id, float intensity) const;
 
     virtual void clear(const Color&) = 0;
 
@@ -191,7 +198,7 @@ protected:
 
     Shader*                     light_shader_;
 
-    mutable int                         light_count_;
+    mutable int                 light_count_;
 
     mutable const Shader*       current_shader_;
     mutable const Texture*      current_texture_;
@@ -202,7 +209,8 @@ private:
 
     bool handles_component_(uint type_hash) override;
 
-    std::vector<Camera*>   cameras_;
+    std::vector<Camera*>    cameras_;
+    std::vector<Light2D*>   lights_;
     std::vector<Drawable*>  drawables_;
 };
 

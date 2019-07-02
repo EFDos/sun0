@@ -58,8 +58,8 @@ uniform sampler2D tex;
 
 // Returns 1 if the lines intersect, otherwise 0. In addition, if the lines
 // intersect the intersection point may be stored in the floats i_x and i_y.
-bool check_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
-    float p2_x, float p2_y, float p3_x, float p3_y/*, float *i_x, float *i_y*/)
+/*bool check_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
+    float p2_x, float p2_y, float p3_x, float p3_y, float *i_x, float *i_y)
 {
     float s1_x, s1_y, s2_x, s2_y;
     s1_x = p1_x - p0_x;     s1_y = p1_y - p0_y;
@@ -80,7 +80,7 @@ bool check_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
     }
 
     return false; // No collision
-}
+}*/
 
 void main()
 {
@@ -94,11 +94,11 @@ void main()
             continue;
         }
 
-        vec4 light_transform = view * vec4(lights[i].pos, 0.0, 1.0);
+        vec4 light_transform = view * vec4(lights[i].pos.x, lights[i].pos.y - 720, 0.0, 1.0);
         vec2 pos = vec2(light_transform.x, -light_transform.y);
         //if (!check_intersection(pos.x, pos.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
-            att += lights[i].intensity / distance(pos, gl_FragCoord.xy);
-            col += lights[i].color * att * 1.5;
+        att += lights[i].intensity / distance(pos, gl_FragCoord.xy);
+        col += lights[i].color * att * 1.5;
         //}
         ++steps;
     }

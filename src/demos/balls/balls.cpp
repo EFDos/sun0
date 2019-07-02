@@ -12,20 +12,22 @@ public:
         renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
         renderer_->set_viewport({0, 0, 1280, 720});
 
+        physics_->set_debug_draw(true);
+
         auto ground = scene_.create_entity();
         ground->set_position(640, 700);
         auto ground_body = ground->create_component<sun::RigidBody>();
-        ground_body->create(sun::shapes::Rectangle({800, 20}), sun::RigidBody::Type::Static);
+        ground_body->create(sun::shapes::Rectangle(800, 20), sun::RigidBody::Type::Static);
 
         auto lwall = scene_.create_entity();
         lwall->set_position(240, 400);
         auto lwall_body = lwall->create_component<sun::RigidBody>();
-        lwall_body->create(sun::shapes::Rectangle({20, 600}), sun::RigidBody::Type::Static);
+        lwall_body->create(sun::shapes::Rectangle(20, 600), sun::RigidBody::Type::Static);
 
         auto rwall = scene_.create_entity();
         rwall->set_position(1040, 400);
         auto rwall_body = rwall->create_component<sun::RigidBody>();
-        rwall_body->create(sun::shapes::Rectangle({20, 600}), sun::RigidBody::Type::Static);
+        rwall_body->create(sun::shapes::Rectangle(20, 600), sun::RigidBody::Type::Static);
 
         for (uint i = 0 ; i < 4 ; ++i) {
             auto ball = scene_.create_entity();

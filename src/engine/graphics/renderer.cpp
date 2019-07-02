@@ -34,6 +34,7 @@
 #include "sprite_batch.hpp"
 #include "text.hpp"
 #include "shape2D.hpp"
+#include "light2D.hpp"
 
 namespace sun {
 
@@ -117,11 +118,35 @@ void Renderer::set_viewport(const Rectf& viewport)
 
 int Renderer::add_light(const Vector2f& pos, const Colorf& col, float intensity) const
 {
-    auto idx_str = std::to_string(light_count_++);
+    auto idx_str = std::to_string(light_count_);
     light_shader_->send("lights[" + idx_str + "].pos", pos);
     light_shader_->send("lights[" + idx_str + "].intensity", intensity);
     light_shader_->send("lights[" + idx_str + "].color", col);
-    return light_count_;
+    return light_count_++;
+}
+
+void Renderer::update_light(int light_id, const Vector2f& pos) const
+{
+    if (light_id >= 0 && light_id <= light_count_) {
+        auto idx_str = std::to_string(light_id);
+        light_shader_->send("lights[" + idx_str + "].pos", pos);
+    }
+}
+
+void Renderer::update_light(int light_id, const Colorf& color) const
+{
+    if (light_id >= 0 && light_id <= light_count_) {
+        auto idx_str = std::to_string(light_id);
+        light_shader_->send("lights[" + idx_str + "].color", color);
+    }
+}
+
+void Renderer::update_light(int light_id, float intensity) const
+{
+    if (light_id >= 0 && light_id <= light_count_) {
+        auto idx_str = std::to_string(light_id);
+        light_shader_->send("lights[" + idx_str + "].intensity", intensity);
+    }
 }
 
 void Renderer::render()
@@ -131,6 +156,9 @@ void Renderer::render()
     clear();
     for (auto c : cameras_) {
         c->update_transform(*this);
+    }
+    for (auto l : lights_) {
+        l->update_transform();
     }
     for (auto s : drawables_) {
         draw(*s);
@@ -291,6 +319,13 @@ Component* Renderer::create_component_(uint type_hash, uint id)
         comp->set_id(id);
         return comp;
     }
+    if (type_hash == Light2D::get_static_type_hash()) {
+        Light2D* light = new Light2D(context_);
+        lights_.push_back(light);
+        comp = light;
+        light->set_id(id);
+        return comp;
+    }
     if (type_hash == Sprite::get_static_type_hash()) {
         comp = new Sprite(context_);
     }
@@ -313,6 +348,7 @@ bool Renderer::handles_component_(uint type_hash)
     if (type_hash == Sprite::get_static_type_hash() ||
         type_hash == Text::get_static_type_hash() ||
         type_hash == Shape2D::get_static_type_hash() ||
+        type_hash == Light2D::get_static_type_hash() ||
         type_hash == SpriteBatch::get_static_type_hash() ||
         type_hash == Camera::get_static_type_hash())
     {

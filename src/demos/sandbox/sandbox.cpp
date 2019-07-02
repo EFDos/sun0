@@ -11,8 +11,6 @@ public:
         renderer_->set_color(sun::Color::DARK_GREY);
         renderer_->set_viewport({0, 0, 1280, 720});
         renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
-        renderer_->add_light({10, 20}, sun::Color::to_colorf(sun::Color::BLUE), 60.f);
-        renderer_->add_light({10, -400}, sun::Color::to_colorf(sun::Color::SUN), 160.f);
         auto texture = renderer_->create_texture();
 
         auto res_cache = context_.get_system<sun::ResourceCache>();
@@ -34,8 +32,11 @@ public:
         auto sprite = entity_->create_component<sun::Sprite>();
         auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();
+        auto light = entity_->create_component<sun::Light2D>();
         camera->set_follow(true);
         camera->set_follow_speed(1.f);
+
+        light->set_intensity(600.f);
 
         ent_body->create(sun::shapes::Convex({{-32, 18}, {0, -36}, {32, 18}}),
             sun::RigidBody::Type::Dynamic);

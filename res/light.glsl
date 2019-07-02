@@ -21,12 +21,6 @@ void main()
     color = att_color;
     tex_uv = att_tex_uv;
     view = viewport;
-    /*for (int i = 0 ; i < MAX_N ; ++i) {
-        //vec4 light_transform = viewport * vec4(lights[i].pos, 0.0, 1.0);
-        forward_lights[i].pos = vec2(light_transform.x, -light_transform.y);
-        //forward_lights[i].intensity = lights[i].intensity;
-        //forward_lights[i].color = lights[i].color;
-    }*/
 }
 
 #FRAGMENT
@@ -102,10 +96,10 @@ void main()
 
         vec4 light_transform = view * vec4(lights[i].pos, 0.0, 1.0);
         vec2 pos = vec2(light_transform.x, -light_transform.y);
-        if (!check_intersection(pos.x, pos.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
+        //if (!check_intersection(pos.x, pos.y, gl_FragCoord.x, gl_FragCoord.y, 200.0, 300.0, 400.0, 300.0)) {
             att += lights[i].intensity / distance(pos, gl_FragCoord.xy);
             col += lights[i].color * att * 1.5;
-        }
+        //}
         ++steps;
     }
     col /= steps;

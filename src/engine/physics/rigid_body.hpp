@@ -57,6 +57,14 @@ public:
 
     void apply_linear_impulse(const Vector2f& impulse);
 
+    void set_angular_velocity(float vel);
+
+    void set_restitution(float restitution);
+
+    void set_friction(float friction);
+
+    void set_density(float density);
+
     inline Type get_type() const {
         return type_;
     }

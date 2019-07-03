@@ -107,8 +107,10 @@ void PhysicsRasterizer::DrawSolidCircle(const b2Vec2& center, float32 radius,
     }
 
     Vector2f line [2] = {
-        {center.x * scale_, center.y * scale_ * -1},
-        {axis.x * scale_, axis.y * scale_ * -1}
+        {center.x * scale_, -center.y * scale_},
+
+        {(center.x - radius * axis.x) * scale_,
+            -(center.y + radius * -axis.y) * scale_}
     };
 
     renderer_->draw_polygon(30, vertices, {255, 255, 255, (uint8)(col.r * 255)});

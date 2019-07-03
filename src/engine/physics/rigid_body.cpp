@@ -135,8 +135,39 @@ void RigidBody::apply_linear_impulse(const Vector2f& impulse)
     if (body_ == nullptr) {
         return;
     }
-
     body_->ApplyLinearImpulse(physics::to_b2vec(impulse), body_->GetLocalCenter(), true);
+}
+
+void RigidBody::set_angular_velocity(float vel)
+{
+    if (body_ == nullptr) {
+        return;
+    }
+    body_->SetAngularVelocity(vel);
+}
+
+void RigidBody::set_restitution(float restitution)
+{
+    if (body_ == nullptr) {
+        return;
+    }
+    body_->GetFixtureList()->SetRestitution(restitution);
+}
+
+void RigidBody::set_friction(float friction)
+{
+    if (body_ == nullptr) {
+        return;
+    }
+    body_->GetFixtureList()->SetFriction(friction);
+}
+
+void RigidBody::set_density(float density)
+{
+    if (body_ == nullptr) {
+        return;
+    }
+    body_->GetFixtureList()->SetDensity(density);
 }
 
 }

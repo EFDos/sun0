@@ -29,11 +29,13 @@ public:
         auto rwall_body = rwall->create_component<sun::RigidBody>();
         rwall_body->create(sun::shapes::Rectangle(20, 600), sun::RigidBody::Type::Static);
 
-        for (uint i = 0 ; i < 4 ; ++i) {
+        for (uint i = 0 ; i < 15 ; ++i) {
             auto ball = scene_.create_entity();
-            ball->set_position(640 + (i * 8), 310);
+            ball->set_position(640, 50 + (i * 32));
             auto body = ball->create_component<sun::RigidBody>();
             body->create(sun::shapes::Circle(16, 84), sun::RigidBody::Type::Dynamic);
+            body->set_restitution(0.5f);
+            body->set_friction(0.7f);
         }
     }
 
@@ -45,6 +47,9 @@ public:
             ball->set_position(e.mouse_button_event.x, e.mouse_button_event.y);
             auto body = ball->create_component<sun::RigidBody>();
             body->create(sun::shapes::Circle(16, 84), sun::RigidBody::Type::Dynamic);
+            body->set_restitution(0.5f);
+            body->set_friction(0.7f);
+            body->set_angular_velocity(32.f);
         }
 	}
 

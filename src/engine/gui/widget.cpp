@@ -22,11 +22,31 @@
 /*                                                                       */
 /*************************************************************************/
 #include "widget.hpp"
+#include "gui_system.hpp"
+#include "core/context.hpp"
+#include "core/event.hpp"
 
 namespace sun {
 
 Widget::Widget(Context& context)
-:   Object(context), parent_(nullptr)
+:   Object(context),
+    gui_(nullptr),
+    parent_(nullptr),
+    grabbed_(false)
 {}
+
+void Widget::handle_events(const Event& event)
+{
+    if (event.type == EventType::MouseButtonPressed) {
+        if (event.mouse_button_event.button == mouse::Button::Left) {
+            grabbed_ = true;
+        }
+    }
+    if (event.type == EventType::MouseButtonReleased) {
+        if (event.mouse_button_event.button == mouse::Button::Left) {
+            grabbed_ = false;
+        }
+    }
+}
 
 }

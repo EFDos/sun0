@@ -34,6 +34,8 @@ public:
     Frame(Context&, const Vector2i& size);
 
     void draw(Renderer*) const override;
+
+    void handle_events(const Event&) override;
 };
 
 }

@@ -13,6 +13,7 @@ public:
 
         renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
         renderer_->set_viewport({0, 0, 1280, 720});
+
         auto res_cache = context_.get_system<sun::ResourceCache>();
         res_cache->set_path("res");
 
@@ -37,6 +38,7 @@ public:
         shape->set_shape(sun::shapes::Rectangle(32.f, 128.f));
 
         ball_->set_position(640.f - 20.f, 360.f - 20.f);
+        ball_->set_origin(20.f, 20.f);
         shape = ball_->create_component<sun::Shape2D>("shape");
         shape->set_shape(sun::shapes::Circle(20.f, 120));
 

@@ -29,6 +29,8 @@
 namespace sun {
 
 class Renderer;
+class Event;
+class GUISystem;
 
 class SUN_API Widget : public Object
 {
@@ -39,6 +41,8 @@ public:
     //virtual ~Widget();
 
     virtual void draw(Renderer*) const = 0;
+
+    virtual void handle_events(const Event&);
 
     inline Vector2i get_position() const {
         return bounds_.get_position();
@@ -54,8 +58,17 @@ public:
 
 protected:
 
+    friend class GUISystem;
+
+    inline void set_gui_system(GUISystem* gui) {
+        gui_ = gui;
+    }
+
+    GUISystem* gui_;
     Widget* parent_;
     Recti   bounds_;
+
+    bool grabbed_;
 };
 
 }

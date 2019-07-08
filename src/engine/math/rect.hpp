@@ -95,7 +95,7 @@ struct Rect
         return {static_cast<float>(r.x),
                 static_cast<float>(r.y),
                 static_cast<float>(r.w),
-                static_cast<float>(r.x)};
+                static_cast<float>(r.h)};
     }
 
     inline static Rect<float> to_rectf(const Rect<unsigned>& r)
@@ -103,7 +103,7 @@ struct Rect
         return {static_cast<float>(r.x),
                 static_cast<float>(r.y),
                 static_cast<float>(r.w),
-                static_cast<float>(r.x)};
+                static_cast<float>(r.h)};
     }
 
     inline static Rect<int> to_recti(const Rect<float>& r)
@@ -111,7 +111,7 @@ struct Rect
         return {static_cast<int>(r.x),
                 static_cast<int>(r.y),
                 static_cast<int>(r.w),
-                static_cast<int>(r.x)};
+                static_cast<int>(r.h)};
     }
 };
 

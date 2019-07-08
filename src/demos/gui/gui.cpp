@@ -6,7 +6,8 @@ public:
 
     GUI(sun::Context& context) : sun::Application(context)
     {
-        auto gui = context_.get_system<sun::GUISystem>();
+        renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
+        gui_ = context_.register_system<sun::GUISystem>();
     }
 
     void on_update()
@@ -15,6 +16,7 @@ public:
 
     void on_event(sun::Event& e) override
     {
+        sun::Application::on_event(e);
     }
 
 private:

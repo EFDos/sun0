@@ -24,15 +24,25 @@
 #pragma once
 
 #include "system/system.hpp"
+#include "common/color.hpp"
 #include "frame.hpp"
 
 namespace sun {
 
 class Renderer;
+class Event;
 
 class SUN_API GUISystem : public System
 {
 public:
+
+    struct Theme {
+        Color  main_color;
+        Color  accent_color;
+
+        Theme(const Color& p_main, const Color& p_accent)
+        :   main_color(p_main), accent_color(p_accent) {}
+    };
 
     SUN_SYSTEM_TYPE(GUISystem)
 
@@ -44,11 +54,19 @@ public:
 
     void render(Renderer*);
 
+    void handle_events(const Event& e);
+
+    inline const Theme& get_default_theme() const {
+        return default_theme_;
+    }
+
 private:
 
     virtual Component* create_component_(uint type_hash, uint id) override;
 
     virtual bool handles_component_(uint type_hash) override;
+
+    Theme default_theme_;
 
     // Root widget is this frame
     Frame   frame_;

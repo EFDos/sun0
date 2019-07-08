@@ -152,8 +152,10 @@ void Renderer::update_light(int light_id, float intensity) const
 void Renderer::render()
 {
     clear();
-    screen_buffer_->bind();
-    clear();
+    if (light_count_ > 0) {
+        screen_buffer_->bind();
+        clear();
+    }
     for (auto c : cameras_) {
         c->update_transform(*this);
     }
@@ -163,8 +165,10 @@ void Renderer::render()
     for (auto s : drawables_) {
         draw(*s);
     }
-    screen_buffer_->unbind();
-    draw_indexed(*screen_quad_buffer_, *screen_quad_indices_, screen_buffer_texture_, light_shader_);
+    if (light_count_ > 0) {
+        screen_buffer_->unbind();
+        draw_indexed(*screen_quad_buffer_, *screen_quad_indices_, screen_buffer_texture_, light_shader_);
+    }
 }
 
 void Renderer::draw_rect(const Rectf& rect, const Color& c) const

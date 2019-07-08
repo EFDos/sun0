@@ -25,14 +25,18 @@
 
 #include "core/context.hpp"
 #include "core/logger.hpp"
+//#include "core/event.hpp"
 #include "graphics/renderer.hpp"
 
 namespace sun {
 
 GUISystem::GUISystem(Context& context)
 :   System(context),
+    default_theme_(Color(40, 40, 60), Color(80, 80, 120)),
     frame_(context, {800, 600})
-{}
+{
+    frame_.set_gui_system(this);
+}
 
 bool GUISystem::init()
 {
@@ -46,9 +50,14 @@ void GUISystem::shutdown()
 
 void GUISystem::render(Renderer* renderer)
 {
-    renderer->set_camera_transform(Matrix4());
+    //renderer->set_camera_transform(Matrix4());
 
     frame_.draw(renderer);
+}
+
+void GUISystem::handle_events(const Event& event)
+{
+    frame_.handle_events(event);
 }
 
 Component* GUISystem::create_component_(uint type_hash, uint id)

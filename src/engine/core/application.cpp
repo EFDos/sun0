@@ -37,6 +37,7 @@ namespace sun {
 
 Application::Application(Context& context)
 :   context_(context),
+    gui_(nullptr),
     running_(false)
 {
     sun_printf("******* Sun-0 Engine *******\n"
@@ -78,7 +79,9 @@ int Application::run()
         renderer_->render();
         renderer_->set_model_transform(Matrix4());
         physics_->draw_physics_debug(renderer_);
-        //gui_->render(renderer_);
+        if (gui_ != nullptr) {
+            gui_->render(renderer_);
+        }
         window_.update();
     }
     window_.close();
@@ -90,6 +93,9 @@ void Application::on_event(Event& e)
 	if (e.type == EventType::Closed) {
 		running_ = false;
 	}
+    if (gui_ != nullptr) {
+        gui_->handle_events(e);
+    }
 }
 
 } // sun

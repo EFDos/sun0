@@ -22,7 +22,9 @@
 /*                                                                       */
 /*************************************************************************/
 #include "frame.hpp"
+#include "gui_system.hpp"
 #include "graphics/renderer.hpp"
+#include "core/event.hpp"
 
 namespace sun {
 
@@ -34,8 +36,23 @@ Frame::Frame(Context& context, const Vector2i& size)
 
 void Frame::draw(Renderer* renderer) const
 {
-    renderer->set_draw_mode(Renderer::DrawMode::Triangles);
-    renderer->draw_rect(Recti::to_rectf(bounds_), Color::WHITE);
+    auto rectf = Recti::to_rectf(bounds_);
+    auto border = rectf;
+    border.x -= 4.f;
+    border.y -= 4.f;
+    border.w += 8.f;
+    border.h += 8.f;
+    renderer->draw_rect(border, gui_->get_default_theme().accent_color);
+    renderer->draw_rect(rectf, gui_->get_default_theme().main_color);
+}
+
+void Frame::handle_events(const Event& event)
+{
+    Widget::handle_events(event);
+    if (grabbed_ && event.type == EventType::MouseMoved) {
+        bounds_.x += event.mouse_move_event.x_rel;
+        bounds_.y += event.mouse_move_event.y_rel;
+    }
 }
 
 }

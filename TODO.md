@@ -1,5 +1,11 @@
 #TODO
 
+###Audio
+* Separate audio playback and streaming code from SoundStream
+into SoundStream and SoundSource classes.
+SoundSource should become the "Sound Player", being able
+to play SoundStreams or SoundBuffers
+
 ###Graphics
 
 * Canvas Layers

@@ -29,6 +29,7 @@ sun_lib_src = [
   'audio/decoders/vorbis_decoder.cpp',
   'audio/audio_server.cpp',
   'audio/sound_source.cpp',
+  'audio/sound_buffer.cpp',
   'audio/sound_stream.cpp',
   'physics/physics_server.cpp',
   'physics/physics_rasterizer.cpp',

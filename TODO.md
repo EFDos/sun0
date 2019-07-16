@@ -16,6 +16,6 @@ to play SoundStreams or SoundBuffers
 * Sound sources and Textures need a way to be factored
 as resources.
 
-###Core
+###Animation
 
-* Define Core Application Loop
+* Figure out Generic Animation System

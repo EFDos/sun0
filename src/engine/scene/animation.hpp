@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  font.hpp                                                             */
+/*  animation.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -24,86 +24,83 @@
 #pragma once
 
 #include "common/types.hpp"
-#include "resources/resource.hpp"
-#include "texture.hpp"
+#include "system/component.hpp"
 
-#include <unordered_map>
 #include <vector>
+#include <variant>
+#include <string>
 
-namespace sun
+namespace sun {
+
+enum class AnimationCurve
 {
+    Linear,
+    Cubic
+};
 
-class Context;
-
-class SUN_API Font : public Resource
+class AnimationTrack
 {
 public:
 
-    struct Glyph
+    enum class DataType
     {
-        float       advance;
-        Rectf       rect;
-        Recti       tex_coords;
-
-        Glyph() : advance(0) {}
+        Int = 0,
+        Float,
+        Vector2f
     };
 
-    Font(Context&);
+    using VariantData = std::variant<int, float, Vector2f>;
 
-    bool load(const std::string& filepath) override;
+    struct KeyFrame
+    {
+        float       position;
+        VariantData value;
+        DataType    type;
 
-    void clear() override;
+        template<typename T>
+        KeyFrame(T p_value, DataType p_type, float p_position = 0.f)
+        :   position(p_position), value(p_value), type(p_type)
+        {}
+    };
 
-    const Glyph& get_glyph(uint8 code, uint char_size) const;
+    AnimationTrack(uint property, AnimationCurve curve = AnimationCurve::Linear, float length = 1.f)
+    :   length_(length), property_(property), curve_(curve)
+    {}
 
-    float get_kerning(uint32 first, uint32 second, uint size) const;
+    void insert_key(KeyFrame&& key) {
+        track_.emplace_back(key);
+    }
 
-    float get_line_spacing(uint size) const;
+    inline void set_curve(AnimationCurve curve) {
+        curve_ = curve;
+    }
 
-    const Texture* get_page_texture(uint size) const;
+    inline AnimationCurve get_curve() const {
+        return curve_;
+    }
 
 private:
 
-    struct Row
-    {
-        uint    width;
-        uint    height;
-        uint    top;
+    float length_;
 
-        Row(uint _top, uint _height) : width(0), height(_height), top(_top)
-        {
-            // nothing
-        }
-    };
-
-    using GlyphTable = std::unordered_map<uint8, Glyph>;
-
-    struct Page
-    {
-        Texture*            texture;
-        GlyphTable          glyphes;
-        uint                next_row;
-        std::vector<Row>    rows;
-
-        Page() : texture(nullptr), next_row(3) {}
-    };
-
-    void cleanup_();
-
-    Glyph load_glyph_(uint8 code_point, uint char_size) const;
-
-    Recti find_glyph_rect_(Page&, uint width, uint height) const;
-
-    bool set_current_size_(uint char_size) const;
-
-    Texture* generate_page_texture_() const;
-
-    mutable std::unordered_map<uint, Page>  pages_;
-    mutable std::vector<uint8>              pixel_buffer_;
-
-    void*                           library_;
-    void*                           face_;
-
+    std::vector<KeyFrame>   track_;
+    uint                    property_;
+    AnimationCurve          curve_;
 };
 
-} // sun
+class Animation : public Component
+{
+public:
+
+    SUN_COMPONENT_TYPE(Animation)
+
+    Animation(Context&);
+
+    void create_track(const std::string& property, AnimationCurve curve, Time duration);
+
+private:
+
+    std::vector<AnimationTrack> tracks_;
+};
+
+}

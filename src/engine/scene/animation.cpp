@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  types.hpp                                                            */
+/*  animation.cpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,15 +21,17 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-#include "int.hpp"
-#include "color.hpp"
-#include "time.hpp"
-#include "math/vector2.hpp"
-#include "math/matrix4.hpp"
-#include "math/rect.hpp"
+#include "animation.hpp"
 
 namespace sun {
-    using float32   = float;
-    using float64   = double;
+
+Animation::Animation(Context& context)
+:   Component(context)
+{}
+
+void Animation::create_track(const std::string& property, AnimationCurve curve, Time duration)
+{
+    tracks_.emplace_back(AnimationTrack(std::hash<std::string>{}(property), curve, duration.as_seconds()));
+}
+
 }

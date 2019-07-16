@@ -47,7 +47,7 @@ public:
 private:
 
     typedef std::chrono::high_resolution_clock high_res_clock;
-    typedef std::chrono::duration<uint32, std::milli> milliseconds;
+    typedef std::chrono::duration<uint32, std::micro> microseconds;
 
     std::chrono::time_point<high_res_clock> start_;
 };

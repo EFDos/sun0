@@ -53,7 +53,7 @@ public:
         }
 	}
 
-    void on_update()
+    void on_update(float delta)
     {
     }
 

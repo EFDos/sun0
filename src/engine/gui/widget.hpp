@@ -44,6 +44,11 @@ public:
 
     virtual void handle_events(const Event&);
 
+    inline void set_parent(Widget* parent) {
+        parent_ = parent;
+        on_parent_set_();
+    }
+
     inline Vector2i get_position() const {
         return bounds_.get_position();
     }
@@ -56,13 +61,13 @@ public:
         return bounds_;
     }
 
-protected:
-
-    friend class GUISystem;
-
     inline void set_gui_system(GUISystem* gui) {
         gui_ = gui;
     }
+
+protected:
+
+    virtual void on_parent_set_();
 
     GUISystem* gui_;
     Widget* parent_;

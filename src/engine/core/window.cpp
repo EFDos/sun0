@@ -190,7 +190,7 @@ void Window::create(const std::string& name,
 
     #endif
 
-    SDL_GL_SetSwapInterval(true);
+    SDL_GL_SetSwapInterval(false);
 }
 
 void Window::close()

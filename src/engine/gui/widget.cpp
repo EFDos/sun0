@@ -49,4 +49,7 @@ void Widget::handle_events(const Event& event)
     }
 }
 
+void Widget::on_parent_set_()
+{}
+
 }

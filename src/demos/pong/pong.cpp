@@ -42,38 +42,38 @@ public:
         shape = ball_->create_component<sun::Shape2D>("shape");
         shape->set_shape(sun::shapes::Circle(20.f, 120));
 
-        ball_speed_ = {8.f, 0.f};
+        ball_speed_ = {600.f, 0.f};
     }
 
-    void on_update()
+    void on_update(float delta)
     {
         if (sun::keyboard::is_key_pressed(sun::keyboard::Key::Up)) {
-            right_pad_->move(0.f, -8.f);
+            right_pad_->move(0.f, -180.f * delta);
         }
         if (sun::keyboard::is_key_pressed(sun::keyboard::Key::Down)) {
-            right_pad_->move(0.f, 8.f);
+            right_pad_->move(0.f, 180.f * delta);
         }
 
         if (sun::keyboard::is_key_pressed(sun::keyboard::Key::A)) {
-            left_pad_->move(0.f, -8.f);
+            left_pad_->move(0.f, -180.f * delta);
         }
         if (sun::keyboard::is_key_pressed(sun::keyboard::Key::Z)) {
-            left_pad_->move(0.f, 8.f);
+            left_pad_->move(0.f, 180.f * delta);
         }
 
-        ball_->move(ball_speed_);
+        ball_->move(ball_speed_ * delta);
 
         if (check_collision(ball_->get_component<sun::Shape2D>("shape"),
                             right_pad_->get_component<sun::Shape2D>("shape")))
         {
             ball_speed_.x *= -1;
-            ball_speed_.y += ((ball_->get_position().y + 20.f) - (right_pad_->get_position().y + 64.f)) * 0.15f;
+            ball_speed_.y += ((ball_->get_position().y + 20.f) - (right_pad_->get_position().y + 64.f)) * 12.f;
         }
         if (check_collision(ball_->get_component<sun::Shape2D>("shape"),
                             left_pad_->get_component<sun::Shape2D>("shape")))
         {
             ball_speed_.x *= -1;
-            ball_speed_.y += ((ball_->get_position().y + 20.f) - (left_pad_->get_position().y + 64.f)) * 0.15f;
+            ball_speed_.y += ((ball_->get_position().y + 20.f) - (left_pad_->get_position().y + 64.f)) * 12.f;
         }
 
         if (ball_->get_position().y + 40.f > 720.f || ball_->get_position().y < 0.f) {
@@ -91,7 +91,7 @@ public:
 
     void respawn() {
         ball_->set_position(640.f - 20.f, 360.f - 20.f);
-        ball_speed_ = {8.f, 0.f};
+        ball_speed_ = {600.f, 0.f};
         score_text_->set_text(std::to_string(left_score) + " | " + std::to_string(right_score));
     }
 

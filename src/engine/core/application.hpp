@@ -26,6 +26,7 @@
 #include "context.hpp"
 #include "main.hpp"
 #include "window.hpp"
+#include "common/time.hpp"
 
 #include <string>
 
@@ -44,11 +45,15 @@ public:
 
     virtual ~Application();
 
-    virtual void on_update() = 0;
+    virtual void on_update(float delta) = 0;
 
     virtual void on_event(Event& e);
 
     int run();
+
+    void set_framerate(float framerate) {
+        timestep_ = 1 / framerate;
+    }
 
 protected:
 
@@ -61,6 +66,7 @@ protected:
 private:
 
     bool    running_;
+    float   timestep_;
 };
 
 }

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gui_system.hpp                                                       */
+/*  container.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,55 +23,48 @@
 /*************************************************************************/
 #pragma once
 
-#include "system/system.hpp"
-#include "common/color.hpp"
-#include "frame.hpp"
+#include "widget.hpp"
+
+#include <vector>
 
 namespace sun {
 
-class Renderer;
-class Event;
-
-class SUN_API GUISystem : public System
+class SUN_API Container : public Widget
 {
 public:
 
-    struct Theme {
-        Color  main_color;
-        Color  accent_color;
+    Container(Context& context) : Widget(context) {}
 
-        Theme(const Color& p_main, const Color& p_accent)
-        :   main_color(p_main), accent_color(p_accent) {}
-    };
-
-    SUN_SYSTEM_TYPE(GUISystem)
-
-    GUISystem(Context&);
-
-    bool init() override;
-
-    void shutdown() override;
-
-    void render(Renderer*);
-
-    void handle_events(const Event& e);
-
-    void add_widget(Widget*);
-
-    inline const Theme& get_default_theme() const {
-        return default_theme_;
+    virtual ~Container() {
+        for (auto child : children_) {
+            delete child;
+        }
     }
 
-private:
+    inline virtual void draw(Renderer* renderer) const override {
+        for (auto child : children_) {
+            child->draw(renderer);
+        }
+    }
 
-    virtual Component* create_component_(uint type_hash, uint id) override;
+    inline virtual void handle_events(const Event& event) override {
+        for (auto child : children_) {
+            child->handle_events(event);
+        }
+        Widget::handle_events(event);
+    }
 
-    virtual bool handles_component_(uint type_hash) override;
+    inline virtual void add_child(Widget* child) {
+        children_.push_back(child);
+        child->set_parent(this);
+        child->set_gui_system(gui_);
+    }
 
-    Theme default_theme_;
+    virtual Recti request_bounds(Recti&& bounds) = 0;
 
-    // Root widget is this frame
-    Frame   frame_;
+protected:
+
+    std::vector<Widget*>    children_;
 };
 
 }

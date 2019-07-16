@@ -29,7 +29,7 @@
 namespace sun {
 
 Frame::Frame(Context& context, const Vector2i& size)
-:   Widget(context)
+:   Container(context)
 {
     bounds_.set_size(size);
 }
@@ -44,15 +44,27 @@ void Frame::draw(Renderer* renderer) const
     border.h += 8.f;
     renderer->draw_rect(border, gui_->get_default_theme().accent_color);
     renderer->draw_rect(rectf, gui_->get_default_theme().main_color);
+
+    Container::draw(renderer);
 }
 
 void Frame::handle_events(const Event& event)
 {
-    Widget::handle_events(event);
     if (grabbed_ && event.type == EventType::MouseMoved) {
         bounds_.x += event.mouse_move_event.x_rel;
         bounds_.y += event.mouse_move_event.y_rel;
     }
+    Container::handle_events(event);
+}
+
+Recti Frame::request_bounds(Recti&& bounds) {
+    if (bounds.x > bounds_.x && bounds.x + bounds.w < bounds_.w &&
+        bounds.y > bounds_.y && bounds.y + bounds.h < bounds_.h)
+    {
+        return bounds;
+    }
+
+    return {0, 0, 0, 0};
 }
 
 }

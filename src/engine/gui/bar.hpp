@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gui_system.hpp                                                       */
+/*  bar.hpp                                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,55 +23,36 @@
 /*************************************************************************/
 #pragma once
 
-#include "system/system.hpp"
-#include "common/color.hpp"
-#include "frame.hpp"
+#include "container.hpp"
 
 namespace sun {
 
-class Renderer;
-class Event;
-
-class SUN_API GUISystem : public System
+class SUN_API Bar : public Container
 {
 public:
 
-    struct Theme {
-        Color  main_color;
-        Color  accent_color;
-
-        Theme(const Color& p_main, const Color& p_accent)
-        :   main_color(p_main), accent_color(p_accent) {}
+    enum class Orientation
+    {
+        Top,
+        Left,
+        Right,
+        Bottom
     };
 
-    SUN_SYSTEM_TYPE(GUISystem)
+    Bar(Context& context, Orientation orientation);
 
-    GUISystem(Context&);
+    void draw(Renderer*) const override;
 
-    bool init() override;
-
-    void shutdown() override;
-
-    void render(Renderer*);
-
-    void handle_events(const Event& e);
-
-    void add_widget(Widget*);
-
-    inline const Theme& get_default_theme() const {
-        return default_theme_;
-    }
+    void handle_events(const Event&) override;
 
 private:
 
-    virtual Component* create_component_(uint type_hash, uint id) override;
+    void on_parent_set_() override;
 
-    virtual bool handles_component_(uint type_hash) override;
+    Recti request_bounds(Recti&& bounds) override;
 
-    Theme default_theme_;
+    Orientation orientation_;
 
-    // Root widget is this frame
-    Frame   frame_;
 };
 
 }

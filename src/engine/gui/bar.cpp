@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  gui_system.hpp                                                       */
+/*  bar.cpp                                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,57 +21,41 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "system/system.hpp"
-#include "common/color.hpp"
-#include "frame.hpp"
+#include "bar.hpp"
+#include "gui_system.hpp"
+#include "graphics/renderer.hpp"
 
 namespace sun {
 
-class Renderer;
-class Event;
-
-class SUN_API GUISystem : public System
+Bar::Bar(Context& context, Orientation orientation)
+:   Container(context),
+    orientation_(orientation)
 {
-public:
+}
 
-    struct Theme {
-        Color  main_color;
-        Color  accent_color;
+void Bar::draw(Renderer* renderer) const
+{
+    auto rectf = Recti::to_rectf(bounds_);
+    renderer->draw_rect(rectf, gui_->get_default_theme().accent_color);
+    Container::draw(renderer);
+}
 
-        Theme(const Color& p_main, const Color& p_accent)
-        :   main_color(p_main), accent_color(p_accent) {}
-    };
+void Bar::handle_events(const Event& event)
+{
+    Container::handle_events(event);
+}
 
-    SUN_SYSTEM_TYPE(GUISystem)
+void Bar::on_parent_set_()
+{
+    bounds_ = dynamic_cast<Container*>(parent_)->request_bounds({
+        4, 8,
+        parent_->get_bounding_rect().w - 8, 32
+    });
+}
 
-    GUISystem(Context&);
-
-    bool init() override;
-
-    void shutdown() override;
-
-    void render(Renderer*);
-
-    void handle_events(const Event& e);
-
-    void add_widget(Widget*);
-
-    inline const Theme& get_default_theme() const {
-        return default_theme_;
-    }
-
-private:
-
-    virtual Component* create_component_(uint type_hash, uint id) override;
-
-    virtual bool handles_component_(uint type_hash) override;
-
-    Theme default_theme_;
-
-    // Root widget is this frame
-    Frame   frame_;
-};
+Recti Bar::request_bounds(Recti&& bounds)
+{
+    return {0, 0, 0, 0};
+}
 
 }

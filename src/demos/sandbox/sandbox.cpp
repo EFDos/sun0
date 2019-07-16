@@ -58,7 +58,8 @@ public:
         }
 	}
 
-    void on_update() override {
+    void on_update(float delta) override {
+        sun_logf("Delta time: %f", delta);
     }
 
 private:

@@ -37,7 +37,7 @@ void Clock::reset()
 
 Time Clock::elapsed()
 {
-    return Time(std::chrono::duration_cast<milliseconds>
+    return Time(std::chrono::duration_cast<microseconds>
                 (high_res_clock::now() - start_).count());
 }
 

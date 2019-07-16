@@ -23,11 +23,11 @@
 /*************************************************************************/
 #pragma once
 
-#include "widget.hpp"
+#include "container.hpp"
 
 namespace sun {
 
-class SUN_API Frame : public Widget
+class SUN_API Frame : public Container
 {
 public:
 
@@ -36,6 +36,10 @@ public:
     void draw(Renderer*) const override;
 
     void handle_events(const Event&) override;
+
+private:
+
+    Recti request_bounds(Recti&& bounds) override;
 };
 
 }

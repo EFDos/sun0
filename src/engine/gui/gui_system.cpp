@@ -60,6 +60,11 @@ void GUISystem::handle_events(const Event& event)
     frame_.handle_events(event);
 }
 
+void GUISystem::add_widget(Widget* widget)
+{
+    frame_.add_child(widget);
+}
+
 Component* GUISystem::create_component_(uint type_hash, uint id)
 {
     return nullptr;

@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "application.hpp"
 #include "../version.hpp"
+#include "clock.hpp"
 
 #include "resources/resource_cache.hpp"
 #include "physics/physics_server.hpp"
@@ -38,7 +39,8 @@ namespace sun {
 Application::Application(Context& context)
 :   context_(context),
     gui_(nullptr),
-    running_(false)
+    running_(false),
+    timestep_(1 / 60.f)
 {
     sun_printf("******* Sun-0 Engine *******\n"
                  "Build: %s, %s",
@@ -67,15 +69,28 @@ Application::~Application()
 int Application::run()
 {
 	running_ = true;
+	float last_frame_time = 0.f;
+	float timestep = 0.f;
+	Clock timer;
     while(running_) {
-    	Event e;
-    	if (window_.is_open()) {
-            while (window_.poll_event(e)) {
-    	        on_event(e);
+
+        float time = timer.elapsed().as_seconds();
+        timestep += time - last_frame_time;
+        last_frame_time = time;
+
+        if (timestep > timestep_)
+        {
+            Event e;
+        	if (window_.is_open()) {
+                while (window_.poll_event(e)) {
+        	        on_event(e);
+                }
             }
+            on_update(timestep);
+            physics_->update();
+            timestep = 0.f;
         }
-        on_update();
-        physics_->update();
+
         renderer_->render();
         renderer_->set_model_transform(Matrix4());
         physics_->draw_physics_debug(renderer_);
@@ -83,6 +98,7 @@ int Application::run()
             gui_->render(renderer_);
         }
         window_.update();
+
     }
     window_.close();
     return 0;

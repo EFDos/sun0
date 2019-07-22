@@ -31,23 +31,8 @@ namespace sun {
 Widget::Widget(Context& context)
 :   Object(context),
     gui_(nullptr),
-    parent_(nullptr),
-    grabbed_(false)
+    parent_(nullptr)
 {}
-
-void Widget::handle_events(const Event& event)
-{
-    if (event.type == EventType::MouseButtonPressed) {
-        if (event.mouse_button_event.button == mouse::Button::Left) {
-            grabbed_ = true;
-        }
-    }
-    if (event.type == EventType::MouseButtonReleased) {
-        if (event.mouse_button_event.button == mouse::Button::Left) {
-            grabbed_ = false;
-        }
-    }
-}
 
 void Widget::on_parent_set_()
 {}

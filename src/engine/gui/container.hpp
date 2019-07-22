@@ -51,7 +51,6 @@ public:
         for (auto child : children_) {
             child->handle_events(event);
         }
-        Widget::handle_events(event);
     }
 
     inline virtual void add_child(Widget* child) {

@@ -40,6 +40,8 @@ public:
 private:
 
     Recti request_bounds(Recti&& bounds) override;
+
+    bool grabbed_;
 };
 
 }

@@ -50,6 +50,25 @@ void Frame::draw(Renderer* renderer) const
 
 void Frame::handle_events(const Event& event)
 {
+    if (event.type == EventType::MouseButtonPressed)
+    {
+        if (bounds_.contains({
+            event.mouse_move_event.x,
+            event.mouse_move_event.y}))
+        {
+            if (event.mouse_button_event.button == mouse::Button::Middle) {
+                grabbed_ = true;
+            }
+        }
+    }
+
+    if (event.type == EventType::MouseButtonReleased)
+    {
+        if (event.mouse_button_event.button == mouse::Button::Middle) {
+            grabbed_ = false;
+        }
+    }
+
     if (grabbed_ && event.type == EventType::MouseMoved) {
         bounds_.x += event.mouse_move_event.x_rel;
         bounds_.y += event.mouse_move_event.y_rel;

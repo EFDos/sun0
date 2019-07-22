@@ -36,6 +36,8 @@ Bar::Bar(Context& context, Orientation orientation)
 void Bar::draw(Renderer* renderer) const
 {
     auto rectf = Recti::to_rectf(bounds_);
+    rectf.x += parent_->get_bounding_rect().x;
+    rectf.y += parent_->get_bounding_rect().y;
     renderer->draw_rect(rectf, gui_->get_default_theme().accent_color);
     Container::draw(renderer);
 }
@@ -48,8 +50,8 @@ void Bar::handle_events(const Event& event)
 void Bar::on_parent_set_()
 {
     bounds_ = dynamic_cast<Container*>(parent_)->request_bounds({
-        4, 8,
-        parent_->get_bounding_rect().w - 8, 32
+        1, 1,
+        parent_->get_bounding_rect().w - 2, 32
     });
 }
 

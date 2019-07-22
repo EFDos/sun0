@@ -32,8 +32,8 @@ enum class Button : uint8
 {
     Undefined,
     Left,
-    Right,
     Middle,
+    Right,
     X1,
     X2,
 };

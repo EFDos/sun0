@@ -42,7 +42,7 @@ public:
 
     virtual void draw(Renderer*) const = 0;
 
-    virtual void handle_events(const Event&);
+    virtual void handle_events(const Event&) = 0;
 
     inline void set_parent(Widget* parent) {
         parent_ = parent;
@@ -72,8 +72,6 @@ protected:
     GUISystem* gui_;
     Widget* parent_;
     Recti   bounds_;
-
-    bool grabbed_;
 };
 
 }

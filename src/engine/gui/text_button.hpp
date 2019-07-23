@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  bar.cpp                                                              */
+/*  text_button.hpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,48 +21,28 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "bar.hpp"
-#include "gui_system.hpp"
-#include "graphics/renderer.hpp"
+#pragma once
+
+#include "widget.hpp"
+#include "graphics/text.hpp"
 
 namespace sun {
 
-Bar::Bar(Context& context, Orientation orientation)
-:   Container(context),
-    orientation_(orientation)
+class SUN_API TextButton : public Widget
 {
-}
+public:
 
-void Bar::draw(Renderer* renderer) const
-{
-    auto rectf = Recti::to_rectf(bounds_);
-    rectf.x += parent_->get_bounding_rect().x;
-    rectf.y += parent_->get_bounding_rect().y;
-    renderer->draw_rect(rectf, gui_->get_default_theme().accent_color);
-    Container::draw(renderer);
-}
+    TextButton(Context&);
 
-void Bar::handle_events(const Event& event)
-{
-    Container::handle_events(event);
-}
+    void draw(Renderer*) const override;
 
-void Bar::on_parent_set_()
-{
-    bounds_ = dynamic_cast<Container*>(parent_)->request_bounds({
-        0, 0,
-        parent_->get_bounding_rect().w, 32
-    });
-}
+    void handle_events(const Event&) override;
 
-Recti Bar::request_bounds(Recti&& bounds)
-{
-    if (bounds_.contains(bounds))
-    {
-        return bounds;
-    }
+private:
 
-    return {0, 0, 0, 0};
-}
+    void on_parent_set_() override;
+
+    Text    text_;
+};
 
 }

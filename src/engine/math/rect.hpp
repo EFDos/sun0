@@ -70,6 +70,12 @@ struct Rect
         return ((p.x > x && p.x < x + w) && (p.y > y && p.y < y + h));
     }
 
+    inline bool contains(Rect& r)
+    {
+        return (r.x >= x && r.x + r.w <= x + w &&
+                r.y >= y && r.y + r.h <= y + h);
+    }
+
     inline bool intersects(const Rect& r)
     {
         return (contains(r.x, r.y) || contains(r.x + r.w, r.y) ||

@@ -63,6 +63,7 @@
 #include "gui/gui_system.hpp"
 #include "gui/frame.hpp"
 #include "gui/bar.hpp"
+#include "gui/text_button.hpp"
 
 // AUDIO
 #include "audio/sound_stream.hpp"

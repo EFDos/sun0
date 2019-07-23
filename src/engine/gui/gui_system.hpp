@@ -25,7 +25,10 @@
 
 #include "system/system.hpp"
 #include "common/color.hpp"
+#include "graphics/font.hpp"
 #include "frame.hpp"
+
+#include <memory>
 
 namespace sun {
 
@@ -39,9 +42,10 @@ public:
     struct Theme {
         Color  main_color;
         Color  accent_color;
+        std::shared_ptr<Font>   font;
 
         Theme(const Color& p_main, const Color& p_accent)
-        :   main_color(p_main), accent_color(p_accent) {}
+        :   main_color(p_main), accent_color(p_accent), font(nullptr) {}
     };
 
     SUN_SYSTEM_TYPE(GUISystem)

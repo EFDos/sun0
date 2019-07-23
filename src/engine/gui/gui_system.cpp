@@ -25,8 +25,8 @@
 
 #include "core/context.hpp"
 #include "core/logger.hpp"
-//#include "core/event.hpp"
 #include "graphics/renderer.hpp"
+#include "resources/resource_cache.hpp"
 
 namespace sun {
 
@@ -40,6 +40,7 @@ GUISystem::GUISystem(Context& context)
 
 bool GUISystem::init()
 {
+    default_theme_.font = context_.get_system<ResourceCache>()->get_resource<Font>("mono.ttf");
     sun_log_info("GUISystem ready");
     return true;
 }

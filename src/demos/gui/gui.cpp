@@ -8,7 +8,9 @@ public:
     {
         renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
         gui_ = context_.register_system<sun::GUISystem>();
-        gui_->add_widget(new sun::Bar(context_, sun::Bar::Orientation::Top));
+        auto bar = new sun::Bar(context_, sun::Bar::Orientation::Top);
+        bar->add_child(new sun::TextButton(context));
+        gui_->add_widget(bar);
     }
 
     void on_update(float delta)

@@ -59,6 +59,7 @@ sun_lib_src = [
   'gui/widget.cpp',
   'gui/frame.cpp',
   'gui/bar.cpp',
+  'gui/text_button.cpp',
   'scene/scene_tree.cpp',
   'scene/animation.cpp',
   'scene/entity.cpp'

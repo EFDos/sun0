@@ -29,7 +29,8 @@
 namespace sun {
 
 Frame::Frame(Context& context, const Vector2i& size)
-:   Container(context)
+:   Container(context),
+    grabbed_(false)
 {
     bounds_.set_size(size);
 }
@@ -77,8 +78,7 @@ void Frame::handle_events(const Event& event)
 }
 
 Recti Frame::request_bounds(Recti&& bounds) {
-    if (bounds.x > bounds_.x && bounds.x + bounds.w < bounds_.w &&
-        bounds.y > bounds_.y && bounds.y + bounds.h < bounds_.h)
+    if (bounds_.contains(bounds))
     {
         return bounds;
     }

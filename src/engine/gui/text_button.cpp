@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  bar.cpp                                                              */
+/*  text_button.cpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,48 +21,34 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#include "bar.hpp"
+#include "text_button.hpp"
+#include "container.hpp"
 #include "gui_system.hpp"
-#include "graphics/renderer.hpp"
 
 namespace sun {
 
-Bar::Bar(Context& context, Orientation orientation)
-:   Container(context),
-    orientation_(orientation)
+TextButton::TextButton(Context& context)
+:   Widget(context),
+    text_(context)
+{}
+
+void TextButton::draw(Renderer* renderer) const
+{
+
+}
+
+void TextButton::handle_events(const Event& event)
 {
 }
 
-void Bar::draw(Renderer* renderer) const
+void TextButton::on_parent_set_()
 {
-    auto rectf = Recti::to_rectf(bounds_);
-    rectf.x += parent_->get_bounding_rect().x;
-    rectf.y += parent_->get_bounding_rect().y;
-    renderer->draw_rect(rectf, gui_->get_default_theme().accent_color);
-    Container::draw(renderer);
-}
-
-void Bar::handle_events(const Event& event)
-{
-    Container::handle_events(event);
-}
-
-void Bar::on_parent_set_()
-{
+    text_.set_font(gui_->get_default_theme().font.get());
+    text_.set_text("Button");
     bounds_ = dynamic_cast<Container*>(parent_)->request_bounds({
         0, 0,
-        parent_->get_bounding_rect().w, 32
+        128, 32
     });
-}
-
-Recti Bar::request_bounds(Recti&& bounds)
-{
-    if (bounds_.contains(bounds))
-    {
-        return bounds;
-    }
-
-    return {0, 0, 0, 0};
 }
 
 }

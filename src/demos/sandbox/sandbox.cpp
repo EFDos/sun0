@@ -32,11 +32,8 @@ public:
         auto sprite = entity_->create_component<sun::Sprite>();
         auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();
-        auto light = entity_->create_component<sun::Light2D>();
         camera->set_follow(true);
         camera->set_follow_speed(1.f);
-
-        light->set_intensity(600.f);
 
         ent_body->create(sun::shapes::Convex({{-32, 18}, {0, -36}, {32, 18}}),
             sun::RigidBody::Type::Dynamic);
@@ -59,7 +56,7 @@ public:
 	}
 
     void on_update(float delta) override {
-        sun_logf("Delta time: %f", delta);
+        //sun_logf("Delta time: %f", delta);
     }
 
 private:

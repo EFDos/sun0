@@ -11,7 +11,8 @@ version_str = meson.project_version()
 sun_includes = include_directories(
   './src/thirdparty',
   './src/engine',
-  '/usr/include/freetype2'
+  '/usr/include/freetype2',
+  #'/usr/include/luajit-2.1'
 )
 
 sun_depends = [
@@ -20,6 +21,7 @@ sun_depends = [
 	dependency('openal'),
 	dependency('vorbisfile'),
 	dependency('threads'),
+	meson.get_compiler('cpp').find_library('luajit-5.1'),
 	meson.get_compiler('cpp').find_library('freetype'),
 	meson.get_compiler('cpp').find_library('Box2D',
         dirs: join_paths(meson.source_root(), 'src/thirdparty/Box2D')),

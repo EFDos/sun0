@@ -56,6 +56,22 @@ Entity::~Entity()
     }
 }
 
+void Entity::build_properties()
+{
+    properties_.push_back(std::hash<std::string>{}("position"));
+}
+
+void Entity::set_property_(size_t property_idx, Variant var)
+{
+    switch (property_idx)
+    {
+        case 0:
+            set_position(std::get<Vector2f>(var));
+        default:
+            return;
+    }
+}
+
 void Entity::move(float x, float y)
 {
     set_position(pos_.x + x, pos_.y + y);

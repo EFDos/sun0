@@ -23,8 +23,8 @@
 /*************************************************************************/
 #pragma once
 
+#include "animatable.hpp"
 #include "common/object.hpp"
-#include "common/types.hpp"
 
 #include "core/context.hpp"
 
@@ -34,7 +34,7 @@ namespace sun {
 
 class Component;
 
-class SUN_API Entity : Object
+class SUN_API Entity : Object, Animatable
 {
 public:
 
@@ -61,6 +61,8 @@ public:
         comp = static_cast<T*>(get_component_(hash));
         return comp;
     }
+
+    void build_properties() override;
 
     Entity* create_child();
 
@@ -123,6 +125,8 @@ public:
     const Matrix4& get_inverse_transform() const;
 
 private:
+
+    void set_property_(size_t property_idx, Variant var) override;
 
     Component* get_component_(uint id);
 

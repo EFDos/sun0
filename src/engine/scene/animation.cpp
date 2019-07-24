@@ -22,16 +22,48 @@
 /*                                                                       */
 /*************************************************************************/
 #include "animation.hpp"
+#include "animatable.hpp"
 
 namespace sun {
+
+AnimationTrack::AnimationTrack(Animatable& target, uint property,
+                               AnimationCurve curve, float length)
+:   target_(target),
+    property_(property),
+    length_(length),
+    track_pos_(0.f),
+    current_keyframe_(0),
+    curve_(curve)
+{}
+
+void AnimationTrack::update(float delta)
+{
+    track_pos_ += delta;
+
+    if (current_keyframe_ == track_.size() - 1) {
+        return;
+    }
+
+    if (track_pos_ > track_[current_keyframe_ + 1].position) {
+        ++current_keyframe_;
+    }
+
+    //float diff = track_[current_keyframe_ + 1].position - track_pos_;
+
+    target_.set_property(property_, track_[current_keyframe_ + 1].value);
+}
 
 Animation::Animation(Context& context)
 :   Component(context)
 {}
 
-void Animation::create_track(const std::string& property, AnimationCurve curve, Time duration)
+void Animation::create_track(Animatable& target, const std::string& property,
+                             AnimationCurve curve, Time duration)
 {
-    tracks_.emplace_back(AnimationTrack(std::hash<std::string>{}(property), curve, duration.as_seconds()));
+    tracks_.emplace_back(AnimationTrack(target,
+        std::hash<std::string>{}(property),
+        curve,
+        duration.as_seconds()));
 }
 
 }

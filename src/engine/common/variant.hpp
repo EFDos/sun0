@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  animation.hpp                                                        */
+/*  variant.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,81 +23,28 @@
 /*************************************************************************/
 #pragma once
 
-#include "common/variant.hpp"
-#include "system/component.hpp"
+#include "types.hpp"
 
-#include <vector>
-#include <string>
+#include <variant>
 
 namespace sun {
 
-class Animatable;
-
-enum class AnimationCurve
+enum class VariantType
 {
-    Linear,
-    Cubic
+    Int = 0,
+    Float,
+    Vector2f
 };
 
-class AnimationTrack
+using Variant = std::variant<int, float, Vector2f>;
+
+namespace variant {
+
+inline VariantType get_type(const Variant& var)
 {
-public:
+    return static_cast<VariantType>(var.index());
+}
 
-    struct KeyFrame
-    {
-        float       position;
-        Variant     value;
-
-        template<typename T>
-        KeyFrame(T p_value, float p_position = 0.f)
-        :   position(p_position), value(p_value)
-        {}
-    };
-
-    AnimationTrack(Animatable& target, uint property = 0,
-        AnimationCurve curve = AnimationCurve::Linear,
-        float length = 1.f);
-
-    void update(float delta);
-
-    inline void insert_key(KeyFrame&& key) {
-        track_.emplace_back(key);
-    }
-
-    inline void set_curve(AnimationCurve curve) {
-        curve_ = curve;
-    }
-
-    inline AnimationCurve get_curve() const {
-        return curve_;
-    }
-
-private:
-
-    Animatable&             target_;
-    uint                    property_;
-
-    float   length_;
-    float   track_pos_;
-    size_t  current_keyframe_;
-
-    AnimationCurve          curve_;
-    std::vector<KeyFrame>   track_;
-};
-
-class Animation : public Component
-{
-public:
-
-    SUN_COMPONENT_TYPE(Animation)
-
-    Animation(Context&);
-
-    void create_track(Animatable& target, const std::string& property, AnimationCurve curve, Time duration);
-
-private:
-
-    std::vector<AnimationTrack> tracks_;
-};
+}
 
 }

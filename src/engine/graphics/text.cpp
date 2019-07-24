@@ -49,6 +49,7 @@ Text::Text(Context& context)
 void Text::update_geometry_()
 {
     if (font_ == nullptr) {
+        sun_log_warn("Text has no font defined");
         return;
     }
 
@@ -143,7 +144,6 @@ void Text::draw(Renderer* renderer) const
     if (font_ == nullptr ||
         vertices_->get_vertex_count() == 0 ||
         indices_->get_index_count() == 0) {
-        sun_log_error("Font is null");
         return;
     }
     if (font_->get_page_texture(font_size_) == nullptr) {

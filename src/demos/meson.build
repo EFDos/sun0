@@ -1,3 +1,9 @@
+hello_exec = executable('sun-hello', ['hello/hello.cpp'],
+  include_directories: sun_includes,
+  link_with: sun_lib,
+  install: true
+)
+
 pong_exec = executable('sun-pong', ['pong/pong.cpp'],
   include_directories: sun_includes,
   link_with: sun_lib,

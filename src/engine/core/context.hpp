@@ -64,7 +64,7 @@ public:
     }
 
     template<typename T>
-    T* create_component(uint id)
+    T* create_component(uint id = 0)
     {
         for (auto sys : systems_) {
             if (sys.second->handles_component<T>()) {

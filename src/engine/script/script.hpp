@@ -27,9 +27,13 @@
 
 namespace sun {
 
+class ScriptContext;
+
 class Script : public Component
 {
 public:
+
+    SUN_COMPONENT_TYPE(Script)
 
     Script(Context&);
 
@@ -37,7 +41,15 @@ public:
 
     void update(float delta) override;
 
+    void load(const std::string& filename);
+
+    inline void set_script_context(ScriptContext* context) {
+        script_context_ = context;
+    }
+
 private:
+
+    ScriptContext*  script_context_;
 };
 
 }

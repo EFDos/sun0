@@ -13,6 +13,8 @@ public:
         renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
         auto texture = renderer_->create_texture();
 
+        context_.get_system<sun::PhysicsServer>()->set_debug_draw(true);
+
         auto res_cache = context_.get_system<sun::ResourceCache>();
         res_cache->set_path("res");
         //auto font = res_cache->get_resource<sun::font>("Wattauchimma.ttf");
@@ -50,7 +52,17 @@ public:
 
         if (e.type == sun::EventType::KeyPressed) {
             if (e.key_event.code == sun::keyboard::Key::Right) {
-                entity_->get_component<sun::RigidBody>("body")->apply_linear_impulse({10.f, 0.f});
+                entity_->get_component<sun::RigidBody>("body")->apply_linear_impulse({5.f, 0.f});
+            }
+            if (e.key_event.code == sun::keyboard::Key::Left) {
+                entity_->get_component<sun::RigidBody>("body")->apply_linear_impulse({-5.f, 0.f});
+            }
+            if (e.key_event.code == sun::keyboard::Key::Z) {
+                entity_->get_component<sun::RigidBody>("body")->apply_linear_impulse({0.f, -50.f});
+            }
+            if (e.key_event.code == sun::keyboard::Key::R) {
+                entity_->set_position(0, 0);
+                entity_->get_component<sun::RigidBody>("body")->move_to_entity();
             }
         }
 	}

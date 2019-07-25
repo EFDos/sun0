@@ -27,8 +27,11 @@
 #include "common/int.hpp"
 
 #include <sol.hpp>
+#include <string>
 
 namespace sun {
+
+class Script;
 
 class ScriptContext final : public System
 {
@@ -42,11 +45,26 @@ public:
 
 private:
 
+    struct ScriptRegister
+    {
+        std::string file;
+
+        //std::function<void (sol::table&)>          init_callback;
+        //std::function<void (sol::table&, event&)>  input_callback;
+        std::function<void (sol::table&, double)>  dt_update_callback;
+        //std::function<void (sol::table&,
+        //                    std::string&&,
+        //                    entity&,
+        //                    sol::table&&)>     message_callback;
+    };
+
     Component* create_component_(uint type_hash, uint id) override;
 
     bool handles_component_(uint type_hash) override;
 
     sol::state  lua_state_;
+
+    std::vector<Script*> scripts_;
 };
 
 }

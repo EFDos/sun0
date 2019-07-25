@@ -57,6 +57,8 @@ public:
 
     void apply_linear_impulse(const Vector2f& impulse);
 
+    void move_to_entity();
+
     void set_angular_velocity(float vel);
 
     void set_restitution(float restitution);

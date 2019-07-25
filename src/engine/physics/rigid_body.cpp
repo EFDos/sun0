@@ -130,12 +130,21 @@ void RigidBody::update(float delta)
     owning_entity_->set_rotation(-math::rad_to_deg(body_->GetAngle()));
 }
 
+void RigidBody::move_to_entity()
+{
+    if (body_ == nullptr) {
+        return;
+    }
+    body_->SetTransform(physics::to_b2vec(owning_entity_->get_position()),
+        -math::deg_to_rad(owning_entity_->get_rotation()));
+}
+
 void RigidBody::apply_linear_impulse(const Vector2f& impulse)
 {
     if (body_ == nullptr) {
         return;
     }
-    body_->ApplyLinearImpulse(physics::to_b2vec(impulse), body_->GetLocalCenter(), true);
+    body_->ApplyLinearImpulse(physics::to_b2vec(impulse), body_->GetWorldCenter(), true);
 }
 
 void RigidBody::set_angular_velocity(float vel)

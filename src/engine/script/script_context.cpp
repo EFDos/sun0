@@ -22,6 +22,8 @@
 /*                                                                       */
 /*************************************************************************/
 #include "script_context.hpp"
+#include "script.hpp"
+#include "core/logger.hpp"
 
 namespace sun {
 
@@ -31,6 +33,10 @@ ScriptContext::ScriptContext(Context& context)
 
 bool ScriptContext::init()
 {
+    lua_state_.open_libraries(sol::lib::base, sol::lib::jit, sol::lib::string,
+        sol::lib::bit32);
+
+    sun_log_info("Lua State initialized.");
     return true;
 }
 
@@ -40,11 +46,21 @@ void ScriptContext::shutdown()
 
 Component* ScriptContext::create_component_(uint type_hash, uint id)
 {
+    if (type_hash == Script::get_static_type_hash()) {
+        Script* script = new Script(context_);
+        script->set_id(id);
+        script->set_script_context(this);
+        scripts_.push_back(script);
+        return static_cast<Component*>(script);
+    }
     return nullptr;
 }
 
 bool ScriptContext::handles_component_(uint type_hash)
 {
+    if (type_hash == Script::get_static_type_hash()) {
+        return true;
+    }
     return false;
 }
 

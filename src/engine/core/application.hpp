@@ -36,6 +36,7 @@ class Event;
 class GUISystem;
 class Renderer;
 class PhysicsServer;
+class ScriptContext;
 
 class SUN_API Application
 {
@@ -62,6 +63,7 @@ protected:
 	Renderer*   renderer_;
 	GUISystem*  gui_;
 	PhysicsServer* physics_;
+	ScriptContext* script_context_;
 
 private:
 

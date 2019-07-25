@@ -72,6 +72,10 @@
 #include "physics/physics_server.hpp"
 #include "physics/rigid_body.hpp"
 
+// SCRIPT
+#include "script/script_context.hpp"
+#include "script/script.hpp"
+
 //SCENE
 #include "scene/scene_tree.hpp"
 

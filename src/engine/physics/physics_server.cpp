@@ -63,6 +63,11 @@ bool PhysicsServer::init()
 
 void PhysicsServer::shutdown()
 {
+    for (auto body : bodies_) {
+        delete body;
+    }
+
+    bodies_.clear();
     System::shutdown();
     sun_log_info("Physics System shutdown.");
 }

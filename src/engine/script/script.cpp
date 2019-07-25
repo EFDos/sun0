@@ -22,6 +22,7 @@
 /*                                                                       */
 /*************************************************************************/
 #include "script.hpp"
+#include "script_context.hpp"
 
 namespace sun {
 
@@ -35,6 +36,14 @@ void Script::handle_events(Event&)
 
 void Script::update(float delta)
 {
+    if (dt_update_callback != nullptr) {
+        dt_update_callback(owning_entity_, delta);
+    }
+}
+
+void Script::load(const std::string& filename)
+{
+    script_context_->register_script(this, filename);
 }
 
 }

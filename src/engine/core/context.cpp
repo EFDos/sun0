@@ -28,6 +28,7 @@
 #include "physics/physics_server.hpp"
 #include "graphics/opengl/renderer.hpp"
 #include "audio/audio_server.hpp"
+#include "script/script_context.hpp"
 #include "gui/gui_system.hpp"
 
 #include "logger.hpp"
@@ -72,6 +73,9 @@ System* Context::register_system_(const std::string& type)
     }
     if (type.compare("GUISystem") == 0) {
         sys = new GUISystem(*this);
+    }
+    if (type.compare("ScriptContext") == 0) {
+        sys = new ScriptContext(*this);
     }
 
     if (sys != nullptr) {

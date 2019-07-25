@@ -34,6 +34,10 @@ public:
         auto sprite = entity_->create_component<sun::Sprite>();
         auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();
+        auto script = entity_->create_component<sun::Script>();
+
+        script->load("res/test.lua");
+
         camera->set_follow(true);
         camera->set_follow_speed(10.f);
 

@@ -24,6 +24,7 @@
 #pragma once
 
 #include "system/component.hpp"
+#include <functional>
 
 namespace sun {
 
@@ -49,7 +50,16 @@ public:
 
 private:
 
+    friend class ScriptContext;
+
+    using UpdateCallback = std::function<void (Entity*, double)>;
+
+    inline void set_update_callback(UpdateCallback callback) {
+        dt_update_callback = callback;
+    }
+
     ScriptContext*  script_context_;
+    UpdateCallback  dt_update_callback;
 };
 
 }

@@ -37,15 +37,21 @@ class ScriptContext final : public System
 {
 public:
 
+    SUN_SYSTEM_TYPE(ScriptContext)
+
     ScriptContext(Context&);
 
     bool init() override;
 
     void shutdown() override;
 
+    void update(float delta) override;
+
+    void register_script(Script* script, const std::string& filename);
+
 private:
 
-    struct ScriptRegister
+    /*struct ScriptRegister
     {
         std::string file;
 
@@ -56,7 +62,7 @@ private:
         //                    std::string&&,
         //                    entity&,
         //                    sol::table&&)>     message_callback;
-    };
+    };*/
 
     Component* create_component_(uint type_hash, uint id) override;
 

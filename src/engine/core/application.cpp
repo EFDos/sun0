@@ -29,6 +29,7 @@
 #include "physics/physics_server.hpp"
 #include "graphics/opengl/renderer.hpp"
 #include "audio/audio_server.hpp"
+#include "script/script_context.hpp"
 #include "gui/gui_system.hpp"
 
 #include "logger.hpp"
@@ -55,8 +56,7 @@ Application::Application(Context& context)
     //gui_ = context_.register_system<sun::GUISystem>();
     physics_ = context_.register_system<sun::PhysicsServer>();
     renderer_ = context_.register_system<sun::Renderer>();
-
-    //physics_->set_debug_draw(true);
+    context_.register_system<sun::ScriptContext>();
 
     context_.init_systems();
 }
@@ -87,6 +87,7 @@ int Application::run()
                 }
             }
             on_update(timestep);
+            script_context_->update(timestep);
             physics_->update(timestep);
             renderer_->update(timestep);
             timestep = 0.f;

@@ -89,6 +89,16 @@ void Renderer::shutdown()
     for (auto drawable : drawables_) {
         delete drawable;
     }
+    for (auto camera : cameras_) {
+        delete camera;
+    }
+    for (auto light : lights_) {
+        delete light;
+    }
+
+    drawables_.clear();
+    cameras_.clear();
+    lights_.clear();
     sun_log_info("Graphics System shutdown.");
 }
 

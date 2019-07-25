@@ -117,6 +117,8 @@ void AudioServer::shutdown()
         delete snd_src;
     }
 
+    sound_sources_.clear();
+
     sun_log_info("OpenAL Audio Server shutdown.");
     System::shutdown();
 }

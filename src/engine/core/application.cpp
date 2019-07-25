@@ -56,7 +56,7 @@ Application::Application(Context& context)
     //gui_ = context_.register_system<sun::GUISystem>();
     physics_ = context_.register_system<sun::PhysicsServer>();
     renderer_ = context_.register_system<sun::Renderer>();
-    context_.register_system<sun::ScriptContext>();
+    script_context_ = context_.register_system<sun::ScriptContext>();
 
     context_.init_systems();
 }

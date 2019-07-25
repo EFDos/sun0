@@ -44,19 +44,16 @@ bool ScriptContext::init()
 
 void ScriptContext::shutdown()
 {
-    for (auto s : scripts_) {
+    /*for (auto s : scripts_) {
         delete s;
     }
-    scripts_.clear();
+    scripts_.clear();*/
 }
 
 void ScriptContext::update(float delta)
 {
-    sun_logf("scripts_ vector size: %d", scripts_.size());
-    for (Script* s : scripts_) {
-        sun_log("Trying to update script");
+    for (auto s : scripts_) {
         if (s->get_update()) {
-            sun_log("Trying to update script");
             s->update(delta);
         }
     }
@@ -82,6 +79,7 @@ void ScriptContext::register_script(Script* script, const std::string& filename)
         sun_logf_warn("Failed to load \"update\" function from script \"%s\"",
             filename.c_str());
     }
+    scripts_.push_back(script);
 }
 
 Component* ScriptContext::create_component_(uint type_hash, uint id)
@@ -91,7 +89,6 @@ Component* ScriptContext::create_component_(uint type_hash, uint id)
         script->set_id(id);
         script->set_script_context(this);
         scripts_.push_back(script);
-        sun_logf("scripts_ vector size: %d", scripts_.size());
         return static_cast<Component*>(script);
     }
     return nullptr;

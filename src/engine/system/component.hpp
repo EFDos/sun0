@@ -30,6 +30,7 @@
 namespace sun {
 
 class Entity;
+class Event;
 
 class SUN_API Component : public Object
 {
@@ -40,6 +41,12 @@ public:
         HandleEvent     =   0x02,
         Draw            =   0x04
     };
+
+    virtual void handle_events(Event&)
+    {}
+
+    virtual void update(float delta)
+    {}
 
     inline void set_update(bool update) {
         update ? flags_ |= (uint8)Property::Update :
@@ -93,7 +100,7 @@ protected:
     Component(Context& context)
     :   Object(context),
         id_(0),
-        flags_(0),
+        flags_(0x07),
         owning_entity_(nullptr) {}
 
     virtual ~Component() {}

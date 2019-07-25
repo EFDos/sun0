@@ -84,7 +84,7 @@ public:
 
     void shutdown() override;
 
-    void update();
+    void update(float delta) override;
 
     void draw_physics_debug(Renderer*);
 

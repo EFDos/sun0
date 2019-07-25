@@ -38,7 +38,11 @@ public:
 
     Camera(Context&);
 
-    void update_transform(Renderer&);
+    void update(float delta) override;
+
+    inline void set_renderer(Renderer* renderer) {
+        renderer_ = renderer;
+    }
 
     inline void set_viewport_size(const Vector2f& size) {
         viewport_.set_size(size);
@@ -91,6 +95,8 @@ public:
     Vector2f get_center() const;
 
 private:
+
+    Renderer*   renderer_;
 
     Rectf   viewport_;
     Recti   offset_;

@@ -36,7 +36,7 @@ Light2D::Light2D(Context& context)
     color_(sun::Color::SUN)
 {}
 
-void Light2D::update_transform()
+void Light2D::update(float delta)
 {
     if (owning_entity_ == nullptr) {
         return;

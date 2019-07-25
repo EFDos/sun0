@@ -30,15 +30,16 @@ namespace sun {
 
 Camera::Camera(Context& context)
 :   Component(context),
+    renderer_(nullptr),
     viewport_({0.f, 0.f, 1280.f, 720.f}),
     offset_({280, 280, 280, 280}),
-    follow_speed_(2.f),
+    follow_speed_(20.f),
     follow_(false),
     hard_limit_(false)
 {
 }
 
-void Camera::update_transform(Renderer& renderer)
+void Camera::update(float delta)
 {
     if (owning_entity_ != nullptr && follow_)
     {
@@ -50,8 +51,7 @@ void Camera::update_transform(Renderer& renderer)
 
             if (!hard_limit_)
             {
-                //TODO: Apply delta
-                viewport_.x += distance * follow_speed_;
+                viewport_.x += distance * follow_speed_ * delta;
             }
         }
         else if (parent_pos.x < viewport_.x + offset_.x)
@@ -60,8 +60,7 @@ void Camera::update_transform(Renderer& renderer)
 
             if (!hard_limit_)
             {
-                //TODO: Apply delta
-                viewport_.x -= distance * follow_speed_;// * dt;
+                viewport_.x -= distance * follow_speed_ * delta;
             }
         }
 
@@ -72,8 +71,7 @@ void Camera::update_transform(Renderer& renderer)
 
             if (!hard_limit_)
             {
-                //TODO: Apply delta
-                viewport_.y += distance * follow_speed_;// * dt;
+                viewport_.y += distance * follow_speed_ * delta;
             }
         }
         else if (parent_pos.y < viewport_.y + offset_.y)
@@ -82,13 +80,14 @@ void Camera::update_transform(Renderer& renderer)
 
             if (!hard_limit_)
             {
-                //TODO: Apply delta
-                viewport_.y -= distance * follow_speed_;// * dt;
+                viewport_.y -= distance * follow_speed_ * delta;
             }
         }
 
         transform_.set_translation(-viewport_.get_position());
-        renderer.set_camera_transform(transform_);
+        if (renderer_ != nullptr) {
+            renderer_->set_camera_transform(transform_);
+        }
     }
 }
 

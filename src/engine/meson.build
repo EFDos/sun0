@@ -62,7 +62,9 @@ sun_lib_src = [
   'gui/text_button.cpp',
   'scene/scene_tree.cpp',
   'scene/animation.cpp',
-  'scene/entity.cpp'
+  'scene/entity.cpp',
+  'script/script_context.cpp',
+  'script/script.cpp',
 ]
 
 if get_option('dynamic-lib')

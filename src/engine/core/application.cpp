@@ -87,7 +87,8 @@ int Application::run()
                 }
             }
             on_update(timestep);
-            physics_->update();
+            physics_->update(timestep);
+            renderer_->update(timestep);
             timestep = 0.f;
         }
 

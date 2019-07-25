@@ -67,11 +67,13 @@ void PhysicsServer::shutdown()
     sun_log_info("Physics System shutdown.");
 }
 
-void PhysicsServer::update()
+void PhysicsServer::update(float delta)
 {
     world_.Step(timestep_, vel_iterations_, pos_iterations_);
     for (auto body : bodies_) {
-        body->update_entity();
+        if (body->get_update()) {
+            body->update(delta);
+        }
     }
 }
 

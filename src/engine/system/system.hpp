@@ -45,6 +45,8 @@ public:
 
     virtual void shutdown();
 
+    virtual void update(float delta);
+
     template<typename T>
     T* create_component(uint id) {
         return static_cast<T*>(create_component_(T::get_static_type_hash(), id));

@@ -53,7 +53,7 @@ public:
 
     void create(const shapes::Shape& shp, Type t);
 
-    void update_entity();
+    void update(float delta) override;
 
     void apply_linear_impulse(const Vector2f& impulse);
 

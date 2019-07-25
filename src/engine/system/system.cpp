@@ -42,4 +42,7 @@ void System::shutdown()
     initialized_ = false;
 }
 
+void System::update(float delta)
+{}
+
 }

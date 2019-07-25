@@ -88,6 +88,8 @@ public:
 
     virtual void shutdown() override;
 
+    virtual void update(float delta) override;
+
     virtual void render();
 
     virtual Framebuffer* create_framebuffer(Framebuffer::Target target) const = 0;

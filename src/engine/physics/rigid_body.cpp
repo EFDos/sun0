@@ -120,7 +120,7 @@ void RigidBody::create(const shapes::Shape& shape, Type t)
     }
 }
 
-void RigidBody::update_entity()
+void RigidBody::update(float delta)
 {
     if (owning_entity_ == nullptr || body_ == nullptr) {
         return;

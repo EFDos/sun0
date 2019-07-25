@@ -33,7 +33,7 @@ public:
         auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();
         camera->set_follow(true);
-        camera->set_follow_speed(1.f);
+        camera->set_follow_speed(10.f);
 
         ent_body->create(sun::shapes::Convex({{-32, 18}, {0, -36}, {32, 18}}),
             sun::RigidBody::Type::Dynamic);

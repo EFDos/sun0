@@ -149,6 +149,20 @@ void Renderer::update_light(int light_id, float intensity) const
     }
 }
 
+void Renderer::update(float delta)
+{
+    for (auto l : lights_) {
+        if (l->get_update()) {
+            l->update(delta);
+        }
+    }
+    for (auto c : cameras_) {
+        if (c->get_update()) {
+            c->update(delta);
+        }
+    }
+}
+
 void Renderer::render()
 {
     clear();
@@ -156,14 +170,10 @@ void Renderer::render()
         screen_buffer_->bind();
         clear();
     }
-    for (auto c : cameras_) {
-        c->update_transform(*this);
-    }
-    for (auto l : lights_) {
-        l->update_transform();
-    }
-    for (auto s : drawables_) {
-        draw(*s);
+    for (auto d : drawables_) {
+        if (d->get_draw()) {
+            draw(*d);
+        }
     }
     if (light_count_ > 0) {
         screen_buffer_->unbind();
@@ -318,6 +328,7 @@ Component* Renderer::create_component_(uint type_hash, uint id)
     if (type_hash == Camera::get_static_type_hash()) {
         Camera* cam = new Camera(context_);
         cam->set_viewport_size(viewport_.get_size());
+        cam->set_renderer(this);
         cameras_.push_back(cam);
         comp = cam;
         comp->set_id(id);

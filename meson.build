@@ -12,7 +12,7 @@ sun_includes = include_directories(
   './src/thirdparty',
   './src/engine',
   '/usr/include/freetype2',
-  #'/usr/include/luajit-2.1'
+  '/usr/include/luajit-2.1'
 )
 
 sun_depends = [

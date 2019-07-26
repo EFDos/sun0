@@ -30,7 +30,7 @@ namespace sun {
 
 class ScriptContext;
 
-class Script : public Component
+class SUN_API Script : public Component
 {
 public:
 

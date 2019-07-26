@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  script_context.hpp                                                   */
+/*  input_map.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,58 +23,38 @@
 /*************************************************************************/
 #pragma once
 
-#include "system/system.hpp"
-#include "common/int.hpp"
-
-#include <sol.hpp>
-#include <string>
+#include <vector>
+#include <unordered_map>
 
 namespace sun {
 
-class Entity;
-class Script;
+class Event;
 
-class SUN_API ScriptContext final : public System
+class InputMap
 {
 public:
 
-    SUN_SYSTEM_TYPE(ScriptContext)
+    struct Action {
+        bool pressed    = false;
+        float strength  = 0.f;
+    };
 
-    ScriptContext(Context&);
+    void update_actions(const Event&);
 
-    bool init() override;
 
-    void shutdown() override;
 
-    void update(float delta) override;
-
-    void register_script(Script* script, const std::string& filename);
-
-    static void register_api(sol::state& state);
+    static InputMap& instance();
 
 private:
 
-    struct ScriptRegister
-    {
-        //std::string file;
+    InputMap();
 
-        //std::function<void (sol::table&)>          init_callback;
-        //std::function<void (sol::table&, event&)>  input_callback;
-        std::function<void (Entity*, double)>    update_callback;
-        //std::function<void (sol::table&,
-        //                    std::string&&,
-        //                    entity&,
-        //                    sol::table&&)>     message_callback;
-    };
+    InputMap(const InputMap&) = delete;
 
-    Component* create_component_(uint type_hash, uint id) override;
+    InputMap(InputMap&&) = delete;
 
-    bool handles_component_(uint type_hash) override;
-
-    sol::state  lua_state_;
-
-    std::vector<Script*>                            scripts_;
-    std::unordered_map<std::string, ScriptRegister> script_registry_;
+    std::unordered_map<Event, std::string>  action_lookup_;
+    std::unordered_map<std::string, Action> action_map_;
 };
 
 }

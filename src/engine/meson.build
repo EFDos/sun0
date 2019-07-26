@@ -23,6 +23,7 @@ sun_lib_src = [
   'core/application.cpp',
   'core/window.cpp',
   'core/input/keyboard.cpp',
+  'core/input/input_map.cpp',
   'system/system.cpp',
   'resources/resource.cpp',
   'resources/resource_cache.cpp',

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  script_context.hpp                                                   */
+/*  input_map.cpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,60 +21,48 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "system/system.hpp"
-#include "common/int.hpp"
-
-#include <sol.hpp>
-#include <string>
+#include "action_map.hpp"
+#include "core/event.hpp"
 
 namespace sun {
 
-class Entity;
-class Script;
+InputMap::InputMap()
+{}
 
-class SUN_API ScriptContext final : public System
+InputMap& InputMap::instance()
 {
-public:
+    static InputMap singleton;
+    return singleton;
+}
 
-    SUN_SYSTEM_TYPE(ScriptContext)
+void InputMap::update_actions(Event& event)
+{
+    auto it = action_lookup_.find(event);
 
-    ScriptContext(Context&);
+    if (it == action_lookup_.end()) {
+        return;
+    }
 
-    bool init() override;
-
-    void shutdown() override;
-
-    void update(float delta) override;
-
-    void register_script(Script* script, const std::string& filename);
-
-    static void register_api(sol::state& state);
-
-private:
-
-    struct ScriptRegister
+    if (event.type == EventType::KeyPressed ||
+        event.type == EventType::MouseButtonPressed
+        event.type == EventType::JoystickButtonPressed)
     {
-        //std::string file;
+        it->second.pressed = true;
+        return;
+    }
 
-        //std::function<void (sol::table&)>          init_callback;
-        //std::function<void (sol::table&, event&)>  input_callback;
-        std::function<void (Entity*, double)>    update_callback;
-        //std::function<void (sol::table&,
-        //                    std::string&&,
-        //                    entity&,
-        //                    sol::table&&)>     message_callback;
-    };
+    if (event.type == EventType::KeyReleased ||
+        event.type == EventType::MouseButtonReleased ||
+        event.type == EventType::JoystickButtonReleased)
+    {
+        it->second.pressed = false;
+        return;
+    }
 
-    Component* create_component_(uint type_hash, uint id) override;
-
-    bool handles_component_(uint type_hash) override;
-
-    sol::state  lua_state_;
-
-    std::vector<Script*>                            scripts_;
-    std::unordered_map<std::string, ScriptRegister> script_registry_;
-};
+    if (event.type == EventType::JoystickAxisMoved)
+    {
+        it->second.strength = event
+    }
+}
 
 }

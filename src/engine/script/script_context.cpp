@@ -38,8 +38,7 @@ bool ScriptContext::init()
     lua_state_.open_libraries(sol::lib::base, sol::lib::jit, sol::lib::string,
         sol::lib::bit32);;
 
-    lua_state_.new_usertype<Entity>("Entity",
-        "get_name", &Entity::get_name);
+    register_api(lua_state_);
 
     sun_log_info("Lua State initialized.");
     return true;

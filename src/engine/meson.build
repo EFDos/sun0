@@ -65,6 +65,7 @@ sun_lib_src = [
   'scene/entity.cpp',
   'script/script_context.cpp',
   'script/script.cpp',
+  'script/script_api.cpp',
 ]
 
 if get_option('dynamic-lib')

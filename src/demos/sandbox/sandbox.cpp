@@ -28,9 +28,6 @@ public:
         ground->set_name("Ground");
         ground->set_position(0, 600);
         auto ground_body = ground->create_component<sun::RigidBody>();
-        auto ground_script = ground->create_component<sun::Script>();
-
-        ground_script->load("res/test.lua");
 
         ground_body->create(sun::shapes::Rectangle(1280, 32),
             sun::RigidBody::Type::Static);
@@ -58,22 +55,6 @@ public:
 
 	void on_event(sun::Event& e) override {
         sun::Application::on_event(e);
-
-        if (e.type == sun::EventType::KeyPressed) {
-            if (e.key_event.code == sun::keyboard::Key::Right) {
-                entity_->get_component<sun::RigidBody>("body")->apply_linear_impulse({5.f, 0.f});
-            }
-            if (e.key_event.code == sun::keyboard::Key::Left) {
-                entity_->get_component<sun::RigidBody>("body")->apply_linear_impulse({-5.f, 0.f});
-            }
-            if (e.key_event.code == sun::keyboard::Key::Z) {
-                entity_->get_component<sun::RigidBody>("body")->apply_linear_impulse({0.f, -50.f});
-            }
-            if (e.key_event.code == sun::keyboard::Key::R) {
-                entity_->set_position(0, 0);
-                entity_->get_component<sun::RigidBody>("body")->move_to_entity();
-            }
-        }
 	}
 
     void on_update(float delta) override {

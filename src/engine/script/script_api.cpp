@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  script_context.hpp                                                   */
+/*  script_api.cpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,60 +21,51 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "script_context.hpp"
+#include "core/event.hpp"
+#include "scene/entity.hpp"
 
-#include "system/system.hpp"
-#include "common/int.hpp"
+#include "common/types.hpp"
 
-#include <sol.hpp>
-#include <string>
+#include "physics/physics_server.hpp"
+#include "physics/rigid_body.hpp"
 
 namespace sun {
 
-class Entity;
-class Script;
-
-class ScriptContext final : public System
+void ScriptContext::register_api(sol::state& state)
 {
-public:
+    //state.new_usertype<Event>("Event")
 
-    SUN_SYSTEM_TYPE(ScriptContext)
+    sol::table keyboard_table = state.create_named_table("Keyboard");
 
-    ScriptContext(Context&);
+    state.new_enum("Key",
+        "R", keyboard::Key::R,
+        "Up", keyboard::Key::Up,
+        "Left", keyboard::Key::Left,
+        "Right", keyboard::Key::Right,
+        "Down", keyboard::Key::Down);
 
-    bool init() override;
+    keyboard_table.set_function("is_key_pressed", keyboard::is_key_pressed);
 
-    void shutdown() override;
+    state.new_usertype<Vector2f>("Vector2",
+        sol::constructors<Vector2f(float, float), Vector2f(const Vector2f&)>(),
+        "x", &Vector2f::x,
+        "y", &Vector2f::y);
 
-    void update(float delta) override;
+    state.new_usertype<Entity>("Entity",
+        "set_position", sol::resolve<void(float, float)>(&Entity::set_position),
+        "get_name", &Entity::get_name,
+        "get_component", &Entity::get_component<Component>,
+        "get_rigid_body", &Entity::get_component<RigidBody>);
 
-    void register_script(Script* script, const std::string& filename);
+    state.new_usertype<RigidBody>("RigidBody",
+        "move_to_entity", &RigidBody::move_to_entity,
+        "apply_linear_impulse", &RigidBody::apply_linear_impulse);
 
-    static void register_api(sol::state& state);
-
-private:
-
-    struct ScriptRegister
-    {
-        //std::string file;
-
-        //std::function<void (sol::table&)>          init_callback;
-        //std::function<void (sol::table&, event&)>  input_callback;
-        std::function<void (Entity*, double)>    update_callback;
-        //std::function<void (sol::table&,
-        //                    std::string&&,
-        //                    entity&,
-        //                    sol::table&&)>     message_callback;
-    };
-
-    Component* create_component_(uint type_hash, uint id) override;
-
-    bool handles_component_(uint type_hash) override;
-
-    sol::state  lua_state_;
-
-    std::vector<Script*>                            scripts_;
-    std::unordered_map<std::string, ScriptRegister> script_registry_;
-};
+    state.new_usertype<physics::RaycastCollision>("RaycastCollision",
+        "point", &physics::RaycastCollision::point,
+        "normal", &physics::RaycastCollision::normal,
+        "owner", &physics::RaycastCollision::owner);
+}
 
 }

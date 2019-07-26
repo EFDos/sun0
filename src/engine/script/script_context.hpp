@@ -31,6 +31,7 @@
 
 namespace sun {
 
+class Entity;
 class Script;
 
 class ScriptContext final : public System
@@ -51,18 +52,18 @@ public:
 
 private:
 
-    /*struct ScriptRegister
+    struct ScriptRegister
     {
-        std::string file;
+        //std::string file;
 
         //std::function<void (sol::table&)>          init_callback;
         //std::function<void (sol::table&, event&)>  input_callback;
-        std::function<void (sol::table&, double)>  dt_update_callback;
+        std::function<void (Entity*, double)>    update_callback;
         //std::function<void (sol::table&,
         //                    std::string&&,
         //                    entity&,
         //                    sol::table&&)>     message_callback;
-    };*/
+    };
 
     Component* create_component_(uint type_hash, uint id) override;
 
@@ -70,7 +71,8 @@ private:
 
     sol::state  lua_state_;
 
-    std::vector<Script*> scripts_;
+    std::vector<Script*>                            scripts_;
+    std::unordered_map<std::string, ScriptRegister> script_registry_;
 };
 
 }

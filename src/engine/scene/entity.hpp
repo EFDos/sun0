@@ -104,6 +104,10 @@ public:
 
     void set_scale_bit(bool);
 
+    inline void set_name(const std::string& name) {
+        name_ = name;
+    }
+
     void clear_dirty_flag();
 
     bool is_dirty() const;
@@ -124,6 +128,10 @@ public:
 
     const Matrix4& get_inverse_transform() const;
 
+    inline const std::string& get_name() const {
+        return name_;
+    }
+
 private:
 
     void set_property_(size_t property_idx, Variant var) override;
@@ -141,6 +149,8 @@ private:
 
     uint64  id_;
     uint8   transform_mask_;
+
+    std::string name_;
 
     Entity*                 parent_;
     std::vector<Entity*>     children_;

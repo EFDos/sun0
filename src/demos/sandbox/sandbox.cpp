@@ -25,12 +25,17 @@ public:
         auto ground = scene_.create_entity();
         entity_ = scene_.create_entity();
 
+        ground->set_name("Ground");
         ground->set_position(0, 600);
         auto ground_body = ground->create_component<sun::RigidBody>();
+        auto ground_script = ground->create_component<sun::Script>();
+
+        ground_script->load("res/test.lua");
 
         ground_body->create(sun::shapes::Rectangle(1280, 32),
             sun::RigidBody::Type::Static);
 
+        entity_->set_name("Jack");
         auto sprite = entity_->create_component<sun::Sprite>();
         auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();

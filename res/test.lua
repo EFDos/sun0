@@ -1,3 +1,4 @@
 function update(entity, delta)
-    print("Hello from Lua!")
+    print("Hello from " .. entity:get_name() .. "!")
+    print("delta is " .. delta)
 end

@@ -36,7 +36,10 @@ ScriptContext::ScriptContext(Context& context)
 bool ScriptContext::init()
 {
     lua_state_.open_libraries(sol::lib::base, sol::lib::jit, sol::lib::string,
-        sol::lib::bit32);
+        sol::lib::bit32);;
+
+    lua_state_.new_usertype<Entity>("Entity",
+        "get_name", &Entity::get_name);
 
     sun_log_info("Lua State initialized.");
     return true;
@@ -61,25 +64,40 @@ void ScriptContext::update(float delta)
 
 void ScriptContext::register_script(Script* script, const std::string& filename)
 {
-    try {
-        lua_state_.script_file(filename);
-    } catch(const sol::error& e) {
-        sun_logf_error("Failed to load script %s:\n%s", filename.c_str(),
-            e.what());
+    auto it = script_registry_.find(filename);
+
+    if (it == script_registry_.end())
+    {
+        try {
+            lua_state_.script_file(filename);
+        } catch(const sol::error& e) {
+            sun_logf_error("Failed to load script %s:\n%s", filename.c_str(),
+                e.what());
+                return;
+        } catch(...) {
+            sun_logf_error("Failed to load script \"%s\"", filename.c_str());
             return;
-    } catch(...) {
-        sun_logf_error("Failed to load script \"%s\"", filename.c_str());
+        }
+
+        ScriptRegister  script_reg;
+        auto update_callback = lua_state_[filename + "_update"] =
+            lua_state_["update"];
+
+        if (update_callback != sol::nil)
+        {
+            script_reg.update_callback = update_callback;
+            script->set_update_callback(update_callback);
+            script_registry_[filename] = script_reg;
+        } else {
+            sun_logf_warn("Failed to load \"update\" function from script \"%s\"",
+            filename.c_str());
+            return;
+        }
+
         return;
     }
-    auto update_callback = lua_state_["update"];
 
-    if (update_callback != nullptr) {
-        script->set_update_callback(update_callback);
-    } else {
-        sun_logf_warn("Failed to load \"update\" function from script \"%s\"",
-            filename.c_str());
-    }
-    scripts_.push_back(script);
+    script->set_update_callback(it->second.update_callback);
 }
 
 Component* ScriptContext::create_component_(uint type_hash, uint id)

@@ -49,19 +49,20 @@ public:
         Variant     value;
 
         template<typename T>
-        KeyFrame(T p_value, float p_position = 0.f)
-        :   position(p_position), value(p_value)
+        KeyFrame(T p_value = 0, Time p_position = 0)
+        :   position(p_position.as_seconds()), value(p_value)
         {}
     };
 
-    AnimationTrack(Animatable& target, uint property = 0,
-        AnimationCurve curve = AnimationCurve::Linear,
-        float length = 1.f);
+    AnimationTrack(Animatable& target, uint property,
+        AnimationCurve curve, float length);
 
     void update(float delta);
 
     inline void insert_key(KeyFrame&& key) {
-        track_.emplace_back(key);
+        if (key.position <= length_) {
+            track_.emplace_back(key);
+        }
     }
 
     inline void set_curve(AnimationCurve curve) {
@@ -93,7 +94,10 @@ public:
 
     Animation(Context&);
 
-    void create_track(Animatable& target, const std::string& property, AnimationCurve curve, Time duration);
+    void update(float delta) override;
+
+    AnimationTrack& create_track(Animatable& target, const std::string& property,
+                      Time duration = Time::seconds(1.f), AnimationCurve curve = AnimationCurve::Linear);
 
 private:
 

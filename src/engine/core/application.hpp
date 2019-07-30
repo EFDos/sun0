@@ -33,6 +33,7 @@
 namespace sun {
 
 class Event;
+class SceneManager;
 class GUISystem;
 class Renderer;
 class PhysicsServer;
@@ -52,7 +53,7 @@ public:
 
     int run();
 
-    void set_framerate(float framerate) {
+    inline void set_framerate(float framerate) {
         timestep_ = 1 / framerate;
     }
 
@@ -61,6 +62,7 @@ protected:
     Context&    context_;
 	Window      window_;
 	Renderer*   renderer_;
+	SceneManager* scene_manager_;
 	GUISystem*  gui_;
 	PhysicsServer* physics_;
 	ScriptContext* script_context_;

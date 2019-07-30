@@ -24,6 +24,7 @@
 #include "context.hpp"
 
 #include "system/system.hpp"
+#include "scene/scene_manager.hpp"
 #include "resources/resource_cache.hpp"
 #include "physics/physics_server.hpp"
 #include "graphics/opengl/renderer.hpp"
@@ -76,6 +77,9 @@ System* Context::register_system_(const std::string& type)
     }
     if (type.compare("ScriptContext") == 0) {
         sys = new ScriptContext(*this);
+    }
+    if (type.compare("SceneManager") == 0) {
+        sys = new SceneManager(*this);
     }
 
     if (sys != nullptr) {

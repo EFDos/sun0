@@ -34,7 +34,7 @@ namespace sun {
 
 class Component;
 
-class SUN_API Entity : Object, Animatable
+class SUN_API Entity : Object, public Animatable
 {
 public:
 

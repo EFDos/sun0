@@ -25,6 +25,7 @@
 #include "../version.hpp"
 #include "clock.hpp"
 
+#include "scene/scene_manager.hpp"
 #include "resources/resource_cache.hpp"
 #include "physics/physics_server.hpp"
 #include "graphics/opengl/renderer.hpp"
@@ -56,6 +57,7 @@ Application::Application(Context& context)
     //gui_ = context_.register_system<sun::GUISystem>();
     physics_ = context_.register_system<sun::PhysicsServer>();
     renderer_ = context_.register_system<sun::Renderer>();
+    scene_manager_ = context_.register_system<sun::SceneManager>();
     script_context_ = context_.register_system<sun::ScriptContext>();
 
     context_.init_systems();
@@ -88,6 +90,7 @@ int Application::run()
             }
             on_update(timestep);
             script_context_->update(timestep);
+            scene_manager_->update(timestep);
             physics_->update(timestep);
             renderer_->update(timestep);
             timestep = 0.f;

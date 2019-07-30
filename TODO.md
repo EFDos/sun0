@@ -15,7 +15,3 @@ to play SoundStreams or SoundBuffers
 
 * Sound sources and Textures need a way to be factored
 as resources.
-
-###Animation
-
-* Figure out Generic Animation System

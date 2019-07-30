@@ -24,6 +24,7 @@
 #include "entity.hpp"
 #include "system/component.hpp"
 #include "math/math.hpp"
+#include "core/logger.hpp"
 
 namespace sun {
 
@@ -67,6 +68,7 @@ void Entity::set_property_(size_t property_idx, Variant var)
     {
         case 0:
             set_position(std::get<Vector2f>(var));
+            break;
         default:
             return;
     }

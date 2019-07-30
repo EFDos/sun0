@@ -38,32 +38,67 @@ AnimationTrack::AnimationTrack(Animatable& target, uint property,
 
 void AnimationTrack::update(float delta)
 {
+    if (track_pos_ >= length_) {
+        return;
+    }
+
     track_pos_ += delta;
 
-    if (current_keyframe_ == track_.size() - 1) {
+    if (current_keyframe_ == track_.size()) {
         return;
     }
 
     if (track_pos_ > track_[current_keyframe_ + 1].position) {
-        ++current_keyframe_;
+        if (++current_keyframe_ == track_.size() - 1) {
+            auto val = track_[current_keyframe_].value;
+            switch (variant::get_type(val))
+            {
+                case VariantType::Vector2f:
+                    target_.set_property(property_, val);
+                    break;
+                default:
+                    break;
+            }
+            return;
+        }
     }
 
-    //float diff = track_[current_keyframe_ + 1].position - track_pos_;
+    KeyFrame& curr_kf = track_[current_keyframe_];
+    KeyFrame& next_kf = track_[current_keyframe_ + 1];
 
-    target_.set_property(property_, track_[current_keyframe_ + 1].value);
+    float length = next_kf.position - curr_kf.position;
+    float ratio = (track_pos_  - curr_kf.position) / length;
+
+    if (variant::get_type(curr_kf.value) == VariantType::Vector2f) {
+        auto curr_val = std::get<Vector2f>(curr_kf.value);
+        auto next_val = std::get<Vector2f>(next_kf.value);
+
+        auto value = curr_val + (next_val - curr_val) * ratio;
+        target_.set_property(property_, value);
+    }
 }
 
 Animation::Animation(Context& context)
 :   Component(context)
 {}
 
-void Animation::create_track(Animatable& target, const std::string& property,
-                             AnimationCurve curve, Time duration)
+void Animation::update(float delta)
 {
-    tracks_.emplace_back(AnimationTrack(target,
+    for (auto& track : tracks_) {
+        track.update(delta);
+    }
+}
+
+AnimationTrack& Animation::create_track(Animatable& target, const std::string& property,
+                             Time duration, AnimationCurve curve)
+{
+    target.build_properties();
+    tracks_.emplace_back(target,
         std::hash<std::string>{}(property),
         curve,
-        duration.as_seconds()));
+        duration.as_seconds());
+
+    return tracks_.back();
 }
 
 }

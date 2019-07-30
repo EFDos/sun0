@@ -54,6 +54,7 @@ void ScriptContext::register_api(sol::state& state)
 
     state.new_usertype<Entity>("Entity",
         "set_position", sol::resolve<void(float, float)>(&Entity::set_position),
+        "get_position", &Entity::get_position,
         "get_name", &Entity::get_name,
         "get_component", &Entity::get_component<Component>,
         "get_rigid_body", &Entity::get_component<RigidBody>);

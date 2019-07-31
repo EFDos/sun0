@@ -18,7 +18,7 @@ public:
         auto res_cache = context_.get_system<sun::ResourceCache>();
         res_cache->set_path("res");
         //auto font = res_cache->get_resource<sun::font>("Wattauchimma.ttf");
-        auto img = res_cache->get_resource<sun::Image>("player_128.png");
+        auto img = res_cache->get_resource<sun::Image>("bototem.png");
 
         texture->load(*img);
 
@@ -33,28 +33,28 @@ public:
             sun::RigidBody::Type::Static);
 
         entity_->set_name("Jack");
-        auto sprite = entity_->create_component<sun::Sprite>();
-        //auto ent_body = entity_->create_component<sun::RigidBody>("body");
+        auto sprite = entity_->create_component<sun::Sprite>("sprite");
+        auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();
         auto script = entity_->create_component<sun::Script>();
+        //auto animation = entity_->create_component<sun::Animation>("anim");
 
-        auto animation = entity_->create_component<sun::Animation>();
-
-        auto& track = animation->create_track(*entity_, "position", sun::Time::seconds(10.f));
+        /*auto& track = animation->create_track(*entity_, "position", sun::Time::seconds(10.f));
 
         track.insert_key({sun::Vector2f(0.f, 0.f), sun::Time::seconds(0.f)});
         track.insert_key({sun::Vector2f(0.f, 40.f), sun::Time::seconds(0.5f)});
         track.insert_key({sun::Vector2f(40.f, 40.f), sun::Time::seconds(1.f)});
-        track.insert_key({sun::Vector2f(1280.f, 4000.f), sun::Time::seconds(10.f)});
+        track.insert_key({sun::Vector2f(1280.f, 4000.f), sun::Time::seconds(10.f)});*/
 
         script->load("res/test.lua");
 
         camera->set_follow(true);
         camera->set_follow_speed(10.f);
 
-        //ent_body->create(sun::shapes::Convex({{-32, 18}, {0, -36}, {32, 18}}),
-        //    sun::RigidBody::Type::Dynamic);
+        ent_body->create(sun::shapes::Convex({{-32, 18}, {0, -36}, {32, 18}}),
+            sun::RigidBody::Type::Dynamic);
         sprite->set_texture(texture);
+        sprite->set_frames(2, 1);
         entity_->set_origin(48, 56);
         entity_->set_scale(0.75f, 0.75f);
 	}

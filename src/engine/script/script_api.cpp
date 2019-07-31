@@ -23,9 +23,13 @@
 /*************************************************************************/
 #include "script_context.hpp"
 #include "core/event.hpp"
-#include "scene/entity.hpp"
 
 #include "common/types.hpp"
+
+#include "scene/entity.hpp"
+#include "scene/animation.hpp"
+
+#include "graphics/sprite.hpp"
 
 #include "physics/physics_server.hpp"
 #include "physics/rigid_body.hpp"
@@ -47,6 +51,16 @@ void ScriptContext::register_api(sol::state& state)
 
     keyboard_table.set_function("is_key_pressed", keyboard::is_key_pressed);
 
+    state.new_usertype<Time>("Time",
+        sol::constructors<void(int64), void(void)>(),
+        "as_seconds", &Time::as_seconds,
+        "as_microseconds", &Time::as_microseconds,
+        "as_milliseconds", &Time::as_milliseconds);
+
+    state.set_function("seconds", &Time::seconds);
+    state.set_function("microseconds", &Time::microseconds);
+    state.set_function("milliseconds", &Time::milliseconds);
+
     state.new_usertype<Vector2f>("Vector2",
         sol::constructors<Vector2f(float, float), Vector2f(const Vector2f&)>(),
         "x", &Vector2f::x,
@@ -57,7 +71,22 @@ void ScriptContext::register_api(sol::state& state)
         "get_position", &Entity::get_position,
         "get_name", &Entity::get_name,
         "get_component", &Entity::get_component<Component>,
-        "get_rigid_body", &Entity::get_component<RigidBody>);
+        "get_rigid_body", &Entity::get_component<RigidBody>,
+        "get_animation", &Entity::get_component<Animation>,
+        "get_sprite", &Entity::get_component<Sprite>);
+
+    state.new_usertype<Animation>("Animation",
+        "create_track", &Animation::create_track);
+
+    //state.new_usertype<AnimationTrack>("AnimationTrack",
+    //    "insert_key", &AnimationTrack::insert_key);
+
+    //state.new_usertype<AnimationTrack::KeyFrame>("KeyFrame",
+    //    sol::constructors<Vector2f, >());
+
+    state.new_usertype<Sprite>("Sprite",
+        "set_frame", &Sprite::set_frame,
+        "set_frames", &Sprite::set_frames);
 
     state.new_usertype<RigidBody>("RigidBody",
         "move_to_entity", &RigidBody::move_to_entity,

@@ -47,7 +47,11 @@ public:
 
     void set_texture(const Texture* tex);
 
-    inline void set_rect(const Recti& r) {
+    void set_frames(uint h_frames, uint v_frames);
+
+    void set_frame(uint frame);
+
+    inline void set_rect(const Rectu& r) {
         rect_ = r;
         update_geometry_();
     }
@@ -56,7 +60,10 @@ private:
 
     void update_geometry_() override;
 
-    Recti           rect_;
+    Rectu           rect_;
+    uint            v_frames_;
+    uint            h_frames_;
+    uint            frame_;
 
     VertexBuffer*  vertices_;
     IndexBuffer*   indices_;

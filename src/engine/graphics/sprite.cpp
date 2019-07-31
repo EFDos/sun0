@@ -24,6 +24,7 @@
 #include "sprite.hpp"
 
 #include "core/context.hpp"
+#include "core/logger.hpp"
 #include "scene/entity.hpp"
 #include "renderer.hpp"
 #include "texture.hpp"
@@ -32,6 +33,9 @@ namespace sun {
 
 Sprite::Sprite(Context& context)
 :   Drawable(context),
+    v_frames_(1),
+    h_frames_(1),
+    frame_(0),
     vertices_(nullptr),
     indices_(nullptr),
     texture_(nullptr)
@@ -65,10 +69,51 @@ void Sprite::set_texture(const Texture* tex)
     texture_ = tex;
 
     if (rect_.x == 0 && rect_.y == 0 && rect_.w == 0 && rect_.h == 0) {
-        rect_.set_size(texture_->get_size().x, texture_->get_size().y);
+        set_rect({texture_->get_size().x, texture_->get_size().y});
+    }
+
+    if (v_frames_ != 0 || h_frames_ != 0) {
+        set_frame(frame_);
     }
 
     update_geometry_();
+}
+
+void Sprite::set_frames(uint h_frames, uint v_frames)
+{
+    if (h_frames == 0 || v_frames == 0) {
+        sun_log_warn("Sprite::set_frames: (v_frame || h_frame) > 0");
+        return;
+    }
+
+    h_frames_ = h_frames;
+    v_frames_ = v_frames;
+
+    set_frame(0);
+
+    update_geometry_();
+}
+
+void Sprite::set_frame(uint frame)
+{
+    if (frame > v_frames_ * h_frames_) {
+        sun_log_warn("Sprite::set_frame: frame > v_frames * h_frames, set to 0");
+        frame_ = 0;
+        return;
+    }
+    frame_ = frame;
+
+    if (texture_ != nullptr)
+    {
+        Vector2u frame_size(texture_->get_size().x / h_frames_,
+                            texture_->get_size().y / v_frames_);
+
+        set_rect({(frame % h_frames_) * frame_size.x,
+                  (frame / h_frames_) * frame_size.y,
+                  frame_size.x, frame_size.y});
+    } else {
+        sun_log_warn("Sprite::set_frame: sprite has no texture set");
+    }
 }
 
 void Sprite::update_geometry_()
@@ -90,22 +135,22 @@ void Sprite::update_geometry_()
         {
             (float)rect_.w,
             0.f,
-            (float)rect_.w / (float)texture_->get_size().w,
+            ((float)rect_.x + (float)rect_.w) / (float)texture_->get_size().w,
             (float)rect_.y / (float)texture_->get_size().h,
             1.f, 1.f, 1.f, 1.f
         },
         {
             (float)rect_.w,
             (float)rect_.h,
-            (float)rect_.w / (float)texture_->get_size().w,
-            (float)rect_.h / (float)texture_->get_size().h,
+            ((float)rect_.x + (float)rect_.w) / (float)texture_->get_size().w,
+            ((float)rect_.y + (float)rect_.h) / (float)texture_->get_size().h,
             1.f, 1.f, 1.f, 1.f
         },
         {
             0.f,
             (float)rect_.h,
             (float)rect_.x / (float)texture_->get_size().w,
-            (float)rect_.h / (float)texture_->get_size().h,
+            ((float)rect_.y + (float)rect_.h) / (float)texture_->get_size().h,
             1.f, 1.f, 1.f, 1.f
         },
     };

@@ -48,8 +48,7 @@ public:
         float       position;
         Variant     value;
 
-        template<typename T>
-        KeyFrame(T p_value = 0, Time p_position = 0)
+        KeyFrame(Variant p_value = 0, Time p_position = 0)
         :   position(p_position.as_seconds()), value(p_value)
         {}
     };

@@ -43,6 +43,9 @@ public:
 
     ~Sprite();
 
+    // from Animatable
+    void build_properties() override;
+
     void draw(Renderer* renderer) const override;
 
     void set_texture(const Texture* tex);
@@ -57,6 +60,8 @@ public:
     }
 
 private:
+
+    void set_property_(size_t property_idx, Variant var) override;
 
     void update_geometry_() override;
 

@@ -36,7 +36,7 @@ public:
 
     virtual ~Animatable() {}
 
-    virtual void build_properties() = 0;
+    virtual void build_properties() {};
 
     inline void set_property(uint property_hash, Variant var)
     {
@@ -51,7 +51,7 @@ public:
 
 protected:
 
-    virtual void set_property_(size_t property_idx, Variant var) = 0;
+    virtual void set_property_(size_t property_idx, Variant var) {};
 
     std::vector<uint>   properties_;
 };

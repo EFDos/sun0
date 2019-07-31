@@ -164,4 +164,19 @@ void Sprite::update_geometry_()
     indices_->fill_data(0, 6, indices_data);
 }
 
+void Sprite::build_properties()
+{
+    properties_.push_back(std::hash<std::string>{}("frame"));
+}
+
+void Sprite::set_property_(size_t property_idx, Variant var)
+{
+    switch(property_idx)
+    {
+        case 0:
+            set_frame(std::get<int>(var));
+            break;
+    }
+}
+
 }

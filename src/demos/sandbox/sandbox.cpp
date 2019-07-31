@@ -37,14 +37,12 @@ public:
         auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();
         auto script = entity_->create_component<sun::Script>();
-        //auto animation = entity_->create_component<sun::Animation>("anim");
+        auto animation = entity_->create_component<sun::Animation>("anim");
 
-        /*auto& track = animation->create_track(*entity_, "position", sun::Time::seconds(10.f));
+        auto& track = animation->create_track(*sprite, "frame", sun::Time::seconds(3.f));
 
-        track.insert_key({sun::Vector2f(0.f, 0.f), sun::Time::seconds(0.f)});
-        track.insert_key({sun::Vector2f(0.f, 40.f), sun::Time::seconds(0.5f)});
-        track.insert_key({sun::Vector2f(40.f, 40.f), sun::Time::seconds(1.f)});
-        track.insert_key({sun::Vector2f(1280.f, 4000.f), sun::Time::seconds(10.f)});*/
+        track.insert_key({0, sun::Time::seconds(0.f)});
+        track.insert_key({1, sun::Time::seconds(3.f)});
 
         script->load("res/test.lua");
 

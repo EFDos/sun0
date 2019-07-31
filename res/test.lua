@@ -2,8 +2,6 @@ function update(entity, delta)
     body = entity:get_rigid_body("body")
     sprite = entity:get_sprite("sprite")
 
-    sprite:set_frame(1)
-
     if Keyboard.is_key_pressed(Key.Right) then
         body:apply_linear_impulse(Vector2:new(20, 0))
     end

@@ -25,6 +25,8 @@
 
 #include "common/int.hpp"
 #include "common/object.hpp"
+#include "scene/animatable.hpp"
+
 #include <string>
 
 namespace sun {
@@ -32,7 +34,7 @@ namespace sun {
 class Entity;
 class Event;
 
-class SUN_API Component : public Object
+class SUN_API Component : public Object, public Animatable
 {
 public:
 

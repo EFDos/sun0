@@ -17,17 +17,17 @@ public:
         auto res_cache = context_.get_system<sun::ResourceCache>();
         res_cache->set_path("res");
 
-        auto score_entity = scene_.create_entity();
+        score_ = scene_.create_entity();
         left_pad_ = scene_.create_entity();
         right_pad_ = scene_.create_entity();
         ball_ = scene_.create_entity();
 
-        score_entity->move(640.f - 64.f, 0.f);
-        score_text_ = score_entity->create_component<sun::Text>();
+        score_text_ = score_->create_component<sun::Text>();
 
         score_text_->set_font(res_cache->get_resource<sun::Font>("Wattauchimma.ttf").get());
         score_text_->set_character_size(72);
         score_text_->set_text("0 | 0");
+        score_->set_position(1280 / 2 - score_text_->get_bounding_rect().w / 2, 0);
 
         left_pad_->set_position(0.f, 360.f - 64.f);
         auto shape = left_pad_->create_component<sun::Shape2D>("shape");
@@ -93,6 +93,7 @@ public:
         ball_->set_position(640.f - 20.f, 360.f - 20.f);
         ball_speed_ = {600.f, 0.f};
         score_text_->set_text(std::to_string(left_score) + " | " + std::to_string(right_score));
+        score_->set_position(1280 / 2 - score_text_->get_bounding_rect().w / 2, 0);
     }
 
     bool check_collision(const sun::Shape2D* shape_a, const sun::Shape2D* shape_b)
@@ -116,6 +117,7 @@ private:
     sun::Entity*    right_pad_;
     sun::Entity*    ball_;
 
+    sun::Entity*    score_;
     sun::Text*      score_text_;
 
     int left_score;

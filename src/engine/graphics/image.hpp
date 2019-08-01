@@ -35,6 +35,8 @@ class SUN_API Image : public Resource
 {
 public:
 
+    SUN_RESOURCE_TYPE(Image)
+
     Image(Context&, const std::string& = "");
 
     Image(const Image&);

@@ -45,4 +45,14 @@ void System::shutdown()
 void System::update(float delta)
 {}
 
+Resource* System::create_resource_(uint type_hash)
+{
+    return nullptr;
+}
+
+bool System::handles_resource_(uint type_hash)
+{
+    return false;
+}
+
 }

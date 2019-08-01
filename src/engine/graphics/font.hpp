@@ -39,6 +39,8 @@ class SUN_API Font : public Resource
 {
 public:
 
+    SUN_RESOURCE_TYPE(Font)
+
     struct Glyph
     {
         float       advance;

@@ -36,6 +36,8 @@ class SUN_API Texture : public GPUObject, public Resource
 {
 public:
 
+    SUN_RESOURCE_TYPE(Texture)
+
     enum class FilterMode
     {
         Nearest = 0,

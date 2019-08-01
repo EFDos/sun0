@@ -32,6 +32,7 @@ namespace sun {
 
 class Context;
 class Component;
+class Resource;
 
 class SUN_API System
 {
@@ -57,6 +58,16 @@ public:
         return handles_component_(T::get_static_type_hash());
     }
 
+    template<typename T>
+    T* create_resource() {
+        return static_cast<T*>(create_resource_(T::get_static_type_hash()));
+    }
+
+    template<typename T>
+    bool handles_resource() {
+        return handles_resource_(T::get_static_type_hash());
+    }
+
     virtual const std::string& get_type_name() const = 0;
 
     virtual size_t get_type_hash() const = 0;
@@ -66,6 +77,10 @@ protected:
     virtual Component* create_component_(uint type_hash, uint id) = 0;
 
     virtual bool handles_component_(uint type_hash) = 0;
+
+    virtual Resource* create_resource_(uint type_hash);
+
+    virtual bool handles_resource_(uint type_hash);
 
     Context&    context_;
     bool        initialized_;

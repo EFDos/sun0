@@ -44,10 +44,27 @@ public:
         return path_;
     }
 
+    virtual const std::string& get_type_name() const = 0;
+
+    virtual size_t get_type_hash() const = 0;
+
 private:
 
     std::string path_;
 
 };
+
+#define SUN_RESOURCE_TYPE(type) const std::string& get_type_name() const override \
+    { return get_static_type_name(); } \
+    size_t get_type_hash() const override \
+    { return get_static_type_hash(); } \
+    static const std::string& get_static_type_name() { \
+        static std::string static_name(#type); \
+        return static_name; \
+    } \
+    static const size_t get_static_type_hash() \
+    { static uint hash = std::hash<std::string>{}(#type); \
+      return hash; \
+    } \
 
 }

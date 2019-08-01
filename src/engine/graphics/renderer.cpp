@@ -25,6 +25,7 @@
 #include "common/types.hpp"
 #include "core/logger.hpp"
 
+#include "image.hpp"
 #include "shader.hpp"
 #include "font.hpp"
 
@@ -377,6 +378,30 @@ bool Renderer::handles_component_(uint type_hash)
         type_hash == SpriteBatch::get_static_type_hash() ||
         type_hash == Camera::get_static_type_hash())
     {
+        return true;
+    }
+    return false;
+}
+
+Resource* Renderer::create_resource_(uint type_hash)
+{
+    if (type_hash == Texture::get_static_type_hash()) {
+        return create_texture();
+    }
+    if (type_hash == Image::get_static_type_hash()) {
+        return new Image(context_);
+    }
+    if (type_hash == Font::get_static_type_hash()) {
+        return new Font(context_);
+    }
+    return nullptr;
+}
+
+bool Renderer::handles_resource_(uint type_hash)
+{
+    if (type_hash == Texture::get_static_type_hash() ||
+        type_hash == Image::get_static_type_hash() ||
+        type_hash == Font::get_static_type_hash()) {
         return true;
     }
     return false;

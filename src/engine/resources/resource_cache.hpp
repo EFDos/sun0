@@ -23,7 +23,9 @@
 /*************************************************************************/
 #pragma once
 
+#include "core/context.hpp"
 #include "system/system.hpp"
+#include "graphics/renderer.hpp"
 
 #include <string>
 #include <memory>
@@ -47,16 +49,18 @@ public:
 
     template<typename T>
     std::shared_ptr<T> get_resource(const std::string& name) {
-        auto it = resources_.find(name);
+        auto res_name = T::get_static_type_name() + ":" + name;
+        auto it = resources_.find(res_name);
 
         if (it != resources_.end()) {
             return std::dynamic_pointer_cast<T>(it->second);
         }
         else {
-            T* res = new T(context_);
+            T* res = context_.create_resource<T>();
+
             if (res->load(path_ + name)) {
                 auto res_shared_ptr = std::shared_ptr<T>(res);
-                resources_[name] = static_cast<std::shared_ptr<Resource>>
+                resources_[res_name] = static_cast<std::shared_ptr<Resource>>
                     (res_shared_ptr);
                 return res_shared_ptr;
             } else {

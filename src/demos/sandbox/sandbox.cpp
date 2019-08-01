@@ -11,16 +11,12 @@ public:
         renderer_->set_color(sun::Color::DARK_GREY);
         renderer_->set_viewport({0, 0, 1280, 720});
         renderer_->set_projection(sun::Matrix4::orthogonal(0, 1280, 720, 0));
-        auto texture = renderer_->create_texture();
 
         context_.get_system<sun::PhysicsServer>()->set_debug_draw(true);
 
         auto res_cache = context_.get_system<sun::ResourceCache>();
         res_cache->set_path("res");
-        //auto font = res_cache->get_resource<sun::font>("Wattauchimma.ttf");
-        auto img = res_cache->get_resource<sun::Image>("bototem.png");
-
-        texture->load(*img);
+        auto tex = res_cache->get_resource<sun::Texture>("bototem.png");
 
         auto ground = scene_.create_entity();
         entity_ = scene_.create_entity();
@@ -51,7 +47,7 @@ public:
 
         ent_body->create(sun::shapes::Convex({{-32, 18}, {0, -36}, {32, 18}}),
             sun::RigidBody::Type::Dynamic);
-        sprite->set_texture(texture);
+        sprite->set_texture(tex.get());
         sprite->set_frames(2, 1);
         entity_->set_origin(48, 56);
         entity_->set_scale(0.75f, 0.75f);

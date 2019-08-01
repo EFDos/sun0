@@ -74,6 +74,17 @@ public:
         return nullptr;
     }
 
+    template<typename T>
+    T* create_resource()
+    {
+        for (auto sys : systems_) {
+            if (sys.second->handles_resource<T>()) {
+                return sys.second->create_resource<T>();
+            }
+        }
+        return nullptr;
+    }
+
     Context& operator=(const Context&) = delete;
 
     Context& operator=(Context&&) = delete;

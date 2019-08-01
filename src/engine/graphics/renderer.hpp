@@ -211,6 +211,10 @@ private:
 
     bool handles_component_(uint type_hash) override;
 
+    Resource* create_resource_(uint type_hash) override;
+
+    bool handles_resource_(uint type_hash) override;
+
     std::vector<Camera*>    cameras_;
     std::vector<Light2D*>   lights_;
     std::vector<Drawable*>  drawables_;

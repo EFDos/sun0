@@ -118,6 +118,11 @@ void Sprite::set_frame(uint frame)
 
 void Sprite::update_geometry_()
 {
+    if (texture_ == nullptr) {
+        sun_log_warn("Sprite::update_geometry_: sprite has no texture set");
+        return;
+    }
+
     struct vertex_def {
         float x, y;
         float u, v;

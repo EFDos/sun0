@@ -16,7 +16,7 @@ public:
 
         auto res_cache = context_.get_system<sun::ResourceCache>();
         res_cache->set_path("res");
-        auto tex = res_cache->get_resource<sun::Texture>("bototem.png");
+        auto tex = res_cache->get_resource<sun::Texture>("player_128.png");
 
         auto ground = scene_.create_entity();
         entity_ = scene_.create_entity();
@@ -33,12 +33,6 @@ public:
         auto ent_body = entity_->create_component<sun::RigidBody>("body");
         auto camera = entity_->create_component<sun::Camera>();
         auto script = entity_->create_component<sun::Script>();
-        auto animation = entity_->create_component<sun::Animation>("anim");
-
-        auto& track = animation->create_track(*sprite, "frame", sun::Time::seconds(3.f));
-
-        track.insert_key({0, sun::Time::seconds(0.f)});
-        track.insert_key({1, sun::Time::seconds(3.f)});
 
         script->load("res/test.lua");
 
@@ -48,7 +42,6 @@ public:
         ent_body->create(sun::shapes::Convex({{-32, 18}, {0, -36}, {32, 18}}),
             sun::RigidBody::Type::Dynamic);
         sprite->set_texture(tex.get());
-        sprite->set_frames(2, 1);
         entity_->set_origin(48, 56);
         entity_->set_scale(0.75f, 0.75f);
 	}

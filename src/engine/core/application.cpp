@@ -50,7 +50,7 @@ Application::Application(Context& context)
                  version::codename);
     sun_print("****************************");
 
-	window_.create("Sandbox - Sun0 Engine", {1280, 720});
+	window_.create("Sun0", {1280, 720});
 
     context_.register_system<sun::ResourceCache>();
     context_.register_system<sun::AudioServer>();

@@ -2,6 +2,10 @@
 
 class Hello : public sun::Application
 {
+private:
+
+    sun::Matrix4    transform_;
+
 public:
 
 	Hello(sun::Context& p_context)
@@ -20,6 +24,10 @@ public:
         text->set_font(font.get());
         text->set_character_size(64);
         text->set_text("Hello Sun!");
+        text->set_transform(&transform_);
+
+        transform_.translate(1280 / 2 - text->get_bounding_rect().w / 2,
+                             720 / 2 - text->get_bounding_rect().h / 2);
 	}
 
     ~Hello() {

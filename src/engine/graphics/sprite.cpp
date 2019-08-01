@@ -55,6 +55,8 @@ void Sprite::draw(Renderer* renderer) const
 {
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
+    } else if (transform_ != nullptr) {
+        renderer->set_model_transform(*transform_);
     }
     renderer->set_draw_mode(Renderer::DrawMode::Triangles);
     renderer->draw_indexed(*vertices_, *indices_, texture_, nullptr);

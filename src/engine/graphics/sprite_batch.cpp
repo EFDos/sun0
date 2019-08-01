@@ -50,12 +50,14 @@ SpriteBatch::~SpriteBatch()
     delete indices_;
 }
 
-void SpriteBatch::draw(Renderer* r) const
+void SpriteBatch::draw(Renderer* renderer) const
 {
     if (owning_entity_ != nullptr) {
-        r->set_model_transform(owning_entity_->get_global_transform());
+        renderer->set_model_transform(owning_entity_->get_global_transform());
+    } else if (transform_ != nullptr) {
+        renderer->set_model_transform(*transform_);
     }
-    r->draw_indexed(*vertices_, *indices_, texture_, nullptr);
+    renderer->draw_indexed(*vertices_, *indices_, texture_, nullptr);
 }
 
 void SpriteBatch::set_texture(const Texture* tex)

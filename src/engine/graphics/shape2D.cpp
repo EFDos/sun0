@@ -136,6 +136,8 @@ void Shape2D::draw(Renderer* renderer) const
 {
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
+    } else if (transform_ != nullptr) {
+        renderer->set_model_transform(*transform_);
     }
     renderer->set_draw_mode(draw_mode_);
     if (indices_->get_index_count() == 0) {

@@ -28,12 +28,15 @@
 namespace sun {
 
 class Renderer;
+class Matrix4;
+class Shader;
 
 class SUN_API Drawable : public Component
 {
 public:
 
-    Drawable(Context& context) : Component(context) {}
+    Drawable(Context& context)
+    :   Component(context), transform_(nullptr), shader_(nullptr) {}
 
     virtual ~Drawable() {}
 
@@ -47,6 +50,14 @@ public:
         return rect;
     }*/
 
+    inline void set_transform(const Matrix4* transform) {
+        transform_ = transform;
+    }
+
+    inline void set_shader(const Shader* shader) {
+        shader_ = shader;
+    }
+
     const Recti& get_bounding_rect() const {
         return bounding_rect_;
     }
@@ -57,6 +68,8 @@ protected:
 
     Recti   bounding_rect_;
 
+    const Matrix4*    transform_;
+    const Shader*     shader_;
 };
 
 }

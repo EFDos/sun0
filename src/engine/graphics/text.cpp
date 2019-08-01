@@ -63,13 +63,13 @@ void Text::update_geometry_()
         return;
     }
 
+    bounding_rect_.set_size(0, 0);
+
     vertices_->resize(str_.length() * 4);
     indices_->resize(str_.length() * 6);
 
     float hspace = (float)font_->get_glyph(' ', font_size_).advance;
     float vspace = (float)font_->get_line_spacing(font_size_);
-    //float lspace   = ( hspace / 3.f );
-    //hspace += lspace;
     float x = 0.f, y = font_size_;
     int offset = 0;
     int i_offset = 0;
@@ -125,6 +125,9 @@ void Text::update_geometry_()
             col.r,          col.g,  col.b,     col.a
         };
 
+        bounding_rect_.w = pos_x + pos_w;
+        bounding_rect_.h = pos_y + pos_h;
+
         uint32 quad_indices[] = {
             i_value_offset + 0, i_value_offset + 1, i_value_offset + 3,
             i_value_offset + 1, i_value_offset + 2, i_value_offset + 3
@@ -152,6 +155,8 @@ void Text::draw(Renderer* renderer) const
     }
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
+    } else if (transform_ != nullptr) {
+        renderer->set_model_transform(*transform_);
     }
     renderer->set_draw_mode(Renderer::DrawMode::Triangles);
     renderer->draw_indexed(*vertices_, *indices_,

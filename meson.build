@@ -15,6 +15,8 @@ sun_includes = include_directories(
   '/usr/include/luajit-2.1'
 )
 
+message('source root is: ' + meson.current_source_dir())
+
 sun_depends = [
 	dependency('sdl2'),
 	dependency('glew'),
@@ -24,7 +26,7 @@ sun_depends = [
 	meson.get_compiler('cpp').find_library('luajit-5.1'),
 	meson.get_compiler('cpp').find_library('freetype'),
 	meson.get_compiler('cpp').find_library('Box2D',
-        dirs: join_paths(meson.source_root(), 'src/thirdparty/Box2D')),
+        dirs: join_paths(meson.current_source_dir(), 'src/thirdparty/Box2D')),
 ]
 
 subdir('src/engine')

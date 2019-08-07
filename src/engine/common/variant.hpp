@@ -33,10 +33,11 @@ enum class VariantType
 {
     Int = 0,
     Float,
-    Vector2f
+    Vector2f,
+    Color
 };
 
-using Variant = std::variant<int, float, Vector2f>;
+using Variant = std::variant<int, float, Vector2f, Color>;
 
 namespace variant {
 

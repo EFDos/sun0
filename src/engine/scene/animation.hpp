@@ -53,7 +53,7 @@ public:
         {}
     };
 
-    AnimationTrack(Animatable& target, uint property,
+    AnimationTrack(Animatable& target, uint64 property,
         AnimationCurve curve, float length);
 
     void update(float delta);
@@ -75,7 +75,7 @@ public:
 private:
 
     Animatable&             target_;
-    uint                    property_;
+    uint64                    property_;
 
     float   length_;
     float   track_pos_;

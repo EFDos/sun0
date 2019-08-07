@@ -50,6 +50,8 @@ public:
 
     void set_texture(const Texture* tex);
 
+    void set_color(const Color& color);
+
     void set_frames(uint h_frames, uint v_frames);
 
     void set_frame(uint frame);
@@ -66,6 +68,7 @@ private:
     void update_geometry_() override;
 
     Rectu           rect_;
+    Colorf          color_;
     uint            v_frames_;
     uint            h_frames_;
     uint            frame_;

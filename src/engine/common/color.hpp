@@ -78,6 +78,7 @@ struct BaseColor
         g += v;
         b += v;
         a += v;
+        return *this;
     }
 
     BaseColor<T> operator-=(const BaseColor<T>& other)
@@ -95,6 +96,7 @@ struct BaseColor
         g -= v;
         b -= v;
         a -= v;
+        return *this;
     }
 
     BaseColor<T> operator*=(const BaseColor<T>& other)
@@ -103,6 +105,7 @@ struct BaseColor
         g *= other.g;
         b *= other.b;
         a *= other.a;
+        return *this;
     }
 
     BaseColor<T> operator*=(T v)
@@ -111,6 +114,7 @@ struct BaseColor
         g *= v;
         b *= v;
         a *= v;
+        return *this;
     }
 
     BaseColor<T> operator/=(const BaseColor<T>& other)
@@ -128,6 +132,7 @@ struct BaseColor
         g /= v;
         b /= v;
         a /= v;
+        return *this;
     }
 
     inline static BaseColor<uint8> to_color(const BaseColor<float>& cf)

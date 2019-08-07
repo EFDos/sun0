@@ -26,7 +26,7 @@
 
 namespace sun {
 
-AnimationTrack::AnimationTrack(Animatable& target, uint property,
+AnimationTrack::AnimationTrack(Animatable& target, uint64 property,
                                AnimationCurve curve, float length)
 :   target_(target),
     property_(property),
@@ -69,6 +69,14 @@ void AnimationTrack::update(float delta)
                 auto next_val = std::get<Vector2f>(next_kf.value);
                 auto value = curr_val + (next_val - curr_val) * ratio;
                 target_.set_property(property_, value);
+            } break;
+        case VariantType::Color:
+            {
+                auto curr_val = Color::to_colorf(std::get<Color>(curr_kf.value));
+                auto next_val = Color::to_colorf(std::get<Color>(next_kf.value));
+                auto value = curr_val + (next_val - curr_val);
+                value *= ratio;
+                target_.set_property(property_, Colorf::to_color(value));
             } break;
         case VariantType::Int:
             {

@@ -42,7 +42,7 @@ struct BaseColor
 
     BaseColor(BaseColor&&) noexcept = default;
 
-    void set(T p_r, T p_g, T p_b, T p_a) {
+    inline void set(T p_r, T p_g, T p_b, T p_a) {
         r = p_r;
         g = p_g;
         b = p_b;
@@ -53,17 +53,17 @@ struct BaseColor
 
     BaseColor<T>& operator=(BaseColor&&) noexcept = default;
 
-    bool operator==(const BaseColor<T>& other) const
+    inline bool operator==(const BaseColor<T>& other) const
     {
         return r == other.r && g == other.g && b == other.b && a == other.a;
     }
 
-    bool operator!=(const BaseColor<T>& other) const
+    inline bool operator!=(const BaseColor<T>& other) const
     {
         return r != other.r || g != other.g || b != other.b || a != other.a;
     }
 
-    BaseColor<T> operator+=(const BaseColor<T>& other)
+    inline BaseColor<T> operator+=(const BaseColor<T>& other)
     {
         r += other.r;
         g += other.g;
@@ -72,7 +72,7 @@ struct BaseColor
         return *this;
     }
 
-    BaseColor<T> operator+=(T v)
+    inline BaseColor<T> operator+=(T v)
     {
         r += v;
         g += v;
@@ -81,7 +81,7 @@ struct BaseColor
         return *this;
     }
 
-    BaseColor<T> operator-=(const BaseColor<T>& other)
+    inline BaseColor<T> operator-=(const BaseColor<T>& other)
     {
         r -= other.r;
         g -= other.g;
@@ -90,7 +90,7 @@ struct BaseColor
         return *this;
     }
 
-    BaseColor<T> operator-=(T v)
+    inline BaseColor<T> operator-=(T v)
     {
         r -= v;
         g -= v;
@@ -99,7 +99,17 @@ struct BaseColor
         return *this;
     }
 
-    BaseColor<T> operator*=(const BaseColor<T>& other)
+    inline BaseColor<T> operator*(const BaseColor<T>& other)
+    {
+        return {r * other.r, g * other.g, b * other.b, a * other.a};
+    }
+
+    inline BaseColor<T> operator*(T v)
+    {
+        return {r * v, g * v, b * v, a * v};
+    }
+
+    inline BaseColor<T> operator*=(const BaseColor<T>& other)
     {
         r *= other.r;
         g *= other.g;
@@ -108,7 +118,7 @@ struct BaseColor
         return *this;
     }
 
-    BaseColor<T> operator*=(T v)
+    inline BaseColor<T> operator*=(T v)
     {
         r *= v;
         g *= v;
@@ -117,7 +127,7 @@ struct BaseColor
         return *this;
     }
 
-    BaseColor<T> operator/=(const BaseColor<T>& other)
+    inline BaseColor<T> operator/=(const BaseColor<T>& other)
     {
         r /= other.r;
         g /= other.g;
@@ -126,7 +136,7 @@ struct BaseColor
         return *this;
     }
 
-    BaseColor<T> operator/=(T v)
+    inline BaseColor<T> operator/=(T v)
     {
         r /= v;
         g /= v;

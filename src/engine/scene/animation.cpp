@@ -74,8 +74,8 @@ void AnimationTrack::update(float delta)
             {
                 auto curr_val = Color::to_colorf(std::get<Color>(curr_kf.value));
                 auto next_val = Color::to_colorf(std::get<Color>(next_kf.value));
-                auto value = curr_val + (next_val - curr_val);
-                value *= ratio;
+                auto value = curr_val + (next_val - curr_val) * ratio;
+                //value *= ratio;
                 target_.set_property(property_, Colorf::to_color(value));
             } break;
         case VariantType::Int:

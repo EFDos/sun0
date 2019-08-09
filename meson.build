@@ -1,11 +1,11 @@
 project('sun0', ['cpp', 'c'],
-  version: '0.9.92',
+  version: '1.0.0',
   meson_version: '>= 0.43.0',
   license: 'GPL3',
   default_options: 'cpp_std=c++17'
 )
 
-version_codename = 'Sunny Alpha'
+version_codename = 'Summer Beta'
 version_str = meson.project_version()
 
 sun_includes = include_directories(

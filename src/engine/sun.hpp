@@ -34,6 +34,7 @@
 #include "core/application.hpp"
 #include "core/event.hpp"
 #include "core/context.hpp"
+#include "core/clock.hpp"
 
 // TYPES
 #include "common/types.hpp"

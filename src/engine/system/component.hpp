@@ -41,7 +41,8 @@ public:
     enum class Property {
         Update          =   0x01,
         HandleEvent     =   0x02,
-        Draw            =   0x04
+        Draw            =   0x04,
+        Terminal        =   0x08
     };
 
     virtual void handle_events(Event&)
@@ -49,6 +50,10 @@ public:
 
     virtual void update(float delta)
     {}
+
+    inline void queue_delete() {
+        flags_ &= ~(uint8)Property::Terminal;
+    }
 
     inline void set_update(bool update) {
         update ? flags_ |= (uint8)Property::Update :
@@ -74,15 +79,22 @@ public:
     }
 
     inline bool get_update() {
-        return flags_ & (uint8)Property::Update;
+        return (flags_ & (uint8)Property::Update &&
+                !(flags_ & (uint8)Property::Terminal));
     }
 
     inline bool get_handle_event() {
-        return flags_ & (uint8)Property::HandleEvent;
+        return (flags_ & (uint8)Property::HandleEvent &&
+                !(flags_ & (uint8)Property::Terminal));
     }
 
     inline bool get_draw() {
-        return flags_ & (uint8)Property::Draw;
+        return (flags_ & (uint8)Property::Draw &&
+                !(flags_ & (uint8)Property::Terminal));
+    }
+
+    inline bool is_terminal() {
+        return flags_ & (uint8)Property::Terminal;
     }
 
     inline Entity* get_owning_entity() const {

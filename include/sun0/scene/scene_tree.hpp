@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  scene_tree.hpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,27 +21,28 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "common/object.hpp"
+#include "entity.hpp"
 
-// VERSION
-#include "version.hpp"
+namespace sun {
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+class SUN_API SceneTree : Object
+{
+public:
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+    SceneTree(Context& context);
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Entity* create_entity();
+
+    void clear();
+
+    Entity& get_root() {
+        return root_;
+    }
+
+private:
+
+    Entity  root_;
+};
+
+}

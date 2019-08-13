@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  contact_listener.hpp                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,16 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class ContactListener : public b2ContactListener
+{
+    void BeginContact(b2Contact* contact) override;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    void EndContact(b2Contact* contact) override;
+};
+
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  animatable.hpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,37 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/config.hpp"
+#include "common/variant.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <vector>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API Animatable
+{
+public:
+
+    virtual ~Animatable() {}
+
+    virtual void build_properties() {};
+
+    inline void set_property(uint64 property_hash, Variant var)
+    {
+        for (size_t i = 0 ; i < properties_.size() ; ++i)
+        {
+            if (properties_[i] == property_hash) {
+                set_property_(i, var);
+                break;
+            }
+        }
+    }
+
+protected:
+
+    virtual void set_property_(size_t property_idx, Variant var) {};
+
+    std::vector<uint64>   properties_;
+};
+
+}

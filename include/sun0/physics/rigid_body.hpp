@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  rigid_body.hpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,58 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "math/vector2.hpp"
+#include "system/component.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+class b2Body;
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace shapes {
+class Shape;
+}
+
+class SUN_API RigidBody final : public Component
+{
+public:
+
+    SUN_COMPONENT_TYPE(RigidBody)
+
+    enum class Type
+    {
+        Undefined,
+        Static,
+        Dynamic,
+        Kinematic,
+        Sensor
+    };
+
+    RigidBody(Context&);
+
+    void create(const shapes::Shape& shp, Type t);
+
+    void update(float delta) override;
+
+    void apply_linear_impulse(const Vector2f& impulse);
+
+    void move_to_entity();
+
+    void set_angular_velocity(float vel);
+
+    void set_restitution(float restitution);
+
+    void set_friction(float friction);
+
+    void set_density(float density);
+
+    inline Type get_type() const {
+        return type_;
+    }
+
+private:
+
+    Type    type_;
+    b2Body* body_;
+};
+
+}

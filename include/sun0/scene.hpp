@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  include/scene.hpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,6 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
-
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
-
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+#include "scene/scene_tree.hpp"
+#include "scene/animation.hpp"
+//#include "scene/entity.hpp"

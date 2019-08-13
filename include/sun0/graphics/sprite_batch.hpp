@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  sprite_batch.hpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,44 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+#include "drawable.hpp"
+#include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+
+class Texture;
+
+class SUN_API SpriteBatch final : public Drawable
+{
+public:
+
+    SUN_COMPONENT_TYPE(SpriteBatch)
+
+    SpriteBatch(Context& context);
+
+    ~SpriteBatch();
+
+    void draw(Renderer* r) const override;
+
+    void set_texture(const Texture* tex);
+
+    void add_sprite_rect(const Vector2f& position,
+                         const Recti& rect,
+                         const Color& c = sun::Color::WHITE);
+
+private:
+
+    void update_geometry_() override;
+
+    uint vertex_offset_;
+    uint index_offset_;
+
+    VertexBuffer*   vertices_;
+    IndexBuffer*    indices_;
+    const Texture*  texture_;
+};
+
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  variant.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,29 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "types.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <variant>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+enum class VariantType
+{
+    Int = 0,
+    Float,
+    Vector2f,
+    Color
+};
+
+using Variant = std::variant<int, float, Vector2f, Color>;
+
+namespace variant {
+
+inline VariantType get_type(const Variant& var)
+{
+    return static_cast<VariantType>(var.index());
+}
+
+}
+
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  sound_source.hpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,68 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "system/component.hpp"
+#include "math/vector3.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class context;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API SoundSource : public Component
+{
+public:
+
+    enum class State {
+        Stopped,
+        Paused,
+        Playing
+    };
+
+    virtual ~SoundSource();
+
+    virtual void play() = 0;
+
+    virtual void pause() = 0;
+
+    virtual void stop() = 0;
+
+    void set_volume(float vol);
+
+    void set_pitch(float pitch);
+
+    void set_relative(bool relative);
+
+    void set_minmum_distance(float dist);
+
+    void set_attenuation(float atten);
+
+    void set_position(float x, float y, float z);
+
+    void set_position(const Vector3f& pos);
+
+    float get_volume() const;
+
+    float get_pitch() const;
+
+    bool is_relative() const;
+
+    float get_minimum_distance() const;
+
+    float get_attenuation() const;
+
+    virtual State get_state() const;
+
+    Vector3f get_position() const;
+
+protected:
+
+    SoundSource(Context& context);
+
+    SoundSource(const SoundSource&);
+
+    SoundSource(SoundSource&&) = default;
+
+    uint source_;
+};
+
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  input_stream.hpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,45 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/config.hpp"
+#include "common/int.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <fstream>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
+namespace filesys {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API InputStream
+{
+public:
+
+    InputStream() noexcept;
+
+    ~InputStream();
+
+    InputStream(const InputStream&) = delete;
+
+    InputStream& operator=(const InputStream&) = delete;
+
+    bool open(const std::string& path);
+
+    void close();
+
+    int64 read(void* buffer, int64 size) const;
+
+    int64 seek(int64 position);
+
+    int64 tell() const;
+
+    int64 get_size() const;
+
+    inline const std::string& get_filepath() const { return filepath_; }
+
+private:
+
+    std::FILE*   file_;
+    std::string  filepath_;
+};
+
+} // filesys
+} // sun

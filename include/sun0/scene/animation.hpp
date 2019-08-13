@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  animation.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,84 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/variant.hpp"
+#include "system/component.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <vector>
+#include <string>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Animatable;
+
+enum class AnimationCurve
+{
+    Linear,
+    Cubic
+};
+
+class AnimationTrack
+{
+public:
+
+    struct KeyFrame
+    {
+        float       position;
+        Variant     value;
+
+        KeyFrame(Variant p_value = 0, Time p_position = 0)
+        :   position(p_position.as_seconds()), value(p_value)
+        {}
+    };
+
+    AnimationTrack(Animatable& target, uint64 property,
+        AnimationCurve curve, float length);
+
+    void update(float delta);
+
+    inline void insert_key(KeyFrame&& key) {
+        if (key.position <= length_) {
+            track_.emplace_back(key);
+        }
+    }
+
+    inline void set_curve(AnimationCurve curve) {
+        curve_ = curve;
+    }
+
+    inline AnimationCurve get_curve() const {
+        return curve_;
+    }
+
+private:
+
+    Animatable&             target_;
+    uint64                    property_;
+
+    float   length_;
+    float   track_pos_;
+    size_t  current_keyframe_;
+
+    AnimationCurve          curve_;
+    std::vector<KeyFrame>   track_;
+};
+
+class Animation : public Component
+{
+public:
+
+    SUN_COMPONENT_TYPE(Animation)
+
+    Animation(Context&);
+
+    void update(float delta) override;
+
+    AnimationTrack& create_track(Animatable& target, const std::string& property,
+                      Time duration = Time::seconds(1.f), AnimationCurve curve = AnimationCurve::Linear);
+
+private:
+
+    std::vector<AnimationTrack> tracks_;
+};
+
+}

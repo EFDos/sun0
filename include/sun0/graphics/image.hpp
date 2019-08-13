@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  image.hpp                                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,48 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
+#include "common/config.hpp"
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include "resources/resource.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+#include <string>
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+
+class SUN_API Image : public Resource
+{
+public:
+
+    SUN_RESOURCE_TYPE(Image)
+
+    Image(Context&, const std::string& = "");
+
+    Image(const Image&);
+
+    Image(Image&&) = default;
+
+    bool load(const std::string&) override;
+
+    void clear() override;
+
+    void allocate(uint width, uint height);
+
+    void allocate(const Vector2u& size);
+
+    void set_data(const Vector2u& size, const ubyte* data);
+
+    inline const uint8* get_data() const { return data_; }
+
+    inline const Vector2u& get_size() const { return size_; }
+
+    Image& operator=(const Image&);
+
+    Image& operator=(Image&&) = default;
+
+private:
+
+    ubyte*      data_;
+    Vector2u    size_;
+};
+
+}

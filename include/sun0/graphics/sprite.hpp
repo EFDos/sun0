@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  sprite.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,59 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+#include "drawable.hpp"
+#include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+
+class Texture;
+
+class SUN_API Sprite final : public Drawable
+{
+public:
+
+    SUN_COMPONENT_TYPE(Sprite)
+
+    Sprite(Context& p_context);
+
+    ~Sprite();
+
+    // from Animatable
+    void build_properties() override;
+
+    void draw(Renderer* renderer) const override;
+
+    void set_texture(const Texture* tex);
+
+    void set_color(const Color& color);
+
+    void set_frames(uint h_frames, uint v_frames);
+
+    void set_frame(uint frame);
+
+    inline void set_rect(const Rectu& r) {
+        rect_ = r;
+        update_geometry_();
+    }
+
+private:
+
+    void set_property_(size_t property_idx, Variant var) override;
+
+    void update_geometry_() override;
+
+    Rectu           rect_;
+    Colorf          color_;
+    uint            v_frames_;
+    uint            h_frames_;
+    uint            frame_;
+
+    VertexBuffer*  vertices_;
+    IndexBuffer*   indices_;
+    const Texture*  texture_;
+};
+
+}

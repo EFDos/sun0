@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  camera.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,91 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
+#include "system/component.hpp"
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Renderer;
+
+class SUN_API Camera final : public Component
+{
+public:
+
+    SUN_COMPONENT_TYPE(Camera)
+
+    Camera(Context&);
+
+    void update(float delta) override;
+
+    inline void set_renderer(Renderer* renderer) {
+        renderer_ = renderer;
+    }
+
+    inline void set_viewport_size(const Vector2f& size) {
+        viewport_.set_size(size);
+    }
+
+    inline void set_viewport_size(float w, float h) {
+        viewport_.set_size({w, h});
+    }
+
+    inline void set_follow(bool follow) {
+        follow_ = follow;
+    }
+
+    inline void set_hard_limit(bool hard_limit) {
+        hard_limit_ = hard_limit;
+    }
+
+    inline void set_follow_speed(float speed) {
+        follow_speed_ = speed;
+    }
+
+    inline void set_follow_offset(const Recti& offset) {
+        offset_ = offset;
+    }
+
+    inline void set_limits(const Recti& limits) {
+        limit_ = limits;
+    }
+
+    inline bool get_follow() const {
+        return follow_;
+    }
+
+    inline bool get_hard_limit() const {
+        return hard_limit_;
+    }
+
+    inline float get_follow_speed() const {
+        return follow_speed_;
+    }
+
+    inline const Recti& get_follow_offset() const {
+        return offset_;
+    }
+
+    inline const Recti& get_limits() const {
+        return limit_;
+    }
+
+    Vector2f get_center() const;
+
+private:
+
+    Renderer*   renderer_;
+
+    Rectf   viewport_;
+    Recti   offset_;
+    Recti   limit_;
+
+    float   follow_speed_;
+
+    bool    follow_;
+    bool    hard_limit_;
+
+    Matrix4 transform_;
+};
+
+} // sun

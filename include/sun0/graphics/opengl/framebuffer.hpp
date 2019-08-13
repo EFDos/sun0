@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl/framebuffer.hpp                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,38 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "graphics/framebuffer.hpp"
+#include "common/int.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace opengl {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Framebuffer final : public sun::Framebuffer
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Framebuffer(Target target);
+
+    ~Framebuffer();
+
+    void bind() const override;
+
+    void unbind() const override;
+
+    void release() override;
+
+    void attach_texture(sun::Texture*) override;
+
+    void detach_texture() override;
+
+    inline uint get_internal_id() const {
+        return id_;
+    }
+
+private:
+
+    uint id_;
+};
+
+}
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  input_map.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,38 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include <vector>
+#include <unordered_map>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Event;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class InputMap
+{
+public:
+
+    struct Action {
+        bool pressed    = false;
+        float strength  = 0.f;
+    };
+
+    void update_actions(const Event&);
+
+
+
+    static InputMap& instance();
+
+private:
+
+    InputMap();
+
+    InputMap(const InputMap&) = delete;
+
+    InputMap(InputMap&&) = delete;
+
+    std::unordered_map<Event, std::string>  action_lookup_;
+    std::unordered_map<std::string, Action> action_map_;
+};
+
+}

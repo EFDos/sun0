@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  shape2D.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,48 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+#include "renderer.hpp"
+#include "drawable.hpp"
+#include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+
+namespace shapes {
+class Shape;
+}
+
+class SUN_API Shape2D : public Drawable
+{
+public:
+
+    SUN_COMPONENT_TYPE(Shape2D)
+
+    Shape2D(Context& context);
+
+    ~Shape2D();
+
+    void draw(Renderer* renderer) const override;
+
+    void set_shape(const shapes::Shape& p_shape);
+
+    inline void set_color(const Color& c) {
+        color_ = c;
+        update_geometry_();
+    }
+
+private:
+
+    void update_geometry_() override;
+
+    //TODO Maybe change Shape* to union?
+    shapes::Shape*              shape_;
+    Color                       color_;
+    Renderer::DrawMode          draw_mode_;
+    VertexBuffer*               vertices_;
+    IndexBuffer*                indices_;
+};
+
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  mouse.hpp                                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,26 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/int.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace mouse {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+enum class Button : uint8
+{
+    Undefined,
+    Left,
+    Middle,
+    Right,
+    X1,
+    X2,
+};
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+enum class Wheel : uint8
+{
+    Vertical,
+    Horizontal
+};
+
+} // mouse
+} // sun

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  widget.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,55 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
+#include "common/object.hpp"
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Renderer;
+class Event;
+class GUISystem;
+
+class SUN_API Widget : public Object
+{
+public:
+
+    Widget(Context&);
+
+    //virtual ~Widget();
+
+    virtual void draw(Renderer*) const = 0;
+
+    virtual void handle_events(const Event&) = 0;
+
+    inline void set_parent(Widget* parent) {
+        parent_ = parent;
+        on_parent_set_();
+    }
+
+    inline Vector2i get_position() const {
+        return bounds_.get_position();
+    }
+
+    inline Vector2i get_size() const {
+        return bounds_.get_size();
+    }
+
+    inline const Recti& get_bounding_rect() const {
+        return bounds_;
+    }
+
+    inline void set_gui_system(GUISystem* gui) {
+        gui_ = gui;
+    }
+
+protected:
+
+    virtual void on_parent_set_();
+
+    GUISystem* gui_;
+    Widget* parent_;
+    Recti   bounds_;
+};
+
+}

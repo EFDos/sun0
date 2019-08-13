@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl/texture.hpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,53 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "graphics/texture.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace opengl {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API Texture final : public sun::Texture
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Texture(Context&);
+
+    ~Texture();
+
+    // implements gpu_object
+
+    void release() override;
+
+    void bind() const override;
+
+    void unbind() const override;
+
+    // implements sun::texture
+
+    bool load(const Image& img) override;
+
+    bool load(const Vector2u& size, const ubyte* data) override;
+
+    void resize(const Vector2u& size) override;
+
+    void fill(const Vector2u& offset, const Vector2u& size,
+              const ubyte* date) override;
+
+    void clear() override;
+
+    void map() override;
+
+    void unmap() override;
+
+    uint get_internal_id() const {
+        return id_;
+    }
+
+private:
+
+    uint    id_;
+
+};
+
+} // opengl
+} // sun

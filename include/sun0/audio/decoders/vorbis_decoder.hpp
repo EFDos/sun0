@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  vorbis_decoder.hpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,43 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "decoder.hpp"
+#include <vorbis/vorbisfile.h>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API VorbisDecoder final : public Decoder
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    VorbisDecoder();
+
+    ~VorbisDecoder();
+
+    // Implements decoder
+    bool open(filesys::InputStream& stream) override;
+
+    void seek(uint64 sample_offset) override;
+
+    uint64 read(int16* samples, uint64 max) override;
+
+    static bool check(filesys::InputStream& stream);
+
+private:
+
+    void close_();
+
+    OggVorbis_File  vorbis_;
+
+    // Vorbis callbacks
+    static size_t callback_read(void* ptr, size_t size, size_t nmemb, void* data);
+
+    static int callback_seek(void* data, ogg_int64_t offset, int whence);
+
+    static long callback_tell(void* data);
+
+    static ov_callbacks callbacks_;
+
+};
+
+}

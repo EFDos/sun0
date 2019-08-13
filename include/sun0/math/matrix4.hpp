@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  matrix4.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,72 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "vector2.hpp"
+#include "rect.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Matrix4
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Matrix4() noexcept;
+
+    Matrix4(float e00, float e01, float e02,
+            float e10, float e11, float e12,
+            float e20, float e21, float e22) noexcept;
+
+    Matrix4(const Matrix4&) noexcept = default;
+
+    Matrix4(Matrix4&&) noexcept = default;
+
+    void set_identity();
+
+    void set_transformation(float x, float y, float angle,
+            float sx, float sy, float ox,
+            float oy, float kx, float ky);
+
+    void set_translation(const Vector2f& v);
+
+    void set_translation(float x, float y);
+
+    void set_scale(const Vector2f& v);
+
+    void set_scale(float x, float y);
+
+    void set_rotation(float angle);
+
+    Matrix4 combine(const Matrix4& m) const;
+
+    Matrix4& translate(const Vector2f& v);
+
+    Matrix4& translate(float x, float y);
+
+    Matrix4& scale(const Vector2f& v);
+
+    Matrix4& scale(float x, float y);
+
+    Matrix4& rotate(float angle);
+
+    Matrix4 get_inverse() const;
+
+    const float* get_data() const;
+
+    Matrix4& operator=(const Matrix4&) noexcept;
+
+    Matrix4& operator=(Matrix4&&) = default;
+
+    Matrix4 operator*(const Matrix4& other) const;
+
+    void operator*=(const Matrix4& other);
+
+    static Matrix4 orthogonal(float left, float right, float bottom, float top);
+
+    static Matrix4 orthogonal(const Rect<float>& r);
+
+private:
+
+    float m_[16];
+};
+
+} // sun

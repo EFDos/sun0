@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  time.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,52 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "int.hpp"
+#include "config.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API Time
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Time() : microseconds_(0) {}
+
+    Time(int64 microseconds) : microseconds_(microseconds) {}
+
+    inline float as_seconds() const {
+        return microseconds_ / 1000000.f;
+    }
+
+    inline int32 as_milliseconds() const {
+        return static_cast<int32>(microseconds_ / 1000);
+    }
+
+    inline int64 as_microseconds() const {
+        return microseconds_;
+    }
+
+    inline static Time seconds(float amount) {
+        return Time(static_cast<int64>(amount * 1000000));
+    }
+
+    inline static Time milliseconds(int32 amount) {
+        return Time(static_cast<int64>(amount * 1000));
+    }
+
+    inline static Time microseconds(int64 amount) {
+        return Time(amount);
+    }
+
+    bool operator!=(const Time& other) {
+        return microseconds_ != other.microseconds_;
+    }
+
+    static Time ZERO;
+
+private:
+
+    int64   microseconds_;
+};
+
+}

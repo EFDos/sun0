@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  framebuffer.hpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,49 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "gpu_object.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Texture;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API Framebuffer : public GPUObject
+{
+public:
+
+    enum class Target
+    {
+        Read,
+        Draw,
+        ReadAndDraw
+    };
+
+    enum class Status
+    {
+        Null,
+        Incomplete,
+        Ok
+    };
+
+    virtual void attach_texture(Texture*) = 0;
+
+    virtual void detach_texture() = 0;
+
+    inline Target get_target() const {
+        return target_;
+    }
+
+    inline Status get_status() const {
+        return status_;
+    }
+
+protected:
+
+    Framebuffer(Target t = Target::ReadAndDraw);
+
+    Target  target_;
+    Status  status_;
+
+};
+
+} // sun

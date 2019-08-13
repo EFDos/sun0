@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl/shader.hpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,83 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "graphics/shader.hpp"
+#include "common/int.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace opengl {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API ShaderStage final : public sun::ShaderStage
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    ShaderStage(const std::string& source, Type t);
+
+    ~ShaderStage();
+
+    // implements sun::shader_stage
+
+    Status compile() override;
+
+    std::string get_warnings() const override;
+
+    // implements sun::gpu_object
+
+    void release() override;
+
+    /* not used in this context*/
+        void bind() const override {}
+
+        void unbind() const override {}
+    /* not used in this context */
+
+    uint get_internal_id() const { return id_; }
+
+private:
+
+    void compile_check_() override;
+
+    uint    id_;
+};
+
+class SUN_API Shader final : public sun::Shader
+{
+public:
+
+    Shader(ShaderStage* vertex, ShaderStage* fragment);
+
+    ~Shader();
+
+    // implements sun::shader
+
+    Status build() override;
+
+    // implements sun::gpu_object
+
+    void release() override;
+
+    void bind() const override;
+
+    void unbind() const override;
+
+    void send(const std::string& name, const Matrix4& mat4) override;
+
+    void send(const std::string& name, int v) override;
+
+    void send(const std::string& name, const Vector2<float>& vec2) override;
+
+    void send(const std::string& name, const BaseColor<float>& color) override;
+
+    void send(const std::string& name, float v) override;
+
+    std::string get_warnings() const override;
+
+private:
+
+    void linking_check_() override;
+
+    uint    id_;
+};
+
+} // opengl
+} // sun

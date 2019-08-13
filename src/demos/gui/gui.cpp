@@ -1,4 +1,6 @@
 #include <sun.hpp>
+#include <graphics.hpp>
+#include <gui.hpp>
 
 class GUI : public sun::Application
 {

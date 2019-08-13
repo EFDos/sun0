@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  joystick.hpp                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,24 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/int.hpp"
+#include <SDL2/SDL_joystick.h>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace joystick {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+    enum class Hat : uint8
+    {
+        Center      = SDL_HAT_CENTERED,
+        Up          = SDL_HAT_UP,
+        Right       = SDL_HAT_RIGHT,
+        Left        = SDL_HAT_LEFT,
+        Down        = SDL_HAT_DOWN,
+        RightUp    = SDL_HAT_RIGHTUP,
+        RightDown  = SDL_HAT_RIGHTDOWN,
+        LeftUp     = SDL_HAT_LEFTUP,
+        LeftDown   = SDL_HAT_LEFTDOWN
+    };
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+} // joystick
+} // sun

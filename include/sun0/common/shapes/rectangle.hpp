@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  rectangle.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,96 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "shape.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace shapes {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API Rectangle : public Shape
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Rectangle() : Shape()
+    {
+        type_ = ShapeType::Rectangle;
+    }
+
+    Rectangle(float x, float y) : Shape(), size_(x, y)
+    {
+        type_ = ShapeType::Rectangle;
+    }
+
+    Rectangle(const Vector2f& size) : Shape(), size_(size)
+    {
+        type_ = ShapeType::Rectangle;
+    }
+
+    Rectangle(const Rectangle&) = default;
+
+    Rectangle(Rectangle&&) = default;
+
+    Rectangle& operator =(const Rectangle& other)
+    {
+        size_ = other.size_;
+
+        return *this;
+    }
+
+    Rectangle& operator =(Rectangle&& other)
+    {
+        size_ = other.size_;
+
+        return *this;
+    }
+
+    ~Rectangle() {}
+
+    inline void set_size(const Vector2f& size)
+    {
+        size_ = size;
+    }
+
+    inline void set_size(float x, float y)
+    {
+        size_.x = x;
+        size_.y = y;
+    }
+
+    inline Vector2f get_point(size_t i) const override
+    {
+        switch(i)
+        {
+            case 0:
+                return {0, 0};
+                break;
+            case 1:
+                return {0, size_.y};
+                break;
+            case 2:
+                return {size_.x, size_.y};
+                break;
+            case 3:
+                return {size_.x, 0};
+                break;
+            default:
+                return {0, 0};
+        }
+    }
+
+    inline size_t get_point_count() const override
+    {
+        return 4;
+    }
+
+    inline const Vector2f& get_size() const
+    {
+        return size_;
+    }
+
+private:
+
+    Vector2f    size_;
+};
+
+}
+}

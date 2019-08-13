@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,55 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "config.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#if defined(SUN_PLATFORM_WINDOWS)
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+    #define API_OPENGL_3
+    #include <GL/glew.h>
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+#elif defined(SUN_PLATFORM_OSX)
+
+    #define API_OPENGL_3
+    #include <OpenGL/glew.h>
+
+#elif defined(SUN_PLATFORM_LINUX) || defined(SUN_PLATFORM_BSD) || \
+        defined(SUN_PLATFORM_HAIKU)
+
+    #if defined(API_OPENGL_ES3)
+
+        #define API_OPENGL_ES
+
+        #pragma message("Building GLES3 Renderer")
+        #include <GLES3/gl3.h>
+        #include <GLES3/gl3ext.h>
+
+    #elif defined(API_OPENGL_ES2)
+
+        #define API_OPENGL_ES
+
+        #define API_OPENGL_ES2
+        #include <GLES2/gl2.h>
+        #include <GLES2/gl2ext.h>
+
+    #else
+
+        #define API_OPENGL_3
+        #include <GL/glew.h>
+
+    #endif
+
+#elif defined(SYS_ANDROID)
+
+    #define API_OPENGL_ES3
+    #include <GLES/gl.h>
+    #include <GLES/glext.h>
+
+#elif defined(SYS_IOS)
+
+    #define API_OPENGL_ES3
+    #include <OpenGLES/ES1/gl.h>
+    #include <OpenGLES/ES1/glext.h>
+
+#endif
+

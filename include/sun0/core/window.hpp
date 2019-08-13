@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  window.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,49 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/config.hpp"
+#include "math/vector2.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <string>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Event;
+
+class SUN_API Window
+{
+public:
+
+	Window();
+
+    Window(const std::string& name,
+       	   const Vector2u& size,
+    	   bool fullscreen = false);
+
+	Window(const Window&) = delete;
+
+	Window& operator=(const Window&) = delete;
+
+    ~Window();
+
+	void update();
+
+    bool poll_event(Event& e);
+
+    void create(const std::string& name,
+    		    const Vector2u& size,
+    		    bool fullscreen = false);
+
+    void close();
+
+	inline bool is_open() const { return window_hndl_ != nullptr; }
+
+    void set_title(const std::string& title);
+
+private:
+
+    void*   window_hndl_;
+    void*   gl_context_;
+};
+
+}

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl/index_buffer.hpp                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,40 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "graphics/index_buffer.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace opengl {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API IndexBuffer final : public sun::IndexBuffer
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    IndexBuffer(size_t capacity);
+
+    ~IndexBuffer();
+
+    // implements gpu_object
+
+    void release() override;
+
+    void bind() const override;
+
+    void unbind() const override;
+
+    // implements sun::index_buffer
+
+    void fill_data(size_t offset, size_t count, const uint* data) override;
+
+    void resize(size_t capacity) override;
+
+    void clear() override;
+
+private:
+
+    uint    ibo_;
+
+};
+
+} // opengl
+} // sun

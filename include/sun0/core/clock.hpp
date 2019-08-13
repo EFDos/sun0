@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  clock.hpp                                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,33 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/time.hpp"
+#include <chrono>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun
+{
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Clock
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Clock();
+
+    Clock(const Clock&) = delete;
+    Clock(const Clock&&) = delete;
+    Clock& operator=(const Clock&) = delete;
+    Clock& operator=(Clock&&) = delete;
+
+    void reset();
+
+    Time elapsed();
+
+private:
+
+    typedef std::chrono::high_resolution_clock high_res_clock;
+    typedef std::chrono::duration<uint32, std::micro> microseconds;
+
+    std::chrono::time_point<high_res_clock> start_;
+};
+
+} // sun

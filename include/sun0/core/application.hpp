@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  application.hpp                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -22,26 +22,67 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
+#include "core.hpp"
+#include "context.hpp"
+#include "main.hpp"
+#include "window.hpp"
+#include "common/time.hpp"
 
-// VERSION
-#include "version.hpp"
+#include <string>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Event;
+class SceneManager;
+class GUISystem;
+class Renderer;
+class PhysicsServer;
+class ScriptContext;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API Application
+{
+public:
+
+    explicit Application(Context&);
+
+    virtual ~Application();
+
+    virtual void on_update(float delta) = 0;
+
+    virtual void on_event(Event& e);
+
+    int run();
+
+    inline void set_framerate(float framerate) {
+        timestep_ = 1 / framerate;
+    }
+
+protected:
+
+    Context&        context_;
+	Window          window_;
+	Renderer*       renderer_;
+	SceneManager*   scene_manager_;
+	GUISystem*      gui_;
+	PhysicsServer*  physics_;
+	ScriptContext*  script_context_;
+
+private:
+
+    bool    running_;
+    float   timestep_;
+};
+
+}
+
+
+
+#define SUN_DEFINE_MAIN_APP(classname) \
+int run_application() \
+{ \
+    sun::Context runtime_context; \
+    classname app(runtime_context); \
+    sun_print("Running application " #classname ":\n"); \
+    return app.run(); \
+} \
+SUN_DEFINE_MAIN(run_application());

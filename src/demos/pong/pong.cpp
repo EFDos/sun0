@@ -1,4 +1,7 @@
 #include <sun.hpp>
+#include <graphics.hpp>
+#include <resources.hpp>
+#include <scene.hpp>
 
 class Pong : public sun::Application
 {

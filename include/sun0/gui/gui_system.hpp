@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  gui_system.hpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,59 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "system/system.hpp"
+#include "common/color.hpp"
+#include "graphics/font.hpp"
+#include "frame.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <memory>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Renderer;
+class Event;
+
+class SUN_API GUISystem : public System
+{
+public:
+
+    struct Theme {
+        Color  main_color;
+        Color  accent_color;
+        std::shared_ptr<Font>   font;
+
+        Theme(const Color& p_main, const Color& p_accent)
+        :   main_color(p_main), accent_color(p_accent), font(nullptr) {}
+    };
+
+    SUN_SYSTEM_TYPE(GUISystem)
+
+    GUISystem(Context&);
+
+    bool init() override;
+
+    void shutdown() override;
+
+    void render(Renderer*);
+
+    void handle_events(const Event& e);
+
+    void add_widget(Widget*);
+
+    inline const Theme& get_default_theme() const {
+        return default_theme_;
+    }
+
+private:
+
+    virtual Component* create_component_(uint type_hash, uint id) override;
+
+    virtual bool handles_component_(uint type_hash) override;
+
+    Theme default_theme_;
+
+    // Root widget is this frame
+    Frame   frame_;
+};
+
+}

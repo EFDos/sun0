@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  config.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,61 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#if defined(_WIN32)
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+    #define SUN_PLATFORM_WINDOWS
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+#elif defined(__APPLE__) && defined(__MACH__)
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    //TODO: test target as Mac or iOS
+    #error Apple operating systems are not yet supported.
+
+#elif defined(__unix__)
+
+    #if defined(__ANDROID__)
+
+        #define SUN_PLATFORM_ANDROID
+
+    #elif defined(__linux__)
+
+        #define SUN_PLATFORM_LINUX
+
+    #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+
+        #define SUN_PLATFORM_BSD
+
+    #else
+
+        #error This Unix OS is not supported.
+        #error You may contact developers and ask for it \
+         or clone the project and DIY.
+
+    #endif
+
+#elif defined(__HAIKU__)
+
+	#define SUN_PLATFORM_HAIKU
+
+#else
+
+    #error This operating system is not supported.
+    #error You may contact developers and ask for it \
+     or clone the project and DIY.
+
+#endif
+
+#if !defined(NDEBUG)
+
+    #define SUN_OUT_DEBUG
+
+#endif
+
+#ifdef SUN_PLATFORM_WINDOWS
+    #ifdef SUN_BUILD_SHARED
+        #define SUN_API __declspec(dllexport)
+    #else
+        #define SUN_API __declspec(dllimport)
+    #endif
+#else
+    #define SUN_API
+#endif

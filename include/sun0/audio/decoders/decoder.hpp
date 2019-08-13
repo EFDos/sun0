@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  decoder.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,66 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/config.hpp"
+#include "common/time.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace filesys {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class InputStream;
+
+}
+
+class SUN_API Decoder
+{
+public:
+
+    struct Info
+    {
+        uint64  sample_count;
+        uint    channel_count;
+        uint    sample_rate;
+    };
+
+    Decoder() : sample_offset_(0) {}
+
+    virtual ~Decoder() {}
+
+    virtual bool open(filesys::InputStream& stream) = 0;
+
+    virtual void seek(uint64 sample_offset) = 0;
+
+    virtual uint64 read(int16* samples, uint64 max) = 0;
+
+    inline Time get_duration() const
+    {
+        if (info_.channel_count == 0 || info_.sample_rate == 0) {
+            return Time::ZERO;
+        }
+
+        return Time::seconds(static_cast<float>(info_.sample_count) /
+            info_.channel_count / info_.sample_rate);
+    }
+
+    inline Time get_Time_offset() const
+    {
+        if (info_.channel_count == 0 || info_.sample_rate == 0) {
+            return Time::ZERO;
+        }
+
+        return Time::seconds(static_cast<float>(sample_offset_) /
+            info_.channel_count / info_.sample_rate);
+    }
+
+    inline uint64 get_sample_offset() const { return sample_offset_; }
+
+    inline const Info& get_info() const { return info_; }
+
+protected:
+
+    Info    info_;
+    uint64  sample_offset_;
+};
+
+} // sun

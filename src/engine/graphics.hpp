@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  include/graphics.hpp                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,16 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
-
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
-
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+#include "graphics/image.hpp"
+#include "graphics/font.hpp"
+#include "graphics/camera.hpp"
+#include "graphics/sprite.hpp"
+#include "graphics/sprite_batch.hpp"
+#include "graphics/text.hpp"
+#include "graphics/shape2D.hpp"
+#include "graphics/light2D.hpp"
+#include "graphics/renderer.hpp"
+#include "graphics/vertex_buffer.hpp"
+#include "graphics/index_buffer.hpp"
+#include "graphics/shader.hpp"
+#include "graphics/texture.hpp"

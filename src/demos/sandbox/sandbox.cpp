@@ -1,4 +1,9 @@
 #include <sun.hpp>
+#include <resources.hpp>
+#include <scene.hpp>
+#include <graphics.hpp>
+#include <physics.hpp>
+#include <script.hpp>
 
 class Sandbox : public sun::Application
 {

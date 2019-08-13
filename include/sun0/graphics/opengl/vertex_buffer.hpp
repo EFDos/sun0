@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  opengl/vertex_buffer.hpp                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,42 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "graphics/vertex_buffer.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace opengl {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API VertexBuffer final : public sun::VertexBuffer
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    VertexBuffer(uint8 vertex_size, size_t capacity);
+
+    ~VertexBuffer();
+
+    // implements GPUOBject
+
+    void release() override;
+
+    void bind() const override;
+
+    void unbind() const override;
+
+    // implements sun::VertexBuffer
+
+    void fill_data(size_t offset, size_t count, const void* data) override;
+
+    void resize(size_t capacity) override;
+
+    void clear() override;
+
+    void set_dynamic(bool) override;
+
+private:
+
+    uint    vbo_;
+
+};
+
+} // opengl
+} // sun

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  context.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,79 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/config.hpp"
+#include "system/system.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <string>
+#include <unordered_map>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Component;
+
+class SUN_API Context
+{
+public:
+
+    Context();
+
+    Context(const Context&) = delete;
+
+    Context(Context&&) = delete;
+
+    ~Context();
+
+    void init_systems();
+
+    void shutdown_systems();
+
+    template<typename T>
+    T* register_system()
+    {
+        System* sys = register_system_(T::get_static_type_name());
+        return static_cast<T*>(sys);
+    }
+
+    template<typename T>
+    T* get_system()
+    {
+        auto* sys = get_system_(T::get_static_type_hash());
+        return static_cast<T*>(sys);
+    }
+
+    template<typename T>
+    T* create_component(uint id = 0)
+    {
+        for (auto sys : systems_) {
+            if (sys.second->handles_component<T>()) {
+                return sys.second->create_component<T>(id);
+            }
+        }
+        return nullptr;
+    }
+
+    template<typename T>
+    T* create_resource()
+    {
+        for (auto sys : systems_) {
+            if (sys.second->handles_resource<T>()) {
+                return sys.second->create_resource<T>();
+            }
+        }
+        return nullptr;
+    }
+
+    Context& operator=(const Context&) = delete;
+
+    Context& operator=(Context&&) = delete;
+
+private:
+
+    System* register_system_(const std::string& type);
+
+    System* get_system_(size_t);
+
+    std::unordered_map<size_t, System*> systems_;
+};
+
+}

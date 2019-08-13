@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  script_context.hpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,58 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "system/system.hpp"
+#include "common/int.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <sol.hpp>
+#include <string>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Entity;
+class Script;
+
+class SUN_API ScriptContext final : public System
+{
+public:
+
+    SUN_SYSTEM_TYPE(ScriptContext)
+
+    ScriptContext(Context&);
+
+    bool init() override;
+
+    void shutdown() override;
+
+    void update(float delta) override;
+
+    void register_script(Script* script, const std::string& filename);
+
+    static void register_api(sol::state& state);
+
+private:
+
+    struct ScriptRegister
+    {
+        //std::string file;
+
+        //std::function<void (sol::table&)>          init_callback;
+        //std::function<void (sol::table&, event&)>  input_callback;
+        std::function<void (Entity*, double)>    update_callback;
+        //std::function<void (sol::table&,
+        //                    std::string&&,
+        //                    entity&,
+        //                    sol::table&&)>     message_callback;
+    };
+
+    Component* create_component_(uint type_hash, uint id) override;
+
+    bool handles_component_(uint type_hash) override;
+
+    sol::state  lua_state_;
+
+    std::vector<Script*>                            scripts_;
+    std::unordered_map<std::string, ScriptRegister> script_registry_;
+};
+
+}

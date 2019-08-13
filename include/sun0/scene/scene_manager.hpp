@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  scene_manager.hpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,35 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "system/system.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <vector>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class Animation;
+
+class SUN_API SceneManager : public System
+{
+public:
+
+    SUN_SYSTEM_TYPE(SceneManager)
+
+    SceneManager(Context&);
+
+    bool init() override;
+
+    void shutdown() override;
+
+    void update(float delta) override;
+
+private:
+
+    Component* create_component_(uint type_hash, uint id) override;
+
+    bool handles_component_(uint type_hash) override;
+
+    std::vector<Animation*> animations_;
+};
+
+}

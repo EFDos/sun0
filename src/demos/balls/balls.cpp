@@ -1,4 +1,7 @@
 #include <sun.hpp>
+#include <scene.hpp>
+#include <physics.hpp>
+#include <graphics.hpp>
 
 class Balls : public sun::Application
 {

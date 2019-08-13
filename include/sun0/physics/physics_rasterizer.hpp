@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  physics_rasterizer.hpp                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,57 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "common/int.hpp"
+#include "common/config.hpp"
+#include <Box2D/Common/b2Draw.h>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Renderer;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API PhysicsRasterizer : public b2Draw
+{
+public:
+
+    PhysicsRasterizer(uint scale);
+
+    void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
+        override;
+
+    void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
+        override;
+
+    void DrawPolygon(const b2Vec2* vertices, int32 count, const b2Color& color)
+        override;
+
+    void DrawSolidCircle(const b2Vec2& center, float32 radius,
+        const b2Vec2& axis, const b2Color& color) override;
+
+    void DrawSolidPolygon(const b2Vec2* vertices, int32 count,
+        const b2Color& color) override;
+
+    void DrawTransform(const b2Transform& transform) override;
+
+    inline void set_renderer(Renderer* rend) {
+        renderer_ = rend;
+    }
+
+    inline const Renderer* get_renderer() const {
+        return renderer_;
+    }
+
+    inline void set_scale(uint scale) {
+        scale_ = scale;
+    }
+
+    inline uint get_scale() const {
+        return scale_;
+    }
+
+private:
+
+    Renderer*   renderer_;
+    uint        scale_;
+};
+
+}

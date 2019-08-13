@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  core.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -22,26 +22,14 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
+#include "common/config.hpp"
 
-// VERSION
-#include "version.hpp"
+namespace sun {
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+class SUN_API Core {
+public:
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+    Core() {}
+};
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+}

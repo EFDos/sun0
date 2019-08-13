@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  circle.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,85 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "shape.hpp"
+#include "math/math.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
+namespace shapes {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API Circle : public Shape
+{
+public:
+
+    Circle() : Shape(), radius_(1.f), points_(360)
+    {
+        type_ = ShapeType::Circle;
+    }
+
+    Circle(float radius, size_t points) : Shape(), radius_(radius),
+        points_(points)
+    {
+        type_ = ShapeType::Circle;
+    }
+
+    Circle(const Circle& circle) = default;
+
+    Circle(Circle&& circle) = default;
+
+    Circle& operator =(const Circle& circle)
+    {
+        radius_ = circle.radius_;
+        points_ = circle.points_;
+
+        return *this;
+    }
+
+    Circle& operator =(Circle&& circle)
+    {
+        radius_ = circle.radius_;
+        points_ = circle.points_;
+
+        return *this;
+    }
+
+    ~Circle() {}
+
+    inline void set_point_count(size_t points)
+    {
+        points_ = points;
+    }
+
+    inline void set_radius(float radius)
+    {
+        radius_ = radius;
+    }
+
+    inline Vector2f get_point(size_t i) const override
+    {
+        float angle = i * 2 * math::PI / points_ - math::PI / 2;
+        float x = std::cos(angle) * radius_;
+        float y = std::sin(angle) * radius_;
+
+        return {radius_ + x, radius_ + y};
+    }
+
+    inline size_t get_point_count() const override
+    {
+        return points_;
+    }
+
+    inline float get_radius() const
+    {
+        return radius_;
+    }
+
+private:
+
+    float   radius_;
+    size_t  points_;
+
+};
+
+}
+}

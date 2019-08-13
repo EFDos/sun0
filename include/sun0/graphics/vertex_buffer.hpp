@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  vertex_buffer.hpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,54 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "vertex_layout.hpp"
+#include "gpu_object.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class VertexBuffer : public GPUObject
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    virtual ~VertexBuffer() = default;
+
+    virtual void fill_data(size_t offset, size_t count, const void* data) = 0;
+
+    virtual void resize(size_t capacity) = 0;
+
+    virtual void clear() = 0;
+
+    virtual void bind() const = 0;
+
+    virtual void unbind() const = 0;
+
+    void set_layout(const VertexLayout& layout) {
+        layout_ = layout;
+    }
+
+    virtual void set_dynamic(bool dynamic) { dynamic_ = dynamic; }
+
+    bool is_dynamic() const { return dynamic_; }
+
+    const VertexLayout& get_layout() const {
+        return layout_;
+    }
+
+    uint8 get_vertex_size() const { return vertex_size_; }
+
+    size_t get_vertex_count() const { return vertex_count_; }
+
+    size_t get_capacity() const { return capacity_; }
+
+protected:
+
+    VertexBuffer(uint8 vertex_size, size_t capacity, bool dynamic = false);
+
+    VertexLayout   layout_;
+    uint8           vertex_size_;
+    size_t          vertex_count_;
+    size_t          capacity_;
+    bool            dynamic_;
+};
+
+}

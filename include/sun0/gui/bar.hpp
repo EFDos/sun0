@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  bar.hpp                                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,36 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "container.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API Bar : public Container
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    enum class Orientation
+    {
+        Top,
+        Left,
+        Right,
+        Bottom
+    };
+
+    Bar(Context& context, Orientation orientation);
+
+    void draw(Renderer*) const override;
+
+    void handle_events(const Event&) override;
+
+private:
+
+    void on_parent_set_() override;
+
+    Recti request_bounds(Recti&& bounds) override;
+
+    Orientation orientation_;
+
+};
+
+}

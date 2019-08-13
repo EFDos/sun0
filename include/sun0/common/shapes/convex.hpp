@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  convex.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,79 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "shape.hpp"
+#include <vector>
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
+namespace shapes {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class SUN_API Convex : public Shape
+{
+public:
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    Convex() : Shape()
+    {
+        type_ = ShapeType::Convex;
+    }
+
+    Convex(size_t size) : Shape(), vertices_(size)
+    {
+        type_ = ShapeType::Convex;
+    }
+
+    Convex(const std::initializer_list<Vector2f>& vertices)
+    : Shape(), vertices_(vertices)
+    {
+        type_ = ShapeType::Convex;
+    }
+
+    Convex(const Convex& convex) = default;
+
+    Convex(Convex&& convex) = default;
+
+    Convex& operator =(const Convex& other)
+    {
+        vertices_ = other.vertices_;
+
+        return *this;
+    }
+
+    Convex& operator =(Convex&& other)
+    {
+        vertices_ = std::move(other.vertices_);
+
+        return *this;
+    }
+
+    ~Convex() {}
+
+    inline void set_point(size_t i, const Vector2f& point)
+    {
+        if (i > vertices_.size())
+            return;
+
+        vertices_[i] = point;
+    }
+
+    inline void set_point_count(size_t points)
+    {
+        vertices_.resize(points);
+    }
+
+    inline Vector2f get_point(size_t i) const override
+    {
+        return vertices_[i];
+    }
+
+    inline size_t get_point_count() const override
+    {
+        return vertices_.size();
+    }
+
+private:
+
+    std::vector<Vector2f>   vertices_;
+};
+
+}
+}

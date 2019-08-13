@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  math.hpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,31 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+namespace sun {
+namespace math {
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+constexpr float PI = 3.14159265358979323846f;
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+template<class T>
+constexpr inline T& crop(T& val, T crop_up, T crop_down)
+{
+    if(val > crop_up)
+        val = crop_up;
+    else if(val < crop_down)
+        val = crop_down;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+    return val;
+}
+
+constexpr inline float rad_to_deg(float angle)
+{
+    return (angle * 180) / PI;
+}
+
+constexpr inline float deg_to_rad(float angle)
+{
+    return PI * (180 / angle);
+}
+
+}
+}

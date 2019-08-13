@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  container.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,47 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "widget.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+#include <vector>
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+namespace sun {
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API Container : public Widget
+{
+public:
+
+    Container(Context& context) : Widget(context) {}
+
+    virtual ~Container() {
+        for (auto child : children_) {
+            delete child;
+        }
+    }
+
+    inline virtual void draw(Renderer* renderer) const override {
+        for (auto child : children_) {
+            child->draw(renderer);
+        }
+    }
+
+    inline virtual void handle_events(const Event& event) override {
+        for (auto child : children_) {
+            child->handle_events(event);
+        }
+    }
+
+    inline virtual void add_child(Widget* child) {
+        children_.push_back(child);
+        child->set_parent(this);
+        child->set_gui_system(gui_);
+    }
+
+    virtual Recti request_bounds(Recti&& bounds) = 0;
+
+protected:
+
+    std::vector<Widget*>    children_;
+};
+
+}

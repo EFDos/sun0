@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  light2D.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,52 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
 #include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+#include "system/component.hpp"
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+
+class SUN_API Light2D final : public Component
+{
+public:
+
+    SUN_COMPONENT_TYPE(Light2D)
+
+    Light2D(Context&);
+
+    void update(float delta) override;
+
+    inline void set_intensity(float intensity) {
+        intensity_ = intensity;
+        update_intensity_();
+    }
+
+    inline void set_color(const Color& color) {
+        color_ = color;
+        update_color_();
+    }
+
+    inline float get_intensity() const {
+        return intensity_;
+    }
+
+    inline const Color& get_color() const {
+        return color_;
+    }
+
+private:
+
+    void update_color_();
+
+    void update_intensity_();
+
+    void update_position_();
+
+    Vector2f    pos_;
+    int         rend_color_id_;
+    float       intensity_;
+    Color       color_;
+};
+
+}

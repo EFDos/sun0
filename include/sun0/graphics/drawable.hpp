@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  drawable.hpp                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,25 +23,53 @@
 /*************************************************************************/
 #pragma once
 
-// VERSION
-#include "version.hpp"
+#include "system/component.hpp"
 
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
+namespace sun {
 
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
+class Renderer;
+class Matrix4;
+class Shader;
 
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+class SUN_API Drawable : public Component
+{
+public:
+
+    Drawable(Context& context)
+    :   Component(context), transform_(nullptr), shader_(nullptr) {}
+
+    virtual ~Drawable() {}
+
+    virtual void draw(Renderer*) const = 0;
+
+    /*recti get_global_bounding_rect() const {
+        recti rect(bounding_rect_);
+        if (owning_entity_ != nullptr) {
+            rect.set_point((int)owning_entity_->get_position().x, (int)owning_entity_->get_position().y);
+        }
+        return rect;
+    }*/
+
+    inline void set_transform(const Matrix4* transform) {
+        transform_ = transform;
+    }
+
+    inline void set_shader(const Shader* shader) {
+        shader_ = shader;
+    }
+
+    const Recti& get_bounding_rect() const {
+        return bounding_rect_;
+    }
+
+protected:
+
+    virtual void update_geometry_() = 0;
+
+    Recti   bounding_rect_;
+
+    const Matrix4*    transform_;
+    const Shader*     shader_;
+};
+
+}

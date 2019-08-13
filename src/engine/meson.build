@@ -81,3 +81,5 @@ else
     include_directories: sun_includes
   )
 endif
+
+run_command('./gen_headers.sh')

@@ -1,4 +1,6 @@
 #include <sun.hpp>
+#include <graphics.hpp>
+#include <resources.hpp>
 
 class Hello : public sun::Application
 {

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sun.hpp                                                              */
+/*  int.hpp                                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -22,26 +22,19 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
+#include <cstdint>
 
-// VERSION
-#include "version.hpp"
-
-// CORE & CONFIG
-#include "common/types.hpp"
-#include "common/opengl.hpp"
-#include "core/filesys/filesys.hpp"
-#include "core/logger.hpp"
-#include "core/application.hpp"
-#include "core/event.hpp"
-#include "core/context.hpp"
-#include "core/clock.hpp"
-
-// TYPES
-#include "common/types.hpp"
-#include "common/shapes/rectangle.hpp"
-#include "common/shapes/circle.hpp"
-#include "common/shapes/convex.hpp"
-
-/*********** ENTRY POINT ***********/
-#include "core/main.hpp"
-/***********************************/
+namespace sun {
+    using uint      = unsigned int;
+    using byte      = int8_t;
+    using ubyte     = uint8_t;
+    using int8      = int8_t;
+    using uint8     = uint8_t;
+    using int16     = int16_t;
+    using uint16    = uint16_t;
+    using int32     = int32_t;
+    using uint32    = uint32_t;
+    using int64     = int64_t;
+    using uint64    = uint64_t;
+    using size_t    = std::size_t;
+}

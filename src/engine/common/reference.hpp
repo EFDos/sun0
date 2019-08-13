@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  application.hpp                                                      */
+/*  reference.hpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -22,67 +22,15 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
-#include "core.hpp"
-#include "context.hpp"
-#include "main.hpp"
-#include "window.hpp"
-#include "common/time.hpp"
 
-#include <string>
+#include <memory>
 
 namespace sun {
 
-class Event;
-class SceneManager;
-class GUISystem;
-class Renderer;
-class PhysicsServer;
-class ScriptContext;
+template<typename T>
+using Ref = std::shared_ptr<T>;
 
-class SUN_API Application
-{
-public:
-
-    explicit Application(Context&);
-
-    virtual ~Application();
-
-    virtual void on_update(float delta) = 0;
-
-    virtual void on_event(Event& e);
-
-    int run();
-
-    inline void set_framerate(float framerate) {
-        timestep_ = 1 / framerate;
-    }
-
-protected:
-
-    Context&        context_;
-	Window          window_;
-	Renderer*       renderer_;
-	SceneManager*   scene_manager_;
-	GUISystem*      gui_;
-	PhysicsServer*  physics_;
-	ScriptContext*  script_context_;
-
-private:
-
-    bool    running_;
-    float   timestep_;
-};
+template<typename T>
+using Scope = std::unique_ptr<T>;
 
 }
-
-
-
-#define SUN_DEFINE_MAIN_APP(classname) \
-int run_application() \
-{ \
-    sun::Context runtime_context; \
-    classname app(runtime_context); \
-    sun_print("Running application " #classname ":\n"); \
-    return app.run(); \
-} \
-SUN_DEFINE_MAIN(run_application());

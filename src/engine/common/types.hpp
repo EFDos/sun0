@@ -25,6 +25,7 @@
 #include "int.hpp"
 #include "color.hpp"
 #include "time.hpp"
+#include "reference.hpp"
 #include "math/vector2.hpp"
 #include "math/matrix4.hpp"
 #include "math/rect.hpp"

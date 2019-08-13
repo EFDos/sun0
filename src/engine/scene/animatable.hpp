@@ -38,7 +38,7 @@ public:
 
     virtual void build_properties() {};
 
-    inline void set_property(uint property_hash, Variant var)
+    inline void set_property(uint64 property_hash, Variant var)
     {
         for (size_t i = 0 ; i < properties_.size() ; ++i)
         {
@@ -53,7 +53,7 @@ protected:
 
     virtual void set_property_(size_t property_idx, Variant var) {};
 
-    std::vector<uint>   properties_;
+    std::vector<uint64>   properties_;
 };
 
 }

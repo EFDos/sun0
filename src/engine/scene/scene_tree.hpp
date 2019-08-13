@@ -34,6 +34,8 @@ public:
 
     Entity* create_entity();
 
+    void clear();
+
     Entity& get_root() {
         return root_;
     }

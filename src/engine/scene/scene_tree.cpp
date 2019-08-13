@@ -36,4 +36,9 @@ Entity* SceneTree::create_entity()
     return root_.create_child();
 }
 
+void SceneTree::clear()
+{
+    root_.clear_children();
+}
+
 }

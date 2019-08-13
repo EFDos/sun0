@@ -66,6 +66,8 @@ public:
 
     Entity* create_child();
 
+    void clear_children();
+
     void move(float x, float y);
 
     void move(const Vector2f& pos);

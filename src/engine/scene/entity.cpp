@@ -50,8 +50,22 @@ Entity* Entity::create_child()
     return child;
 }
 
+void Entity::clear_children()
+{
+    for (auto child : children_) {
+        child->clear_children();
+        delete child;
+    }
+
+    children_.clear();
+}
+
 Entity::~Entity()
 {
+    for (auto component : components_) {
+        component->queue_delete();
+    }
+
     for (auto child : children_) {
         delete child;
     }

@@ -94,22 +94,22 @@ void SpriteBatch::add_sprite_rect(const Vector2f& pos,
         {
             pos.x + (float)p_rect.w,
             pos.y,
-            (float)p_rect.w / (float)texture_->get_size().w,
+            ((float)p_rect.x + (float)p_rect.w) / (float)texture_->get_size().w,
             (float)p_rect.y / (float)texture_->get_size().h,
             1.f, 1.f, 1.f, 1.f
         },
         {
             pos.x + (float)p_rect.w,
             pos.y +(float)p_rect.h,
-            (float)p_rect.w / (float)texture_->get_size().w,
-            (float)p_rect.h / (float)texture_->get_size().h,
+            ((float)p_rect.x + (float)p_rect.w) / (float)texture_->get_size().w,
+            ((float)p_rect.y + (float)p_rect.h) / (float)texture_->get_size().h,
             1.f, 1.f, 1.f, 1.f
         },
         {
             pos.x,
             pos.y + (float)p_rect.h,
             (float)p_rect.x / (float)texture_->get_size().w,
-            (float)p_rect.h / (float)texture_->get_size().h,
+            ((float)p_rect.y + (float)p_rect.h) / (float)texture_->get_size().h,
             1.f, 1.f, 1.f, 1.f
         },
     };

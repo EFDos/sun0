@@ -22,9 +22,13 @@
 /*                                                                       */
 /*************************************************************************/
 #include "physics_server.hpp"
+#include "physics_rasterizer.hpp"
+#include "contact_listener.hpp"
 #include "rigid_body.hpp"
 
 #include "core/logger.hpp"
+
+#include <Box2D/Box2D.h>
 
 namespace sun {
 

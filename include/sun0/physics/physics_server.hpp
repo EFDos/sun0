@@ -23,10 +23,10 @@
 /*************************************************************************/
 #pragma once
 
-#include "physics_rasterizer.hpp"
-#include "contact_listener.hpp"
 #include "common/types.hpp"
 #include "system/system.hpp"
+#include "physics_rasterizer.hpp"
+#include "contact_listener.hpp"
 
 #include <Box2D/Box2D.h>
 #include <vector>
@@ -152,6 +152,7 @@ private:
     b2World             world_;
     PhysicsRasterizer   debug_rasterizer_;
     ContactListener     contact_listener_;
+
     float   timestep_;
     int     vel_iterations_;
     int     pos_iterations_;

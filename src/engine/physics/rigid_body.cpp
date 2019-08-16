@@ -118,11 +118,14 @@ void RigidBody::create(const shapes::Shape& shape, Type t)
             }
             break;
     }
+    if (type_ == Type::Sensor) {
+        body_->GetFixtureList()->SetSensor(true);
+    }
 }
 
 void RigidBody::update(float delta)
 {
-    if (owning_entity_ == nullptr || body_ == nullptr) {
+    if (owning_entity_ == nullptr || body_ == nullptr || type_ == Type::Static) {
         return;
     }
 

@@ -4,4 +4,4 @@ configure_file(
   configuration: config_data
 )
 
-sun_extern_includes = include_directories('.')
+#sun_extern_includes = include_directories('.', '../../src/thirdparty/'))

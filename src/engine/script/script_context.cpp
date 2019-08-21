@@ -24,6 +24,7 @@
 #include "script_context.hpp"
 #include "script.hpp"
 #include "core/logger.hpp"
+#include "core/event.hpp"
 
 #include "scene/entity.hpp"
 
@@ -61,6 +62,15 @@ void ScriptContext::update(float delta)
     }
 }
 
+void ScriptContext::handle_events(Event& event)
+{
+    for (auto s : scripts_) {
+        if (s->get_handle_event()) {
+            s->handle_events(event);
+        }
+    }
+}
+
 void ScriptContext::register_script(Script* script, const std::string& filename)
 {
     auto it = script_registry_.find(filename);
@@ -82,21 +92,29 @@ void ScriptContext::register_script(Script* script, const std::string& filename)
         auto update_callback = lua_state_[filename + "_update"] =
             lua_state_["update"];
 
+        auto event_callback = lua_state_[filename + "_handle_events"] =
+            lua_state_["handle_events"];
+
         if (update_callback != sol::nil)
         {
             script_reg.update_callback = update_callback;
             script->set_update_callback(update_callback);
-            script_registry_[filename] = script_reg;
         } else {
             sun_logf_warn("Failed to load \"update\" function from script \"%s\"",
             filename.c_str());
-            return;
         }
 
-        return;
-    }
+        if (event_callback != sol::nil)
+        {
+            script_reg.event_callback = event_callback;
+            script->set_event_callback(event_callback);
+        }
 
-    script->set_update_callback(it->second.update_callback);
+        script_registry_[filename] = script_reg;
+    } else {
+        script->set_update_callback(it->second.update_callback);
+        script->set_event_callback(it->second.event_callback);
+    }
 }
 
 Component* ScriptContext::create_component_(uint type_hash, uint id)

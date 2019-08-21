@@ -86,6 +86,7 @@ int Application::run()
         	if (window_.is_open()) {
                 while (window_.poll_event(e)) {
         	        on_event(e);
+        	        script_context_->handle_events(e);
                 }
             }
             on_update(timestep);

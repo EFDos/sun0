@@ -32,6 +32,7 @@
 namespace sun {
 
 class Entity;
+class Event;
 class Script;
 
 class SUN_API ScriptContext final : public System
@@ -48,6 +49,8 @@ public:
 
     void update(float delta) override;
 
+    void handle_events(Event&) override;
+
     void register_script(Script* script, const std::string& filename);
 
     static void register_api(sol::state& state);
@@ -59,8 +62,8 @@ private:
         //std::string file;
 
         //std::function<void (sol::table&)>          init_callback;
-        //std::function<void (sol::table&, event&)>  input_callback;
-        std::function<void (Entity*, double)>    update_callback;
+        std::function<void (Entity*, Event&)>   event_callback;
+        std::function<void (Entity*, double)>   update_callback;
         //std::function<void (sol::table&,
         //                    std::string&&,
         //                    entity&,

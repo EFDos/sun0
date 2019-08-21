@@ -30,14 +30,17 @@ Script::Script(Context& context)
 :   Component(context)
 {}
 
-void Script::handle_events(Event&)
+void Script::handle_events(Event& event)
 {
+    if (hndl_ev_callback_ != nullptr) {
+        hndl_ev_callback_(owning_entity_, event);
+    }
 }
 
 void Script::update(float delta)
 {
-    if (dt_update_callback != nullptr) {
-        dt_update_callback(owning_entity_, delta);
+    if (dt_update_callback_ != nullptr) {
+        dt_update_callback_(owning_entity_, delta);
     }
 }
 

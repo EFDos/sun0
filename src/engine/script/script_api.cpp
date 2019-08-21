@@ -38,8 +38,6 @@ namespace sun {
 
 void ScriptContext::register_api(sol::state& state)
 {
-    //state.new_usertype<Event>("Event")
-
     sol::table keyboard_table = state.create_named_table("Keyboard");
 
     state.new_enum("Key",
@@ -50,6 +48,13 @@ void ScriptContext::register_api(sol::state& state)
         "Down", keyboard::Key::Down);
 
     keyboard_table.set_function("is_key_pressed", keyboard::is_key_pressed);
+
+    state.new_enum("EventType",
+        "KeyPressed", EventType::KeyPressed,
+        "KeyReleased", EventType::KeyReleased);
+
+    state.new_usertype<Event>("Event",
+        "type", &Event::type);
 
     state.new_usertype<Time>("Time",
         sol::constructors<void(int64), void(void)>(),
@@ -90,7 +95,9 @@ void ScriptContext::register_api(sol::state& state)
 
     state.new_usertype<RigidBody>("RigidBody",
         "move_to_entity", &RigidBody::move_to_entity,
-        "apply_linear_impulse", &RigidBody::apply_linear_impulse);
+        "apply_linear_impulse", &RigidBody::apply_linear_impulse,
+        "get_linear_velocity", &RigidBody::get_linear_velocity,
+        "get_angular_velocity", &RigidBody::get_angular_velocity);
 
     state.new_usertype<physics::RaycastCollision>("RaycastCollision",
         "point", &physics::RaycastCollision::point,

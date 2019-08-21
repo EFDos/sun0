@@ -67,6 +67,10 @@ public:
 
     void set_density(float density);
 
+    Vector2f get_linear_velocity() const;
+
+    float get_angular_velocity() const;
+
     inline Type get_type() const {
         return type_;
     }

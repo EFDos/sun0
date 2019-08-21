@@ -30,6 +30,7 @@
 
 namespace sun {
 
+class Event;
 class Context;
 class Component;
 class Resource;
@@ -47,6 +48,8 @@ public:
     virtual void shutdown();
 
     virtual void update(float delta);
+
+    virtual void handle_events(Event& event);
 
     template<typename T>
     T* create_component(uint id) {

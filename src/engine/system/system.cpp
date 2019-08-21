@@ -45,6 +45,9 @@ void System::shutdown()
 void System::update(float delta)
 {}
 
+void System::handle_events(Event& event)
+{}
+
 Resource* System::create_resource_(uint type_hash)
 {
     return nullptr;

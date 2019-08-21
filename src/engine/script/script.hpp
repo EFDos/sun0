@@ -53,13 +53,19 @@ private:
     friend class ScriptContext;
 
     using UpdateCallback = std::function<void (Entity*, double)>;
+    using EventCallback = std::function<void (Entity*, Event&)>;
 
     inline void set_update_callback(UpdateCallback callback) {
-        dt_update_callback = callback;
+        dt_update_callback_ = callback;
+    }
+
+    inline void set_event_callback(EventCallback callback) {
+        hndl_ev_callback_ = callback;
     }
 
     ScriptContext*  script_context_;
-    UpdateCallback  dt_update_callback;
+    UpdateCallback  dt_update_callback_;
+    EventCallback   hndl_ev_callback_;
 };
 
 }

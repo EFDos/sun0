@@ -182,4 +182,20 @@ void RigidBody::set_density(float density)
     body_->GetFixtureList()->SetDensity(density);
 }
 
+Vector2f RigidBody::get_linear_velocity() const
+{
+    if (body_ == nullptr) {
+        return {0.f, 0.f};
+    }
+    return physics::to_vec2(body_->GetLinearVelocity());
+}
+
+float RigidBody::get_angular_velocity() const
+{
+    if (body_ == nullptr) {
+        return 0.f;
+    }
+    return math::rad_to_deg(body_->GetAngularVelocity());
+}
+
 }

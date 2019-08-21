@@ -33,5 +33,3 @@ subdir('src/engine')
 if get_option('build-demos')
   subdir('src/demos')
 endif
-
-subdir('include/sun0/')

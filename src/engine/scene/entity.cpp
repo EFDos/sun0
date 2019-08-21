@@ -53,22 +53,26 @@ Entity* Entity::create_child()
 void Entity::clear_children()
 {
     for (auto child : children_) {
-        child->clear_children();
         delete child;
     }
 
     children_.clear();
 }
 
-Entity::~Entity()
+void Entity::clear_components()
 {
     for (auto component : components_) {
         component->queue_delete();
+        component->set_owning_entity(nullptr);
     }
 
-    for (auto child : children_) {
-        delete child;
-    }
+    components_.clear();
+}
+
+Entity::~Entity()
+{
+    clear_children();
+    clear_components();
 }
 
 void Entity::build_properties()
@@ -266,8 +270,21 @@ const Matrix4& Entity::get_global_transform() const
                 global_transform_ = parent_->get_global_transform() *
                 get_local_transform();
             } else {
-                // Ignore false transform bits
+                // Ignore off transform bits
+
+                // To check if parent's origin is not 0, 0
+                const Vector2f parent_origin = parent_->get_origin();
+                bool recover_origin = false;
+
+                if (parent_origin != 0) {
+                    // We'll temporarily set it to 0, 0 to calculate our
+                    // transformation
+                    parent_->set_origin(0.f, 0.f);
+                    recover_origin = true;
+                }
+
                 Matrix4 parent_transform = parent_->get_global_transform();
+
                 if (!(transform_mask_ & (uint8)transform_bits::translation)) {
                     parent_transform.set_translation(0.f, 0.f);
                 }
@@ -278,6 +295,11 @@ const Matrix4& Entity::get_global_transform() const
                     parent_transform.set_scale(1.f, 1.f);
                 }
                 global_transform_ = parent_transform * get_local_transform();
+
+                // If we zeroed parent's origin, set it back
+                if (recover_origin) {
+                    parent_->set_origin(parent_origin);
+                }
             }
         } else {
             global_transform_ = get_local_transform();

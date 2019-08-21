@@ -68,6 +68,8 @@ public:
 
     void clear_children();
 
+    void clear_components();
+
     void move(float x, float y);
 
     void move(const Vector2f& pos);
@@ -132,6 +134,14 @@ public:
 
     inline const std::string& get_name() const {
         return name_;
+    }
+
+    inline size_t get_children_count() const {
+        return children_.size();
+    }
+
+    inline size_t get_component_count() const {
+        return components_.size();
     }
 
 private:

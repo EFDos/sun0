@@ -25,8 +25,6 @@
 
 #include "system/system.hpp"
 
-#include <vector>
-
 namespace sun {
 
 class Animation;

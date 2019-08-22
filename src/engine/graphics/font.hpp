@@ -27,9 +27,6 @@
 #include "resources/resource.hpp"
 #include "texture.hpp"
 
-#include <unordered_map>
-#include <vector>
-
 namespace sun
 {
 

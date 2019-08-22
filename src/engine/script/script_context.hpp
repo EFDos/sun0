@@ -27,7 +27,6 @@
 #include "common/int.hpp"
 
 #include <sol.hpp>
-#include <string>
 
 namespace sun {
 

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sound_buffer.hpp                                                     */
+/*  solpch.hpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,47 +21,9 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#ifndef SUN_SOL_PCH_H
+#define SUN_SOL_PCH_H
 
-#include "common/int.hpp"
-#include "sound_source.hpp"
+#include <sol.hpp>
 
-namespace sun {
-
-class SUN_API SoundBuffer : public SoundSource
-{
-public:
-
-    SUN_COMPONENT_TYPE(SoundBuffer);
-
-    SoundBuffer(Context&);
-
-    ~SoundBuffer();
-
-    uint get_sample_rate() const;
-
-    uint get_channel_count() const;
-
-    inline uint64 get_sample_count() const {
-        return sample_count_;
-    }
-
-    inline float get_duration() const {
-        return duration_;
-    }
-
-    inline const std::vector<int16>& get_samples() const {
-        return samples_;
-    }
-
-private:
-
-    bool update(int channels, int sample_rate);
-
-    uint                al_buffer_;
-    std::vector<int16>  samples_;
-    size_t              sample_count_;
-    float               duration_;
-};
-
-}
+#endif

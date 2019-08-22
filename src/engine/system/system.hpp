@@ -25,9 +25,6 @@
 
 #include "common/config.hpp"
 
-#include <string>
-#include <memory>
-
 namespace sun {
 
 class Event;

@@ -27,7 +27,6 @@
 #include "sound_source.hpp"
 #include "core/filesys/input_stream.hpp"
 
-#include <vector>
 #include <thread>
 #include <mutex>
 

@@ -29,7 +29,6 @@
 #include "contact_listener.hpp"
 
 #include <Box2D/Box2D.h>
-#include <vector>
 
 namespace sun {
 

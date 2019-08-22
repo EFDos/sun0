@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  sound_buffer.hpp                                                     */
+/*  version.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -22,46 +22,12 @@
 /*                                                                       */
 /*************************************************************************/
 #pragma once
-
-#include "common/int.hpp"
-#include "sound_source.hpp"
-
 namespace sun {
-
-class SUN_API SoundBuffer : public SoundSource
-{
-public:
-
-    SUN_COMPONENT_TYPE(SoundBuffer);
-
-    SoundBuffer(Context&);
-
-    ~SoundBuffer();
-
-    uint get_sample_rate() const;
-
-    uint get_channel_count() const;
-
-    inline uint64 get_sample_count() const {
-        return sample_count_;
+    namespace version {
+        constexpr const char* codename  = "Summer Beta";
+        constexpr const char* string    = "1.1.2";
+        constexpr unsigned char major   = 1;
+        constexpr unsigned char minor   = 1;
+        constexpr unsigned char rev     = 2;
     }
-
-    inline float get_duration() const {
-        return duration_;
-    }
-
-    inline const std::vector<int16>& get_samples() const {
-        return samples_;
-    }
-
-private:
-
-    bool update(int channels, int sample_rate);
-
-    uint                al_buffer_;
-    std::vector<int16>  samples_;
-    size_t              sample_count_;
-    float               duration_;
-};
-
 }

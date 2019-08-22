@@ -24,7 +24,6 @@
 #pragma once
 
 #include "common/int.hpp"
-#include <vector>
 
 namespace sun {
 

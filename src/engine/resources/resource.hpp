@@ -24,8 +24,6 @@
 #pragma once
 #include "common/object.hpp"
 
-#include <string>
-
 namespace sun {
 
 class SUN_API Resource : public Object

@@ -28,8 +28,6 @@
 
 #include "core/context.hpp"
 
-#include <vector>
-
 namespace sun {
 
 class Component;

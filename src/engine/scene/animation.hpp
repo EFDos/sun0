@@ -26,9 +26,6 @@
 #include "common/variant.hpp"
 #include "system/component.hpp"
 
-#include <vector>
-#include <string>
-
 namespace sun {
 
 class Animatable;

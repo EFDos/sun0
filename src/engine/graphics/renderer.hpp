@@ -28,8 +28,6 @@
 #include "math/rect.hpp"
 #include "framebuffer.hpp"
 
-#include <vector>
-
 namespace sun {
 
 class Context;

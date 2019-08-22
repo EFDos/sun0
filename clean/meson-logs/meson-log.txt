@@ -1,0 +1,149 @@
+Build started at 2019-08-22T14:44:44.840430
+Main binary: /usr/bin/python3
+Python system: Linux
+The Meson build system
+Version: 0.49.2
+Source dir: /home/doug/Projects/polygonauts/subprojects/sun0
+Build dir: /home/doug/Projects/polygonauts/subprojects/sun0/clean
+Build type: native build
+Project name: sun0
+Project version: 1.1.2
+Sanity testing C compiler: cc
+Is cross compiler: False.
+Sanity check compiler command line: cc /home/doug/Projects/polygonauts/subprojects/sun0/clean/meson-private/sanitycheckc.c -o /home/doug/Projects/polygonauts/subprojects/sun0/clean/meson-private/sanitycheckc.exe
+Sanity check compile stdout:
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command: /home/doug/Projects/polygonauts/subprojects/sun0/clean/meson-private/sanitycheckc.exe
+Native C compiler: cc (gcc 7.4.0 "cc (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0")
+Sanity testing C++ compiler: c++
+Is cross compiler: False.
+Sanity check compiler command line: c++ /home/doug/Projects/polygonauts/subprojects/sun0/clean/meson-private/sanitycheckcpp.cc -o /home/doug/Projects/polygonauts/subprojects/sun0/clean/meson-private/sanitycheckcpp.exe
+Sanity check compile stdout:
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command: /home/doug/Projects/polygonauts/subprojects/sun0/clean/meson-private/sanitycheckcpp.exe
+Native C++ compiler: c++ (gcc 7.4.0 "c++ (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0")
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Message: source root is: /home/doug/Projects/polygonauts/subprojects/sun0
+Found pkg-config: /usr/bin/pkg-config (0.29.1)
+Determining dependency 'sdl2' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion sdl2` -> 0
+2.0.8
+Called `/usr/bin/pkg-config --cflags sdl2` -> 0
+-D_REENTRANT -I/usr/include/SDL2
+Called `/usr/bin/pkg-config sdl2 --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lSDL2
+Called `/usr/bin/pkg-config sdl2 --libs` -> 0
+-lSDL2
+Running compile:
+Working directory:  /tmp/tmpfqdre7az
+Command line:  c++ /tmp/tmpfqdre7az/testfile.cpp -pipe -D_FILE_OFFSET_BITS=64 -o /tmp/tmpfqdre7az/output.exe -O0 -fpermissive 
+
+Code:
+ #include<stdio.h>
+        
+        int main(int argc, char **argv) {
+            printf("%ld\n", (long)(sizeof(void *)));
+            return 0;
+        };
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Program stdout:
+
+8
+
+Program stderr:
+
+
+Running compile:
+Working directory:  /tmp/tmpdb16i4af
+Command line:  c++ /tmp/tmpdb16i4af/testfile.cpp -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmpdb16i4af/output.obj -O0 -fpermissive --print-search-dirs 
+
+Code:
+ 
+Compiler stdout:
+ install: /usr/lib/gcc/x86_64-linux-gnu/7/
+programs: =/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/bin/
+libraries: =/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/7/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/7/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
+
+Compiler stderr:
+ 
+Dependency sdl2 found: YES 2.0.8
+Determining dependency 'glew' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion glew` -> 0
+2.0.0
+Called `/usr/bin/pkg-config --cflags glew` -> 0
+-I/usr/include/libdrm
+Called `/usr/bin/pkg-config glew --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lGLEW -lGLU -lGL
+Called `/usr/bin/pkg-config glew --libs` -> 0
+-lGLEW -lGLU -lGL
+Dependency glew found: YES 2.0.0
+Determining dependency 'openal' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion openal` -> 0
+1.18.2
+Called `/usr/bin/pkg-config --cflags openal` -> 0
+-I/usr/include/AL
+Called `/usr/bin/pkg-config openal --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lopenal
+Called `/usr/bin/pkg-config openal --libs` -> 0
+-lopenal
+Dependency openal found: YES 1.18.2
+Determining dependency 'vorbisfile' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion vorbisfile` -> 0
+1.3.5
+Called `/usr/bin/pkg-config --cflags vorbisfile` -> 0
+
+Called `/usr/bin/pkg-config vorbisfile --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lvorbisfile
+Called `/usr/bin/pkg-config vorbisfile --libs` -> 0
+-lvorbisfile
+Dependency vorbisfile found: YES 1.3.5
+Dependency threads found: YES 
+Running compile:
+Working directory:  /tmp/tmpzvj1tf9t
+Command line:  c++ /tmp/tmpzvj1tf9t/testfile.cpp -pipe -D_FILE_OFFSET_BITS=64 -o /tmp/tmpzvj1tf9t/output.exe -O0 -fpermissive -Wl,--start-group -lluajit-5.1 -Wl,--end-group -Wl,--allow-shlib-undefined 
+
+Code:
+ int main(int argc, char **argv) { return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Library luajit-5.1 found: YES
+Running compile:
+Working directory:  /tmp/tmp0u05iq9k
+Command line:  c++ /tmp/tmp0u05iq9k/testfile.cpp -pipe -D_FILE_OFFSET_BITS=64 -o /tmp/tmp0u05iq9k/output.exe -O0 -fpermissive -Wl,--start-group -lfreetype -Wl,--end-group -Wl,--allow-shlib-undefined 
+
+Code:
+ int main(int argc, char **argv) { return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Library freetype found: YES
+Library Box2D found: YES
+Configuring version.hpp using configuration
+Build targets in project: 1
+Found ninja-1.8.2 at /usr/bin/ninja
+Running compile:
+Working directory:  /tmp/tmpepck3n1g
+Command line:  c++ /tmp/tmpepck3n1g/testfile.cpp -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmpepck3n1g/output.obj -std=c++17 
+
+Code:
+ int i = static_cast<int>(0);
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler accepts -std=c++17: YES

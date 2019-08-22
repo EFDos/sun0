@@ -27,8 +27,6 @@
 #include "common/types.hpp"
 #include "resources/resource.hpp"
 
-#include <string>
-
 namespace sun {
 
 class SUN_API Image : public Resource

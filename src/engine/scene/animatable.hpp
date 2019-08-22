@@ -26,8 +26,6 @@
 #include "common/config.hpp"
 #include "common/variant.hpp"
 
-#include <vector>
-
 namespace sun {
 
 class SUN_API Animatable

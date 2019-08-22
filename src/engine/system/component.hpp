@@ -27,8 +27,6 @@
 #include "common/object.hpp"
 #include "scene/animatable.hpp"
 
-#include <string>
-
 namespace sun {
 
 class Entity;

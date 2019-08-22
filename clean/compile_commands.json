@@ -1,0 +1,282 @@
+[
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/stdpch.h.gch' -MF 'src/engine/318f0fc@@sun-engine@sta/stdpch.h.gch.d' -o 'src/engine/318f0fc@@sun-engine@sta/stdpch.h.gch' -c ../src/engine/pch/stdpch.h",
+    "file": "../src/engine/pch/stdpch.h"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/common_color.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/common_color.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/common_color.cpp.o' -c ../src/engine/common/color.cpp",
+    "file": "../src/engine/common/color.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/common_time.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/common_time.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/common_time.cpp.o' -c ../src/engine/common/time.cpp",
+    "file": "../src/engine/common/time.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/math_matrix4.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/math_matrix4.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/math_matrix4.cpp.o' -c ../src/engine/math/matrix4.cpp",
+    "file": "../src/engine/math/matrix4.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_filesys_filesys.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_filesys_filesys.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_filesys_filesys.cpp.o' -c ../src/engine/core/filesys/filesys.cpp",
+    "file": "../src/engine/core/filesys/filesys.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_filesys_input_stream.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_filesys_input_stream.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_filesys_input_stream.cpp.o' -c ../src/engine/core/filesys/input_stream.cpp",
+    "file": "../src/engine/core/filesys/input_stream.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_logger.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_logger.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_logger.cpp.o' -c ../src/engine/core/logger.cpp",
+    "file": "../src/engine/core/logger.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_clock.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_clock.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_clock.cpp.o' -c ../src/engine/core/clock.cpp",
+    "file": "../src/engine/core/clock.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_context.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_context.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_context.cpp.o' -c ../src/engine/core/context.cpp",
+    "file": "../src/engine/core/context.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_application.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_application.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_application.cpp.o' -c ../src/engine/core/application.cpp",
+    "file": "../src/engine/core/application.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_window.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_window.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_window.cpp.o' -c ../src/engine/core/window.cpp",
+    "file": "../src/engine/core/window.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/core_input_keyboard.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/core_input_keyboard.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/core_input_keyboard.cpp.o' -c ../src/engine/core/input/keyboard.cpp",
+    "file": "../src/engine/core/input/keyboard.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/system_system.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/system_system.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/system_system.cpp.o' -c ../src/engine/system/system.cpp",
+    "file": "../src/engine/system/system.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/resources_resource.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/resources_resource.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/resources_resource.cpp.o' -c ../src/engine/resources/resource.cpp",
+    "file": "../src/engine/resources/resource.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/resources_resource_cache.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/resources_resource_cache.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/resources_resource_cache.cpp.o' -c ../src/engine/resources/resource_cache.cpp",
+    "file": "../src/engine/resources/resource_cache.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/audio_decoders_vorbis_decoder.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/audio_decoders_vorbis_decoder.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/audio_decoders_vorbis_decoder.cpp.o' -c ../src/engine/audio/decoders/vorbis_decoder.cpp",
+    "file": "../src/engine/audio/decoders/vorbis_decoder.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/audio_audio_server.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/audio_audio_server.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/audio_audio_server.cpp.o' -c ../src/engine/audio/audio_server.cpp",
+    "file": "../src/engine/audio/audio_server.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/audio_sound_source.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/audio_sound_source.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/audio_sound_source.cpp.o' -c ../src/engine/audio/sound_source.cpp",
+    "file": "../src/engine/audio/sound_source.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/audio_sound_buffer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/audio_sound_buffer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/audio_sound_buffer.cpp.o' -c ../src/engine/audio/sound_buffer.cpp",
+    "file": "../src/engine/audio/sound_buffer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/audio_sound_stream.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/audio_sound_stream.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/audio_sound_stream.cpp.o' -c ../src/engine/audio/sound_stream.cpp",
+    "file": "../src/engine/audio/sound_stream.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/physics_physics_server.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/physics_physics_server.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/physics_physics_server.cpp.o' -c ../src/engine/physics/physics_server.cpp",
+    "file": "../src/engine/physics/physics_server.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/physics_physics_rasterizer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/physics_physics_rasterizer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/physics_physics_rasterizer.cpp.o' -c ../src/engine/physics/physics_rasterizer.cpp",
+    "file": "../src/engine/physics/physics_rasterizer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/physics_contact_listener.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/physics_contact_listener.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/physics_contact_listener.cpp.o' -c ../src/engine/physics/contact_listener.cpp",
+    "file": "../src/engine/physics/contact_listener.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/physics_rigid_body.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/physics_rigid_body.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/physics_rigid_body.cpp.o' -c ../src/engine/physics/rigid_body.cpp",
+    "file": "../src/engine/physics/rigid_body.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_font.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_font.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_font.cpp.o' -c ../src/engine/graphics/font.cpp",
+    "file": "../src/engine/graphics/font.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_image.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_image.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_image.cpp.o' -c ../src/engine/graphics/image.cpp",
+    "file": "../src/engine/graphics/image.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_camera.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_camera.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_camera.cpp.o' -c ../src/engine/graphics/camera.cpp",
+    "file": "../src/engine/graphics/camera.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_sprite.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_sprite.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_sprite.cpp.o' -c ../src/engine/graphics/sprite.cpp",
+    "file": "../src/engine/graphics/sprite.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_sprite_batch.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_sprite_batch.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_sprite_batch.cpp.o' -c ../src/engine/graphics/sprite_batch.cpp",
+    "file": "../src/engine/graphics/sprite_batch.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_text.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_text.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_text.cpp.o' -c ../src/engine/graphics/text.cpp",
+    "file": "../src/engine/graphics/text.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_shape2D.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_shape2D.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_shape2D.cpp.o' -c ../src/engine/graphics/shape2D.cpp",
+    "file": "../src/engine/graphics/shape2D.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_light2D.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_light2D.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_light2D.cpp.o' -c ../src/engine/graphics/light2D.cpp",
+    "file": "../src/engine/graphics/light2D.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_renderer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_renderer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_renderer.cpp.o' -c ../src/engine/graphics/renderer.cpp",
+    "file": "../src/engine/graphics/renderer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_shader.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_shader.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_shader.cpp.o' -c ../src/engine/graphics/shader.cpp",
+    "file": "../src/engine/graphics/shader.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_vertex_buffer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_vertex_buffer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_vertex_buffer.cpp.o' -c ../src/engine/graphics/vertex_buffer.cpp",
+    "file": "../src/engine/graphics/vertex_buffer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_index_buffer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_index_buffer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_index_buffer.cpp.o' -c ../src/engine/graphics/index_buffer.cpp",
+    "file": "../src/engine/graphics/index_buffer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_texture.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_texture.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_texture.cpp.o' -c ../src/engine/graphics/texture.cpp",
+    "file": "../src/engine/graphics/texture.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_framebuffer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_framebuffer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_framebuffer.cpp.o' -c ../src/engine/graphics/framebuffer.cpp",
+    "file": "../src/engine/graphics/framebuffer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_renderer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_renderer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_renderer.cpp.o' -c ../src/engine/graphics/opengl/renderer.cpp",
+    "file": "../src/engine/graphics/opengl/renderer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_shader.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_shader.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_shader.cpp.o' -c ../src/engine/graphics/opengl/shader.cpp",
+    "file": "../src/engine/graphics/opengl/shader.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_vertex_buffer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_vertex_buffer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_vertex_buffer.cpp.o' -c ../src/engine/graphics/opengl/vertex_buffer.cpp",
+    "file": "../src/engine/graphics/opengl/vertex_buffer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_index_buffer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_index_buffer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_index_buffer.cpp.o' -c ../src/engine/graphics/opengl/index_buffer.cpp",
+    "file": "../src/engine/graphics/opengl/index_buffer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_texture.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_texture.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_texture.cpp.o' -c ../src/engine/graphics/opengl/texture.cpp",
+    "file": "../src/engine/graphics/opengl/texture.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_framebuffer.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_framebuffer.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/graphics_opengl_framebuffer.cpp.o' -c ../src/engine/graphics/opengl/framebuffer.cpp",
+    "file": "../src/engine/graphics/opengl/framebuffer.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/gui_gui_system.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/gui_gui_system.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/gui_gui_system.cpp.o' -c ../src/engine/gui/gui_system.cpp",
+    "file": "../src/engine/gui/gui_system.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/gui_widget.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/gui_widget.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/gui_widget.cpp.o' -c ../src/engine/gui/widget.cpp",
+    "file": "../src/engine/gui/widget.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/gui_frame.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/gui_frame.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/gui_frame.cpp.o' -c ../src/engine/gui/frame.cpp",
+    "file": "../src/engine/gui/frame.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/gui_bar.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/gui_bar.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/gui_bar.cpp.o' -c ../src/engine/gui/bar.cpp",
+    "file": "../src/engine/gui/bar.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/gui_text_button.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/gui_text_button.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/gui_text_button.cpp.o' -c ../src/engine/gui/text_button.cpp",
+    "file": "../src/engine/gui/text_button.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/scene_scene_manager.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/scene_scene_manager.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/scene_scene_manager.cpp.o' -c ../src/engine/scene/scene_manager.cpp",
+    "file": "../src/engine/scene/scene_manager.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/scene_scene_tree.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/scene_scene_tree.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/scene_scene_tree.cpp.o' -c ../src/engine/scene/scene_tree.cpp",
+    "file": "../src/engine/scene/scene_tree.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/scene_animation.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/scene_animation.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/scene_animation.cpp.o' -c ../src/engine/scene/animation.cpp",
+    "file": "../src/engine/scene/animation.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/scene_entity.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/scene_entity.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/scene_entity.cpp.o' -c ../src/engine/scene/entity.cpp",
+    "file": "../src/engine/scene/entity.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/script_script_context.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/script_script_context.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/script_script_context.cpp.o' -c ../src/engine/script/script_context.cpp",
+    "file": "../src/engine/script/script_context.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/script_script.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/script_script.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/script_script.cpp.o' -c ../src/engine/script/script.cpp",
+    "file": "../src/engine/script/script.cpp"
+  },
+  {
+    "directory": "/home/doug/Projects/polygonauts/subprojects/sun0/clean",
+    "command": "c++ -Isrc/engine/318f0fc@@sun-engine@sta -Isrc/engine -I../src/engine -I.././src/thirdparty -I./src/engine -I.././src/engine -I/usr/include/freetype2 -I/usr/include/luajit-2.1 -I/usr/include/SDL2 -I/usr/include/libdrm -I/usr/include/AL -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -std=c++17 -g -fPIC -pthread -D_REENTRANT -fpch-preprocess -include stdpch.h  -MD -MQ 'src/engine/318f0fc@@sun-engine@sta/script_script_api.cpp.o' -MF 'src/engine/318f0fc@@sun-engine@sta/script_script_api.cpp.o.d' -o 'src/engine/318f0fc@@sun-engine@sta/script_script_api.cpp.o' -c ../src/engine/script/script_api.cpp",
+    "file": "../src/engine/script/script_api.cpp"
+  }
+]

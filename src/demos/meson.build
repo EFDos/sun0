@@ -13,6 +13,7 @@ pong_exec = executable('sun-pong', ['pong/pong.cpp'],
 sandbox_exec = executable('sun-sandbox', ['sandbox/sandbox.cpp'],
   include_directories: sun_includes,
   link_with: sun_lib,
+  cpp_pch: ['../engine/pch/solpch.h'],
   install: true
 )
 

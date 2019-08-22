@@ -27,10 +27,6 @@
 #include "system/system.hpp"
 #include "graphics/renderer.hpp"
 
-#include <string>
-#include <memory>
-#include <unordered_map>
-
 namespace sun {
 
 class Resource;

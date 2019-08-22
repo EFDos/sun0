@@ -30,8 +30,6 @@
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"
 
-#include <string>
-
 namespace sun {
 
 class Font;

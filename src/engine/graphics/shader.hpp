@@ -25,9 +25,6 @@
 
 #include "gpu_object.hpp"
 
-#include <string>
-#include <memory>
-
 namespace sun {
 
 class Matrix4;

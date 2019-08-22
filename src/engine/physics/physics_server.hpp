@@ -35,6 +35,7 @@ namespace sun {
 class Context;
 class Renderer;
 class RigidBody;
+class Raycast;
 
 namespace physics {
 
@@ -160,6 +161,7 @@ private:
     // System functions
 
     std::vector<RigidBody*> bodies_;
+    std::vector<Raycast*>   raycasts_;
 
     Component* create_component_(uint type_hash, uint id) override;
 

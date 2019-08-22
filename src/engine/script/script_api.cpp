@@ -33,6 +33,7 @@
 
 #include "physics/physics_server.hpp"
 #include "physics/rigid_body.hpp"
+#include "physics/raycast.hpp"
 
 namespace sun {
 
@@ -77,6 +78,7 @@ void ScriptContext::register_api(sol::state& state)
         "get_name", &Entity::get_name,
         "get_component", &Entity::get_component<Component>,
         "get_rigid_body", &Entity::get_component<RigidBody>,
+        "get_raycast", &Entity::get_component<Raycast>,
         "get_animation", &Entity::get_component<Animation>,
         "get_sprite", &Entity::get_component<Sprite>);
 
@@ -98,6 +100,11 @@ void ScriptContext::register_api(sol::state& state)
         "apply_linear_impulse", &RigidBody::apply_linear_impulse,
         "get_linear_velocity", &RigidBody::get_linear_velocity,
         "get_angular_velocity", &RigidBody::get_angular_velocity);
+
+    state.new_usertype<Raycast>("Raycast",
+        "cast_to", &Raycast::cast_to,
+        "is_colliding", &Raycast::is_colliding,
+        "get_collision", &Raycast::get_collision);
 
     state.new_usertype<physics::RaycastCollision>("RaycastCollision",
         "point", &physics::RaycastCollision::point,

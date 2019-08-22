@@ -36,6 +36,7 @@ sun_lib_src = [
   'physics/physics_rasterizer.cpp',
   'physics/contact_listener.cpp',
   'physics/rigid_body.cpp',
+  'physics/raycast.cpp',
   'graphics/font.cpp',
   'graphics/image.cpp',
   'graphics/camera.cpp',

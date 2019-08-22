@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  include/physics.hpp                                                  */
+/*  raycast.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -23,6 +23,32 @@
 /*************************************************************************/
 #pragma once
 
-#include "physics/physics_server.hpp"
-#include "physics/rigid_body.hpp"
-#include "physics/raycast.hpp"
+#include "math/vector2.hpp"
+#include "system/component.hpp"
+#include "physics_server.hpp"
+
+namespace sun {
+
+class SUN_API Raycast final : public Component
+{
+public:
+
+    SUN_COMPONENT_TYPE(Raycast)
+
+    Raycast(Context&);
+
+    inline void cast_to(const Vector2f& point) {
+        cast_point_ = point;
+    }
+
+    bool is_colliding() const;
+
+    physics::RaycastCollision get_collision() const;
+
+private:
+
+    Vector2f        cast_point_;
+    PhysicsServer*  physics_server_ptr_;
+};
+
+}

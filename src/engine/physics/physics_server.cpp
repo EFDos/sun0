@@ -25,6 +25,7 @@
 #include "physics_rasterizer.hpp"
 #include "contact_listener.hpp"
 #include "rigid_body.hpp"
+#include "raycast.hpp"
 
 #include "core/logger.hpp"
 
@@ -147,13 +148,19 @@ Component* PhysicsServer::create_component_(uint type_hash, uint id)
         comp = new RigidBody(context_);
         bodies_.push_back(static_cast<RigidBody*>(comp));
     }
+    if (type_hash == Raycast::get_static_type_hash()) {
+        comp = new Raycast(context_);
+        //TODO: We could set the physics server pointer manually here..
+        raycasts_.push_back(static_cast<Raycast*>(comp));
+    }
     comp->set_id(id);
     return comp;
 }
 
 bool PhysicsServer::handles_component_(uint type_hash)
 {
-    if (type_hash == RigidBody::get_static_type_hash())
+    if (type_hash == RigidBody::get_static_type_hash() ||
+        type_hash == Raycast::get_static_type_hash())
     {
         return true;
     }

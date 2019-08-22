@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  include/physics.hpp                                                  */
+/*  raycast.hpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,8 +21,39 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
+#include "raycast.hpp"
+#include "physics_server.hpp"
+#include "scene/entity.hpp"
 
-#include "physics/physics_server.hpp"
-#include "physics/rigid_body.hpp"
-#include "physics/raycast.hpp"
+namespace sun {
+
+Raycast::Raycast(Context& context)
+:   Component(context),
+    physics_server_ptr_(context.get_system<PhysicsServer>())
+{}
+
+bool Raycast::is_colliding() const
+{
+    if (physics_server_ptr_ != nullptr) {
+        Vector2f pos;
+        if (owning_entity_ != nullptr) {
+            pos = owning_entity_->get_position();
+        }
+        return physics_server_ptr_->lazy_raycast(pos, pos + cast_point_);
+    }
+    return false;
+}
+
+physics::RaycastCollision Raycast::get_collision() const
+{
+    if (physics_server_ptr_ != nullptr) {
+        Vector2f pos;
+        if (owning_entity_ != nullptr) {
+            pos = owning_entity_->get_position();
+        }
+        return physics_server_ptr_->raycast(pos, pos + cast_point_);
+    }
+    return physics::RaycastCollision();
+}
+
+}

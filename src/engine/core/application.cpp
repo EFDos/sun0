@@ -110,6 +110,17 @@ void Application::on_event(Event& e)
 	if (e.type == EventType::Closed) {
 		running_ = false;
 	}
+
+	#ifdef SUN_OUT_DEBUG
+	if (e.type == EventType::KeyPressed) {
+	    if (e.key_event.code == keyboard::Key::R && e.key_event.control) {
+	        if (script_context_ != nullptr) {
+	            script_context_->hot_reload();
+	        }
+	    }
+	}
+	#endif
+
     if (gui_ != nullptr) {
         gui_->handle_events(e);
     }

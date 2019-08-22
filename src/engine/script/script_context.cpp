@@ -71,11 +71,21 @@ void ScriptContext::handle_events(Event& event)
     }
 }
 
-void ScriptContext::register_script(Script* script, const std::string& filename)
+void ScriptContext::hot_reload()
+{
+    for (auto s : scripts_) {
+        if (!s->is_terminal()) {
+            s->reload();
+        }
+    }
+}
+
+void ScriptContext::register_script(Script* script, const std::string& filename,
+                                    bool reload)
 {
     auto it = script_registry_.find(filename);
 
-    if (it == script_registry_.end())
+    if (it == script_registry_.end() || reload)
     {
         try {
             lua_state_.script_file(filename);

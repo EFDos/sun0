@@ -50,7 +50,10 @@ public:
 
     void handle_events(Event&) override;
 
-    void register_script(Script* script, const std::string& filename);
+    void hot_reload();
+
+    void register_script(Script* script, const std::string& filename,
+                         bool reload = false);
 
     static void register_api(sol::state& state);
 

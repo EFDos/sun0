@@ -44,6 +44,8 @@ public:
 
     void load(const std::string& filename);
 
+    void reload();
+
     inline void set_script_context(ScriptContext* context) {
         script_context_ = context;
     }
@@ -66,6 +68,8 @@ private:
     ScriptContext*  script_context_;
     UpdateCallback  dt_update_callback_;
     EventCallback   hndl_ev_callback_;
+
+    std::string     filename_;
 };
 
 }

@@ -47,6 +47,12 @@ void Script::update(float delta)
 void Script::load(const std::string& filename)
 {
     script_context_->register_script(this, filename);
+    filename_ = filename;
+}
+
+void Script::reload()
+{
+    script_context_->register_script(this, filename_, true);
 }
 
 }

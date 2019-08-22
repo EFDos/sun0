@@ -52,10 +52,47 @@ void ScriptContext::register_api(sol::state& state)
 
     state.new_enum("EventType",
         "KeyPressed", EventType::KeyPressed,
-        "KeyReleased", EventType::KeyReleased);
+        "KeyReleased", EventType::KeyReleased,
+        "TextEntered", EventType::TextEntered,
+        "MouseWheelScrolled", EventType::MouseWheelScrolled,
+        "MouseButtonPressed", EventType::MouseButtonPressed,
+        "MouseButtonReleased", EventType::MouseButtonReleased,
+        "MouseMoved", EventType::MouseMoved,
+        "MouseEntered", EventType::MouseEntered,
+        "MouseLeft", EventType::MouseLeft,
+        "JoystickButtonPressed", EventType::JoystickButtonPressed,
+        "JoystickButtonReleased", EventType::JoystickButtonReleased,
+        "JoystickHatMoved", EventType::JoystickHatMoved,
+        "JoystickAxisMoved", EventType::JoystickAxisMoved,
+        "JoystickConnected", EventType::JoystickConnected,
+        "JoystickDisconnected", EventType::JoystickDisconnected,
+        "TouchBegan", EventType::TouchBegan,
+        "TouchMoved", EventType::TouchMoved,
+        "TouchEnded", EventType::TouchEnded);
 
     state.new_usertype<Event>("Event",
-        "type", &Event::type);
+        "type", &Event::type,
+        "key", &Event::key,
+        "text_input", &Event::text_input,
+        "mouse_move", &Event::mouse_move,
+        "mouse_button", &Event::mouse_button,
+        "mouse_wheel", &Event::mouse_wheel,
+        "joystick_axis", &Event::joystick_axis,
+        "joystick_hat", &Event::joystick_hat,
+        "joystick_button", &Event::joystick_button,
+        "joystick_connect", &Event::joystick_connect,
+        "touch", &Event::touch);
+
+    state.new_usertype<Event::KeyEvent>("KeyEvent",
+        "code", &Event::KeyEvent::code,
+        "alt", &Event::KeyEvent::alt,
+        "control", &Event::KeyEvent::control,
+        "shift", &Event::KeyEvent::shift,
+        "system", &Event::KeyEvent::system);
+
+    state.new_usertype<Event::TextInputEvent>("TextInputEvent",
+        "text", &Event::TextInputEvent::text,
+        "size", &Event::TextInputEvent::size);
 
     state.new_usertype<Time>("Time",
         sol::constructors<void(int64), void(void)>(),

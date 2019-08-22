@@ -47,7 +47,7 @@ public:
 
         if (e.type == sun::EventType::MouseButtonPressed) {
             auto ball = scene_.create_entity();
-            ball->set_position(e.mouse_button_event.x, e.mouse_button_event.y);
+            ball->set_position(e.mouse_button.x, e.mouse_button.y);
             auto body = ball->create_component<sun::RigidBody>();
             body->create(sun::shapes::Circle(16, 84), sun::RigidBody::Type::Dynamic);
             body->set_restitution(0.5f);

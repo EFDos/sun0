@@ -25,6 +25,7 @@
 #include "script.hpp"
 #include "core/logger.hpp"
 #include "core/event.hpp"
+#include "core/clock.hpp"
 
 #include "scene/entity.hpp"
 
@@ -73,11 +74,17 @@ void ScriptContext::handle_events(Event& event)
 
 void ScriptContext::hot_reload()
 {
+    sun_log_debug("ScriptContext: Performing Hot Reload...");
+    Clock time;
+    int i = 0;
     for (auto s : scripts_) {
         if (!s->is_terminal()) {
             s->reload();
+            ++i;
         }
     }
+    sun_logf_debug("ScriptContext: Reloaded %d scripts in %f seconds", i,
+                   time.elapsed().as_seconds());
 }
 
 void ScriptContext::register_script(Script* script, const std::string& filename,

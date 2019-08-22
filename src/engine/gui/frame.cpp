@@ -54,10 +54,10 @@ void Frame::handle_events(const Event& event)
     if (event.type == EventType::MouseButtonPressed)
     {
         if (bounds_.contains({
-            event.mouse_move_event.x,
-            event.mouse_move_event.y}))
+            event.mouse_move.x,
+            event.mouse_move.y}))
         {
-            if (event.mouse_button_event.button == mouse::Button::Middle) {
+            if (event.mouse_button.button == mouse::Button::Middle) {
                 grabbed_ = true;
             }
         }
@@ -65,14 +65,14 @@ void Frame::handle_events(const Event& event)
 
     if (event.type == EventType::MouseButtonReleased)
     {
-        if (event.mouse_button_event.button == mouse::Button::Middle) {
+        if (event.mouse_button.button == mouse::Button::Middle) {
             grabbed_ = false;
         }
     }
 
     if (grabbed_ && event.type == EventType::MouseMoved) {
-        bounds_.x += event.mouse_move_event.x_rel;
-        bounds_.y += event.mouse_move_event.y_rel;
+        bounds_.x += event.mouse_move.x_rel;
+        bounds_.y += event.mouse_move.y_rel;
     }
     Container::handle_events(event);
 }

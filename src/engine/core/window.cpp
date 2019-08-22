@@ -72,64 +72,64 @@ bool Window::poll_event(Event& e)
     	    return ret;
     	case SDL_MOUSEWHEEL:
     		e.type = EventType::MouseWheelScrolled;
-    		e.mouse_wheel_event.x = sdl_e.wheel.x;
-    		e.mouse_wheel_event.y = sdl_e.wheel.y;
+    		e.mouse_wheel.x = sdl_e.wheel.x;
+    		e.mouse_wheel.y = sdl_e.wheel.y;
     		return ret;
     	case SDL_MOUSEBUTTONDOWN:
     		e.type = EventType::MouseButtonPressed;
-    		e.mouse_button_event.button = mouse::Button(sdl_e.button.button);
-    		e.mouse_button_event.x = sdl_e.button.x;
-    		e.mouse_button_event.y = sdl_e.button.y;
+    		e.mouse_button.button = mouse::Button(sdl_e.button.button);
+    		e.mouse_button.x = sdl_e.button.x;
+    		e.mouse_button.y = sdl_e.button.y;
     		return ret;
     	case SDL_MOUSEBUTTONUP:
     		e.type = EventType::MouseButtonReleased;
-    		e.mouse_button_event.button = mouse::Button(sdl_e.button.button);
-    		e.mouse_button_event.x = sdl_e.button.x;
-    		e.mouse_button_event.y = sdl_e.button.y;
+    		e.mouse_button.button = mouse::Button(sdl_e.button.button);
+    		e.mouse_button.x = sdl_e.button.x;
+    		e.mouse_button.y = sdl_e.button.y;
     		return ret;
     	case SDL_MOUSEMOTION:
     		e.type = EventType::MouseMoved;
-    		e.mouse_move_event.x = sdl_e.motion.x;
-    		e.mouse_move_event.y = sdl_e.motion.y;
-    		e.mouse_move_event.x_rel = sdl_e.motion.xrel;
-    		e.mouse_move_event.y_rel = sdl_e.motion.yrel;
+    		e.mouse_move.x = sdl_e.motion.x;
+    		e.mouse_move.y = sdl_e.motion.y;
+    		e.mouse_move.x_rel = sdl_e.motion.xrel;
+    		e.mouse_move.y_rel = sdl_e.motion.yrel;
     		return ret;
     	case SDL_KEYDOWN:
     		e.type = EventType::KeyPressed;
-    		e.key_event.code = keyboard::Key(sdl_e.key.keysym.sym);
+    		e.key.code = keyboard::Key(sdl_e.key.keysym.sym);
     		if (sdl_e.key.keysym.mod & KMOD_NONE) {
     			return ret;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_ALT) {
-    			e.key_event.alt = true;
+    			e.key.alt = true;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_SHIFT) {
-    			e.key_event.shift = true;
+    			e.key.shift = true;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_CTRL) {
-    			e.key_event.control = true;
+    			e.key.control = true;
     		}
     		return ret;
     	case SDL_KEYUP:
     		e.type = EventType::KeyReleased;
-    		e.key_event.code = keyboard::Key(sdl_e.key.keysym.sym);
+    		e.key.code = keyboard::Key(sdl_e.key.keysym.sym);
     		if (sdl_e.key.keysym.mod & KMOD_NONE) {
     			return ret;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_ALT) {
-    			e.key_event.alt = false;
+    			e.key.alt = false;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_SHIFT) {
-    			e.key_event.shift = false;
+    			e.key.shift = false;
     		}
     		if (sdl_e.key.keysym.mod & KMOD_CTRL) {
-    			e.key_event.control = false;
+    			e.key.control = false;
     		}
     		return ret;
     	case SDL_TEXTINPUT:
     		e.type = EventType::TextEntered;
-    		std::memcpy(e.text_input_event.text, sdl_e.text.text, 32);
-    		e.text_input_event.text_size = std::strlen(sdl_e.text.text);
+    		std::memcpy(e.text_input.text, sdl_e.text.text, 32);
+    		e.text_input.size = std::strlen(sdl_e.text.text);
     		return ret;
         default:
         	e.type = EventType::Undefined;

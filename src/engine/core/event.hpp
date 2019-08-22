@@ -72,7 +72,7 @@ public:
     struct TextInputEvent
     {
         char text[32];
-        uint8 text_size;
+        uint8 size;
     };
 
     struct MouseMoveEvent
@@ -133,16 +133,16 @@ public:
 
     union
     {
-        KeyEvent                key_event;
-        TextInputEvent          text_input_event;
-        MouseMoveEvent          mouse_move_event;
-        MouseButtonEvent        mouse_button_event;
-        MouseWheelEvent         mouse_wheel_event;
-        JoystickAxisEvent       joystick_axis_event;
-        JoystickHatEvent        joystick_hat_event;
-        JoystickButtonEvent     joystick_button_event;
-        JoystickConnectEvent    joystick_connect_event;
-        TouchEvent              touch_event;
+        KeyEvent                key;
+        TextInputEvent          text_input;
+        MouseMoveEvent          mouse_move;
+        MouseButtonEvent        mouse_button;
+        MouseWheelEvent         mouse_wheel;
+        JoystickAxisEvent       joystick_axis;
+        JoystickHatEvent        joystick_hat;
+        JoystickButtonEvent     joystick_button;
+        JoystickConnectEvent    joystick_connect;
+        TouchEvent              touch;
     };
 
 };

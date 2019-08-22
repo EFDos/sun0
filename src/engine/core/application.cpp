@@ -113,7 +113,7 @@ void Application::on_event(Event& e)
 
 	#ifdef SUN_OUT_DEBUG
 	if (e.type == EventType::KeyPressed) {
-	    if (e.key_event.code == keyboard::Key::R && e.key_event.control) {
+	    if (e.key.code == keyboard::Key::R && e.key.control) {
 	        if (script_context_ != nullptr) {
 	            script_context_->hot_reload();
 	        }

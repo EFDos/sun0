@@ -80,6 +80,6 @@ else
   sun_lib = static_library('sun-engine', sun_lib_src,
     dependencies: sun_depends,
     include_directories: sun_includes,
-    cpp_pch: ['pch/stdpch.h', 'pch/solpch.h']
+    cpp_pch: ['pch/stdpch.h']
   )
 endif

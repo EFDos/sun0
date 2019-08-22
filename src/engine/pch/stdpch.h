@@ -29,4 +29,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include <functional>
+#include <sol.hpp>
+#include <cpptoml.h>
+
 #endif

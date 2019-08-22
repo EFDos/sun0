@@ -1,3 +1,5 @@
+#SUN-0
+
 Sun-0 is the latest Open Source iteration of in-house engines developed for Sinz, to support the creation of 2D graphics creative code, and of course, 3D graphics in the near future.
 The engine is built only upon open source technologies to target as many platforms as possible - including Haiku-OS - and is distributed as Free Software under the GPL License.
 
@@ -5,11 +7,11 @@ The engine is built only upon open source technologies to target as many platfor
 
 * Main Development of the Sun-0 Engine by its' authors
 * Development of new features by the community, under the authors supervision
-[Version 0.8.2]
+[Version 1.1.6]
 
 ##How do I get set up?
 
-You'll need Meson, a C++14 compliant compiler and the development files for the following libraries:
+You'll need Meson, a C++17 compliant compiler and the development files for the following libraries:
 OpenGL, GLEW, SDL2, FreeImage, Freetype, and LuaJIT.
 Box2D will be provided by this repository, as we use a specific version tweaked to handle one-way-collisions.
 Configuration

@@ -135,67 +135,79 @@ void RigidBody::update(float delta)
 
 void RigidBody::move_to_entity()
 {
-    if (body_ == nullptr) {
-        return;
-    }
-    body_->SetTransform(physics::to_b2vec(owning_entity_->get_position()),
+    if (body_ != nullptr) {
+        body_->SetTransform(physics::to_b2vec(owning_entity_->get_position()),
         -math::deg_to_rad(owning_entity_->get_rotation()));
+    }
 }
 
 void RigidBody::apply_linear_impulse(const Vector2f& impulse)
 {
-    if (body_ == nullptr) {
-        return;
+    if (body_ != nullptr) {
+        body_->ApplyLinearImpulse(physics::to_b2vec(impulse),
+                                  body_->GetWorldCenter(), true);
     }
-    body_->ApplyLinearImpulse(physics::to_b2vec(impulse), body_->GetWorldCenter(), true);
+}
+
+void RigidBody::apply_linear_impulse(const Vector2f& impulse,
+                                     const Vector2f& point)
+{
+    if (body_ != nullptr) {
+        body_->ApplyLinearImpulse(physics::to_b2vec(impulse),
+                                  body_->GetWorldCenter() + physics::to_b2vec(point),
+                                  true);
+    }
+}
+
+void RigidBody::apply_angular_impulse(float impulse)
+{
+    if (body_ != nullptr) {
+        body_->ApplyAngularImpulse(physics::scale_to_meters(impulse), true);
+    }
 }
 
 void RigidBody::set_angular_velocity(float vel)
 {
-    if (body_ == nullptr) {
-        return;
+    if (body_ != nullptr) {
+        body_->SetAngularVelocity(vel);
     }
-    body_->SetAngularVelocity(vel);
 }
 
 void RigidBody::set_restitution(float restitution)
 {
-    if (body_ == nullptr) {
-        return;
+    if (body_ != nullptr) {
+        body_->GetFixtureList()->SetRestitution(restitution);
     }
-    body_->GetFixtureList()->SetRestitution(restitution);
 }
 
 void RigidBody::set_friction(float friction)
 {
-    if (body_ == nullptr) {
-        return;
+    if (body_ != nullptr) {
+        body_->GetFixtureList()->SetFriction(friction);
     }
-    body_->GetFixtureList()->SetFriction(friction);
 }
 
 void RigidBody::set_density(float density)
 {
-    if (body_ == nullptr) {
-        return;
+    if (body_ != nullptr) {
+        body_->GetFixtureList()->SetDensity(density);
     }
-    body_->GetFixtureList()->SetDensity(density);
 }
 
 Vector2f RigidBody::get_linear_velocity() const
 {
-    if (body_ == nullptr) {
-        return {0.f, 0.f};
+    if (body_ != nullptr) {
+        return physics::to_vec2(body_->GetLinearVelocity());
     }
-    return physics::to_vec2(body_->GetLinearVelocity());
+    return {0.f, 0.f};
 }
 
 float RigidBody::get_angular_velocity() const
 {
     if (body_ == nullptr) {
-        return 0.f;
+        return math::rad_to_deg(body_->GetAngularVelocity());
     }
-    return math::rad_to_deg(body_->GetAngularVelocity());
+    return 0.f;
 }
 
 }

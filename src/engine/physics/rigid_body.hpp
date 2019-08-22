@@ -57,6 +57,11 @@ public:
 
     void apply_linear_impulse(const Vector2f& impulse);
 
+    void apply_linear_impulse(const Vector2f& impulse,
+                              const Vector2f& point);
+
+    void apply_angular_impulse(float impulse);
+
     void move_to_entity();
 
     void set_angular_velocity(float vel);

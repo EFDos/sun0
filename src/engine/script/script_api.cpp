@@ -134,7 +134,13 @@ void ScriptContext::register_api(sol::state& state)
 
     state.new_usertype<RigidBody>("RigidBody",
         "move_to_entity", &RigidBody::move_to_entity,
-        "apply_linear_impulse", &RigidBody::apply_linear_impulse,
+        "apply_linear_impulse",
+            sol::overload(sol::resolve<void(const Vector2f&)>(&RigidBody::apply_linear_impulse),
+                          sol::resolve<void(const Vector2f&, const Vector2f&)>(&RigidBody::apply_linear_impulse)),
+        "apply_angular_impulse", &RigidBody::apply_angular_impulse,
+        "set_friction", &RigidBody::set_friction,
+        "set_restitution", &RigidBody::set_restitution,
+        "set_density", &RigidBody::set_density,
         "get_linear_velocity", &RigidBody::get_linear_velocity,
         "get_angular_velocity", &RigidBody::get_angular_velocity);
 

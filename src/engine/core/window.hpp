@@ -64,6 +64,8 @@ public:
 
 	void set_vsync(bool vsync);
 
+	void set_visible_cursor(bool visible);
+
     void set_title(const std::string& title);
 
     void set_size(const Vector2i& size);

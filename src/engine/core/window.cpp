@@ -242,6 +242,11 @@ void Window::set_vsync(bool vsync)
     }
 }
 
+void Window::set_visible_cursor(bool visible)
+{
+    SDL_ShowCursor(visible);
+}
+
 void Window::set_size(const Vector2i& size)
 {
     if (window_hndl_ == nullptr) {

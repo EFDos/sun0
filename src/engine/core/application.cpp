@@ -77,25 +77,21 @@ int Application::run()
     while(running_) {
 
         float time = timer.elapsed().as_seconds();
-        timestep += time - last_frame_time;
+        timestep = time - last_frame_time;
         last_frame_time = time;
 
-        if (timestep > timestep_)
-        {
-            Event e;
-        	if (window_.is_open()) {
-                while (window_.poll_event(e)) {
-        	        on_event(e);
-        	        script_context_->handle_events(e);
-                }
+    	if (window_.is_open()) {
+    	    Event e;
+            while (window_.poll_event(e)) {
+    	        on_event(e);
+    	        script_context_->handle_events(e);
             }
-            on_update(timestep);
-            script_context_->update(timestep);
-            scene_manager_->update(timestep);
-            physics_->update(timestep);
-            renderer_->update(timestep);
-            timestep = 0.f;
         }
+        on_update(timestep);
+        script_context_->update(timestep);
+        scene_manager_->update(timestep);
+        physics_->update(timestep);
+        renderer_->update(timestep);
 
         renderer_->render();
         renderer_->set_model_transform(Matrix4());
@@ -104,7 +100,6 @@ int Application::run()
             gui_->render(renderer_);
         }
         window_.update();
-
     }
     window_.close();
     return 0;

@@ -60,7 +60,9 @@ public:
 
 	inline bool is_open() const { return window_hndl_ != nullptr; }
 
-	void set_fullscreen(bool);
+	void set_fullscreen(bool fullscreen);
+
+	void set_vsync(bool vsync);
 
     void set_title(const std::string& title);
 

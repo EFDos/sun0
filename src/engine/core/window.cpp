@@ -189,8 +189,6 @@ void Window::create(const std::string& name,
                         SDL_GL_CONTEXT_PROFILE_CORE);
 
     #endif
-
-    SDL_GL_SetSwapInterval(false);
 }
 
 void Window::close()
@@ -217,12 +215,31 @@ void Window::set_title(const std::string& title)
 void Window::set_fullscreen(bool fullscreen)
 {
     if (window_hndl_ == nullptr) {
-        sun_log_error("Can't set title on closed Window to fullscreen.");
+        sun_log_error("Can't set closed Window to fullscreen.");
         return;
     }
 
     SDL_SetWindowFullscreen(static_cast<SDL_Window*>(window_hndl_),
         fullscreen ? SDL_WINDOW_FULLSCREEN : 0 | SDL_WINDOW_OPENGL);
+}
+
+void Window::set_vsync(bool vsync)
+{
+    if (window_hndl_ == nullptr) {
+        sun_log_error("Can't set vsync on closed Window.");
+        return;
+    }
+
+    if (!vsync) {
+        SDL_GL_SetSwapInterval(0);
+    } else {
+        // Try adaptive vsync (Will fail if system doesn't support it)
+        if (SDL_GL_SetSwapInterval(-1) == -1) {
+
+            // We fall here if it fails and try vertical retrace mode
+            SDL_GL_SetSwapInterval(1);
+        }
+    }
 }
 
 void Window::set_size(const Vector2i& size)

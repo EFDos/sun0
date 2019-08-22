@@ -214,4 +214,46 @@ void Window::set_title(const std::string& title)
     SDL_SetWindowTitle(static_cast<SDL_Window*>(window_hndl_), title.c_str());
 }
 
+void Window::set_fullscreen(bool fullscreen)
+{
+    if (window_hndl_ == nullptr) {
+        sun_log_error("Can't set title on closed Window to fullscreen.");
+        return;
+    }
+
+    SDL_SetWindowFullscreen(static_cast<SDL_Window*>(window_hndl_),
+        fullscreen ? SDL_WINDOW_FULLSCREEN : 0 | SDL_WINDOW_OPENGL);
+}
+
+void Window::set_size(const Vector2i& size)
+{
+    if (window_hndl_ == nullptr) {
+        sun_log_error("Can't set size on closed Window.");
+        return;
+    }
+    SDL_SetWindowSize(static_cast<SDL_Window*>(window_hndl_), size.x, size.y);
+}
+
+void Window::set_size(int x, int y)
+{
+    if (window_hndl_ == nullptr) {
+        sun_log_error("Can't set size on closed Window.");
+        return;
+    }
+    SDL_SetWindowSize(static_cast<SDL_Window*>(window_hndl_), x, y);
+}
+
+Vector2i Window::get_size() const
+{
+    if (window_hndl_ == nullptr) {
+        sun_log_warn("Size of closed Window will be {0,0}.");
+        return {0, 0};
+    }
+
+    Vector2i size;
+    SDL_GetWindowSize(static_cast<SDL_Window*>(window_hndl_), &size.x, &size.y);
+
+    return size;
+}
+
 }

@@ -175,6 +175,10 @@ public:
         return blend_dest_;
     }
 
+    inline const Rectf& get_viewport() const {
+        return viewport_;
+    }
+
 protected:
 
     explicit Renderer(Context&);

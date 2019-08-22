@@ -31,7 +31,7 @@ namespace sun {
 Camera::Camera(Context& context)
 :   Component(context),
     renderer_(nullptr),
-    viewport_({0.f, 0.f, 1280.f, 720.f}),
+    viewport_({0.f, 0.f, 0.f, 0.f}),
     offset_({280, 280, 280, 280}),
     follow_speed_(20.f),
     follow_(false),

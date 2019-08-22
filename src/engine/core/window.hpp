@@ -60,7 +60,15 @@ public:
 
 	inline bool is_open() const { return window_hndl_ != nullptr; }
 
+	void set_fullscreen(bool);
+
     void set_title(const std::string& title);
+
+    void set_size(const Vector2i& size);
+
+    void set_size(int x, int y);
+
+    Vector2i get_size() const;
 
 private:
 

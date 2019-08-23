@@ -30,6 +30,7 @@
 
 namespace sun {
 
+class SceneTree;
 class Component;
 
 class SUN_API Entity : Object, public Animatable
@@ -62,7 +63,11 @@ public:
 
     void build_properties() override;
 
-    Entity* create_child();
+    Entity* create_child(const std::string& name = "");
+
+    Entity* find_child(const std::string& name, bool recursive = false) const;
+
+    Entity* find_child(uint64 id, bool recursive = false) const;
 
     void clear_children();
 
@@ -110,9 +115,15 @@ public:
         name_ = name;
     }
 
+    inline void set_scene(SceneTree* scene) {
+        scene_ = scene;
+    }
+
     void clear_dirty_flag();
 
     bool is_dirty() const;
+
+    Entity* get_child(const std::string& path) const;
 
     const Vector2f& get_position() const;
 
@@ -129,6 +140,10 @@ public:
     const Matrix4& get_global_transform() const;
 
     const Matrix4& get_inverse_transform() const;
+
+    inline uint64 get_id() const {
+        return id_;
+    }
 
     inline const std::string& get_name() const {
         return name_;
@@ -162,7 +177,9 @@ private:
 
     std::string name_;
 
+    SceneTree*              scene_;
     Entity*                 parent_;
+
     std::vector<Entity*>     children_;
     std::vector<Component*> components_;
 

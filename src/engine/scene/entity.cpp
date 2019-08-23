@@ -22,9 +22,15 @@
 /*                                                                       */
 /*************************************************************************/
 #include "entity.hpp"
+#include "scene_tree.hpp"
 #include "system/component.hpp"
 #include "math/math.hpp"
 #include "core/logger.hpp"
+
+#include <algorithm>
+#include <sstream>
+
+#include "core/clock.hpp"
 
 namespace sun {
 
@@ -34,6 +40,7 @@ Entity::Entity(Context& context)
     transform_mask_((uint8)transform_bits::translation |
                     (uint8)transform_bits::rotation |
                     (uint8)transform_bits::scale),
+    scene_(nullptr),
     parent_(nullptr),
     scale_(1.f, 1.f),
     rot_(0.f),
@@ -42,10 +49,17 @@ Entity::Entity(Context& context)
 {
 }
 
-Entity* Entity::create_child()
+Entity* Entity::create_child(const std::string& name)
 {
     Entity* child = new Entity(context_);
     children_.push_back(child);
+    child->scene_ = scene_;
+    child->id_ = scene_->get_available_id();
+    if (name.empty()) {
+        child->name_ = "Entity" + std::to_string(child->id_);
+    } else {
+        child->name_ = name;
+    }
     child->parent_ = this;
     return child;
 }
@@ -67,6 +81,55 @@ void Entity::clear_components()
     }
 
     components_.clear();
+}
+
+Entity* Entity::find_child(const std::string& name, bool recursive) const
+{
+    // First seek on the first layer only
+    for (auto child : children_) {
+        sun_logf_debug("found child of name: %s", child->name_.c_str());
+        if (child->name_ == name) {
+            return child;
+        }
+    }
+
+    // If we get here, it must be deeper. Continue if recursive
+    Entity* lost_child = nullptr;
+    if (recursive) {
+        for (auto child : children_) {
+            lost_child = child->find_child(name, true);
+
+            if (lost_child != nullptr) {
+                return lost_child;
+            }
+        }
+    }
+
+    // If we get here, it's nowhere to be found. Returns nullptr
+    return nullptr;
+}
+
+Entity* Entity::find_child(uint64 id, bool recursive) const
+{
+    // Same as the find_child by name implementation
+    for (auto child : children_) {
+        if (child->id_ == id) {
+            return child;
+        }
+    }
+
+    Entity* lost_child = nullptr;
+    if (recursive) {
+        for (auto child : children_) {
+            lost_child = child->find_child(id_, true);
+
+            if (lost_child != nullptr) {
+                return lost_child;
+            }
+        }
+    }
+
+    return nullptr;
 }
 
 Entity::~Entity()
@@ -315,6 +378,47 @@ const Matrix4& Entity::get_inverse_transform() const
         inverse_transform_ = get_global_transform().get_inverse();
     }
     return inverse_transform_;
+}
+
+Entity* Entity::get_child(const std::string& path) const
+{
+    if (path.find('/') == std::string::npos) {
+        Entity* lost_child = find_child(path);
+
+        if (lost_child != nullptr) {
+            return lost_child;
+        }
+    }
+
+    // Break path into segments and follow
+    std::stringstream pathstream(path);
+    std::string segment;
+    std::vector<std::string> list;
+
+    list.reserve(std::count(path.begin(), path.end(), '/') + 1);
+
+    while (std::getline(pathstream, segment, '/')) {
+        list.push_back(segment);
+    }
+
+    Entity* next_child = nullptr;
+    for (auto& seg : list) {
+        sun_logf_debug("looking for: %s", seg.c_str());
+        if (next_child == nullptr) {
+            next_child = find_child(seg);
+        } else {
+            next_child = next_child->find_child(seg);
+        }
+
+
+        if (next_child == nullptr) {
+            sun_log_debug("not found");
+            return nullptr;
+        }
+        sun_log_debug("found");
+    }
+
+    return next_child;
 }
 
 Component* Entity::get_component_(uint id)

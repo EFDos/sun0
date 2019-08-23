@@ -32,9 +32,13 @@ public:
 
     SceneTree(Context& context);
 
-    Entity* create_entity();
+    Entity* create_entity(const std::string& name = "");
 
     void clear();
+
+    inline uint64 get_available_id() {
+        return entity_count_++;
+    }
 
     Entity& get_root() {
         return root_;
@@ -43,6 +47,7 @@ public:
 private:
 
     Entity  root_;
+    uint64  entity_count_;
 };
 
 }

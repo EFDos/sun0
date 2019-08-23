@@ -50,7 +50,7 @@ public:
     {}
 
     inline void queue_delete() {
-        flags_ &= ~(uint8)Property::Terminal;
+        flags_ |= (uint8)Property::Terminal;
     }
 
     inline void set_update(bool update) {
@@ -93,6 +93,10 @@ public:
 
     inline bool is_terminal() {
         return flags_ & (uint8)Property::Terminal;
+    }
+
+    inline uint8 get_property_mask() {
+        return flags_;
     }
 
     inline Entity* get_owning_entity() const {

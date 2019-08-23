@@ -27,19 +27,22 @@ namespace sun {
 
 SceneTree::SceneTree(Context& context)
 :   Object(context),
-    root_(context)
+    root_(context),
+    entity_count_(0)
 {
+    root_.set_scene(this);
 }
 
-Entity* SceneTree::create_entity()
+Entity* SceneTree::create_entity(const std::string& name)
 {
-    return root_.create_child();
+    return root_.create_child(name);
 }
 
 void SceneTree::clear()
 {
     root_.clear_children();
     root_.clear_components();
+    entity_count_ = 0;
 }
 
 }

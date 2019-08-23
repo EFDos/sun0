@@ -111,9 +111,13 @@ void ScriptContext::register_api(sol::state& state)
         "y", &Vector2f::y);
 
     state.new_usertype<Entity>("Entity",
+        "find_child",
+            sol::overload(sol::resolve<Entity*(const std::string&, bool)const>(&Entity::find_child),
+                          sol::resolve<Entity*(uint64, bool)const>(&Entity::find_child)),
         "position", sol::property(&Entity::get_position,
             sol::resolve<void(const Vector2f&)>(&Entity::set_position)),
         "name", sol::property(&Entity::get_name, &Entity::get_name),
+        "get_child", &Entity::get_child,
         "get_component", &Entity::get_component<Component>,
         "get_rigid_body", &Entity::get_component<RigidBody>,
         "get_raycast", &Entity::get_component<Raycast>,

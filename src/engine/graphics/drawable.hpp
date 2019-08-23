@@ -40,7 +40,14 @@ public:
 
     virtual ~Drawable() {}
 
-    virtual void draw(Renderer*) = 0;
+    virtual void draw(Renderer*) const = 0;
+
+    void prepare_draw() {
+        if (dirty_) {
+            update_geometry_();
+            dirty_ = false;
+        }
+    }
 
     /*recti get_global_bounding_rect() const {
         recti rect(bounding_rect_);

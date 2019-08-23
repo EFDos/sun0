@@ -87,10 +87,6 @@ void Shape2D::set_shape(const shapes::Shape& shape)
 
 void Shape2D::update_geometry_()
 {
-    if (!dirty_) {
-        return;
-    }
-
     if (shape_ == nullptr) {
         return;
     }
@@ -139,14 +135,10 @@ void Shape2D::update_geometry_()
     }
 
     vertices_->fill_data(0, shape_->get_point_count(), vertex_data.data());
-
-    dirty_ = false;
 }
 
-void Shape2D::draw(Renderer* renderer)
+void Shape2D::draw(Renderer* renderer) const
 {
-    update_geometry_();
-
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
     } else if (transform_ != nullptr) {

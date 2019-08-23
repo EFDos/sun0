@@ -66,7 +66,7 @@ public:
 
     void set_blend_mode(BlendMode source, BlendMode dest) override;
 
-    void draw(Drawable& d) const override;
+    void draw(const Drawable& d) const override;
 
     void draw(const sun::VertexBuffer& buffer,
               const sun::Shader* p_shader = nullptr) const override;

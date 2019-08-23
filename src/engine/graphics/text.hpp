@@ -44,7 +44,7 @@ public:
 
     void init() override;
 
-    void draw(Renderer*) override;
+    void draw(Renderer*) const override;
 
     void set_text(const std::string& p_str) {
         if (p_str != str_) {

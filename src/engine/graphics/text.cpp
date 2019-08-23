@@ -53,10 +53,6 @@ void Text::init()
 
 void Text::update_geometry_()
 {
-    if (!dirty_) {
-        return;
-    }
-
     if (font_ == nullptr) {
         sun_log_warn("Text has no font defined");
         return;
@@ -149,14 +145,10 @@ void Text::update_geometry_()
         i_offset += 6;
         i_value_offset += 4;
     }
-
-    dirty_ = false;
 }
 
-void Text::draw(Renderer* renderer)
+void Text::draw(Renderer* renderer) const
 {
-    update_geometry_();
-
     if (font_ == nullptr ||
         vertices_->get_vertex_count() == 0 ||
         indices_->get_index_count() == 0) {

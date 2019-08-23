@@ -48,7 +48,7 @@ public:
 
     void init() override;
 
-    void draw(Renderer* renderer) override;
+    void draw(Renderer* renderer) const override;
 
     void set_texture(const Texture* tex);
 

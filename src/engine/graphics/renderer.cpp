@@ -183,6 +183,7 @@ void Renderer::render()
     }
     for (auto d : drawables_) {
         if (d->get_draw()) {
+            d->prepare_draw();
             draw(*d);
         }
     }

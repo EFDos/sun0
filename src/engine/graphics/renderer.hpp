@@ -113,7 +113,7 @@ public:
     virtual void clear() = 0;
 
     // Drawable draw-call
-    virtual void draw(Drawable&) const = 0;
+    virtual void draw(const Drawable&) const = 0;
 
     // Low-level draw-calls
     virtual void draw(const VertexBuffer& buffer,
@@ -219,7 +219,7 @@ private:
 
     std::vector<Camera*>    cameras_;
     std::vector<Light2D*>   lights_;
-    mutable std::vector<Drawable*>  drawables_;
+    std::vector<Drawable*>  drawables_;
 };
 
 }

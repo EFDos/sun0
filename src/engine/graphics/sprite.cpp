@@ -57,10 +57,8 @@ void Sprite::init()
     Component::init();
 }
 
-void Sprite::draw(Renderer* renderer)
+void Sprite::draw(Renderer* renderer) const
 {
-    update_geometry_();
-
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
     } else if (transform_ != nullptr) {
@@ -134,10 +132,6 @@ void Sprite::set_frame(uint frame)
 
 void Sprite::update_geometry_()
 {
-    if (!dirty_) {
-        return;
-    }
-
     if (texture_ == nullptr) {
         sun_log_warn("Sprite::update_geometry_: sprite has no texture set");
         return;
@@ -187,8 +181,6 @@ void Sprite::update_geometry_()
 
     vertices_->fill_data(0, 4, quad_verts);
     indices_->fill_data(0, 6, indices_data);
-
-    dirty_ = false;
 }
 
 void Sprite::build_properties()

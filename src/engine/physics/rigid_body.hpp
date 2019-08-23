@@ -66,6 +66,8 @@ public:
 
     void set_angular_velocity(float vel);
 
+    void set_angular_damping(float damping);
+
     void set_restitution(float restitution);
 
     void set_friction(float friction);

@@ -138,6 +138,8 @@ void ScriptContext::register_api(sol::state& state)
             sol::overload(sol::resolve<void(const Vector2f&)>(&RigidBody::apply_linear_impulse),
                           sol::resolve<void(const Vector2f&, const Vector2f&)>(&RigidBody::apply_linear_impulse)),
         "apply_angular_impulse", &RigidBody::apply_angular_impulse,
+        "set_angular_velocity", &RigidBody::set_angular_velocity,
+        "set_angular_damping", &RigidBody::set_angular_damping,
         "set_friction", &RigidBody::set_friction,
         "set_restitution", &RigidBody::set_restitution,
         "set_density", &RigidBody::set_density,

@@ -71,6 +71,7 @@ void RigidBody::create(const shapes::Shape& shape, Type t)
     if (owning_entity_ != nullptr) {
         body_def.position = physics::to_b2vec(owning_entity_->get_position());
     }
+    body_def.allowSleep = true;
 
     auto world = context_.get_system<PhysicsServer>()->get_b2_world();
 
@@ -169,7 +170,14 @@ void RigidBody::apply_angular_impulse(float impulse)
 void RigidBody::set_angular_velocity(float vel)
 {
     if (body_ != nullptr) {
-        body_->SetAngularVelocity(vel);
+        body_->SetAngularVelocity(math::deg_to_rad(vel));
+    }
+}
+
+void RigidBody::set_angular_damping(float damping)
+{
+    if (body_ != nullptr) {
+        body_->SetAngularDamping(damping);
     }
 }
 

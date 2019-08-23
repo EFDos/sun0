@@ -64,6 +64,10 @@ public:
 
     void move_to_entity();
 
+    void set_linear_velocity(const Vector2f& vel);
+
+    void set_linear_damping(float damping);
+
     void set_angular_velocity(float vel);
 
     void set_angular_damping(float damping);
@@ -76,7 +80,17 @@ public:
 
     Vector2f get_linear_velocity() const;
 
+    float get_linear_damping() const;
+
     float get_angular_velocity() const;
+
+    float get_angular_damping() const;
+
+    float get_restitution() const;
+
+    float get_friction() const;
+
+    float get_density() const;
 
     inline Type get_type() const {
         return type_;

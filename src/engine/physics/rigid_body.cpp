@@ -46,7 +46,7 @@ RigidBody::RigidBody(Context& context)
 void RigidBody::create(const shapes::Shape& shape, Type t)
 {
     if (t == Type::Undefined) {
-        sun_log_error("Can't create shape of type 'undefined'");
+        sun_log_error("Can't create shape of type Undefined");
     }
 
     type_ = t;
@@ -167,6 +167,20 @@ void RigidBody::apply_angular_impulse(float impulse)
     }
 }
 
+void RigidBody::set_linear_velocity(const Vector2f& vel)
+{
+    if (body_ != nullptr) {
+        body_->SetLinearVelocity(physics::to_b2vec(vel));
+    }
+}
+
+void RigidBody::set_linear_damping(float damping)
+{
+    if (body_ != nullptr) {
+        body_->SetLinearDamping(damping);
+    }
+}
+
 void RigidBody::set_angular_velocity(float vel)
 {
     if (body_ != nullptr) {
@@ -184,21 +198,27 @@ void RigidBody::set_angular_damping(float damping)
 void RigidBody::set_restitution(float restitution)
 {
     if (body_ != nullptr) {
-        body_->GetFixtureList()->SetRestitution(restitution);
+        if (body_->GetFixtureList() != nullptr) {
+            body_->GetFixtureList()->SetRestitution(restitution);
+        }
     }
 }
 
 void RigidBody::set_friction(float friction)
 {
     if (body_ != nullptr) {
-        body_->GetFixtureList()->SetFriction(friction);
+        if (body_->GetFixtureList() != nullptr) {
+            body_->GetFixtureList()->SetFriction(friction);
+        }
     }
 }
 
 void RigidBody::set_density(float density)
 {
     if (body_ != nullptr) {
-        body_->GetFixtureList()->SetDensity(density);
+        if (body_->GetFixtureList() != nullptr) {
+            body_->GetFixtureList()->SetDensity(density);
+        }
     }
 }
 
@@ -210,10 +230,56 @@ Vector2f RigidBody::get_linear_velocity() const
     return {0.f, 0.f};
 }
 
+float RigidBody::get_linear_damping() const
+{
+    if (body_ != nullptr) {
+        return body_->GetLinearDamping();
+    }
+    return 0.f;
+}
+
 float RigidBody::get_angular_velocity() const
 {
-    if (body_ == nullptr) {
+    if (body_ != nullptr) {
         return math::rad_to_deg(body_->GetAngularVelocity());
+    }
+    return 0.f;
+}
+
+float RigidBody::get_angular_damping() const
+{
+    if (body_ != nullptr) {
+        return body_->GetAngularDamping();
+    }
+    return 0.f;
+}
+
+float RigidBody::get_restitution() const
+{
+    if (body_ != nullptr) {
+        if (body_->GetFixtureList() != nullptr) {
+            return body_->GetFixtureList()->GetRestitution();
+        }
+    }
+    return 0.f;
+}
+
+float RigidBody::get_friction() const
+{
+    if (body_ != nullptr) {
+        if (body_->GetFixtureList() != nullptr) {
+            return body_->GetFixtureList()->GetFriction();
+        }
+    }
+    return 0.f;
+}
+
+float RigidBody::get_density() const
+{
+    if (body_ != nullptr) {
+        if (body_->GetFixtureList() != nullptr) {
+            return body_->GetFixtureList()->GetDensity();
+        }
     }
     return 0.f;
 }

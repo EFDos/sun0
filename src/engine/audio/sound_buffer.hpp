@@ -28,7 +28,7 @@
 
 namespace sun {
 
-class SUN_API SoundBuffer : public SoundSource
+class SUN_API SoundBuffer final : public SoundSource
 {
 public:
 
@@ -37,6 +37,8 @@ public:
     SoundBuffer(Context&);
 
     ~SoundBuffer();
+
+    void init() override;
 
     uint get_sample_rate() const;
 

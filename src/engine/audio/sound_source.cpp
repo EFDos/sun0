@@ -32,16 +32,11 @@ SoundSource::SoundSource(Context& context)
 :   Component(context),
     source_(0)
 {
-    alGenSources(1, &source_);
-    alSourcei(source_, AL_BUFFER, 0);
 }
 
 SoundSource::SoundSource(const SoundSource& other)
 :   Component(other.context_)
 {
-    alGenSources(1, &source_);
-    alSourcei(source_, AL_BUFFER, 0);
-
     set_pitch(other.get_pitch());
     set_volume(other.get_volume());
     set_position(other.get_position());
@@ -54,6 +49,14 @@ SoundSource::~SoundSource()
 {
     alSourcei(source_, AL_BUFFER, 0);
     alDeleteSources(1, &source_);
+}
+
+void SoundSource::init()
+{
+    Component::init();
+
+    alGenSources(1, &source_);
+    alSourcei(source_, AL_BUFFER, 0);
 }
 
 void SoundSource::set_pitch(float pitch)

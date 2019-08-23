@@ -106,40 +106,47 @@ void ScriptContext::register_script(Script* script, const std::string& filename,
         }
 
         ScriptRegister  script_reg;
+
+        auto init_callback = lua_state_[filename + "_init"] =
+            lua_state_["init"];
+
         auto update_callback = lua_state_[filename + "_update"] =
             lua_state_["update"];
 
         auto event_callback = lua_state_[filename + "_handle_events"] =
             lua_state_["handle_events"];
 
-        if (update_callback != sol::nil)
-        {
-            script_reg.update_callback = update_callback;
-            script->set_update_callback(update_callback);
-        } else {
-            sun_logf_warn("Failed to load \"update\" function from script \"%s\"",
-            filename.c_str());
+        if (init_callback != sol::nil) {
+            script_reg.init_callback = init_callback;
+            script->init_callback_ = init_callback;
         }
 
-        if (event_callback != sol::nil)
-        {
+        if (update_callback != sol::nil) {
+            script_reg.update_callback = update_callback;
+            script->update_callback_ = update_callback;
+        }
+
+        if (event_callback != sol::nil) {
             script_reg.event_callback = event_callback;
-            script->set_event_callback(event_callback);
+            script->event_callback_ = event_callback;
         }
 
         script_registry_[filename] = script_reg;
     } else {
-        script->set_update_callback(it->second.update_callback);
-        script->set_event_callback(it->second.event_callback);
+        script->init_callback_ = it->second.init_callback;
+        script->update_callback_ = it->second.update_callback;
+        script->event_callback_ = it->second.event_callback;
     }
 }
 
-Component* ScriptContext::create_component_(uint type_hash, uint id)
+Component* ScriptContext::create_component_(uint type_hash, uint id, bool init)
 {
     if (type_hash == Script::get_static_type_hash()) {
         Script* script = new Script(context_);
+        if (init) {
+            script->init();
+        }
         script->set_id(id);
-        script->set_script_context(this);
         scripts_.push_back(script);
         return static_cast<Component*>(script);
     }

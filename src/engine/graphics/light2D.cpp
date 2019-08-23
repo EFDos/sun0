@@ -36,6 +36,13 @@ Light2D::Light2D(Context& context)
     color_(sun::Color::SUN)
 {}
 
+void Light2D::init()
+{
+    renderer_ = context_.get_system<Renderer>();
+
+    Component::init();
+}
+
 void Light2D::update(float delta)
 {
     if (owning_entity_ == nullptr) {
@@ -50,46 +57,40 @@ void Light2D::update(float delta)
 
 void Light2D::update_intensity_()
 {
-    auto renderer = context_.get_system<Renderer>();
-
     if (rend_color_id_ == -1) {
         if (owning_entity_ != nullptr) {
             pos_ = owning_entity_->get_position();
         }
-        rend_color_id_ = renderer->add_light(pos_,
+        rend_color_id_ = renderer_->add_light(pos_,
             Color::to_colorf(color_),
             intensity_);
     } else {
-        renderer->update_light(rend_color_id_, intensity_);
+        renderer_->update_light(rend_color_id_, intensity_);
     }
 }
 
 void Light2D::update_color_()
 {
-    auto renderer = context_.get_system<Renderer>();
-
     if (rend_color_id_ == -1) {
         if (owning_entity_ != nullptr) {
             pos_ = owning_entity_->get_position();
         }
-        rend_color_id_ = renderer->add_light(pos_,
+        rend_color_id_ = renderer_->add_light(pos_,
             Color::to_colorf(color_),
             intensity_);
     } else {
-        renderer->update_light(rend_color_id_, Color::to_colorf(color_));
+        renderer_->update_light(rend_color_id_, Color::to_colorf(color_));
     }
 }
 
 void Light2D::update_position_()
 {
-    auto renderer = context_.get_system<Renderer>();
-
     if (rend_color_id_ == -1) {
-        rend_color_id_ = renderer->add_light(pos_,
+        rend_color_id_ = renderer_->add_light(pos_,
             Color::to_colorf(color_),
             intensity_);
     } else {
-        renderer->update_light(rend_color_id_, pos_);
+        renderer_->update_light(rend_color_id_, pos_);
     }
 }
 

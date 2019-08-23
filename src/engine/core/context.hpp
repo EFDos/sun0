@@ -64,11 +64,11 @@ public:
     }
 
     template<typename T>
-    T* create_component(uint id = 0)
+    T* create_component(uint id = 0, bool init = true)
     {
         for (auto sys : systems_) {
             if (sys.second->handles_component<T>()) {
-                return sys.second->create_component<T>(id);
+                return sys.second->create_component<T>(id, init);
             }
         }
         return nullptr;

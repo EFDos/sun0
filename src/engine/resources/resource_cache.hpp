@@ -79,7 +79,7 @@ public:
 
 
 
-    Component* create_component_(uint type_hash, uint id) override {
+    Component* create_component_(uint type_hash, uint id, bool init) override {
         return nullptr;
     }
 

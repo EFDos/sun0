@@ -141,7 +141,7 @@ void PhysicsServer::set_update_rate(float timestep, int vel_it, int pos_it)
     pos_iterations_ = pos_it;
 }
 
-Component* PhysicsServer::create_component_(uint type_hash, uint id)
+Component* PhysicsServer::create_component_(uint type_hash, uint id, bool init)
 {
     Component* comp = nullptr;
     if (type_hash == RigidBody::get_static_type_hash()) {
@@ -150,8 +150,10 @@ Component* PhysicsServer::create_component_(uint type_hash, uint id)
     }
     if (type_hash == Raycast::get_static_type_hash()) {
         comp = new Raycast(context_);
-        //TODO: We could set the physics server pointer manually here..
         raycasts_.push_back(static_cast<Raycast*>(comp));
+    }
+    if (init) {
+        comp->init();
     }
     comp->set_id(id);
     return comp;

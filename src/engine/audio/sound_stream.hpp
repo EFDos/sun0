@@ -62,6 +62,8 @@ public:
 
     ~SoundStream();
 
+    void init() override;
+
     bool load(const std::string&);
 
     void play() override;

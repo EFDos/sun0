@@ -43,7 +43,9 @@ public:
 
     ~SpriteBatch();
 
-    void draw(Renderer* r) const override;
+    void init() override;
+
+    void draw(Renderer* r) override;
 
     void set_texture(const Texture* tex);
 

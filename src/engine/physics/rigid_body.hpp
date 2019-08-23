@@ -51,6 +51,8 @@ public:
 
     RigidBody(Context&);
 
+    void init() override;
+
     void create(const shapes::Shape& shp, Type t);
 
     void update(float delta) override;

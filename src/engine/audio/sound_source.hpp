@@ -42,6 +42,8 @@ public:
 
     virtual ~SoundSource();
 
+    virtual void init() override;
+
     virtual void play() = 0;
 
     virtual void pause() = 0;

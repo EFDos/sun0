@@ -94,6 +94,9 @@ Animation::Animation(Context& context)
 :   Component(context)
 {}
 
+void Animation::init()
+{}
+
 void Animation::update(float delta)
 {
     for (auto& track : tracks_) {

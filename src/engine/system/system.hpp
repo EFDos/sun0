@@ -49,8 +49,8 @@ public:
     virtual void handle_events(Event& event);
 
     template<typename T>
-    T* create_component(uint id) {
-        return static_cast<T*>(create_component_(T::get_static_type_hash(), id));
+    T* create_component(uint id, bool init) {
+        return static_cast<T*>(create_component_(T::get_static_type_hash(), id, init));
     }
 
     template<typename T>
@@ -74,7 +74,7 @@ public:
 
 protected:
 
-    virtual Component* create_component_(uint type_hash, uint id) = 0;
+    virtual Component* create_component_(uint type_hash, uint id, bool init) = 0;
 
     virtual bool handles_component_(uint type_hash) = 0;
 

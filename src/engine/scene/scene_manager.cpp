@@ -49,11 +49,14 @@ void SceneManager::update(float delta)
     }
 }
 
-Component* SceneManager::create_component_(uint type_hash, uint id)
+Component* SceneManager::create_component_(uint type_hash, uint id, bool init)
 {
     if (type_hash == Animation::get_static_type_hash()) {
         Animation* anim = new Animation(context_);
         animations_.push_back(anim);
+        if (init) {
+            anim->init();
+        }
         return static_cast<Component*>(anim);
     }
     return nullptr;

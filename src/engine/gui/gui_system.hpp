@@ -68,7 +68,7 @@ public:
 
 private:
 
-    virtual Component* create_component_(uint type_hash, uint id) override;
+    virtual Component* create_component_(uint type_hash, uint id, bool init) override;
 
     virtual bool handles_component_(uint type_hash) override;
 

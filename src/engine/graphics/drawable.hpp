@@ -36,11 +36,11 @@ class SUN_API Drawable : public Component
 public:
 
     Drawable(Context& context)
-    :   Component(context), transform_(nullptr), shader_(nullptr) {}
+    :   Component(context), dirty_(true), transform_(nullptr), shader_(nullptr) {}
 
     virtual ~Drawable() {}
 
-    virtual void draw(Renderer*) const = 0;
+    virtual void draw(Renderer*) = 0;
 
     /*recti get_global_bounding_rect() const {
         recti rect(bounding_rect_);
@@ -65,6 +65,8 @@ public:
 protected:
 
     virtual void update_geometry_() = 0;
+
+    bool dirty_;
 
     Recti   bounding_rect_;
 

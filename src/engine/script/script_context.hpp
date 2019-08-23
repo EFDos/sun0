@@ -63,7 +63,7 @@ private:
     {
         //std::string file;
 
-        //std::function<void (sol::table&)>          init_callback;
+        std::function<void (Entity*)>          init_callback;
         std::function<void (Entity*, Event&)>   event_callback;
         std::function<void (Entity*, double)>   update_callback;
         //std::function<void (sol::table&,
@@ -72,7 +72,7 @@ private:
         //                    sol::table&&)>     message_callback;
     };
 
-    Component* create_component_(uint type_hash, uint id) override;
+    Component* create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
 

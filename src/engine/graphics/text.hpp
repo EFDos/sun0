@@ -34,7 +34,7 @@ namespace sun {
 
 class Font;
 
-class SUN_API Text : public Drawable
+class SUN_API Text final : public Drawable
 {
 public:
 
@@ -42,28 +42,30 @@ public:
 
     Text(Context& context);
 
-    void draw(Renderer*) const override;
+    void init() override;
+
+    void draw(Renderer*) override;
 
     void set_text(const std::string& p_str) {
         if (p_str != str_) {
             str_ = p_str;
-            update_geometry_();
+            dirty_ = true;
         }
     }
 
     inline void set_color(const Color& c) {
         color_ = c;
-        update_geometry_();
+        dirty_ = true;
     }
 
     inline void set_font(Font* f) {
         font_ = f;
-        update_geometry_();
+        dirty_ = true;
     }
 
     inline void set_character_size(uint size) {
         font_size_ = size;
-        update_geometry_();
+        dirty_ = true;
     }
 
 private:

@@ -40,14 +40,23 @@ Text::Text(Context& context)
     vertices_(nullptr),
     indices_(nullptr),
     font_(nullptr)
+{}
+
+void Text::init()
 {
     auto r = context_.get_system<Renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 0);
     indices_ = r->create_index_buffer(0);
+
+    Component::init();
 }
 
 void Text::update_geometry_()
 {
+    if (!dirty_) {
+        return;
+    }
+
     if (font_ == nullptr) {
         sun_log_warn("Text has no font defined");
         return;
@@ -140,10 +149,14 @@ void Text::update_geometry_()
         i_offset += 6;
         i_value_offset += 4;
     }
+
+    dirty_ = false;
 }
 
-void Text::draw(Renderer* renderer) const
+void Text::draw(Renderer* renderer)
 {
+    update_geometry_();
+
     if (font_ == nullptr ||
         vertices_->get_vertex_count() == 0 ||
         indices_->get_index_count() == 0) {

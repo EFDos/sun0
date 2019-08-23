@@ -40,11 +40,7 @@ Sprite::Sprite(Context& context)
     vertices_(nullptr),
     indices_(nullptr),
     texture_(nullptr)
-{
-    auto r = context_.get_system<Renderer>();
-    vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4);
-    indices_ = r->create_index_buffer(6);
-}
+{}
 
 Sprite::~Sprite()
 {
@@ -52,8 +48,19 @@ Sprite::~Sprite()
     delete indices_;
 }
 
-void Sprite::draw(Renderer* renderer) const
+void Sprite::init()
 {
+    auto r = context_.get_system<Renderer>();
+    vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4);
+    indices_ = r->create_index_buffer(6);
+
+    Component::init();
+}
+
+void Sprite::draw(Renderer* renderer)
+{
+    update_geometry_();
+
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
     } else if (transform_ != nullptr) {
@@ -79,13 +86,13 @@ void Sprite::set_texture(const Texture* tex)
         set_frame(frame_);
     }
 
-    update_geometry_();
+    dirty_ = true;
 }
 
 void Sprite::set_color(const Color& color)
 {
     color_ = Color::to_colorf(color);
-    update_geometry_();
+    dirty_ = true;
 }
 
 void Sprite::set_frames(uint h_frames, uint v_frames)
@@ -100,7 +107,7 @@ void Sprite::set_frames(uint h_frames, uint v_frames)
 
     set_frame(0);
 
-    update_geometry_();
+    dirty_ = true;
 }
 
 void Sprite::set_frame(uint frame)
@@ -127,6 +134,10 @@ void Sprite::set_frame(uint frame)
 
 void Sprite::update_geometry_()
 {
+    if (!dirty_) {
+        return;
+    }
+
     if (texture_ == nullptr) {
         sun_log_warn("Sprite::update_geometry_: sprite has no texture set");
         return;
@@ -176,6 +187,8 @@ void Sprite::update_geometry_()
 
     vertices_->fill_data(0, 4, quad_verts);
     indices_->fill_data(0, 6, indices_data);
+
+    dirty_ = false;
 }
 
 void Sprite::build_properties()

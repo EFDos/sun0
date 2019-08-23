@@ -29,8 +29,15 @@ namespace sun {
 
 Raycast::Raycast(Context& context)
 :   Component(context),
-    physics_server_ptr_(context.get_system<PhysicsServer>())
+    physics_server_ptr_(nullptr)
 {}
+
+void Raycast::init()
+{
+    physics_server_ptr_ = context_.get_system<PhysicsServer>();
+
+    Component::init();
+}
 
 bool Raycast::is_colliding() const
 {

@@ -82,13 +82,15 @@ private:
     std::vector<KeyFrame>   track_;
 };
 
-class Animation : public Component
+class Animation final : public Component
 {
 public:
 
     SUN_COMPONENT_TYPE(Animation)
 
     Animation(Context&);
+
+    void init() override;
 
     void update(float delta) override;
 

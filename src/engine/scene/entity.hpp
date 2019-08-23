@@ -44,7 +44,7 @@ public:
     template<typename T>
     T* create_component(const std::string& name = "") {
         auto comp = context_
-            .create_component<T>(std::hash<std::string>{}(name));
+            .create_component<T>(std::hash<std::string>{}(name), false);
         if (comp != nullptr) {
             comp->set_owning_entity(this);
             components_.push_back(comp);
@@ -60,6 +60,8 @@ public:
         comp = static_cast<T*>(get_component_(hash));
         return comp;
     }
+
+    void init_components(bool recursive = false);
 
     void build_properties() override;
 

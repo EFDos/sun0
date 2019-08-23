@@ -43,6 +43,11 @@ RigidBody::RigidBody(Context& context)
 {
 }
 
+void RigidBody::init()
+{
+    Component::init();
+}
+
 void RigidBody::create(const shapes::Shape& shape, Type t)
 {
     if (t == Type::Undefined) {

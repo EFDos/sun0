@@ -37,6 +37,8 @@ public:
 
     Raycast(Context&);
 
+    void init() override;
+
     inline void cast_to(const Vector2f& point) {
         cast_point_ = point;
     }

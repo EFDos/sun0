@@ -34,6 +34,8 @@ public:
 
     Entity* create_entity(const std::string& name = "");
 
+    void init();
+
     void clear();
 
     inline uint64 get_available_id() {

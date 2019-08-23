@@ -163,7 +163,7 @@ private:
     std::vector<RigidBody*> bodies_;
     std::vector<Raycast*>   raycasts_;
 
-    Component* create_component_(uint type_hash, uint id) override;
+    Component* create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
 };

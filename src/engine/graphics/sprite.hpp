@@ -46,7 +46,9 @@ public:
     // from Animatable
     void build_properties() override;
 
-    void draw(Renderer* renderer) const override;
+    void init() override;
+
+    void draw(Renderer* renderer) override;
 
     void set_texture(const Texture* tex);
 
@@ -58,7 +60,7 @@ public:
 
     inline void set_rect(const Rectu& r) {
         rect_ = r;
-        update_geometry_();
+        dirty_ = true;
     }
 
 private:

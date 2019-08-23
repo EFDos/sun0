@@ -78,13 +78,13 @@ bool SoundStream::load(const std::string& filepath)
         return false;
     }
 
-    initialize_();
-
     return true;
 }
 
-void SoundStream::initialize_()
+void SoundStream::init()
 {
+    SoundSource::init();
+
     decoder_->open(file_);
 
     auto& info = decoder_->get_info();

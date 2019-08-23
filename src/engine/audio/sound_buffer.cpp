@@ -33,12 +33,18 @@ SoundBuffer::SoundBuffer(Context& context)
     sample_count_(0),
     duration_(0.f)
 {
-    alGenBuffers(1, &al_buffer_);
 }
 
 SoundBuffer::~SoundBuffer()
 {
     alDeleteBuffers(1, &al_buffer_);
+}
+
+void SoundBuffer::init()
+{
+    SoundSource::init();
+
+    alGenBuffers(1, &al_buffer_);
 }
 
 uint SoundBuffer::get_sample_rate() const

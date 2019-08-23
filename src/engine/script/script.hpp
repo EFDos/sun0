@@ -30,13 +30,15 @@ namespace sun {
 
 class ScriptContext;
 
-class SUN_API Script : public Component
+class SUN_API Script final : public Component
 {
 public:
 
     SUN_COMPONENT_TYPE(Script)
 
     Script(Context&);
+
+    void init() override;
 
     void handle_events(Event&) override;
 
@@ -46,28 +48,19 @@ public:
 
     void reload();
 
-    inline void set_script_context(ScriptContext* context) {
-        script_context_ = context;
-    }
-
 private:
 
     friend class ScriptContext;
 
     using UpdateCallback = std::function<void (Entity*, double)>;
     using EventCallback = std::function<void (Entity*, Event&)>;
-
-    inline void set_update_callback(UpdateCallback callback) {
-        dt_update_callback_ = callback;
-    }
-
-    inline void set_event_callback(EventCallback callback) {
-        hndl_ev_callback_ = callback;
-    }
+    using InitCallback = std::function<void (Entity*)>;
 
     ScriptContext*  script_context_;
-    UpdateCallback  dt_update_callback_;
-    EventCallback   hndl_ev_callback_;
+
+    InitCallback    init_callback_;
+    UpdateCallback  update_callback_;
+    EventCallback   event_callback_;
 
     std::string     filename_;
 };

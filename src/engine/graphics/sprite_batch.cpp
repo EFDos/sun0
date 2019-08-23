@@ -37,11 +37,16 @@ SpriteBatch::SpriteBatch(Context& context)
     vertices_(nullptr),
     indices_(nullptr),
     texture_(nullptr)
+{}
+
+void SpriteBatch::init()
 {
     auto r = context_.get_system<Renderer>();
     // For now we'll use a fixed maximum of 1024 sprite_batchs
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4 * 1024);
     indices_ = r->create_index_buffer(6 * 1024);
+
+    Component::init();
 }
 
 SpriteBatch::~SpriteBatch()
@@ -50,7 +55,7 @@ SpriteBatch::~SpriteBatch()
     delete indices_;
 }
 
-void SpriteBatch::draw(Renderer* renderer) const
+void SpriteBatch::draw(Renderer* renderer)
 {
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
@@ -67,16 +72,22 @@ void SpriteBatch::set_texture(const Texture* tex)
     }
 
     texture_ = tex;
-    vertices_->resize(4 * 1024);
+    /*vertices_->resize(4 * 1024);
     indices_->resize(6 * 1024);
     vertex_offset_ = 0;
-    index_offset_ = 0;
+    index_offset_ = 0;*/
 }
 
 void SpriteBatch::add_sprite_rect(const Vector2f& pos,
                                    const Recti& p_rect,
                                    const Color& p_color)
 {
+
+    //TODO: Fix SpriteBatch
+    if (!is_initialized()) {
+        return;
+    }
+
     struct vertex_def {
         float x, y;
         float u, v;

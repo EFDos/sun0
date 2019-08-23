@@ -113,7 +113,7 @@ public:
     virtual void clear() = 0;
 
     // Drawable draw-call
-    virtual void draw(const Drawable&) const = 0;
+    virtual void draw(Drawable&) const = 0;
 
     // Low-level draw-calls
     virtual void draw(const VertexBuffer& buffer,
@@ -209,7 +209,7 @@ protected:
 
 private:
 
-    Component* create_component_(uint type_hash, uint id) override;
+    Component* create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
 
@@ -219,7 +219,7 @@ private:
 
     std::vector<Camera*>    cameras_;
     std::vector<Light2D*>   lights_;
-    std::vector<Drawable*>  drawables_;
+    mutable std::vector<Drawable*>  drawables_;
 };
 
 }

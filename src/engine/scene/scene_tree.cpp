@@ -33,6 +33,11 @@ SceneTree::SceneTree(Context& context)
     root_.set_scene(this);
 }
 
+void SceneTree::init()
+{
+    root_.init_components(true);
+}
+
 Entity* SceneTree::create_entity(const std::string& name)
 {
     return root_.create_child(name);

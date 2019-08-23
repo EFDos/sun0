@@ -39,6 +39,14 @@ Camera::Camera(Context& context)
 {
 }
 
+void Camera::init()
+{
+    renderer_ = context_.get_system<Renderer>();
+    viewport_.set_size(renderer_->get_viewport().get_size());
+
+    Component::init();
+}
+
 void Camera::update(float delta)
 {
     if (owning_entity_ != nullptr && follow_)

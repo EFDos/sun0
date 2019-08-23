@@ -229,7 +229,7 @@ const char* AudioServer::get_alc_error(ALCenum error) const noexcept
     }
 }
 
-Component* AudioServer::create_component_(uint type_hash, uint id)
+Component* AudioServer::create_component_(uint type_hash, uint id, bool init)
 {
     Component* comp = nullptr;
     if (type_hash == SoundStream::get_static_type_hash()) {
@@ -237,6 +237,9 @@ Component* AudioServer::create_component_(uint type_hash, uint id)
         sound_sources_.push_back(static_cast<SoundStream*>(comp));
     }
     comp->set_id(id);
+    if (init) {
+        comp->init();
+    }
     return comp;
 }
 

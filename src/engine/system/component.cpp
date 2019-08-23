@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  camera.hpp                                                           */
+/*  component.cpp                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                            SUN-0 Engine                               */
@@ -21,91 +21,78 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*                                                                       */
 /*************************************************************************/
-#pragma once
-
-#include "system/component.hpp"
-#include "common/types.hpp"
+#include "component.hpp"
 
 namespace sun {
 
-class Renderer;
+Component::Component(Context& context)
+:   Object(context),
+    id_(0),
+    flags_(0x0E),
+    owning_entity_(nullptr)
+{}
 
-class SUN_API Camera final : public Component
+void Component::init()
 {
-public:
+    flags_ |= (uint8)Property::Initialized;
+}
 
-    SUN_COMPONENT_TYPE(Camera)
+void Component::handle_events(Event&)
+{}
 
-    Camera(Context&);
+void Component::update(float delta)
+{}
 
-    void init() override;
+void Component::queue_delete()
+{
+    flags_ |= (uint8)Property::Terminal;
+}
 
-    void update(float delta) override;
+void Component::set_update(bool update)
+{
+    update ? flags_ |= (uint8)Property::Update :
+        flags_ &= ~(uint8)Property::Update;
+}
 
-    inline void set_viewport_size(const Vector2f& size) {
-        viewport_.set_size(size);
-    }
+void Component::set_handle_event(bool event)
+{
+    event ? flags_ |= (uint8)Property::HandleEvent :
+        flags_ &= ~(uint8)Property::HandleEvent;
+}
 
-    inline void set_viewport_size(float w, float h) {
-        viewport_.set_size({w, h});
-    }
+void Component::set_draw(bool draw)
+{
+    draw ? flags_ |= (uint8)Property::Draw :
+        flags_ &= ~(uint8)Property::Draw;
+}
 
-    inline void set_follow(bool follow) {
-        follow_ = follow;
-    }
+bool Component::get_update() const
+{
+    return (flags_ & ((uint8)Property::Update | (uint8)Property::Initialized) &&
+            !(flags_ & (uint8)Property::Terminal));
+}
 
-    inline void set_hard_limit(bool hard_limit) {
-        hard_limit_ = hard_limit;
-    }
+bool Component::get_handle_event() const
+{
+    return (flags_ & ((uint8)Property::HandleEvent | (uint8)Property::Initialized) &&
+            !(flags_ & (uint8)Property::Terminal));
+}
 
-    inline void set_follow_speed(float speed) {
-        follow_speed_ = speed;
-    }
+bool Component::get_draw() const
+{
+    return (flags_ & (uint8)Property::Draw &&
+            flags_ & (uint8)Property::Initialized &&
+            !(flags_ & (uint8)Property::Terminal));
+}
 
-    inline void set_follow_offset(const Recti& offset) {
-        offset_ = offset;
-    }
+bool Component::is_terminal() const
+{
+    return flags_ & (uint8)Property::Terminal;
+}
 
-    inline void set_limits(const Recti& limits) {
-        limit_ = limits;
-    }
+bool Component::is_initialized() const
+{
+    return flags_ & (uint8)Property::Initialized;
+}
 
-    inline bool get_follow() const {
-        return follow_;
-    }
-
-    inline bool get_hard_limit() const {
-        return hard_limit_;
-    }
-
-    inline float get_follow_speed() const {
-        return follow_speed_;
-    }
-
-    inline const Recti& get_follow_offset() const {
-        return offset_;
-    }
-
-    inline const Recti& get_limits() const {
-        return limit_;
-    }
-
-    Vector2f get_center() const;
-
-private:
-
-    Renderer*   renderer_;
-
-    Rectf   viewport_;
-    Recti   offset_;
-    Recti   limit_;
-
-    float   follow_speed_;
-
-    bool    follow_;
-    bool    hard_limit_;
-
-    Matrix4 transform_;
-};
-
-} // sun
+}

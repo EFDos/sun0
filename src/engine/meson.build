@@ -25,6 +25,7 @@ sun_lib_src = [
   'core/input/keyboard.cpp',
   #'core/input/input_map.cpp',
   'system/system.cpp',
+  'system/component.cpp',
   'resources/resource.cpp',
   'resources/resource_cache.cpp',
   'audio/decoders/vorbis_decoder.cpp',

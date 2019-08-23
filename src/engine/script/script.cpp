@@ -23,31 +23,50 @@
 /*************************************************************************/
 #include "script.hpp"
 #include "script_context.hpp"
+#include "core/context.hpp"
 
 namespace sun {
 
 Script::Script(Context& context)
-:   Component(context)
+:   Component(context),
+    script_context_(nullptr)
 {}
+
+void Script::init()
+{
+    script_context_ = context_.get_system<ScriptContext>();
+
+    if (!filename_.empty()) {
+        script_context_->register_script(this, filename_);
+    }
+
+    if (init_callback_ != nullptr) {
+        init_callback_(owning_entity_);
+    }
+
+    Component::init();
+}
 
 void Script::handle_events(Event& event)
 {
-    if (hndl_ev_callback_ != nullptr) {
-        hndl_ev_callback_(owning_entity_, event);
+    if (event_callback_ != nullptr) {
+        event_callback_(owning_entity_, event);
     }
 }
 
 void Script::update(float delta)
 {
-    if (dt_update_callback_ != nullptr) {
-        dt_update_callback_(owning_entity_, delta);
+    if (update_callback_ != nullptr) {
+        update_callback_(owning_entity_, delta);
     }
 }
 
 void Script::load(const std::string& filename)
 {
-    script_context_->register_script(this, filename);
     filename_ = filename;
+    if (script_context_ != nullptr) {
+        script_context_->register_script(this, filename);
+    }
 }
 
 void Script::reload()

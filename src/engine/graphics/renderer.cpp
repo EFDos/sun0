@@ -333,15 +333,16 @@ void Renderer::draw_polygon(uint vert_count,
     }
 }
 
-Component* Renderer::create_component_(uint type_hash, uint id)
+Component* Renderer::create_component_(uint type_hash, uint id, bool init)
 {
     Component* comp = nullptr;
     if (type_hash == Camera::get_static_type_hash()) {
         Camera* cam = new Camera(context_);
-        cam->set_viewport_size(viewport_.get_size());
-        cam->set_renderer(this);
         cameras_.push_back(cam);
         comp = cam;
+        if (init) {
+            comp->init();
+        }
         comp->set_id(id);
         return comp;
     }
@@ -349,7 +350,10 @@ Component* Renderer::create_component_(uint type_hash, uint id)
         Light2D* light = new Light2D(context_);
         lights_.push_back(light);
         comp = light;
-        light->set_id(id);
+        if (init) {
+            comp->init();
+        }
+        comp->set_id(id);
         return comp;
     }
     if (type_hash == Sprite::get_static_type_hash()) {
@@ -365,6 +369,9 @@ Component* Renderer::create_component_(uint type_hash, uint id)
         comp = new Shape2D(context_);
     }
     drawables_.push_back(static_cast<Drawable*>(comp));
+    if (init) {
+        comp->init();
+    }
     comp->set_id(id);
     return comp;
 }

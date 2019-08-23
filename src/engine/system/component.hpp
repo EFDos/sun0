@@ -37,36 +37,26 @@ class SUN_API Component : public Object, public Animatable
 public:
 
     enum class Property {
-        Update          =   0x01,
-        HandleEvent     =   0x02,
-        Draw            =   0x04,
-        Terminal        =   0x08
+        Initialized     =   0x01,
+        Update          =   0x02,
+        HandleEvent     =   0x04,
+        Draw            =   0x08,
+        Terminal        =   0x10
     };
 
-    virtual void handle_events(Event&)
-    {}
+    virtual void init();
 
-    virtual void update(float delta)
-    {}
+    virtual void handle_events(Event&);
 
-    inline void queue_delete() {
-        flags_ |= (uint8)Property::Terminal;
-    }
+    virtual void update(float delta);
 
-    inline void set_update(bool update) {
-        update ? flags_ |= (uint8)Property::Update :
-            flags_ &= ~(uint8)Property::Update;
-    }
+    void queue_delete();
 
-    inline void set_handle_event(bool event) {
-        event ? flags_ |= (uint8)Property::HandleEvent :
-            flags_ &= ~(uint8)Property::HandleEvent;
-    }
+    void set_update(bool update);
 
-    inline void set_draw(bool draw) {
-        draw ? flags_ |= (uint8)Property::Draw :
-            flags_ &= ~(uint8)Property::Draw;
-    }
+    void set_handle_event(bool event);
+
+    void set_draw(bool draw);
 
     inline void set_owning_entity(Entity* ent) {
         owning_entity_ = ent;
@@ -76,24 +66,15 @@ public:
         id_ = id;
     }
 
-    inline bool get_update() {
-        return (flags_ & (uint8)Property::Update &&
-                !(flags_ & (uint8)Property::Terminal));
-    }
+    bool get_update() const;
 
-    inline bool get_handle_event() {
-        return (flags_ & (uint8)Property::HandleEvent &&
-                !(flags_ & (uint8)Property::Terminal));
-    }
+    bool get_handle_event() const;
 
-    inline bool get_draw() {
-        return (flags_ & (uint8)Property::Draw &&
-                !(flags_ & (uint8)Property::Terminal));
-    }
+    bool get_draw() const;
 
-    inline bool is_terminal() {
-        return flags_ & (uint8)Property::Terminal;
-    }
+    bool is_terminal() const;
+
+    bool is_initialized() const;
 
     inline uint8 get_property_mask() {
         return flags_;
@@ -113,11 +94,7 @@ public:
 
 protected:
 
-    Component(Context& context)
-    :   Object(context),
-        id_(0),
-        flags_(0x07),
-        owning_entity_(nullptr) {}
+    Component(Context& context);
 
     virtual ~Component() {}
 

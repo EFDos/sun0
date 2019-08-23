@@ -29,6 +29,8 @@
 
 namespace sun {
 
+class Renderer;
+
 class SUN_API Light2D final : public Component
 {
 public:
@@ -36,6 +38,8 @@ public:
     SUN_COMPONENT_TYPE(Light2D)
 
     Light2D(Context&);
+
+    void init() override;
 
     void update(float delta) override;
 
@@ -69,6 +73,8 @@ private:
     int         rend_color_id_;
     float       intensity_;
     Color       color_;
+
+    Renderer*   renderer_;
 };
 
 }

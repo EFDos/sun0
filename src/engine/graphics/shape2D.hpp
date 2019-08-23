@@ -36,7 +36,7 @@ namespace shapes {
 class Shape;
 }
 
-class SUN_API Shape2D : public Drawable
+class SUN_API Shape2D final : public Drawable
 {
 public:
 
@@ -46,13 +46,15 @@ public:
 
     ~Shape2D();
 
-    void draw(Renderer* renderer) const override;
+    void init() override;
+
+    void draw(Renderer* renderer) override;
 
     void set_shape(const shapes::Shape& p_shape);
 
     inline void set_color(const Color& c) {
         color_ = c;
-        update_geometry_();
+        dirty_ = true;
     }
 
 private:

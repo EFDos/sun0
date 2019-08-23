@@ -42,10 +42,15 @@ Shape2D::Shape2D(Context& context)
     color_(sun::Color::WHITE),
     vertices_(nullptr),
     indices_(nullptr)
+{}
+
+void Shape2D::init()
 {
     auto r = context_.get_system<Renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 6, 0);
     indices_ = r->create_index_buffer(0);
+
+    Component::init();
 }
 
 Shape2D::~Shape2D()
@@ -77,11 +82,15 @@ void Shape2D::set_shape(const shapes::Shape& shape)
             );
             break;
     }
-    update_geometry_();
+    dirty_ = true;
 }
 
 void Shape2D::update_geometry_()
 {
+    if (!dirty_) {
+        return;
+    }
+
     if (shape_ == nullptr) {
         return;
     }
@@ -130,10 +139,14 @@ void Shape2D::update_geometry_()
     }
 
     vertices_->fill_data(0, shape_->get_point_count(), vertex_data.data());
+
+    dirty_ = false;
 }
 
-void Shape2D::draw(Renderer* renderer) const
+void Shape2D::draw(Renderer* renderer)
 {
+    update_geometry_();
+
     if (owning_entity_ != nullptr) {
         renderer->set_model_transform(owning_entity_->get_global_transform());
     } else if (transform_ != nullptr) {

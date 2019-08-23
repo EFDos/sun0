@@ -138,6 +138,19 @@ Entity::~Entity()
     clear_components();
 }
 
+void Entity::init_components(bool recursive)
+{
+    for (auto component : components_) {
+        component->init();
+    }
+
+    if (recursive) {
+        for (auto child : children_) {
+            child->init_components(true);
+        }
+    }
+}
+
 void Entity::build_properties()
 {
     properties_.push_back(std::hash<std::string>{}("position"));

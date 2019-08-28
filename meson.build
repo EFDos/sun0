@@ -1,5 +1,5 @@
 project('sun0', ['cpp', 'c'],
-  version: '1.1.7',
+  version: '1.1.8',
   meson_version: '>= 0.43.0',
   license: 'GPL3',
   default_options: 'cpp_std=c++17'

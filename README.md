@@ -7,7 +7,7 @@ The engine is built only upon open source technologies to target as many platfor
 
 * Main Development of the Sun-0 Engine by its' authors
 * Development of new features by the community, under the authors supervision
-[Version 1.1.6]
+[Version 1.1.8]
 
 ##How do I get set up?
 

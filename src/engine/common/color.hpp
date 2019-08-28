@@ -35,7 +35,7 @@ struct BaseColor
     T b;
     T a;
 
-    BaseColor(T p_r = 0, T p_g = 0, T p_b = 0, T p_a = 255) noexcept
+    constexpr BaseColor(T p_r = 0, T p_g = 0, T p_b = 0, T p_a = 255) noexcept
     : r(p_r), g(p_g), b(p_b), a(p_a) {}
 
     BaseColor(const BaseColor&) noexcept = default;
@@ -161,16 +161,16 @@ struct BaseColor
                 static_cast<float>(c.a / 255.f)};
     }
 
-    static BaseColor<uint8> RED;
-    static BaseColor<uint8> BLUE;
-    static BaseColor<uint8> GREEN;
-    static BaseColor<uint8> BLACK;
-    static BaseColor<uint8> WHITE;
-    static BaseColor<uint8> YELLOW;
-    static BaseColor<uint8> MAGENTA;
-    static BaseColor<uint8> SUN;
-    static BaseColor<uint8> LIGHT_GREY;
-    static BaseColor<uint8> DARK_GREY;
+    static const BaseColor<uint8> RED;
+    static const BaseColor<uint8> BLUE;
+    static const BaseColor<uint8> GREEN;
+    static const BaseColor<uint8> BLACK;
+    static const BaseColor<uint8> WHITE;
+    static const BaseColor<uint8> YELLOW;
+    static const BaseColor<uint8> MAGENTA;
+    static const BaseColor<uint8> SUN;
+    static const BaseColor<uint8> LIGHT_GREY;
+    static const BaseColor<uint8> DARK_GREY;
 };
 
 template<typename T>

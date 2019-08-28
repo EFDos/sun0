@@ -26,33 +26,33 @@
 namespace sun {
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::RED = BaseColor<uint8>(255);
+const BaseColor<uint8> BaseColor<uint8>::RED = BaseColor<uint8>(255);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::GREEN = BaseColor<uint8>(0, 255);
+const BaseColor<uint8> BaseColor<uint8>::GREEN = BaseColor<uint8>(0, 255);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::BLUE = BaseColor<uint8>(0, 0, 255);
+const BaseColor<uint8> BaseColor<uint8>::BLUE = BaseColor<uint8>(0, 0, 255);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::WHITE = BaseColor<uint8>(255, 255, 255);
+const BaseColor<uint8> BaseColor<uint8>::WHITE = BaseColor<uint8>(255, 255, 255);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::BLACK = BaseColor<uint8>();
+const BaseColor<uint8> BaseColor<uint8>::BLACK = BaseColor<uint8>();
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::YELLOW = BaseColor<uint8>(255, 255, 0);
+const BaseColor<uint8> BaseColor<uint8>::YELLOW = BaseColor<uint8>(255, 255, 0);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::MAGENTA = BaseColor<uint8>(255, 0, 255);
+const BaseColor<uint8> BaseColor<uint8>::MAGENTA = BaseColor<uint8>(255, 0, 255);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::SUN = BaseColor<uint8>(255, 255, 200);
+const BaseColor<uint8> BaseColor<uint8>::SUN = BaseColor<uint8>(255, 255, 200);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::LIGHT_GREY = BaseColor<uint8>(100, 100, 100);
+const BaseColor<uint8> BaseColor<uint8>::LIGHT_GREY = BaseColor<uint8>(100, 100, 100);
 
 template<>
-BaseColor<uint8> BaseColor<uint8>::DARK_GREY = BaseColor<uint8>(30, 30, 30);
+const BaseColor<uint8> BaseColor<uint8>::DARK_GREY = BaseColor<uint8>(30, 30, 30);
 
 }

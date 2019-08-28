@@ -42,14 +42,14 @@ Shape2D::Shape2D(Context& context)
     color_(sun::Color::WHITE),
     vertices_(nullptr),
     indices_(nullptr)
-{}
-
-void Shape2D::init()
 {
     auto r = context_.get_system<Renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 6, 0);
     indices_ = r->create_index_buffer(0);
+}
 
+void Shape2D::init()
+{
     Component::init();
 }
 

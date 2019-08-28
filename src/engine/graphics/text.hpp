@@ -50,6 +50,7 @@ public:
         if (p_str != str_) {
             str_ = p_str;
             dirty_ = true;
+            update_bounding_rect();
         }
     }
 
@@ -61,16 +62,20 @@ public:
     inline void set_font(Font* f) {
         font_ = f;
         dirty_ = true;
+        update_bounding_rect();
     }
 
     inline void set_character_size(uint size) {
         font_size_ = size;
         dirty_ = true;
+        update_bounding_rect();
     }
 
 private:
 
     void update_geometry_() override;
+
+    void update_bounding_rect();
 
     std::string     str_;
     Color           color_;

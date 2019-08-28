@@ -40,7 +40,11 @@ Sprite::Sprite(Context& context)
     vertices_(nullptr),
     indices_(nullptr),
     texture_(nullptr)
-{}
+{
+    auto r = context_.get_system<Renderer>();
+    vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4);
+    indices_ = r->create_index_buffer(6);
+}
 
 Sprite::~Sprite()
 {
@@ -50,10 +54,6 @@ Sprite::~Sprite()
 
 void Sprite::init()
 {
-    auto r = context_.get_system<Renderer>();
-    vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 4);
-    indices_ = r->create_index_buffer(6);
-
     Component::init();
 }
 

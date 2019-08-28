@@ -40,15 +40,54 @@ Text::Text(Context& context)
     vertices_(nullptr),
     indices_(nullptr),
     font_(nullptr)
-{}
-
-void Text::init()
 {
     auto r = context_.get_system<Renderer>();
     vertices_ = r->create_vertex_buffer(sizeof(float) * 8, 0);
     indices_ = r->create_index_buffer(0);
+}
 
+void Text::init()
+{
     Component::init();
+}
+
+void Text::update_bounding_rect()
+{
+    if (font_ == nullptr) {
+        return;
+    }
+
+    float hspace = (float)font_->get_glyph(' ', font_size_).advance;
+    float vspace = (float)font_->get_line_spacing(font_size_);
+    float x = 0.f, y = font_size_;
+    char prev_char = 0;
+    Rectf last_glyph_rect;
+
+    for (auto c : str_)
+    {
+        x += font_->get_kerning(prev_char, c, font_size_);
+        prev_char = c;
+
+        if(c == ' ' || c == '\n' || c == '\t')
+        {
+            switch(c)
+            {
+                case ' ': x += hspace; break;
+                case '\t': x += hspace * 4; break;
+                case '\n': y += vspace; x = 0.f; break;
+            }
+            continue;
+        }
+
+        const Font::Glyph& g = font_->get_glyph(c, font_size_);
+
+        x += g.advance + g.rect.w / 6.f;
+
+        last_glyph_rect = g.rect;
+    }
+
+    bounding_rect_.w = x + last_glyph_rect.x + last_glyph_rect.w;
+    bounding_rect_.h = y + last_glyph_rect.y + last_glyph_rect.h;
 }
 
 void Text::update_geometry_()

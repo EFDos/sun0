@@ -118,6 +118,11 @@ void Application::on_event(Event& e)
 	            script_context_->hot_reload();
 	        }
 	    }
+	    if (e.key.code == keyboard::Key::D && e.key.control) {
+	        if (physics_ != nullptr) {
+	            physics_->toggle_debug_draw();
+	        }
+	    }
 	}
 	#endif
 

@@ -99,8 +99,8 @@ public:
 
     void set_update_rate(float timestep, int vel_it, int pos_it);
 
-    inline void set_debug_draw(bool b) {
-        debug_draw_ = b;
+    inline void toggle_debug_draw() {
+        debug_draw_ = !debug_draw_;
     }
 
     static constexpr uint   DEFAULT_METER = 64;

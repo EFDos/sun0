@@ -80,6 +80,7 @@ void ScriptContext::hot_reload()
     for (auto s : scripts_) {
         if (!s->is_terminal()) {
             s->reload();
+            s->init();
             ++i;
         }
     }

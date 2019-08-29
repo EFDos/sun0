@@ -8,12 +8,29 @@ project('sun0', ['cpp', 'c'],
 version_codename = 'Summer Beta'
 version_str = meson.project_version()
 
-sun_includes = include_directories(
-  './src/thirdparty',
-  './src/engine',
-  '/usr/include/freetype2',
-  '/usr/include/luajit-2.1'
+system = host_machine.system()
+message('Detected OS: ' + system)
+
+sun_includes = []
+sun_depends = []
+
+if system == 'linux'
+  sun_includes = include_directories(
+    './src/thirdparty',
+    './src/engine',
+    '/usr/include/freetype2',
+    '/usr/include/luajit-2.1'
+  )
+endif
+
+if system == 'haiku'
+  sun_includes = include_directories(
+    './src/thirdparty',
+    './src/engine',
+    '/boot/system/develop/headers',
+    '/boot/system/develop/headers/freetype2',
 )
+endif
 
 message('source root is: ' + meson.current_source_dir())
 

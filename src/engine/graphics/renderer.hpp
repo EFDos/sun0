@@ -25,6 +25,7 @@
 
 #include "system/system.hpp"
 #include "common/color.hpp"
+#include "math/matrix4.hpp"
 #include "math/rect.hpp"
 #include "framebuffer.hpp"
 
@@ -34,7 +35,6 @@ class Context;
 
 class Drawable;
 class Camera;
-class Matrix4;
 class VertexBuffer;
 class IndexBuffer;
 class Shader;
@@ -117,20 +117,20 @@ public:
 
     // Low-level draw-calls
     virtual void draw(const VertexBuffer& buffer,
-                      const Shader* p_shader = nullptr) const = 0;
+                      Shader* p_shader = nullptr) const = 0;
 
     virtual void draw(const VertexBuffer& buffer,
                       const Texture* p_texture,
-                      const Shader* p_shader = nullptr) const = 0;
+                      Shader* p_shader = nullptr) const = 0;
 
     virtual void draw_indexed(const VertexBuffer& vbuffer,
                               const IndexBuffer& ibuffer,
-                              const Shader* p_shader = nullptr) const = 0;
+                              Shader* p_shader = nullptr) const = 0;
 
     virtual void draw_indexed(const VertexBuffer& vbuffer,
                               const IndexBuffer& ibuffer,
                               const Texture* p_texture,
-                              const Shader* p_shader = nullptr) const = 0;
+                              Shader* p_shader = nullptr) const = 0;
 
     // Utility draw-calls
     virtual void draw_rect(const Rectf& rect, const Color&) const;
@@ -181,7 +181,7 @@ protected:
 
     explicit Renderer(Context&);
 
-    virtual void set_shader_(const Shader*) const = 0;
+    virtual void set_shader_(Shader*) const = 0;
 
     virtual void set_texture_(const Texture*) const = 0;
 
@@ -200,11 +200,15 @@ protected:
     Framebuffer*                screen_buffer_;
     Texture*                    screen_buffer_texture_;
 
+    Matrix4                     model_transform_;
+    Matrix4                     view_transform_;
+    Matrix4                     projection_transform_;
+
     Shader*                     light_shader_;
 
     mutable int                 light_count_;
 
-    mutable const Shader*       current_shader_;
+    mutable Shader*             current_shader_;
     mutable const Texture*      current_texture_;
 
 private:

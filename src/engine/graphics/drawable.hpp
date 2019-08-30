@@ -65,7 +65,7 @@ public:
         transform_ = transform;
     }
 
-    inline void set_shader(const Shader* shader) {
+    inline void set_shader(Shader* shader) {
         shader_ = shader;
     }
 
@@ -82,7 +82,7 @@ protected:
     Recti   bounding_rect_;
 
     const Matrix4*    transform_;
-    const Shader*     shader_;
+    Shader*     shader_;
 };
 
 }

@@ -69,26 +69,26 @@ public:
     void draw(const Drawable& d) const override;
 
     void draw(const sun::VertexBuffer& buffer,
-              const sun::Shader* p_shader = nullptr) const override;
+              sun::Shader* p_shader = nullptr) const override;
 
     void draw(const sun::VertexBuffer& buffer,
               const sun::Texture* p_texture,
-              const sun::Shader* p_shader = nullptr) const override;
+              sun::Shader* p_shader = nullptr) const override;
 
     void draw_indexed(const sun::VertexBuffer& vbuffer,
                       const sun::IndexBuffer& ibuffer,
-                      const sun::Shader* p_shader = nullptr) const override;
+                      sun::Shader* p_shader = nullptr) const override;
 
     void draw_indexed(const sun::VertexBuffer& vbuffer,
                       const sun::IndexBuffer& ibuffer,
                       const sun::Texture* p_texture,
-                      const sun::Shader* p_shader = nullptr) const override;
+                      sun::Shader* p_shader = nullptr) const override;
 
     uint get_texture_max_size() const override;
 
 private:
 
-    void set_shader_(const sun::Shader*) const override;
+    void set_shader_(sun::Shader*) const override;
 
     void set_texture_(const sun::Texture*) const override;
 

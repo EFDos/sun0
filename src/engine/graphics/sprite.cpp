@@ -65,7 +65,7 @@ void Sprite::draw(Renderer* renderer) const
         renderer->set_model_transform(*transform_);
     }
     renderer->set_draw_mode(Renderer::DrawMode::Triangles);
-    renderer->draw_indexed(*vertices_, *indices_, texture_, nullptr);
+    renderer->draw_indexed(*vertices_, *indices_, texture_, shader_);
 }
 
 void Sprite::set_texture(const Texture* tex)

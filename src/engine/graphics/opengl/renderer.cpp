@@ -172,6 +172,7 @@ void Renderer::set_model_transform(const Matrix4& transform)
     }
     default_flat_shader_->send("model", transform);
     default_textured_shader_->send("model", transform);
+    model_transform_ = transform;
 
     //TODO: Provisory fix, cause send unbinds Shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
@@ -193,6 +194,7 @@ void Renderer::set_projection(const Matrix4& projection)
     default_flat_shader_->send("projection", projection);
     default_textured_shader_->send("projection", projection);
     light_shader_->send("projection", projection);
+    projection_transform_ = projection;
 }
 
 void Renderer::set_camera_transform(const Matrix4& transform)
@@ -203,6 +205,7 @@ void Renderer::set_camera_transform(const Matrix4& transform)
     default_flat_shader_->send("viewport", transform);
     default_textured_shader_->send("viewport", transform);
     light_shader_->send("viewport", transform);
+    view_transform_ = transform;
 
     //TODO: Provisory fix, cause send unbinds Shader
     if (current_shader_ == default_flat_shader_ || current_shader_ == default_textured_shader_) {
@@ -210,13 +213,16 @@ void Renderer::set_camera_transform(const Matrix4& transform)
     }
 }
 
-void Renderer::set_shader_(const sun::Shader* shader) const
+void Renderer::set_shader_(sun::Shader* shader) const
 {
     if (current_shader_ != shader) {
         current_shader_ = shader;
         if (current_shader_ == nullptr) {
             return;
         }
+        current_shader_->send("projection", projection_transform_);
+        current_shader_->send("viewport", view_transform_);
+        current_shader_->send("model", model_transform_);
         current_shader_->bind();
 
         if (current_shader_ == default_flat_shader_) {
@@ -264,7 +270,7 @@ void Renderer::draw(const Drawable& drawable) const
 }
 
 void Renderer::draw(const sun::VertexBuffer& buffer,
-                    const sun::Shader* shader) const
+                    sun::Shader* shader) const
 {
     buffer.bind();
 
@@ -282,7 +288,7 @@ void Renderer::draw(const sun::VertexBuffer& buffer,
 
 void Renderer::draw(const sun::VertexBuffer& buffer,
                     const sun::Texture* texture,
-                    const sun::Shader* shader) const
+                    sun::Shader* shader) const
 {
     buffer.bind();
 
@@ -305,7 +311,7 @@ void Renderer::draw(const sun::VertexBuffer& buffer,
 
 void Renderer::draw_indexed(const sun::VertexBuffer& vbuffer,
                             const sun::IndexBuffer& ibuffer,
-                            const sun::Shader* shader) const
+                            sun::Shader* shader) const
 {
     ibuffer.bind();
     vbuffer.bind();
@@ -327,7 +333,7 @@ void Renderer::draw_indexed(const sun::VertexBuffer& vbuffer,
 void Renderer::draw_indexed(const sun::VertexBuffer& vbuffer,
                             const sun::IndexBuffer& ibuffer,
                             const sun::Texture* texture,
-                            const sun::Shader* shader) const
+                            sun::Shader* shader) const
 {
     ibuffer.bind();
     vbuffer.bind();

@@ -72,13 +72,13 @@ private:
         //                    sol::table&&)>     message_callback;
     };
 
-    Component* create_component_(uint type_hash, uint id, bool init) override;
+    Ref<Component> create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
 
     sol::state  lua_state_;
 
-    std::vector<Script*>                            scripts_;
+    std::vector<Ref<Script>>                            scripts_;
     std::unordered_map<std::string, ScriptRegister> script_registry_;
 };
 

@@ -66,14 +66,14 @@ public:
 
         ball_->move(ball_speed_ * delta);
 
-        if (check_collision(ball_->get_component<sun::Shape2D>("shape"),
-                            right_pad_->get_component<sun::Shape2D>("shape")))
+        if (check_collision(*ball_->get_component<sun::Shape2D>("shape"),
+                            *right_pad_->get_component<sun::Shape2D>("shape")))
         {
             ball_speed_.x *= -1;
             ball_speed_.y += ((ball_->get_position().y + 20.f) - (right_pad_->get_position().y + 64.f)) * 12.f;
         }
-        if (check_collision(ball_->get_component<sun::Shape2D>("shape"),
-                            left_pad_->get_component<sun::Shape2D>("shape")))
+        if (check_collision(*ball_->get_component<sun::Shape2D>("shape"),
+                            *left_pad_->get_component<sun::Shape2D>("shape")))
         {
             ball_speed_.x *= -1;
             ball_speed_.y += ((ball_->get_position().y + 20.f) - (left_pad_->get_position().y + 64.f)) * 12.f;
@@ -99,13 +99,13 @@ public:
         score_->set_position(1280 / 2 - score_text_->get_bounding_rect().w / 2, 0);
     }
 
-    bool check_collision(const sun::Shape2D* shape_a, const sun::Shape2D* shape_b)
+    bool check_collision(const sun::Shape2D& shape_a, const sun::Shape2D& shape_b)
     {
-        auto rect_a = shape_a->get_bounding_rect();
-        auto rect_a_pos = shape_a->get_owning_entity()->get_position();
+        auto rect_a = shape_a.get_bounding_rect();
+        auto rect_a_pos = shape_a.get_owning_entity()->get_position();
         rect_a.set_point((int)rect_a_pos.x, (int)rect_a_pos.y);
-        auto rect_b = shape_b->get_bounding_rect();
-        auto rect_b_pos = shape_b->get_owning_entity()->get_position();
+        auto rect_b = shape_b.get_bounding_rect();
+        auto rect_b_pos = shape_b.get_owning_entity()->get_position();
         rect_b.set_point((int)rect_b_pos.x, (int)rect_b_pos.y);
 
         return rect_a.intersects(rect_b) || rect_b.intersects(rect_a);
@@ -121,7 +121,7 @@ private:
     sun::Entity*    ball_;
 
     sun::Entity*    score_;
-    sun::Text*      score_text_;
+    sun::Ref<sun::Text>      score_text_;
 
     int left_score;
     int right_score;

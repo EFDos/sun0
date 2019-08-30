@@ -36,7 +36,11 @@ class SUN_API Drawable : public Component
 public:
 
     Drawable(Context& context)
-    :   Component(context), dirty_(true), transform_(nullptr), shader_(nullptr) {}
+    :   Component(context), dirty_(true), transform_(nullptr), shader_(nullptr)
+    {
+        set_handle_event(false);
+        set_update(false);
+    }
 
     virtual ~Drawable() {}
 

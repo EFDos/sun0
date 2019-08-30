@@ -66,7 +66,7 @@ void GUISystem::add_widget(Widget* widget)
     frame_.add_child(widget);
 }
 
-Component* GUISystem::create_component_(uint type_hash, uint id, bool init)
+Ref<Component> GUISystem::create_component_(uint type_hash, uint id, bool init)
 {
     return nullptr;
 }

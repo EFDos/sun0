@@ -45,11 +45,9 @@ public:
 
 private:
 
-    Component* create_component_(uint type_hash, uint id, bool init) override;
+    Ref<Component> create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
-
-    std::vector<Animation*> animations_;
 };
 
 }

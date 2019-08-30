@@ -49,6 +49,8 @@ public:
 
     void shutdown_systems();
 
+    void clear_systems_components();
+
     template<typename T>
     T* register_system()
     {
@@ -64,7 +66,7 @@ public:
     }
 
     template<typename T>
-    T* create_component(uint id = 0, bool init = true)
+    Ref<T> create_component(uint id = 0, bool init = true)
     {
         for (auto sys : systems_) {
             if (sys.second->handles_component<T>()) {

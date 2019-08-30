@@ -51,6 +51,8 @@ public:
 
     RigidBody(Context&);
 
+    ~RigidBody();
+
     void init() override;
 
     void create(const shapes::Shape& shp, Type t);

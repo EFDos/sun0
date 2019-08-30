@@ -23,6 +23,7 @@
 /*************************************************************************/
 #include "system.hpp"
 #include "core/logger.hpp"
+#include "component.hpp"
 
 namespace sun {
 
@@ -39,6 +40,7 @@ bool System::init()
 
 void System::shutdown()
 {
+    components_.clear();
     initialized_ = false;
 }
 
@@ -47,6 +49,15 @@ void System::update(float delta)
 
 void System::handle_events(Event& event)
 {}
+
+void System::clear_components()
+{
+    components_.erase(
+        std::remove_if(components_.begin(), components_.end(), [] (const Ref<Component>& comp) {
+            return comp->is_terminal();
+        }), components_.end()
+    );
+}
 
 Resource* System::create_resource_(uint type_hash)
 {

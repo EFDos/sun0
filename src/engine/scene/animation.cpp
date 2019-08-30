@@ -92,7 +92,10 @@ void AnimationTrack::update(float delta)
 
 Animation::Animation(Context& context)
 :   Component(context)
-{}
+{
+    set_handle_event(false);
+    set_draw(false);
+}
 
 void Animation::init()
 {}

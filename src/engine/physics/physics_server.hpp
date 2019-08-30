@@ -99,8 +99,16 @@ public:
 
     void set_update_rate(float timestep, int vel_it, int pos_it);
 
+    inline void set_debug_draw(bool draw) {
+        debug_draw_ = draw;
+    }
+
     inline void toggle_debug_draw() {
         debug_draw_ = !debug_draw_;
+    }
+
+    inline bool get_debug_draw() {
+        return debug_draw_;
     }
 
     static constexpr uint   DEFAULT_METER = 64;
@@ -160,10 +168,7 @@ private:
 
     // System functions
 
-    std::vector<RigidBody*> bodies_;
-    std::vector<Raycast*>   raycasts_;
-
-    Component* create_component_(uint type_hash, uint id, bool init) override;
+    Ref<Component> create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
 };

@@ -42,23 +42,21 @@ public:
     ~Entity();
 
     template<typename T>
-    T* create_component(const std::string& name = "") {
+    Ref<T> create_component(const std::string& name = "") {
         auto comp = context_
             .create_component<T>(std::hash<std::string>{}(name), false);
         if (comp != nullptr) {
             comp->set_owning_entity(this);
             components_.push_back(comp);
-            return static_cast<T*>(comp);
+            return comp;
         }
         return nullptr;
     }
 
     template<typename T>
-    T* get_component(const std::string& name) {
-        T* comp = nullptr;
+    Ref<T> get_component(const std::string& name) {
         uint hash = std::hash<std::string>{}(name);
-        comp = static_cast<T*>(get_component_(hash));
-        return comp;
+        return std::static_pointer_cast<T>(get_component_(hash));
     }
 
     void init_components(bool recursive = false);
@@ -163,7 +161,7 @@ private:
 
     void set_property_(size_t property_idx, Variant var) override;
 
-    Component* get_component_(uint id);
+    Ref<Component> get_component_(uint id);
 
     enum class transform_bits : uint8
     {
@@ -183,7 +181,7 @@ private:
     Entity*                 parent_;
 
     std::vector<Entity*>     children_;
-    std::vector<Component*> components_;
+    std::vector<Ref<Component>> components_;
 
     Vector2f    pos_;
     Vector2f    scale_;

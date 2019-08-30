@@ -48,10 +48,7 @@ bool ScriptContext::init()
 
 void ScriptContext::shutdown()
 {
-    /*for (auto s : scripts_) {
-        delete s;
-    }
-    scripts_.clear();*/
+    scripts_.clear();
 }
 
 void ScriptContext::update(float delta)
@@ -140,16 +137,16 @@ void ScriptContext::register_script(Script* script, const std::string& filename,
     }
 }
 
-Component* ScriptContext::create_component_(uint type_hash, uint id, bool init)
+Ref<Component> ScriptContext::create_component_(uint type_hash, uint id, bool init)
 {
     if (type_hash == Script::get_static_type_hash()) {
-        Script* script = new Script(context_);
+        auto script = std::make_shared<Script>(context_);
         if (init) {
             script->init();
         }
         script->set_id(id);
         scripts_.push_back(script);
-        return static_cast<Component*>(script);
+        return scripts_.back();
     }
     return nullptr;
 }

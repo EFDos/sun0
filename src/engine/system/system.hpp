@@ -24,6 +24,7 @@
 #pragma once
 
 #include "common/config.hpp"
+#include "common/reference.hpp"
 
 namespace sun {
 
@@ -48,9 +49,11 @@ public:
 
     virtual void handle_events(Event& event);
 
+    virtual void clear_components();
+
     template<typename T>
-    T* create_component(uint id, bool init) {
-        return static_cast<T*>(create_component_(T::get_static_type_hash(), id, init));
+    Ref<T> create_component(uint id, bool init) {
+        return std::static_pointer_cast<T>(create_component_(T::get_static_type_hash(), id, init));
     }
 
     template<typename T>
@@ -74,7 +77,7 @@ public:
 
 protected:
 
-    virtual Component* create_component_(uint type_hash, uint id, bool init) = 0;
+    virtual Ref<Component> create_component_(uint type_hash, uint id, bool init) = 0;
 
     virtual bool handles_component_(uint type_hash) = 0;
 
@@ -85,6 +88,7 @@ protected:
     Context&    context_;
     bool        initialized_;
 
+    std::vector<Ref<Component>> components_;
 };
 
 #define SUN_SYSTEM_TYPE(type) const std::string& get_type_name() const override \

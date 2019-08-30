@@ -209,7 +209,7 @@ protected:
 
 private:
 
-    Component* create_component_(uint type_hash, uint id, bool init) override;
+    Ref<Component> create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
 
@@ -217,9 +217,9 @@ private:
 
     bool handles_resource_(uint type_hash) override;
 
-    std::vector<Camera*>    cameras_;
-    std::vector<Light2D*>   lights_;
-    std::vector<Drawable*>  drawables_;
+    std::vector<Ref<Camera>>    cameras_;
+    std::vector<Ref<Light2D>>   lights_;
+    std::vector<Ref<Drawable>>  drawables_;
 };
 
 }

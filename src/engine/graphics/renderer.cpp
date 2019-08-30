@@ -87,16 +87,6 @@ bool Renderer::init()
 
 void Renderer::shutdown()
 {
-    for (auto drawable : drawables_) {
-        delete drawable;
-    }
-    for (auto camera : cameras_) {
-        delete camera;
-    }
-    for (auto light : lights_) {
-        delete light;
-    }
-
     drawables_.clear();
     cameras_.clear();
     lights_.clear();
@@ -334,11 +324,11 @@ void Renderer::draw_polygon(uint vert_count,
     }
 }
 
-Component* Renderer::create_component_(uint type_hash, uint id, bool init)
+Ref<Component> Renderer::create_component_(uint type_hash, uint id, bool init)
 {
-    Component* comp = nullptr;
+    Ref<Component> comp = nullptr;
     if (type_hash == Camera::get_static_type_hash()) {
-        Camera* cam = new Camera(context_);
+        auto cam = std::make_shared<Camera>(context_);
         cameras_.push_back(cam);
         comp = cam;
         if (init) {
@@ -348,7 +338,7 @@ Component* Renderer::create_component_(uint type_hash, uint id, bool init)
         return comp;
     }
     if (type_hash == Light2D::get_static_type_hash()) {
-        Light2D* light = new Light2D(context_);
+        auto light = std::make_shared<Light2D>(context_);
         lights_.push_back(light);
         comp = light;
         if (init) {
@@ -358,18 +348,21 @@ Component* Renderer::create_component_(uint type_hash, uint id, bool init)
         return comp;
     }
     if (type_hash == Sprite::get_static_type_hash()) {
-        comp = new Sprite(context_);
+        drawables_.push_back(std::make_shared<Sprite>(context_));
+        comp = drawables_.back();
     }
     if (type_hash == SpriteBatch::get_static_type_hash()) {
-        comp = new SpriteBatch(context_);
+        drawables_.push_back(std::make_shared<SpriteBatch>(context_));
+        comp = drawables_.back();
     }
     if (type_hash == Text::get_static_type_hash()) {
-        comp = new Text(context_);
+        drawables_.push_back(std::make_shared<Text>(context_));
+        comp = drawables_.back();
     }
     if (type_hash == Shape2D::get_static_type_hash()) {
-        comp = new Shape2D(context_);
+        drawables_.push_back(std::make_shared<Shape2D>(context_));
+        comp = drawables_.back();
     }
-    drawables_.push_back(static_cast<Drawable*>(comp));
     if (init) {
         comp->init();
     }

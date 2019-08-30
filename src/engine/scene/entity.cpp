@@ -434,15 +434,14 @@ Entity* Entity::get_child(const std::string& path) const
     return next_child;
 }
 
-Component* Entity::get_component_(uint id)
+Ref<Component> Entity::get_component_(uint id)
 {
-    Component* comp = nullptr;
     for (auto c : components_) {
         if (c->get_id() == id) {
-            comp = c;
+            return c;
         }
     }
-    return comp;
+    return nullptr;
 }
 
 void Entity::mark_dirty_()

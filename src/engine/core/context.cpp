@@ -57,6 +57,13 @@ void Context::shutdown_systems()
     }
 }
 
+void Context::clear_systems_components()
+{
+    for (auto sys : systems_) {
+        sys.second->clear_components();
+    }
+}
+
 System* Context::register_system_(const std::string& type)
 {
     System* sys = nullptr;

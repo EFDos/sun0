@@ -92,11 +92,9 @@ private:
     ALCdevice*  alc_capture_device_;
     ALCcontext* alc_context_;
 
-    std::vector<SoundSource*>  sound_sources_;
-
     // system functions
 
-    Component* create_component_(uint type_hash, uint id, bool init) override;
+    Ref<Component> create_component_(uint type_hash, uint id, bool init) override;
 
     bool handles_component_(uint type_hash) override;
 };

@@ -48,6 +48,8 @@ void SceneTree::clear()
     root_.clear_children();
     root_.clear_components();
     entity_count_ = 0;
+
+    context_.clear_systems_components();
 }
 
 }

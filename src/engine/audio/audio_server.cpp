@@ -113,12 +113,6 @@ void AudioServer::shutdown()
         alcCloseDevice(alc_capture_device_);
     }
 
-    for (auto snd_src : sound_sources_) {
-        delete snd_src;
-    }
-
-    sound_sources_.clear();
-
     sun_log_info("OpenAL Audio Server shutdown.");
     System::shutdown();
 }
@@ -229,12 +223,12 @@ const char* AudioServer::get_alc_error(ALCenum error) const noexcept
     }
 }
 
-Component* AudioServer::create_component_(uint type_hash, uint id, bool init)
+Ref<Component> AudioServer::create_component_(uint type_hash, uint id, bool init)
 {
-    Component* comp = nullptr;
+    Ref<Component> comp = nullptr;
     if (type_hash == SoundStream::get_static_type_hash()) {
-        comp = new SoundStream(context_);
-        sound_sources_.push_back(static_cast<SoundStream*>(comp));
+        components_.push_back(std::make_shared<SoundStream>(context_));
+        comp = components_.back();
     }
     comp->set_id(id);
     if (init) {

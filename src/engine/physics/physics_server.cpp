@@ -68,11 +68,6 @@ bool PhysicsServer::init()
 
 void PhysicsServer::shutdown()
 {
-    for (auto body : bodies_) {
-        delete body;
-    }
-
-    bodies_.clear();
     System::shutdown();
     sun_log_info("Physics System shutdown.");
 }
@@ -80,9 +75,9 @@ void PhysicsServer::shutdown()
 void PhysicsServer::update(float delta)
 {
     world_.Step(timestep_, vel_iterations_, pos_iterations_);
-    for (auto body : bodies_) {
-        if (body->get_update()) {
-            body->update(delta);
+    for (auto comp : components_) {
+        if (comp->get_update()) {
+            comp->update(delta);
         }
     }
 }
@@ -141,16 +136,16 @@ void PhysicsServer::set_update_rate(float timestep, int vel_it, int pos_it)
     pos_iterations_ = pos_it;
 }
 
-Component* PhysicsServer::create_component_(uint type_hash, uint id, bool init)
+Ref<Component> PhysicsServer::create_component_(uint type_hash, uint id, bool init)
 {
-    Component* comp = nullptr;
+    Ref<Component> comp = nullptr;
     if (type_hash == RigidBody::get_static_type_hash()) {
-        comp = new RigidBody(context_);
-        bodies_.push_back(static_cast<RigidBody*>(comp));
+        components_.push_back(std::make_shared<RigidBody>(context_));
+        comp = components_.back();
     }
     if (type_hash == Raycast::get_static_type_hash()) {
-        comp = new Raycast(context_);
-        raycasts_.push_back(static_cast<Raycast*>(comp));
+        components_.push_back(std::make_shared<Raycast>(context_));
+        comp = components_.back();
     }
     if (init) {
         comp->init();

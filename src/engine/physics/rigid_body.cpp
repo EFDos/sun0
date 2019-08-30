@@ -41,11 +41,21 @@ RigidBody::RigidBody(Context& context)
     type_(Type::Undefined),
     body_(nullptr)
 {
+    set_handle_event(false);
+    set_draw(false);
 }
 
 void RigidBody::init()
 {
     Component::init();
+}
+
+RigidBody::~RigidBody()
+{
+    if (body_ != nullptr) {
+        auto world = context_.get_system<PhysicsServer>()->get_b2_world();
+        world->DestroyBody(body_);
+    }
 }
 
 void RigidBody::create(const shapes::Shape& shape, Type t)

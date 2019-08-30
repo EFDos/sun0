@@ -30,7 +30,11 @@ namespace sun {
 Raycast::Raycast(Context& context)
 :   Component(context),
     physics_server_ptr_(nullptr)
-{}
+{
+    set_handle_event(false);
+    set_update(false);
+    set_draw(false);
+}
 
 void Raycast::init()
 {

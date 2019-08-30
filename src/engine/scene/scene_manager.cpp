@@ -42,22 +42,22 @@ void SceneManager::shutdown()
 
 void SceneManager::update(float delta)
 {
-    for (auto animation : animations_) {
-        if (animation->get_update()) {
-            animation->update(delta);
+    for (auto comp : components_) {
+        if (comp->get_update()) {
+            comp->update(delta);
         }
     }
 }
 
-Component* SceneManager::create_component_(uint type_hash, uint id, bool init)
+Ref<Component> SceneManager::create_component_(uint type_hash, uint id, bool init)
 {
     if (type_hash == Animation::get_static_type_hash()) {
-        Animation* anim = new Animation(context_);
-        animations_.push_back(anim);
+        components_.push_back(std::make_shared<Animation>(context_));
+        auto comp = components_.back();
         if (init) {
-            anim->init();
+            comp->init();
         }
-        return static_cast<Component*>(anim);
+        return comp;
     }
     return nullptr;
 }

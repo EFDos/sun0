@@ -99,6 +99,12 @@ int Application::run()
         if (gui_ != nullptr) {
             gui_->render(renderer_);
         }
+
+        #ifdef SUN_OUT_DEBUG
+        renderer_->set_camera_transform(Matrix4());
+        renderer_->draw_text(std::to_string(timestep));
+        #endif
+
         window_.update();
     }
     window_.close();

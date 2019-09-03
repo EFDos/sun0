@@ -133,6 +133,9 @@ public:
                               Shader* p_shader = nullptr) const = 0;
 
     // Utility draw-calls
+    virtual void draw_text(const std::string& text, const Vector2f& position = {0, 0},
+                           uint char_size = 16, const Color& color = Color::WHITE) const;
+
     virtual void draw_rect(const Rectf& rect, const Color&) const;
 
     virtual void draw_circle(const Vector2f& pos, float radius, int verts) const;
@@ -197,8 +200,13 @@ protected:
     VertexBuffer*               screen_quad_buffer_;
     IndexBuffer*                screen_quad_indices_;
 
+    VertexBuffer*               text_quad_buffer_;
+    IndexBuffer*                text_index_buffer_;
+
     Framebuffer*                screen_buffer_;
     Texture*                    screen_buffer_texture_;
+
+    Font*                       default_font_;
 
     Matrix4                     model_transform_;
     Matrix4                     view_transform_;

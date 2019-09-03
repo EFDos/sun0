@@ -58,6 +58,9 @@ bool Renderer::init()
     screen_quad_buffer_ = create_vertex_buffer(sizeof(float) * 8, 4);
     screen_quad_indices_ = create_index_buffer(6);
 
+    text_quad_buffer_ = create_vertex_buffer(sizeof(float) * 8, 0);
+    text_index_buffer_ = create_index_buffer(0);
+
     screen_buffer_ = create_framebuffer(Framebuffer::Target::ReadAndDraw);
     screen_buffer_texture_ = create_texture();
 
@@ -81,12 +84,17 @@ bool Renderer::init()
 
     set_blend_mode(BlendMode::SourceAlpha, BlendMode::OneMinusSourceAlpha);
 
+    default_font_ = new Font(context_);
+    default_font_->load("res/mono.ttf");
+
     sun_log_info("Graphics System ready.");
     return true;
 }
 
 void Renderer::shutdown()
 {
+    delete default_font_;
+
     drawables_.clear();
     cameras_.clear();
     lights_.clear();
@@ -322,6 +330,97 @@ void Renderer::draw_polygon(uint vert_count,
     } else {
         draw(*primitive_vertices_);
     }
+}
+
+void Renderer::draw_text(const std::string& text, const Vector2f& position,
+                         uint char_size, const Color& color) const
+{
+    for (auto c: text) {
+        default_font_->get_glyph(c, char_size);
+    }
+
+    auto page_texture = default_font_->get_page_texture(char_size);
+
+    if (page_texture == nullptr) {
+        return;
+    }
+
+    text_quad_buffer_->resize(text.length() * 4);
+    text_index_buffer_->resize(text.length() * 6);
+
+    float hspace = (float)default_font_->get_glyph(' ', char_size).advance;
+    float vspace = (float)default_font_->get_line_spacing(char_size);
+    float x = 0.f, y = char_size;
+    int offset = 0;
+    int i_offset = 0;
+    uint i_value_offset = 0;
+    char prev_char = 0;
+    for (auto c : text)
+    {
+        x += default_font_->get_kerning(prev_char, c, char_size);
+        prev_char = c;
+
+        if(c == ' ' || c == '\n' || c == '\t')
+        {
+            switch(c)
+            {
+                case ' ': x += hspace; break;
+                case '\t': x += hspace * 4; break;
+                case '\n': y += vspace; x = 0.f; break;
+            }
+            continue;
+        }
+
+        const Font::Glyph& g = default_font_->get_glyph(c, char_size);
+        auto tex_size = page_texture->get_size();
+
+        float pos_x = x + g.rect.x;
+        float pos_y = y + g.rect.y;
+        float pos_w = g.rect.w;
+        float pos_h = g.rect.h;
+        float tex_x = (float)g.tex_coords.x / (float)tex_size.x;
+        float tex_y = (float)g.tex_coords.y / (float)tex_size.y;
+        float tex_w = (float)g.tex_coords.w / (float)tex_size.x;
+        float tex_h = (float)g.tex_coords.h / (float)tex_size.y;
+
+        Colorf col = Color::to_colorf(color);
+
+        x += g.advance + g.rect.w / 6.f;
+
+        float vertices[] = {
+            pos_x,          pos_y,
+            tex_x,          tex_y,
+            col.r,          col.g,  col.b,   col.a,
+
+            pos_x + pos_w,  pos_y,
+            tex_x + tex_w,  tex_y,
+            col.r,          col.g,  col.b,   col.a,
+
+            pos_x + pos_w,  pos_y + pos_h,
+            tex_x + tex_w,  tex_y + tex_h,
+            col.r,          col.g,  col.b,   col.a,
+
+            pos_x,          pos_y + pos_h,
+            tex_x,          tex_y + tex_h,
+            col.r,          col.g,  col.b,     col.a
+        };
+
+        uint32 quad_indices[] = {
+            i_value_offset + 0, i_value_offset + 1, i_value_offset + 3,
+            i_value_offset + 1, i_value_offset + 2, i_value_offset + 3
+        };
+
+        text_quad_buffer_->fill_data(offset, 4, vertices);
+        text_index_buffer_->fill_data(i_offset, 6, quad_indices);
+
+        offset += 4;
+        i_offset += 6;
+        i_value_offset += 4;
+    }
+
+    draw_mode_ = DrawMode::Triangles;
+    draw_indexed(*text_quad_buffer_, *text_index_buffer_,
+        default_font_->get_page_texture(char_size), nullptr);
 }
 
 Ref<Component> Renderer::create_component_(uint type_hash, uint id, bool init)

@@ -42,9 +42,9 @@ public:
 
     void update(float delta) override;
 
-    void zoom_in(float zoom_factor);
-
-    void zoom_out(float zoom_factor);
+    inline void zoom(float zoom_factor) {
+        zoom_factor_ += zoom_factor;
+    }
 
     inline void set_viewport_size(const Vector2f& size) {
         viewport_.set_size(size);
@@ -66,7 +66,7 @@ public:
         follow_speed_ = speed;
     }
 
-    inline void set_follow_offset(const Recti& offset) {
+    inline void set_follow_offset(const Rectf& offset) {
         offset_ = offset;
     }
 
@@ -86,7 +86,7 @@ public:
         return follow_speed_;
     }
 
-    inline const Recti& get_follow_offset() const {
+    inline const Rectf& get_follow_offset() const {
         return offset_;
     }
 
@@ -101,10 +101,11 @@ private:
     Renderer*   renderer_;
 
     Rectf   viewport_;
-    Recti   offset_;
+    Rectf   offset_;
     Recti   limit_;
 
     float   follow_speed_;
+    float   zoom_factor_;
 
     bool    follow_;
     bool    hard_limit_;

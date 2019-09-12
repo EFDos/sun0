@@ -32,8 +32,9 @@ Camera::Camera(Context& context)
 :   Component(context),
     renderer_(nullptr),
     viewport_({0.f, 0.f, 0.f, 0.f}),
-    offset_({280, 280, 280, 280}),
+    offset_({280.f, 280.f, 280.f, 280.f}),
     follow_speed_(20.f),
+    zoom_factor_(1.f),
     follow_(false),
     hard_limit_(false)
 {
@@ -54,7 +55,7 @@ void Camera::update(float delta)
         const auto& parent_pos = owning_entity_->get_position();
         float distance = 0.f;
 
-        if (parent_pos.x > viewport_.x + (viewport_.w - offset_.w)) {
+        if (parent_pos.x > (viewport_.x + (viewport_.w - offset_.w))) {
             distance = parent_pos.x - (viewport_.x + (viewport_.w - offset_.w));
 
             if (!hard_limit_)
@@ -62,7 +63,7 @@ void Camera::update(float delta)
                 viewport_.x += distance * follow_speed_ * delta;
             }
         }
-        else if (parent_pos.x < viewport_.x + offset_.x)
+        else if (parent_pos.x < (viewport_.x + offset_.x))
         {
             distance = viewport_.x + offset_.x - parent_pos.x;
 
@@ -72,7 +73,7 @@ void Camera::update(float delta)
             }
         }
 
-        if (parent_pos.y > viewport_.y + (viewport_.h - offset_.h))
+        if (parent_pos.y > (viewport_.y + (viewport_.h - offset_.h)))
         {
             distance = parent_pos.y - (viewport_.y +
                                        (viewport_.h - offset_.w));
@@ -82,7 +83,7 @@ void Camera::update(float delta)
                 viewport_.y += distance * follow_speed_ * delta;
             }
         }
-        else if (parent_pos.y < viewport_.y + offset_.y)
+        else if (parent_pos.y < (viewport_.y + offset_.y))
         {
             distance = viewport_.y + offset_.y - parent_pos.y;
 
@@ -93,20 +94,11 @@ void Camera::update(float delta)
         }
 
         transform_.set_translation(-viewport_.get_position());
+        transform_.set_scale(zoom_factor_, zoom_factor_);
         if (renderer_ != nullptr) {
             renderer_->set_camera_transform(transform_);
         }
     }
-}
-
-void Camera::zoom_in(float zoom_factor)
-{
-    transform_.scale(zoom_factor, zoom_factor);
-}
-
-void Camera::zoom_out(float zoom_factor)
-{
-    transform_.scale(-zoom_factor, -zoom_factor);
 }
 
 

@@ -61,6 +61,10 @@ public:
 
     void unmap() override;
 
+    void set_filter_mode(FilterMode mode) override;
+
+    void set_address_mode(AddressMode mode) override;
+
     uint get_internal_id() const {
         return id_;
     }

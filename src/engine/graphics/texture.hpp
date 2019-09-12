@@ -95,9 +95,9 @@ public:
 
     inline void set_format(Format fmt) { format_ = fmt; }
 
-    inline void set_filter_mode(FilterMode mode) { filter_mode_ = mode; }
+    inline virtual void set_filter_mode(FilterMode mode) { filter_mode_ = mode; }
 
-    inline void set_address_mode(AddressMode mode) { address_mode_ = mode; }
+    inline virtual void set_address_mode(AddressMode mode) { address_mode_ = mode; }
 
     inline void set_usage(Usage usg) { usage_ = usg; }
 

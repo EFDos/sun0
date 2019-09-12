@@ -25,7 +25,6 @@
 #include "scene_tree.hpp"
 #include "system/component.hpp"
 #include "math/math.hpp"
-#include "core/logger.hpp"
 
 #include <algorithm>
 #include <sstream>
@@ -87,7 +86,6 @@ Entity* Entity::find_child(const std::string& name, bool recursive) const
 {
     // First seek on the first layer only
     for (auto child : children_) {
-        sun_logf_debug("found child of name: %s", child->name_.c_str());
         if (child->name_ == name) {
             return child;
         }
@@ -416,7 +414,6 @@ Entity* Entity::get_child(const std::string& path) const
 
     Entity* next_child = nullptr;
     for (auto& seg : list) {
-        sun_logf_debug("looking for: %s", seg.c_str());
         if (next_child == nullptr) {
             next_child = find_child(seg);
         } else {
@@ -425,10 +422,8 @@ Entity* Entity::get_child(const std::string& path) const
 
 
         if (next_child == nullptr) {
-            sun_log_debug("not found");
             return nullptr;
         }
-        sun_log_debug("found");
     }
 
     return next_child;

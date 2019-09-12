@@ -42,6 +42,10 @@ public:
 
     void update(float delta) override;
 
+    void zoom_in(float zoom_factor);
+
+    void zoom_out(float zoom_factor);
+
     inline void set_viewport_size(const Vector2f& size) {
         viewport_.set_size(size);
     }

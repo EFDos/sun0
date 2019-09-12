@@ -99,6 +99,17 @@ void Camera::update(float delta)
     }
 }
 
+void Camera::zoom_in(float zoom_factor)
+{
+    transform_.scale(zoom_factor, zoom_factor);
+}
+
+void Camera::zoom_out(float zoom_factor)
+{
+    transform_.scale(-zoom_factor, -zoom_factor);
+}
+
+
 Vector2f Camera::get_center() const
 {
     return {viewport_.x + viewport_.w / 2.f,

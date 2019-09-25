@@ -26,6 +26,10 @@
 #include "common/config.hpp"
 #include "common/variant.hpp"
 
+#ifdef SUN_PLATFORM_HAIKU
+#include <vector>
+#endif
+
 namespace sun {
 
 class SUN_API Animatable

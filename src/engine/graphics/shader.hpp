@@ -24,6 +24,11 @@
 #pragma once
 
 #include "gpu_object.hpp"
+#include "common/reference.hpp"
+
+#ifdef SUN_PLATFORM_HAIKU
+#include <string>
+#endif
 
 namespace sun {
 
@@ -112,8 +117,8 @@ protected:
 
     virtual void linking_check_() = 0;
 
-    std::unique_ptr<ShaderStage>   vertex_stage_;
-    std::unique_ptr<ShaderStage>   fragment_stage_;
+    Scope<ShaderStage>   vertex_stage_;
+    Scope<ShaderStage>   fragment_stage_;
 
     Status status_;
 };

@@ -19,8 +19,8 @@ sun_lib_src = [
   'core/filesys/input_stream.cpp',
   'core/logger.cpp',
   'core/clock.cpp',
-  'core/context.cpp',
   'core/application.cpp',
+  'core/context.cpp',
   'core/window.cpp',
   'core/input/keyboard.cpp',
   #'core/input/input_map.cpp',
@@ -72,16 +72,22 @@ sun_lib_src = [
   'script/script_api.cpp',
 ]
 
+pch = ['pch/stdpch.h']
+
+if system == 'haiku'
+  pch = []
+endif
+
 if get_option('dynamic-lib')
   sun_lib = shared_library('sun-engine', sun_lib_src,
     dependencies: sun_depends,
     include_directories: sun_includes,
-    cpp_pch: ['pch/stdpch.h']
+    cpp_pch: pch
   )
 else
   sun_lib = static_library('sun-engine', sun_lib_src,
     dependencies: sun_depends,
     include_directories: sun_includes,
-    cpp_pch: ['pch/stdpch.h']
+    cpp_pch: pch
   )
 endif

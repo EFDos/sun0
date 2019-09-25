@@ -12,7 +12,7 @@ system = host_machine.system()
 message('Detected OS: ' + system)
 
 sun_includes = []
-sun_depends = []
+box2d_dir = ''
 
 if system == 'linux'
   sun_includes = include_directories(
@@ -21,6 +21,7 @@ if system == 'linux'
     '/usr/include/freetype2',
     '/usr/include/luajit-2.1'
   )
+  box2d_dir = join_paths(meson.current_source_dir(), 'src/thirdparty/linux/Box2D')
 endif
 
 if system == 'haiku'
@@ -29,7 +30,8 @@ if system == 'haiku'
     './src/engine',
     '/boot/system/develop/headers',
     '/boot/system/develop/headers/freetype2',
-)
+  )
+  box2d_dir = join_paths(meson.current_source_dir(), 'src/thirdparty/haiku/Box2D')
 endif
 
 message('source root is: ' + meson.current_source_dir())
@@ -42,8 +44,7 @@ sun_depends = [
 	dependency('threads'),
 	meson.get_compiler('cpp').find_library('luajit-5.1'),
 	meson.get_compiler('cpp').find_library('freetype'),
-	meson.get_compiler('cpp').find_library('Box2D',
-        dirs: join_paths(meson.current_source_dir(), 'src/thirdparty/Box2D')),
+	meson.get_compiler('cpp').find_library('Box2D', dirs: box2d_dir),
 ]
 
 subdir('src/engine')

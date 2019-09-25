@@ -24,6 +24,10 @@
 #pragma once
 #include "common/object.hpp"
 
+#ifdef SUN_PLATFORM_HAIKU
+#include <string>
+#endif
+
 namespace sun {
 
 class SUN_API Resource : public Object

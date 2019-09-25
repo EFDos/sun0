@@ -26,6 +26,10 @@
 #include "common/config.hpp"
 #include "common/reference.hpp"
 
+#ifdef SUN_PLATFORM_HAIKU
+#include <vector>
+#endif
+
 namespace sun {
 
 class Event;

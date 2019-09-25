@@ -26,7 +26,9 @@
 #include "system/system.hpp"
 #include "common/int.hpp"
 
-//#include <sol.hpp>
+#ifdef SUN_PLATFORM_HAIKU
+#include <sol.hpp>
+#endif
 
 namespace sun {
 

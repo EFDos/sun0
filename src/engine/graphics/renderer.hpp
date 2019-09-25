@@ -29,6 +29,10 @@
 #include "math/rect.hpp"
 #include "framebuffer.hpp"
 
+#ifdef SUN_PLATFORM_HAIKU
+#include <vector>
+#endif
+
 namespace sun {
 
 class Context;

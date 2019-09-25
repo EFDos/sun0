@@ -24,6 +24,11 @@
 #pragma once
 
 #include "common/int.hpp"
+//#include "common/config.hpp"
+
+#if defined(__HAIKU__)
+#include <vector>
+#endif
 
 namespace sun {
 

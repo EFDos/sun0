@@ -27,6 +27,11 @@
 #include "resources/resource.hpp"
 #include "texture.hpp"
 
+#ifdef SUN_PLATFORM_HAIKU
+#include <vector>
+#include <unordered_map>
+#endif
+
 namespace sun
 {
 

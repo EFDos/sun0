@@ -28,6 +28,11 @@
 
 #include "core/context.hpp"
 
+#ifdef SUN_PLATFORM_HAIKU
+#include <string>
+#include <vector>
+#endif
+
 namespace sun {
 
 class SceneTree;

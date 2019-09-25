@@ -25,6 +25,10 @@
 #include "core/logger.hpp"
 #include "component.hpp"
 
+#ifdef SUN_PLATFORM_HAIKU
+#include <algorithm>
+#endif
+
 namespace sun {
 
 System::System(Context& context) : context_(context), initialized_(false)

@@ -23,7 +23,9 @@
 /*************************************************************************/
 #pragma once
 
-//#include "cpptoml.h"
+#ifdef SUN_PLATFORM_HAIKU
+#include "cpptoml.h"
+#endif
 
 namespace sun {
 namespace toml {

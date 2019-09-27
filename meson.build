@@ -21,7 +21,7 @@ if system == 'linux'
     '/usr/include/freetype2',
     '/usr/include/luajit-2.1'
   )
-  box2d_dir = join_paths(meson.current_source_dir(), 'src/thirdparty/linux/Box2D')
+  box2d_dir = join_paths(meson.current_source_dir(), 'src/thirdparty/linux')
 endif
 
 if system == 'haiku'
@@ -31,7 +31,7 @@ if system == 'haiku'
     '/boot/system/develop/headers',
     '/boot/system/develop/headers/freetype2',
   )
-  box2d_dir = join_paths(meson.current_source_dir(), 'src/thirdparty/haiku/Box2D')
+  box2d_dir = join_paths(meson.current_source_dir(), '/src/thirdparty/haiku/Box2D')
 endif
 
 message('source root is: ' + meson.current_source_dir())

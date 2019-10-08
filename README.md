@@ -3,6 +3,10 @@
 Sun-0 is the latest Open Source iteration of in-house engines developed for Sinz, to support the creation of 2D graphics creative code, and of course, 3D graphics in the near future.
 The engine is built only upon open source technologies to target as many platforms as possible - including Haiku-OS - and is distributed as Free Software under the GPL License.
 
+(https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![alt text](res/screenshots/physics-demo-elementary.png "Physics Demo on Elementary OS (Linux)")
+![alt text](res/screenshots/lighting-demo-elementary.png "Lighting Demo on Elementary OS (Linux)")
+
 ##What is this repository for?
 
 * Main Development of the Sun-0 Engine by its' authors

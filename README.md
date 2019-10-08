@@ -5,6 +5,7 @@ The engine is built only upon open source technologies to target as many platfor
 
 ![alt text](res/screenshots/physics-demo-elementary.png Physics Demo on Linux Elementary OS)
 ![alt text](res/screenshots/lighting-demo-elementary.png Lighting Demo on Linux Elementary OS)
+![alt text](res/screenshots/hello-demo-haiku.png Hello Demo on Haiku OS!)
 
 ##What is this repository for?
 
